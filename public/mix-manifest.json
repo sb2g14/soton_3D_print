@@ -1,0 +1,11 @@
+{
+  "/js/app.js": "/js/app.js",
+  "/css/app.css": "/css/app.css",
+  "/js/request_job_validation.js": "/js/request_job_validation.js",
+  "/js/register_validation.js": "/js/register_validation.js",
+  "/js/update_personal_validation.js": "/js/update_personal_validation.js",
+  "/js/update_issue_validation.js": "/js/update_issue_validation.js",
+  "/js/new_printer_validation.js": "/js/new_printer_validation.js",
+  "/js/login_validation.js": "/js/login_validation.js",
+  "/js/issue_validation.js": "/js/issue_validation.js"
+}

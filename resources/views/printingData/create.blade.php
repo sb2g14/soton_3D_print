@@ -1,0 +1,189 @@
+@extends('layouts.layout')
+
+@section('content')
+
+    {{--Show the error message--}}
+    @if ($flash=session('message'))
+        <div id="flash_message" class="alert {{ session()->get('alert-class', 'alert-info') }}" role="alert">
+            {{ $flash }}
+        </div>
+    @endif
+
+<div class="container well s-request-form">
+    <div class="row vdivide">
+        <div class="col-sm-6">
+            <h1 class="text-center lead">REQUEST A JOB</h1>
+            <form id="requestForm" class="form-horizontal" method="POST" action="/printingData">
+                {{ csrf_field() }}
+                <div class="form-group {{ $errors->has('printers_id') ? ' has-error' : '' }}">
+                   {{--This is a Printer Number dropdown--}}
+                    <div class="form-group">
+                        {!! Form::label('printers_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
+                        <div class="col-md-6">
+                            {!! Form::select('printers_id', array('' => 'Select Available Printer') + $available_printers,  old('printers_id'), ['class' => 'form-control','required', 'data-help' => 'printers_id', 'id' => 'printers_id']) !!}
+                            @if ($errors->has('printers_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('printers_id') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                {{--Student Name field--}}
+                <div class="form-group{{ $errors->has('student_name') ? ' has-error' : '' }}">
+                    <label for="student_name" class="col-sm-4 control-label">Name</label>
+
+                    <div class="col-sm-8">
+                        <input id="student_name" data-help="" type="text" class="form-control" name="student_name" value="{{ old('student_name', isset($member)  ? $member->first_name.' '.$member->last_name : '') }}" placeholder="Please input your First and Last name" required>
+                        @if ($errors->has('student_name'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('student_name') }}</strong>
+                        </span>
+                        @endif
+                        <td><span class="help-block" id="student_name_error"></span> </td>
+                    </div>
+                </div>
+
+                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                    <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+
+                    <div class="col-md-6">
+                        <input id="email" data-help="email" type="email" class="form-control" name="email" value="{{ old('email', isset($member)  ? $member->email : '') }}" placeholder="Please input soton email" required><br>
+
+                        @if ($errors->has('email'))
+                            <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                        @endif
+                        <td><span class="help-block" id="email_error"></span></td>
+                    </div>
+                </div>
+
+                <div class="form-group{{ $errors->has('student_id') ? ' has-error' : '' }}">
+                    <label for="student_id" class="col-sm-4 control-label">Student/Staff ID</label>
+                    <div class="col-sm-8">
+                        <input id="student_id" data-help="student_id" type="text" class="form-control" name="student_id" value="{{ old('student_id', isset($member)  ? $member->id_number : '') }}" placeholder="Please input your university ID number" required>
+                        @if ($errors->has('student_id'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('student_id') }}</strong>
+                        </span>
+                        @endif
+                        <td><span class="help-block" id="student_id_error"></span> </td>
+                    </div>
+                </div>
+
+                <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
+                    {!! Form::label('hours', 'Printing Time', ['class' => 'col-lg-4 control-label'] )  !!}
+                    <div class="col-md-4">
+                        {!! Form::select('hours',array('' => 'Hours')+ range(0,59), old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
+                        @if ($errors->has('hours'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('hours') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::select('minutes',array('' => 'Minutes')+ range(0,59), old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
+                        @if ($errors->has('minutes'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('minutes') }}</strong>
+                        </span>
+                        @endif
+                   </div>
+                </div>
+
+                <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
+                    <label for="material_amount" class="col-sm-4 control-label">Material Amount (grams) </label>
+                    <div class="col-sm-8">
+                        <input id="material_amount" data-help="material_amount" type="text" class="form-control" name="material_amount" value="{{ old('material_amount') }}" placeholder="Please specify the amount of material requested" required>
+                        @if ($errors->has('material_amount'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('material_amount') }}</strong>
+                        </span>
+                        @endif
+                        <td><span class="help-block" id="material_amount_error"></span> </td>
+                    </div>
+                </div>
+
+                <div class="form-group{{ $errors->has('use_case') ? ' has-error' : '' }}">
+                    <label for="use_case" class="col-sm-4 control-label">Module Name (Project) or Cost Code</label>
+                    <div class="col-sm-8">
+                        <input id="use_case" data-help="use_case" type="text" class="form-control" name="use_case" value="{{ old('use_case') }}" placeholder="A 9 digit cost code or module name are allowed" required>
+                        @if ($errors->has('use_case'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('use_case') }}</strong>
+                        </span>
+                        @endif
+                        <td><span class="help-block" id="use_case_error"></span> </td>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8 text-left">
+                        <button id="submit" type="submit" class="btn">Submit</button>
+                        <a href="/" class="btn btn-danger">Go back</a>
+                        <a href="{{  url('https://www.3dhubs.com/') }}" target="_blank" class="btn btn-info">Order online</a>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+        <div class="col-sm-6 instructions">
+            <div class="hint text-left is-active before-filling" data-hint="general">
+                <h3 class="text-center lead">How to request a 3D print</h3>
+                <p>Submit the Request form to the left providing all the necessary details.</p>
+                <p>After the form is submitted it is redirected to the demonstrator for approval.</p>
+                <p>Please do not start printing until the demonstrator checks all the details and approves the request.</p>
+                <p>If your job was approved but something went wrong with the print itself, ask the demonstrator to cancel the job. In such a way you will be charged only for the printing time spent before cancelling the job and not for the whole job.</p>
+            </div>
+            
+            <div class="hint text-left" data-hint="printers_id">
+                <h3 class="text-center lead">If the chosen printer is unavailable</h3>
+                <p>If the printer you have selected to use is not in the list this means that it is either broken or is scheduled to use for other print. In either case please contact the demonstrator for the further information.</p>
+            </div>
+            <div class="hint text-left" data-hint="email">
+                <h3 class="text-center lead">Why do we need your email?</h3>
+                <p>Your university email may be used to contact you regarding the prints you have just requested or the prints done previously.</p>
+            </div>
+            <div class="hint text-left" data-hint="student_id">
+                <h3 class="text-center lead">How to find out my student/staff ID?</h3>
+                <p>Student IDs is typically 9 digits long and staff IDs are typically 8 digits long. Do not forget the first digit of your ID which is typed in bold font as shown below</p>
+                <div class="text-center">
+                    <img src="/Images/studentID.svg" width="300" alt="studentID">
+                </div>
+            </div>
+            <div class="hint text-left" data-hint="hours">
+                <h3 class="text-center lead">Printing time</h3>
+                <p>Please input the printing time that is provided by the slicing software in hours and minutes. Note, that 59 hours and 59 minutes is currently the maximum available printing time.</p>
+            </div>
+            <div class="hint text-left" data-hint="minutes">
+                <h3 class="text-center lead">Printing time</h3>
+                <p>Please input the printing time that is provided by the slicing software in hours and minutes. Note, that 59 hours and 59 minutes is currently the maximum available printing time.</p>
+            </div>
+            <div class="hint text-left" data-hint="material_amount">
+                <h3 class="text-center lead">Estimated price</h3>
+                <p>Estimated price of your print is <div id="price"></div></p>
+            </div>
+            <div class="hint text-left" data-hint="use_case">
+                <h3 class="text-center lead">Module name or Cost Code</h3>
+                <p>If you are a student and your print is part of a project, please input the short abbreviation of your module name or course. The system will recognise most of the standard modules that are registered with the workshop.</p>
+                <p>If your abbreviation was not recognised, please contact the demonstrator.</p>
+                <p>If you are a PostGrad student, postdoc or an academic, please input the Cost Code that will be charged for the current print. If in doubt or if you have any questions, please contact the demonstrator.</p>
+            </div>
+            <div class="hint text-left after-filling" data-hint="final">
+                <h3 class="text-center lead">The estimated cost of the print</h3>
+                <p>The cost of your print is £ <div id="price"></div>.</p>
+                <p>The price was calculated based on the print duration and the amount of material used.</p>
+                <p>After you press Submit button, the request will be sent to the demonstrator for approval. At this stage the cost may change if the amount of material or the duration of print are altered by the demonstrator.</p>
+                <p>Please, do not start printing until notified that your job was approved.</p>
+                <p>You may cancel your job if it is unsuccessful. In this case, you will be charged only for the printing time spent before cancellation. To do that contact the demonstrator.</p>
+            </div>            
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('scripts')
+<script src="/js/request_job_validation.js"></script>
+@endsection

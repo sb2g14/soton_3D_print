@@ -1,0 +1,231 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\printers;
+use Illuminate\Http\Request;
+use App\printing_data;
+use App\cost_code;
+use Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Validation\Rules\In;
+
+class PrintingDataController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $jobs =  printing_data::where('approved', 'Waiting')->get();
+        return view('printingData.index', compact('jobs'));
+    }
+
+    public function approved()
+    {
+        $approved_jobs = printing_data::orderBy('created_at', 'desc')->where('approved', 'Yes')->get();
+        return view('printingData.approved', compact('approved_jobs'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        // Check if all current jobs are finished
+        $printers_busy = Printers::where('in_use','=', 1)->get();
+        foreach ($printers_busy as $printer_busy) {
+            $printer_busy->changePrinterStatus($printers_busy);
+        }
+
+    if (Auth::check()) {
+        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
+        $member = Auth::user()->staff;
+        return view('printingData.create',compact('available_printers','member'));
+    } else {
+        $available_printers = printers::where('printer_status', 'Available')->where('in_use', 0)->where('printer_type', '!=', 'UP BOX')->pluck('id', 'id')->all();
+        return view('printingData.create',compact('available_printers'));
+    }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+
+        $this -> validate(request(), [
+            'student_name' => 'required|string|min:3|max:20|regex:/[\w\-\'\s]+/',
+            'email' => 'required|email|min:3|max:20|regex:/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/',
+            'student_id' => 'required|numeric|min:8',
+            'material_amount' => 'required|numeric|min:1|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
+            'use_case' => 'required|min:3'
+        ]);
+
+        $cost_codes = cost_code::all()->pluck('shortage','id')->toArray();
+       // $cost_codes = $cost_codes->toArray();
+        $use_case = request('use_case');
+        if( in_array($use_case, $cost_codes)) {
+
+            // Update record in staff database in order to link with users database
+            $cost_code_id = array_search($use_case, $cost_codes);
+            $cost_code = cost_code::where('id', $cost_code_id)->first()->cost_code;
+
+        } elseif(preg_match('/123456789/', $use_case) === true) {
+            $cost_code = (int) $use_case;
+            $use_case = 'Cost Code';
+        } else {
+            session()->flash('message', 'Please check the module name or enter a valid cost code');
+            return redirect('printingData/create')->withInput();
+        }
+
+            // Calculating printing time from the dropdown
+        $hours = Input::get('hours');
+        $minutes = Input::get('minutes');
+        $time = $hours.':'.sprintf('%02d', $minutes);
+
+        $material_amount = request('material_amount');
+        // Calculation the job price £3 per h + £5 per 100g
+        $price = round(3*($hours + $minutes/60) + 5*$material_amount/100,2);
+
+       printing_data::create([
+           'printers_id' => Input::get('printers_id'),
+           'student_name' => request('student_name'),
+           'student_id' => request('student_id'),
+           'email' => request('email'),
+           'use_case' => $use_case,
+           'cost_code' => $cost_code,
+           'time' => $time,
+           'price'=> $price,
+           'material_amount' => $material_amount
+       ]);
+
+        printers::where('id','=', Input::get('printers_id'))->update(array('in_use'=> 1));
+
+       // Show flashing message
+       session()->flash('message', 'Your job request has been successfully accepted!');
+       session()->flash('alert-class', 'alert-success');
+
+       // Redirect to home directory
+       return redirect()->home();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $job = printing_data::find($id);
+        return view('printingData.show',compact('job'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id)
+    {
+        $this -> validate(request(), [
+            'printers_id' => 'required|numeric',
+            'student_name' => 'required|string',
+            'student_id' => 'required|numeric',
+            'email' => 'required|email',
+            'time' => 'required',
+            'material_amount' => 'required|numeric',
+            'use_case' => 'required|string',
+        ]);
+//        $staff_id = Auth::user()->id;
+//       dd(request()->all(), $staff_id, $id);
+        $data = printing_data::findOrFail($id);
+
+        $data->update([
+            'printers_id' => request('printers_id'),
+            'student_name' => request('student_name'),
+            'student_id' => request('student_id'),
+            'email' => request('email'),
+            'time' => request('time'),
+            'material_amount' => request('material_amount'),
+            'use_case' => request('use_case'),
+            'add_comment' => request('comments'),
+            'paid' => 'No',
+            'purpose' => 'Use',
+            'user_id' => Auth::user()->id,
+            'approved' => 'Yes'
+        ]);
+
+        session()->flash('message', 'The job has been successfully approved!');
+
+        return redirect('printingData/index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function abort($id)
+{
+    $data = printing_data::findOrFail($id);
+    $time = time() - strtotime($data->updated_at);
+    $hours = date('H', $time);
+    $minutes = date('i', $time);
+    $new_time = $hours.':'.sprintf('%02d', $minutes);
+    $new_price = round(3*($hours + $minutes/60) + 5*$data->material_amount/100,2);
+    $data->update(['successful'=>'No',
+        'approved'=>'No',
+        'time' => $new_time,
+        'price' => $new_price
+        ]);
+
+    printers::where('id','=', $data->printers_id)->update(array('in_use'=> 0));
+
+    session()->flash('message', 'The job has been canceled');
+
+    return redirect('printingData/index');
+}
+    public function success($id)
+    {
+        printing_data::where('id','=',$id)->update(array('approved'=> 'Success'));
+        $data = printing_data::findOrFail($id);
+        printers::where('id','=', $data->printers_id)->update(array('in_use'=> 0));
+
+        session()->flash('message', 'The job is successful');
+
+        return redirect('printingData/index');
+    }
+    public function destroy($id)
+    {
+        $data = printing_data::findOrFail($id);
+        printers::where('id','=', $data->printers_id)->update(array('in_use'=> 0));
+        $data->delete();
+
+        session()->flash('message', 'The job has been rejected');
+
+        return redirect('printingData/index');
+    }
+}
