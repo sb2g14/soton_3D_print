@@ -22,26 +22,29 @@
                 </div>
             </div>
             <div class="col-sm-4 text-left support">
-                Development team would highly appreciate if you send your feedback to: <br><a href="mailto:ai1v14@soton.ac.uk?Subject=Soton3Dprint" target="_top">ai1v14@soton.ac.uk</a> <br><a href="mailto:sb2g14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">sb2g14@soton.ac.uk</a>
+                Development team would highly appreciate if you send your feedback to: <br>
+                <a href="mailto:ai1v14@soton.ac.uk?Subject=Soton3Dprint" target="_top">ai1v14@soton.ac.uk</a> <br>
+                <a href="mailto:sb2g14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">sb2g14@soton.ac.uk</a><br>
+                <a href="mailto:l.wollatz@soton.ac.uk?Subject=Soton3Dprint" target="_blank">l.wollatz@soton.ac.uk</a>
             </div>
             <div class="col-sm-4 text-center">
                 <div class="row">
                     <div class="col-sm-6 copyright">
-                       <strong>Copyright &copy; 2017.<br>
-                       <a href="{{ url('/') }}">Soton3Dprint</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a> </strong> 
+                       <span style="font-weight: 500;">Copyright &copy; 2017</span><br>
+                       <a href="{{ url('/') }}">Soton3Dprint</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a>
                     </div>
                     <div class="col-sm-6 team">
-                        Developed by: <br>
+                        <b>Developed by: </b><br>
                         <div class="developers">
                             Andrii Iakovliev <br>
                             Svitlana Braichenko <br>
                             Illya Khromov <br>
-                            Lasse Wollaz
+                            Lasse Wollatz
                         </div>
                     </div>
                 </div>
                 <hr>
-                <div style="font-weight: 600;">Development version 2.0</div>
+                <div style="font-weight: 500;">Development version 2.0</div>
             </div>
         </div>
     </div>

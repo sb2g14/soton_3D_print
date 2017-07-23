@@ -41,7 +41,7 @@
                             <strong>{{ $errors->first('student_name') }}</strong>
                         </span>
                         @endif
-                        <td><span class="help-block" id="student_name_error"></span> </td>
+                        <span class="help-block" id="student_name_error"></span>
                     </div>
                 </div>
 
@@ -56,7 +56,7 @@
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                         @endif
-                        <td><span class="help-block" id="email_error"></span></td>
+                        <span class="help-block" id="email_error"></span>
                     </div>
                 </div>
 
@@ -69,7 +69,7 @@
                             <strong>{{ $errors->first('student_id') }}</strong>
                         </span>
                         @endif
-                        <td><span class="help-block" id="student_id_error"></span> </td>
+                        <span class="help-block" id="student_id_error"></span>
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@
                             <strong>{{ $errors->first('material_amount') }}</strong>
                         </span>
                         @endif
-                        <td><span class="help-block" id="material_amount_error"></span> </td>
+                        <span class="help-block" id="material_amount_error"></span>
                     </div>
                 </div>
 
@@ -115,7 +115,7 @@
                             <strong>{{ $errors->first('use_case') }}</strong>
                         </span>
                         @endif
-                        <td><span class="help-block" id="use_case_error"></span> </td>
+                        <span class="help-block" id="use_case_error"></span>
                     </div>
                 </div>
 
@@ -135,49 +135,65 @@
                 <p>Submit the Request form to the left providing all the necessary details.</p>
                 <p>After the form is submitted it is redirected to the demonstrator for approval.</p>
                 <p>Please do not start printing until the demonstrator checks all the details and approves the request.</p>
-                <p>If your job was approved but something went wrong with the print itself, ask the demonstrator to cancel the job. In such a way you will be charged only for the printing time spent before cancelling the job and not for the whole job.</p>
+                <p>If your job was approved but something went wrong with the print itself ask the demonstrator to
+                    cancel the job. Therefore, you will be charged only for the printing time spent before cancelling
+                    the job and not for the whole job.</p>
             </div>
             
             <div class="hint text-left" data-hint="printers_id">
                 <h3 class="text-center lead">If the chosen printer is unavailable</h3>
-                <p>If the printer you have selected to use is not in the list this means that it is either broken or is scheduled to use for other print. In either case please contact the demonstrator for the further information.</p>
+                <p>If the printer you have selected is not on the list of available printers this means that it is
+                    either broken or scheduled to use for other print. In either case please contact the demonstrator
+                    for further information.</p>
             </div>
             <div class="hint text-left" data-hint="email">
                 <h3 class="text-center lead">Why do we need your email?</h3>
-                <p>Your university email may be used to contact you regarding the prints you have just requested or the prints done previously.</p>
+                <p>Your university email may be used to contact you regarding the prints you have just requested or the
+                    prints did previously.</p>
             </div>
             <div class="hint text-left" data-hint="student_id">
                 <h3 class="text-center lead">How to find out my student/staff ID?</h3>
-                <p>Student IDs is typically 9 digits long and staff IDs are typically 8 digits long. Do not forget the first digit of your ID which is typed in bold font as shown below</p>
+                <p>Student ID is typically 9 digits long. Staff ID is typically 8 digits long. Do not forget to input
+                    the whole ID number. It is schematically displayed in the picture below. </p>
                 <div class="text-center">
                     <img src="/Images/studentID.svg" width="300" alt="studentID">
                 </div>
             </div>
             <div class="hint text-left" data-hint="hours">
                 <h3 class="text-center lead">Printing time</h3>
-                <p>Please input the printing time that is provided by the slicing software in hours and minutes. Note, that 59 hours and 59 minutes is currently the maximum available printing time.</p>
+                <p>Please input the printing time that is provided by the slicing software in hours and minutes. Note,
+                    that 59 hours and 59 minutes is currently the maximum available printing time.</p>
             </div>
             <div class="hint text-left" data-hint="minutes">
                 <h3 class="text-center lead">Printing time</h3>
-                <p>Please input the printing time that is provided by the slicing software in hours and minutes. Note, that 59 hours and 59 minutes is currently the maximum available printing time.</p>
+                <p>Please input the printing time that is provided by the slicing software in hours and minutes. Note,
+                    that 59 hours and 59 minutes is currently the maximum available printing time.</p>
             </div>
             <div class="hint text-left" data-hint="material_amount">
                 <h3 class="text-center lead">Estimated price</h3>
-                <p>Estimated price of your print is <div id="price"></div></p>
+                <p>Based on the print duration and the material amount we
+                    estimate the cost of your print to be £  <span id="price" style="color:red"></span> </p>
             </div>
             <div class="hint text-left" data-hint="use_case">
                 <h3 class="text-center lead">Module name or Cost Code</h3>
-                <p>If you are a student and your print is part of a project, please input the short abbreviation of your module name or course. The system will recognise most of the standard modules that are registered with the workshop.</p>
+                <p>If you are a student and your print is part of a project, please input the short abbreviation of your
+                    module name or course. Note that course or module abbreviations must be in capital letters. The
+                    system will recognise most of the standard modules that are registered with the workshop.</p>
                 <p>If your abbreviation was not recognised, please contact the demonstrator.</p>
-                <p>If you are a PostGrad student, postdoc or an academic, please input the Cost Code that will be charged for the current print. If in doubt or if you have any questions, please contact the demonstrator.</p>
+                <p>If you are a PhD student, postdoc or an academic, please input the Cost Code that will be charged for
+                    the current print. If in doubt or if you have any questions, please contact the demonstrator.</p>
             </div>
             <div class="hint text-left after-filling" data-hint="final">
                 <h3 class="text-center lead">The estimated cost of the print</h3>
-                <p>The cost of your print is £ <div id="price"></div>.</p>
+                <p>The cost of your print is £ <span id="price-final" style="color:red"></span>.</p>
                 <p>The price was calculated based on the print duration and the amount of material used.</p>
-                <p>After you press Submit button, the request will be sent to the demonstrator for approval. At this stage the cost may change if the amount of material or the duration of print are altered by the demonstrator.</p>
-                <p>Please, do not start printing until notified that your job was approved.</p>
-                <p>You may cancel your job if it is unsuccessful. In this case, you will be charged only for the printing time spent before cancellation. To do that contact the demonstrator.</p>
+                <p>After you press Submit button, the request will be sent to the demonstrator for approval. At this
+                    stage, the cost may change if the amount of material or the duration of print are altered by the
+                    demonstrator.</p>
+                <p>Please, do not start printing until notified that your job was approved. You will get a notification
+                    when the job will be approved or rejected by a demonstrator.</p>
+                <p>You may cancel your job if it is unsuccessful. In this case, you will be charged only for the
+                    printing time spent before cancellation. To do that contact the demonstrator.</p>
             </div>            
         </div>
     </div>

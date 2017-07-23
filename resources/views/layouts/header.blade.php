@@ -3,6 +3,7 @@
         <div class="branding">
             <a href="{{ url('/') }}">
                 <img class="logo_mob" src="/Images/uos-brand1.png" alt="3Dprinting">
+                {{--<img class="logo_mob" src="/Images/logo-small.png" alt="3Dprinting">--}}
             </a>
         </div>
        @if (Auth::check())

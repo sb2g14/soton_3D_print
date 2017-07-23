@@ -7,5 +7,6 @@
   "/js/update_issue_validation.js": "/js/update_issue_validation.js",
   "/js/new_printer_validation.js": "/js/new_printer_validation.js",
   "/js/login_validation.js": "/js/login_validation.js",
-  "/js/issue_validation.js": "/js/issue_validation.js"
+  "/js/issue_validation.js": "/js/issue_validation.js",
+  "/js/message_validation.js": "/js/message_validation.js"
 }

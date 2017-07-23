@@ -34,10 +34,11 @@
                     <td><span class="help-block" id="message_error"></span> </td>
                 </div>
             </div>
-            <!-- Body -->
+            <!-- Submit button-->
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4">
                     {!! Form::submit('Submit', ['class' => 'btn', 'id' => 'submit'] ) !!}
+                    {{--Go back button--}}
                     <a href="/issues/select" class="btn btn-danger">Go back</a>
                 </div>
             </div>
@@ -45,7 +46,6 @@
 
         <div class="col-sm-6 text-left">
             <ul class="list-inline text-left col-sm-offset-4">
-                {{--Selected printer description--}}
                 <li>
                     <div class="media-heading">
                     Printer Number: <b>{{ $selectedPrinter -> id }}</b> <br>

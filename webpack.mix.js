@@ -12,4 +12,12 @@ const { mix } = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+    .js('resources/assets/js/request_job_validation.js', 'public/js')
+    .js('resources/assets/js/register_validation.js', 'public/js')
+    .js('resources/assets/js/update_issue_validation.js', 'public/js')
+    .js('resources/assets/js/update_personal_validation.js', 'public/js')
+    .js('resources/assets/js/login_validation.js', 'public/js')
+    .js('resources/assets/js/new_printer_validation.js', 'public/js')
+    .js('resources/assets/js/issue_validation.js', 'public/js')
+    .js('resources/assets/js/message_validation.js', 'public/js')
+    .less('resources/assets/less/app.less', 'public/css');

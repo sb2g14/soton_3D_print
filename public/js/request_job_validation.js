@@ -63,20 +63,20 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 14:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(5);
+module.exports = __webpack_require__(6);
 
 
 /***/ }),
 
-/***/ 5:
+/***/ 6:
 /***/ (function(module, exports) {
 
 $(function () {
@@ -132,6 +132,10 @@ $(function () {
     $("#material_amount").focusout(function () {
         evaluate_price();
     });
+    $(window).load(function () {
+        check_student_name();
+        check_email();
+    });
 
     function check_student_name() {
         var name = $("#student_name");
@@ -142,7 +146,7 @@ $(function () {
             $("#student_name").focus();
             $("#student_name").addClass("parsley-error");
             error_name = true;
-        } else if (!name.val().match(/[\w\-'\s]+/)) {
+        } else if (!name.val().match(/^[a-z ,.'-]+$/i)) {
             $("#student_name_error").html("Only letters and hyphens(-) are allowed");
             $("#student_name_error").show();
             $("#student_name").focus();
@@ -266,7 +270,7 @@ $(function () {
             $("#use_case").focus();
             $("#use_case").addClass("parsley-error");
             error_use_case = true;
-        } else if (!use_case.val().match(/^[a-zA-Z0-9-]*$/)) {
+        } else if (!use_case.val().match(/^[A-Z0-9-]*$/)) {
             $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
             $("#use_case_error").show();
             $("#use_case").focus();
