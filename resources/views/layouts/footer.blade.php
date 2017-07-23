@@ -10,7 +10,7 @@
                         <div class="col-xs-3"></div>
                         <div class="col-xs-2">
                             <a href="https://www.facebook.com/ilya.khromov" target="_blank"><i class="fa fa-facebook"></i></a>
-                        </div> 
+                        </div>
                         <div class="col-xs-2">
                             <a href="https://groups.google.com/forum/#!forum/soton-3d-printing-demonstrators" target="_blank"><i class="fa fa-google"></i></a>
                         </div>
@@ -30,8 +30,8 @@
             <div class="col-sm-4 text-center">
                 <div class="row">
                     <div class="col-sm-6 copyright">
-                       <span style="font-weight: 500;">Copyright &copy; 2017</span><br>
-                       <a href="{{ url('/') }}">Soton3Dprint</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a>
+                        <span style="font-weight: 500;">Copyright &copy; 2017</span><br>
+                        <a href="{{ url('/') }}">Soton3Dprint</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a>
                     </div>
                     <div class="col-sm-6 team">
                         <b>Developed by: </b><br>

@@ -4,34 +4,25 @@
     <div class="title m-b-md">
         Job details
     </div>
+
     <div class="container" style=" margin-top: -30px; text-align: center;">
         <ul class="list-inline text-center well">
             <li class="alert alert-warning">
-                {{--Print short description and a link--}}
                 <h2 class="media-heading">
-                        Printer number: <b>{{ $job->printers_id }}</b><br>
-                        Requested by: <b>{{$job->student_name}}</b><br>
-                        Requester id: <b>{{$job->student_id}}</b><br>
-                        Requester emil: <b>{{$job->email}}</b><br>
-                        Estimated duration: <b>{{$job->time}}</b><br>
-                        Estimated material amount: <b>{{$job->material_amount}} grams</b><br>
-                        Estimated price: <b>£{{$job->price}}</b><br>
-                        Module Name or Cost Code: <b>{{$job->use_case}}</b><br>
-                        Cost Code: <b>{{$job->cost_code}}</b><br>
-                        Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b>
+                    Printer number: <b>{{ $job->printers_id }}</b><br>
+                    Requested by: <b>{{$job->student_name}}</b><br>
+                    Requester id: <b>{{$job->student_id}}</b><br>
+                    Requester emil: <b>{{$job->email}}</b><br>
+                    Estimated duration: <b>{{$job->time}}</b><br>
+                    Estimated material amount: <b>{{$job->material_amount}} grams</b><br>
+                    Estimated price: <b>£{{$job->price}}</b><br>
+                    Module Name or Cost Code: <b>{{$job->use_case}}</b><br>
+                    Cost Code: <b>{{$job->cost_code}}</b><br>
+                    Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b>
                 </h2>
-
             </li>
-            {{--<li class="btn">--}}
-            {{--<div>--}}
-                {{--<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#reviewJob">Review</button>--}}
-            {{--</div>--}}
-            {{--</li>--}}
-
             <li class="btn">
-            <div>
-                <a href="/printingData/index" class="btn btn-default">back</a>
-            </div>
+                <div><a href="/printingData/index" class="btn btn-danger">back</a></div>
             </li>
 
             <div id="reviewJob" class="card">
@@ -49,9 +40,10 @@
                                     <input type="text" id="printers_id" name="printers_id" value="{{ $job->printers_id }}" class="form-control" required>
                                         @if ($errors->has('printers_id'))
                                             <span class="help-block">
-                                                    <strong>{{ $errors->first('printers_id') }}</strong>
-                                                </span>
+                                                <strong>{{ $errors->first('printers_id') }}</strong>
+                                            </span>
                                         @endif
+                                        <span class="help-block" id="printers_id_error"></span>
                                 </div>
                             </div>
 
@@ -61,9 +53,10 @@
                                     <input type="text" id="student_name" name="student_name" value="{{ $job->student_name }}" class="form-control">
                                         @if ($errors->has('student_name'))
                                             <span class="help-block">
-                                                    <strong>{{ $errors->first('student_name') }}</strong>
-                                                </span>
+                                                <strong>{{ $errors->first('student_name') }}</strong>
+                                            </span>
                                         @endif
+                                         <span class="help-block" id="student_name_error"></span>
                                     </div>
                             </div>
 
@@ -72,10 +65,11 @@
                                 <div class="col-md-6">
                                     <input type="text" id="student_id" name="student_id" value="{{ $job->student_id }}" class="form-control">
                                         @if ($errors->has('student_id'))
-                                            <span class="help-block">
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('student_id') }}</strong>
                                         </span>
                                         @endif
+                                    <span class="help-block" id="student_id_error"></span>
                                 </div>
                             </div>
 
@@ -88,6 +82,7 @@
                                             <strong>{{ $errors->first('email') }}</strong>
                                         </span>
                                     @endif
+                                    <span class="help-block" id="email_error"></span>
                                 </div>
                             </div>
 
@@ -97,9 +92,10 @@
                                     <input type="text" id="time" name="time" value="{{ date("H:i", strtotime($job->time)) }}" class="form-control">
                                         @if ($errors->has('time'))
                                             <span class="help-block">
-                                            <strong>{{ $errors->first('time') }}</strong>
-                                        </span>
+                                                <strong>{{ $errors->first('time') }}</strong>
+                                            </span>
                                         @endif
+                                        <span class="help-block" id="time_error"></span>
                                 </div>
                             </div>
 
@@ -107,11 +103,12 @@
                                 <label for="material_amount" class="col-md-4 control-label">Estimated material amount (grams):</label>
                                 <div class="col-md-6">
                                     <input type="text" id="material_amount" name="material_amount" value="{{ $job->material_amount }}" class="form-control">
-                                    @if ($errors->has('material_amount'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('material_amount') }}</strong>
-                                    </span>
-                                    @endif
+                                        @if ($errors->has('material_amount'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('material_amount') }}</strong>
+                                            </span>
+                                        @endif
+                                    <span class="help-block" id="material_amount_error"></span>
                                 </div>
                             </div>
 
@@ -119,72 +116,30 @@
                                 <label for="use_case" class="col-md-4 control-label">Project title:</label>
                                 <div class="col-md-6">
                                     <input type="text" id="use_case" name="use_case" value="{{ $job->use_case }}" class="form-control">
-                                    @if ($errors->has('use_case'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('use_case') }}</strong>
-                                    </span>
-                                    @endif
+                                        @if ($errors->has('use_case'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('use_case') }}</strong>
+                                            </span>
+                                        @endif
+                                        <span class="help-block" id="use_case_error"></span>
                                 </div>
                             </div>
-
                             <hr>
-
                             <h4 style="color:red; font-weight: 600; font-size: large">To be filled by demonstrator:</h4><br>
-
-                            {{--<div class="form-group{{ $errors->has('cost_code') ? ' has-error' : '' }}">--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label for="cost_code">Select Project Code:</label>--}}
-                                            {{--<select class="form-control" id="cost_code" name="cost_code">--}}
-                                                {{--@foreach($cost_codes as $cost_code)--}}
-                                                    {{--<option name="cost_code" value="{{ $cost_code->cost_code }}"> {{ $cost_code->shortage }}: {{  $cost_code->description }}--}}
-                                                {{--@endforeach--}}
-                                                    {{--<option name="cost_code" value="other">Other--}}
-                                            {{--</select>--}}
-                                        {{--</div>--}}
-                                        {{--<input type="text" id="other_cost_code" name="other_cost_code" placeholder="Please select 'Other' and specify the cost code if project title is not in the list" class="form-control"">--}}
-                                {{--@if ($errors->has('cost_code'))--}}
-                                    {{--<span class="help-block">--}}
-                                        {{--<strong>{{ $errors->first('cost_code') }}</strong>--}}
-                                    {{--</span>--}}
-                                {{--@endif--}}
-                            {{--</div>--}}
 
                             <div class="form-group">
                                 <label for="comments">Add comments:</label><br>
-                                <textarea rows="4" cols="50" id="comments" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                <textarea rows="4" cols="50" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                <span class="help-block" id="message_error"></span>
                             </div>
-
-                            {{--<div class="form-group{{ $errors->has('paid') ? ' has-error' : '' }}">--}}
-                                {{--<label for="paid">Should the job be financed?</label><br>--}}
-                                    {{--<div class="radio">--}}
-                                        {{--<label><input type="radio" name="paid" value="Yes"> Yes </label>--}}
-                                        {{--<label><input type="radio" name="paid" value="No"> No </label>--}}
-                                        {{--@if ($errors->has('paid'))--}}
-                                            {{--<span class="help-block">--}}
-                                        {{--<strong>{{ $errors->first('paid') }}</strong>--}}
-                                    {{--</span>--}}
-                                        {{--@endif--}}
-                                    {{--</div>--}}
-                            {{--</div>--}}
-
-                            {{--<div class="form-group{{ $errors->has('purpose') ? ' has-error' : '' }}">--}}
-                                {{--<label for="purpose">Is the job to be conducted in workshop or in loan?</label><br>--}}
-                                {{--<div class="radio">--}}
-                                    {{--<label><input type="radio" name="purpose" value="Use"> Workshop </label>--}}
-                                    {{--<label><input type="radio" name="purpose" value="Loan"> Loan </label>--}}
-                                    {{--@if ($errors->has('purpose'))--}}
-                                        {{--<span class="help-block">--}}
-                                        {{--<strong>{{ $errors->first('purpose') }}</strong>--}}
-                                    {{--</span>--}}
-                                    {{--@endif--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Accept</button>
-                                <a href="/printingData/delete/{{$job->id}}" class="btn btn-danger">Reject</a>
+                                <div class="col-sm-offset-4 col-sm-8 text-left">
+                                    <button id="submit" type="submit" class="btn btn-lg">Accept</button>
+                                    <a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>
+                                    <a href="/" class="btn btn-lg btn-info">Home</a>
+                                </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -192,9 +147,9 @@
             </div>
         </ul>
     </div>
-
-
-
+@endsection
+@section('scripts')
+    <script src="/js/approve_job_validation.js"></script>
 @endsection
 
 
