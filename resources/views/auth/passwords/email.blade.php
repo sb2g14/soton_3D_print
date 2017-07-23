@@ -13,11 +13,13 @@
                         </div>
                     @endif
 
-                    <form class="form-horizontal" method="POST" action="{{ url('passwords/email') }}">
-                        {{ csrf_field() }}
+                    <form class="form-horizontal" method="POST" action="{{ url('password/email') }}">
+                        <input type="hidden"
+                               name="_token"
+                               value="{{ csrf_token() }}">
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                            <label for="email" class="col-md-4 control-label">Email</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>

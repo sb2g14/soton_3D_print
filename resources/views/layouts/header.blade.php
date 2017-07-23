@@ -8,7 +8,16 @@
         </div>
        @if (Auth::check())
             <ul class="lsn bl-menu" id="my-menu">
-                <li><a href="/members/{{Auth::user()->staff->id}}">Welcome {{Auth::user()->name}}!</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
+                        Welcome {{Auth::user()->name}}!
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a href="/members/{{Auth::user()->staff->id}}">View Personal Record</a></li>
+                        <li><a href="{{ url('/roles') }}">Manage Account</a></li>
+                    </ul>
+                </li>
+                {{--<li><a href="{{ url('/roles') }}">Manage Account</a></li>--}}
                 <li class="home"><a href="{{ url('/') }}">Home</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
@@ -34,7 +43,6 @@
                     </ul>
                 </li>
                 <li><a href="{{ url('/members/index') }}">Staff</a></li>
-                <li><a href="{{ url('/roles') }}">Manage Account</a></li>
                 <li><a class="btn btn-lg" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 <li><a href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             @else
@@ -46,15 +54,15 @@
                     <li><a href="{{ url('/news') }}">News</a></li>
                     <li><a href="{{ url('/loan') }}">Request a loan</a></li>
                     <li><a href="{{ url('/learn') }}">Learn to 3D print</a></li>
-                    <li><a href="{{ route('auth.register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
-                    <li><a href="{{ route('auth.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    {{--<li><a href="{{ route('auth.register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>--}}
+                    {{--<li><a href="{{ route('auth.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>--}}
                     <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
                     <span class="glyphicon glyphicon-lock"></span>
                     <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-login" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a href="{{ url('/register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
-                        <li><a href="{{ url('/login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a href="{{ route('auth.register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+                        <li><a href="{{ route('auth.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     {{--</ul>--}}
                     {{--</li>--}}
             @endif
