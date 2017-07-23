@@ -1,0 +1,174 @@
+// ==============================================================================
+// ==========================	MIXINS	=========================================
+// ==============================================================================	
+.box-shadow (@s) {
+	-webkit-box-shadow:	@s;
+	   -moz-box-shadow:	@s;
+			box-shadow:	@s;
+}
+
+.border-radius (@r: 5px) {
+	-webkit-border-radius:	@r;
+	   -moz-border-radius:	@r;
+			border-radius:	@r;
+}
+
+.box-sizing (@b) {
+	-webkit-box-sizing:	@b;
+	   -moz-box-sizing:	@b;
+			box-sizing:	@b;
+}
+
+.background-clip (@c) {
+  -webkit-background-clip: @c;
+     -moz-background-clip: @c;
+          background-clip: @c;
+}
+
+.transform (@t) {
+  -webkit-transform: @t;
+     -moz-transform: @t;
+       -o-transform: @t;
+          transform: @t;
+}
+
+.animation (@a) {
+  -webkit-animation: @a;
+     -moz-animation: @a;
+       -o-animation: @a;
+          animation: @a;
+}
+
+.opacity (@o) {
+	-webkit-opacity: @o;
+	opacity: @o;
+}
+
+.transition (@p) {
+    -webkit-transition:    @p; 
+       -moz-transition:    @p;
+        -ms-transition:    @p;
+         -o-transition:    @p;
+            transition:    @p; 
+}
+
+.transition-property (@p) {
+    -webkit-transition-property:    @p; 
+       -moz-transition-property:    @p;
+        -ms-transition-property:    @p;
+         -o-transition-property:    @p;
+            transition-property:    @p; 
+}
+
+.transition-property (@p; ...) when (@p = transform) {
+    @value: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+    -webkit-transition-property:    ~"-webkit-@{value}"; 
+       -moz-transition-property:    ~"-moz-@{value}";
+        -ms-transition-property:    ~"-ms-@{value}";
+         -o-transition-property:    ~"-o-@{value}";
+            transition-property:    @value; 
+}
+
+
+.transition-duration (@d) {
+    -webkit-transition-duration:    @d; 
+       -moz-transition-duration:    @d; 
+        -ms-transition-duration:    @d; 
+         -o-transition-duration:    @d;
+            transition-duration:    @d; 
+}
+     
+.transition-timing-function (@f) {
+    -webkit-transition-timing-function: @f;
+       -moz-transition-timing-function: @f;
+        -ms-transition-timing-function: @f;
+         -o-transition-timing-function: @f;
+}
+
+.font-size (@s){
+	@remValue: @s;
+	.fz(@fs-base, @s);
+	font-size: ~"@{remValue}rem";
+}
+
+.fz (@fs-base, @s) when (isnumber(@s)) and (isnumber(@fs-base)) {
+	font-size: @fs-base * @s * 1px;
+}
+
+.fz (@fs-base, @s) when (isnumber(@s)) and not (isnumber(@fs-base)) {
+	font-size: @s * @fs-base;
+}
+
+.hide-text {
+    text-indent: 200%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.at {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+}
+
+.clearfix {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.vertical-gradient(@start,@end) {
+    background: @end;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(@start), color-stop(@end));
+    background-image: -webkit-linear-gradient(top, @start, @end);
+    background-image: -moz-linear-gradient(top, @start, @end);
+    background-image: -o-linear-gradient(top, @start, @end);
+    background-image: linear-gradient(@start, @end);
+}
+
+.vertical-gradient(pos, @position, @start,@end) {
+    background: @end;
+    background-image: -webkit-linear-gradient(@position, @start, @end);
+    background-image: -moz-linear-gradient(@position, @start, @end);
+    background-image: -o-linear-gradient(@position, @start, @end);
+    background-image: linear-gradient(@position, @start, @end);
+}
+
+.vertical-gradient(@start,@middle,@middle2,@end) {
+	background: -moz-linear-gradient(top, @start 0%, @middle 50%, @middle2 50%, @end 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@start), color-stop(50%,@middle), color-stop(50%,@middle2), color-stop(100%, @end));
+	background: -webkit-linear-gradient(top, @start 0%, @middle 50%, @middle2 50%, @end 100%);
+	background: -o-linear-gradient(top, @start 0%, @middle 50%, @middle2 50%, @end 100%);
+	background: linear-gradient(@start 0%, @middle 50%, @middle2 50%, @end 100%);
+}
+
+.vertical-gradient(@image,@start,@end) {
+    background: @end @image;
+    background: @image, -webkit-gradient(linear, left top, left bottom, color-stop(@start), color-stop(@end));
+    background: @image, -webkit-linear-gradient(top, @start, @end);
+    background: @image, -moz-linear-gradient(top, @start, @end);
+    background: @image, -o-linear-gradient(top, @start, @end);
+    background: @image, linear-gradient(@start, @end);
+}
+
+.lsn {
+	list-style: none;
+}
+
+.hidden-for-all {
+    clip: rect(1px, 1px, 1px, 1px);
+    width: 1px;
+    height: 1px;
+    position: absolute !important;
+    overflow: hidden;
+}
+
+.capital {
+  text-transform: uppercase;
+}
