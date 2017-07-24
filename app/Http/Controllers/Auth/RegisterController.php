@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
+use App\Mail\Welcome;
+use App\staff;
 
 class RegisterController extends Controller
 {
@@ -68,15 +72,40 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
-//    public function register(Request $request)
-//    {
-//        $this->validator($request->all())->validate();
-//
-//        event(new Registered($user = $this->create($request->all())));
-//
-//        $this->guard()->login($user);
-//
-//        return $this->registered($request, $user)
-//            ?: redirect($this->redirectPath());
-//    }
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        // Check weather the email is in the demonstrator database
+        $emails = staff::all()->pluck('email','id');
+        $emails = $emails->toArray();
+        $email = request('email');
+        if( in_array($email, $emails)) {
+
+            // Create ad save a new user
+            event(new Registered($user = $this->create($request->all())));
+
+            // Update staff database
+            $staff_id = array_search($email,$emails);
+            staff::where('id','=',$staff_id)->update(array('user_id'=> $user->id, 'id_number' => request('id_number')));
+            // Sign then in
+            $this->guard()->login($user);
+            // Send an confirmation email
+
+            \Mail::to($user)->send(new Welcome($user));
+
+            // Snow a flashing message
+
+            session()->flash('message', 'Thank you for registering with 3D printing workshop!');
+            session()->flash('alert-class', 'alert-success');
+        } else {
+            event(new Registered($user = null));
+            session()->flash('message', 'Sorry, your email is not in the workshop staff list.
+                If you are current demonstrator please contact the lead demonstrator.');
+            session()->flash('alert-class', 'alert-danger');
+        }
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
 }

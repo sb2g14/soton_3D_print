@@ -25,8 +25,9 @@ class IssuesController extends Controller
     }
     public function index()
     {
+        $excel = App::make('excel');
         $issues =  FaultData::orderBy('created_at', 'desc')->where('resolved', 0)->get();
-        return view('issues.index', compact('issues'));
+        return view('issues.index', compact('issues','excel'));
     }
 
     /**
