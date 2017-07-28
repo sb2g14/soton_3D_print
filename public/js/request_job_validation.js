@@ -264,17 +264,23 @@ $(function () {
     function check_use_case() {
         var use_case = $("#use_case");
 
-        if (use_case.val().length < 3 || use_case.val().length > 13) {
+        if (use_case.val().length < 3 || use_case.val().length > 15) {
             $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
             $("#use_case_error").show();
             $("#use_case").focus();
             $("#use_case").addClass("parsley-error");
             error_use_case = true;
-        } else if (!use_case.val().match(/^[A-Z0-9-]*$/)) {
+        } else if (!use_case.val().substring(0, 3).match(/\b[A-Z]{3}\b/) && !use_case.val().match(/^[a-z0-9]+$/i)) {
             $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
             $("#use_case_error").show();
             $("#use_case").focus();
             $("#use_case").addClass("parsley-error");
+            // } else if(!use_case.val().substring(0,3).match('510') &&
+            //     !use_case.val().match(/\b\d{9,}\b/g)){
+            //     $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
+            //     $("#use_case_error").show();
+            //     $("#use_case").focus();
+            //     $("#use_case").addClass("parsley-error");
         } else {
             $("#use_case_error").hide();
             $("#use_case").removeClass("parsley-error");
