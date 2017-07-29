@@ -13,7 +13,7 @@
     @endif
 
     <div class="title m-b-md">
-        Resolved Issues Printer {{ $id }}
+        Issues Printer {{ $id }}
     </div>
 
     <section class="s-welcome" style="margin-top: -20px">
@@ -42,7 +42,10 @@
                     </div>
                     <div class="col-sm-6 item">
                         {{--Print the text of a post--}}
-                        <h2><b> Message:</b></h2><br>
+                        <h2><b> Message:</b></h2>
+                        @if($issue->resolved == 0)
+                            <a href="/issues/update/{{$issue->id}}" class="btn btn-lg btn-info pull-right">View/Update or Resolve Issue</a><br>
+                        @endif
                         <p>{{ $issue->body }}</p>
                     </div>
                 </ul>
@@ -74,6 +77,7 @@
                 </ul>
                 @endif
             <hr>
+                @if($issue->resolved == 1)
                 <ul class="container" style="margin-top: 20px">
                     <div class="col-sm-6">
                         {{--Here we show issue resolve:--}}
@@ -89,8 +93,9 @@
                         <p>{{ $issue->message_resolved }}</p>
                     </div>
                 </ul>
+                @endif
         </div>
-                    @endforeach
+        @endforeach
 
                     @include('layouts.errors')
     </section>

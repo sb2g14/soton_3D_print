@@ -39,10 +39,11 @@
                     @endforeach
                 </ul>
             @endif
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $issue->id }}">Update</button>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#update">Update</button>
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#resolve">Resolve</button>
             <a href="/issues/index" class="btn btn-danger">Go back</a>
                     
-            <div id="{{ $issue->id }}" class="card collapse">
+            <div id="update" class="card collapse">
                 {!! Form::open(['url' => '/issues/update', 'method' => 'POST', 'class' => 'text-left']) !!}
                     {!! Form::hidden('id',$issue -> id) !!}
                         <div class="form-group">
@@ -57,6 +58,18 @@
                     <!-- Submit Button -->
                     {!! Form::submit('Submit', ['class' => 'btn', 'id' => 'submit'] ) !!}
                 {!! Form::close() !!}        
+            </div>
+            <div id="resolve" class="card collapse">
+                {!! Form::open(['url' => '/issues/resolve', 'method' => 'POST', 'class' => 'text-left']) !!}
+                {!! Form::hidden('id',$issue -> id) !!}
+                <div class="form-group">
+                    {!! Form::label('body', 'Resolve message', ['class' => 'control-label']) !!}
+                    {!! Form::textarea('body', $value = null, ['class' => 'form-control', 'placeholder' => 'Please specify the details of the resolved issue', 'id' => 'message']) !!}
+                    <div class="text-danger" id="message_error"></div>
+                </div>
+                {!! Form::submit('Submit', ['class' => 'btn', 'id' => 'submit'] ) !!}
+                <a href="/issues/index" class="btn btn-danger">Go back</a>
+                {!! Form::close() !!}
             </div>
         </div>
         <div class="col-sm-4"></div>
@@ -127,4 +140,5 @@
 @endsection
 @section('scripts')
     <script src="/js/update_issue_validation.js"></script>
+    <script src="/js/message_validation.js"></script>
 @endsection

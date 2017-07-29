@@ -36,8 +36,8 @@ class PostsController extends Controller
         $posts =  posts::orderBy('id', 'desc')->skip(1)->take(20)->get();
         $posts -> toArray($posts);
         $post_last = posts::orderBy('id','desc')->first();
-//        $posts =  posts::first();
         $announcements =  Announcement::orderBy('id', 'desc')->take(20)->get();
+        $public_announcements =  Announcement::orderBy('id', 'desc')->take(20)->get();
         return view('welcome.index', compact('posts','post_last','announcements'));
     }
 
