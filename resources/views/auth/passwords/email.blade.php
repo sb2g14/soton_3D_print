@@ -29,12 +29,13 @@
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
+                                <span id="email_error" class="help-block"></span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button id="reset_button" type="submit" class="btn btn-primary">
                                     Send Password Reset Link
                                 </button>
                             </div>
@@ -45,4 +46,7 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+    <script src="/js/email_validation.js"></script>
 @endsection

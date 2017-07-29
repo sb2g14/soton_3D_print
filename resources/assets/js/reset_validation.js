@@ -1,9 +1,11 @@
 $(function () {
-    $("#email_error").hide();
     $("#password_error").hide();
+    $("#email_error").hide();
+    $("#password_confirm_error").hide();
 
     var error_email = true;
     var error_password = true;
+    var error_password_confirm = true;
 
 
     $("#email").keyup(function () {
@@ -12,14 +14,18 @@ $(function () {
     $("#password").keyup(function () {
         check_password();
     });
+    $("#password-confirm").keyup(function () {
+        confirm_password();
+    });
     $("#email").focusout(function () {
         check_email();
     });
     $("#password").focusout(function () {
         check_password();
     });
-
-
+    $("#password-confirm").focusout(function () {
+        confirm_password();
+    });
 
     function check_email() {
         var email = $("#email");
@@ -41,16 +47,17 @@ $(function () {
             $("#email").removeClass("parsley-error");
             $("#email").addClass("parsley-success");
             error_email = false;
-        } if(error_password === false && error_email === false){
-            $("#login-button").addClass("btn-success");
+        } if(error_password === false && error_email === false &&
+        error_password_confirm === false){
+            $("#reset-button").addClass("btn-success");
         } else {
-            $("#login-button").removeClass("btn-success");
+            $("#reset-button").removeClass("btn-success");
         }
     }
     function check_password() {
         var password = $("#password");
 
-        if(password.val().length < 6 || password.val().length > 16){
+        if (password.val().length < 6 || password.val().length > 16){
             $("#password_error").html("The password mast be 6 to 16 character long and contain at least one upper " +
                 "case letter, one lower case letter, and one digit");
             $("#password_error").show();
@@ -69,17 +76,45 @@ $(function () {
             $("#password").removeClass("parsley-error");
             $("#password").addClass("parsley-success");
             error_password = false;
-        } if(error_password === false && error_email === false){
-            $("#login-button").addClass("btn-success");
+        } if( error_password_confirm === false &&
+            error_password === false &&
+            error_email === false){
+            $("#reset-button").addClass("btn-success");
         } else {
-            $("#login-button").removeClass("btn-success");
+            $("#reset-button").removeClass("btn-success");
         }
     }
-    $("#login-button").click(function () {
+    function confirm_password() {
+            var password = $("#password").val();
+            var confirmPassword = $("#password-confirm").val();
+
+            if (password !== confirmPassword) {
+                $("#password-confirm_error").html("Passwords do not match");
+                $("#password-confirm_error").show();
+                $("#password-confirm").focus();
+                $("#password-confirm").addClass("parsley-error");
+                error_password_confirm = true;
+            } else {
+                $("#password-confirm_error").hide();
+                $("#password-confirm").removeClass("parsley-error");
+                $("#password-confirm").addClass("parsley-success");
+                error_password_confirm = false;
+        } if( error_password_confirm === false &&
+            error_password === false &&
+            error_email === false){
+        $("#reset_button").addClass("btn-success");
+    } else {
+        $("#reset_button").removeClass("btn-success");
+    }
+    }
+
+    $("#reset_button").click(function () {
         $("#email_error").hide();
         $("#password_error").hide();
+        $("#password_confirm_error").hide();
         $("#email").removeClass("parsley-success");
         $("#password").removeClass("parsley-success");
-        $("#login-button").removeClass("btn-success");
+        $("#password-confirm").removeClass("parsley-success");
+        $("#reset_button").removeClass("btn-success");
     });
 });

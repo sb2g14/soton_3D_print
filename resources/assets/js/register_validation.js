@@ -86,11 +86,11 @@ $(function () {
             $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
-        } else if (!id.val().match(/^[0-9]+$/)) {
+        } else if (!id.val().match(/*/^[0-9]+$/*/)) {
             $("#student_id_error").html("Only digits are allowed");
             $("#student_id_error").show();
-            $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
+            $("#student_id").focus();
             error_id = true;
         } else {
             $("#student_id_error").hide();
@@ -196,6 +196,6 @@ $(function () {
         $("#name").removeClass("parsley-success");
         $("#password-confirm").removeClass("parsley-success");
         $("#student_id").removeClass("parsley-success");
-        $("#login-button").removeClass("btn-success");
+        $("#register-button").removeClass("btn-success");
     });
 });

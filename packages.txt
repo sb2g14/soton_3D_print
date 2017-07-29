@@ -2,3 +2,9 @@ The packages pulled in from laravel:
 
 1. composer require spatie/laravel-permission
 2. laravel-collective
+3. Laravel Excel:
+~ Add to composer.json:  "maatwebsite/excel": "~2.1.0"
+~ Run: "composer update"
+~ Add the service provider to "app/config/app.php" : 'Maatwebsite\Excel\ExcelServiceProvider',
+~ Add to aliases: 'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+~ Publish: "php artisan vendor:publish"
