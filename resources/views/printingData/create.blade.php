@@ -15,15 +15,15 @@
             <h1 class="text-center lead">REQUEST A JOB</h1>
             <form id="requestForm" class="form-horizontal" method="POST" action="/printingData">
                 {{ csrf_field() }}
-                <div class="form-group {{ $errors->has('printers_id') ? ' has-error' : '' }}">
+                <div class="form-group {{ $errors->has('printer_id') ? ' has-error' : '' }}">
                    {{--This is a Printer Number dropdown--}}
                     <div class="form-group">
-                        {!! Form::label('printers_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
+                        {!! Form::label('printer_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
                         <div class="col-md-6">
-                            {!! Form::select('printers_id', array('' => 'Select Available Printer') + $available_printers,  old('printers_id'), ['class' => 'form-control','required', 'data-help' => 'printers_id', 'id' => 'printers_id']) !!}
-                            @if ($errors->has('printers_id'))
+                            {!! Form::select('printer_id', array('' => 'Select Available Printer') + $available_printers,  old('printer_id'), ['class' => 'form-control','required', 'data-help' => 'printer_id', 'id' => 'printer_id']) !!}
+                            @if ($errors->has('printer_id'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('printers_id') }}</strong>
+                                    <strong>{{ $errors->first('printer_id') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                    <label for="email" class="col-md-4 control-label">Email</label>
 
                     <div class="col-md-6">
                         <input id="email" data-help="email" type="email" class="form-control" name="email" value="{{ old('email', isset($member)  ? $member->email : '') }}" placeholder="Please input soton email" required><br>
@@ -140,7 +140,7 @@
                     the job and not for the whole job.</p>
             </div>
             
-            <div class="hint text-left" data-hint="printers_id">
+            <div class="hint text-left" data-hint="printer_id">
                 <h3 class="text-center lead">If the chosen printer is unavailable</h3>
                 <p>If the printer you have selected is not on the list of available printers this means that it is
                     either broken or scheduled to use for other print. In either case please contact the demonstrator
@@ -200,6 +200,6 @@
 </div>
 @endsection
 
-@section('scripts')
-<script src="/js/request_job_validation.js"></script>
-@endsection
+{{--@section('scripts')--}}
+{{--<script src="/js/request_job_validation.js"></script>--}}
+{{--@endsection--}}

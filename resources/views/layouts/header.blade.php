@@ -63,8 +63,8 @@
                     <ul class="dropdown-menu dropdown-login" aria-labelledby="navbarDropdownMenuLink">
                         <li><a href="{{ route('auth.register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
                         <li><a href="{{ route('auth.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    {{--</ul>--}}
-                    {{--</li>--}}
+                    </ul>
+                    </li>
             @endif
         </ul>
         <div id="toggle-menu" for="hmt" class="hamburger hamburger--slider btn-menu">

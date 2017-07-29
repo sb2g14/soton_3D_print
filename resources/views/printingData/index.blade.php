@@ -6,6 +6,10 @@
         {{ $flash }}
     </div>
     @endif
+
+    {!! link_to_route('printingData.export',
+    'Export Jobs to Excel', null,
+    ['class' => 'btn btn-primary pull-right']) !!}
    
     <div class="text-center m-b-md">
         <div class="title" style="display: inline-block; vertical-align: middle;">Pending Jobs</div>
