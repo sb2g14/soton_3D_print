@@ -26,6 +26,9 @@ Route::post('/posts','PostsController@store');
 // Here we redirect to the page where we store announcement data
 Route::post('/announcements','AnnouncementsController@store');
 
+//// Here we redirect to the page where we store public announcement data
+//Route::post('/publicAnnouncements','PublicAnnouncementsController@store');
+
 // Here we redirect to the controller that would store our comments
 Route::post('/posts/{post}/comments', 'CommentsController@store');
 

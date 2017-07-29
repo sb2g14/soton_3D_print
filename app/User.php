@@ -5,6 +5,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Hash;
+use Auth;
 
 /**
  * Class User

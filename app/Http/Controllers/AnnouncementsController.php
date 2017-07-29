@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\PublicAnnouncements;
 use Illuminate\Http\Request;
 use App\Announcement;
 use Auth;
+use Illuminate\Support\Facades\Input;
 
 class AnnouncementsController extends Controller
 {
@@ -48,6 +50,17 @@ class AnnouncementsController extends Controller
         // Submit the data to the database
 
         $announcement->save();
+
+        // Duplicate post to public announcements if 'public' checked
+        if (Input::get('public', false)) {
+            $public_announcement = new PublicAnnouncements;
+            $public_announcement->message = request('message');
+            $public_announcement->user_id = Auth::user()->id;
+
+            // Submit the data to the database
+
+            $public_announcement->save();
+        }
 
         // Return to the homepage:
 

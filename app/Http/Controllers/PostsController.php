@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\posts;
 use App\printers;
 use App\Announcement;
+use App\PublicAnnouncements;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Input;
@@ -37,8 +38,10 @@ class PostsController extends Controller
         $posts -> toArray($posts);
         $post_last = posts::orderBy('id','desc')->first();
         $announcements =  Announcement::orderBy('id', 'desc')->take(20)->get();
-        $public_announcements =  Announcement::orderBy('id', 'desc')->take(20)->get();
-        return view('welcome.index', compact('posts','post_last','announcements'));
+
+        $public_announcement_last = PublicAnnouncements::orderBy('id','desc')->first();
+        $public_announcements =  PublicAnnouncements::orderBy('id', 'desc')->skip(1)->take(20)->get();
+        return view('welcome.index', compact('posts','post_last','announcements','public_announcements','public_announcement_last'));
     }
 
     /**
