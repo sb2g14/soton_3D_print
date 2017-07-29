@@ -36,7 +36,7 @@
                         <div>
                             <h3>ISSUES</h3>
                             {{--This is a button to add an issue:--}}
-                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addIssue">
+                            <button id="add_issue" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addIssue">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </button>
                         </div>
@@ -78,7 +78,7 @@
 
                             {{--Here we show comments to each issue:--}}
                             <div class="btn">
-                                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $post_last->id }}">
+                                <button id="show_comments" type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $post_last->id }}">
                                     Show comments
                                 </button>
                             </div>
@@ -102,10 +102,11 @@
                                     <form method="POST" action="/posts/{{ $post_last->id }}/comments">
                                         {{ csrf_field() }}
                                         <div class="form-group">
-                                            <textarea id="body" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                            <textarea id="comment_last" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                            <span id="comment_last_error" class="help-block" style="color: red"></span>
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary">Add Comment </button>
+                                            <button id="comment_last" type="submit" class="btn btn-primary">Comment</button>
                                         </div>
                                     </form>
                                 </div>
@@ -126,9 +127,11 @@
                                             Posted on {{ $post->created_at->toDayDateTimeString() }}:</i></small></h5>
                                 {{--Print the text of a post--}}
                                 {{ $post->body }}
-                                <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
-                                    Show comments
-                                </button>
+                                <div class="btn">
+                                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
+                                        Show comments
+                                    </button>
+                                </div>
                                 <div id="{{ $post->id}}" class="card collapse">
                                     {{--Here we show comments to each issue:--}}
                                     <ul>
@@ -151,10 +154,11 @@
                                         <form method="POST" action="/posts/{{ $post->id }}/comments">
                                             {{ csrf_field() }}
                                             <div class="form-group">
-                                                <textarea id="body" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                                <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                                <span id="message_error" class="help-block" style="color: red"></span>
                                             </div>
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-primary">Add Comment </button>
+                                                <button id="comment" type="submit" class="btn btn-primary">Comment </button>
                                             </div>
                                         </form>
                                     </div>
@@ -171,7 +175,7 @@
                         <div>
                             <h3>ANNOUNCEMENTS</h3>
                             {{--This is a button to create an announcement:--}}
-                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">
+                            <button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </button>
                         </div>
@@ -182,8 +186,8 @@
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="message">New Announcement</label><br>
-                                    <textarea id="message" name="message" placeholder="Post something" class="form-control"></textarea>
-                                    <span id="message_error" style="color: red"></span>
+                                    <textarea id="announcement" name="message" placeholder="Post something" class="form-control"></textarea>
+                                    <span id="announcement_error" style="color: red"></span>
                                 </div>
                                 <div class="checkbox">
                                     <label><input type="checkbox" name="critical" value="critical">Public announcement</label>
@@ -191,7 +195,7 @@
                                 <div class="checkbox">
                                     <label><input type="checkbox" name="critical" value="critical">Inform all by email</label>
                                 </div>
-                                <button id="submit" type="submit" class="btn btn-primary">Post</button>
+                                <button id="post" type="submit" class="btn btn-primary">Post</button>
                             </form>
                         </div>
                     </div>
