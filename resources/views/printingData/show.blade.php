@@ -11,15 +11,19 @@
                 <div class="alert alert-info text-left">
                     <p>
                         Printer number: <b>{{ $job->printers_id }}</b><br>
+                        Printer serial number: <b>{{ $job->serial_no }}</b><br>
+                        Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b>
                         Requested by: <b>{{$job->student_name}}</b><br>
                         Requester id: <b>{{$job->student_id}}</b><br>
                         Requester email: <b>{{$job->email}}</b><br>
+                        Payment category: <b>{{$job->payment_category}}</b><br>
                         Estimated duration: <b>{{$job->time}}</b><br>
                         Estimated material amount: <b>{{$job->material_amount}} grams</b><br>
                         Estimated price: <b>£{{$job->price}}</b><br>
-                        Module Name or Cost Code: <b>{{$job->use_case}}</b><br>
-                        Cost Code: <b>{{$job->cost_code}}</b><br>
-                        Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b>
+                        Module name or cost code: <b>{{$job->use_case}}</b><br>
+                        Cost code: <b>{{$job->cost_code}}</b><br>
+                        Comment: <b>{{$job->comment}}</b><br>
+                        Job number: <b>{{$job->id}}</b><br>
                     </p>
                 </div>
                
@@ -31,16 +35,31 @@
 
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('printers_id') ? ' has-error' : '' }}">
-                            <label for="printers_id" class="col-md-4 control-label">Printer number:</label>
-                            <div class="col-md-6">
-                                <input type="text" id="printers_id" name="printers_id" value="{{ $job->printers_id }}" class="form-control" required>
+                        {{--<div class="form-group{{ $errors->has('printers_id') ? ' has-error' : '' }}">--}}
+                            {{--<label for="printers_id" class="col-md-4 control-label">Printer number:</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<input type="text" id="printers_id" name="printers_id" value="{{ $job->printers_id }}" class="form-control" required>--}}
+                                    {{--@if ($errors->has('printers_id'))--}}
+                                        {{--<span class="help-block">--}}
+                                            {{--<strong>{{ $errors->first('printers_id') }}</strong>--}}
+                                        {{--</span>--}}
+                                    {{--@endif--}}
+                                    {{--<span class="help-block" id="printers_id_error"></span>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+
+                        <div class="form-group {{ $errors->has('printers_id') ? ' has-error' : '' }}">
+                            {{--This is a Printer Number dropdown--}}
+                            <div class="form-group">
+                                {!! Form::label('printers_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
+                                <div class="col-md-6">
+                                    {!! Form::select('printers_id', $available_printers,  $job->printers_id, ['class' => 'form-control','required', 'data-help' => 'printers_id', 'id' => 'printers_id']) !!}
                                     @if ($errors->has('printers_id'))
                                         <span class="help-block">
-                                            <strong>{{ $errors->first('printers_id') }}</strong>
-                                        </span>
+                                    <strong>{{ $errors->first('printers_id') }}</strong>
+                                </span>
                                     @endif
-                                    <span class="help-block" id="printers_id_error"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -83,16 +102,38 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('time') ? ' has-error' : '' }}">
-                            <label for="time" class="col-md-4 control-label">Estimated duration:</label>
-                            <div class="col-md-6">
-                                <input type="text" id="time" name="time" value="{{ date("H:i", strtotime($job->time)) }}" class="form-control">
-                                    @if ($errors->has('time'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('time') }}</strong>
-                                        </span>
-                                    @endif
-                                    <span class="help-block" id="time_error"></span>
+                        {{--<div class="form-group{{ $errors->has('time') ? ' has-error' : '' }}">--}}
+                            {{--<label for="time" class="col-md-4 control-label">Estimated duration:</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<input type="text" id="time" name="time" value="{{ date("H:i", strtotime($job->time)) }}" class="form-control">--}}
+                                    {{--@if ($errors->has('time'))--}}
+                                        {{--<span class="help-block">--}}
+                                            {{--<strong>{{ $errors->first('time') }}</strong>--}}
+                                        {{--</span>--}}
+                                    {{--@endif--}}
+                                    {{--<span class="help-block" id="time_error"></span>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                       {{--Get numbers of hours and minutes from the requested time--}}
+                        @php( list($h, $i, $s) = explode(':', $job->time) )
+
+                        <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
+                            {!! Form::label('hours', 'Printing Time', ['class' => 'col-lg-4 control-label'] )  !!}
+                            <div class="col-md-2">
+                                {!! Form::select('hours', range(0,59), $h, ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
+                                @if ($errors->has('hours'))
+                                    <span class="help-block">
+                            <strong>{{ $errors->first('hours') }}</strong>
+                        </span>
+                                @endif
+                            </div>
+                            <div class="col-md-2">
+                                {!! Form::select('minutes', range(0,59), $i, ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
+                                @if ($errors->has('minutes'))
+                                    <span class="help-block">
+                            <strong>{{ $errors->first('minutes') }}</strong>
+                        </span>
+                                @endif
                             </div>
                         </div>
 
@@ -109,23 +150,23 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('use_case') ? ' has-error' : '' }}">
-                            <label for="use_case" class="col-md-4 control-label">Project title:</label>
-                            <div class="col-md-6">
-                                <input type="text" id="use_case" name="use_case" value="{{ $job->use_case }}" class="form-control">
-                                    @if ($errors->has('use_case'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('use_case') }}</strong>
-                                        </span>
-                                    @endif
-                                    <span class="help-block" id="use_case_error"></span>
-                            </div>
-                        </div>
+                        {{--<div class="form-group{{ $errors->has('use_case') ? ' has-error' : '' }}">--}}
+                            {{--<label for="use_case" class="col-md-4 control-label">Project title:</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<input type="text" id="use_case" name="use_case" value="{{ $job->use_case }}" class="form-control">--}}
+                                    {{--@if ($errors->has('use_case'))--}}
+                                        {{--<span class="help-block">--}}
+                                            {{--<strong>{{ $errors->first('use_case') }}</strong>--}}
+                                        {{--</span>--}}
+                                    {{--@endif--}}
+                                    {{--<span class="help-block" id="use_case_error"></span>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <!-- <hr>
                         <h4 style="color:red; font-weight: 600; font-size: large">To be filled by demonstrator:</h4><br> -->
 
                         <div class="form-group text-left">
-                            <label for="comments">Add comments:</label><br>
+                            <label for="comments">Add comments (optional):</label><br>
                             <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
                             <span class="help-block" id="message_error"></span>
                         </div>

@@ -22,9 +22,10 @@
             <thead>
             <tr style="font-weight: 600;">
                 <th>ID</th>
-                <th>Printer Number</th>
+                <th>Printer No</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Payment Category</th>
                 <th>Time</th>
                 <th>Material Amount</th>
                 <th>Price</th>
@@ -48,6 +49,7 @@
                     <td>{{ $job->printers_id }}</td>
                     <td>{{$job->student_name}}</td>
                     <td>{{$job->email}}</td>
+                    <td>{{$job->payment_category}}</td>
                     <td>{{ date("H:i", strtotime($job->time)) }}</td>
                     <td>{{ $job->material_amount }} g</td>
                     <td>£{{ $job->price }}</td>

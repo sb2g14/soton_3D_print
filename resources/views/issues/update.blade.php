@@ -26,11 +26,11 @@
             @if(!empty(array_filter( (array) $issue->FaultUpdates)))
                 <h3 class="text-center lead">ISSUE LOG</h3>
                 <ul class="list-group text-left">
-                    {{--Here we show updates to each issue:--}}
+                    Here we show updates to each issue:
                     @foreach($issue->FaultUpdates as $update)
                         <li class="list-group-item">
                             <h5 class="media-heading">Update: {{$issue->users_name_created_issue}}<small><i>
-                            {{--Print date and time when an issue was updated--}}
+                            Print date and time when an issue was updated
                             Updated on {{ $update->created_at->toDayDateTimeString() }}:</i></small></h5><br>
                             <p>Printer Status: <b>{{$update->printer_status}}</b><br>
                                 Description: <b>{{ $update->body }}</b>
@@ -39,10 +39,10 @@
                     @endforeach
                 </ul>
             @endif
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $update->id }}">Update</button>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $issue->id }}">Update</button>
             <a href="/issues/index" class="btn btn-danger">Go back</a>
                     
-            <div id="{{ $update->id }}" class="card collapse">
+            <div id="{{ $issue->id }}" class="card collapse">
                 {!! Form::open(['url' => '/issues/update', 'method' => 'POST', 'class' => 'text-left']) !!}
                     {!! Form::hidden('id',$issue -> id) !!}
                         <div class="form-group">
@@ -51,7 +51,7 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('body', 'Description', ['class' => 'control-label']) !!}
-                            {!! Form::textarea('body', $value = $update->body, ['class' => 'form-control', 'placeholder' => 'Please specify the log details', 'id' => 'message']) !!}
+                            {!! Form::textarea('body', $value = null, ['class' => 'form-control', 'placeholder' => 'Please specify the log details', 'id' => 'message']) !!}
                             <div class="help-block" id="message_error"></div>
                         </div>
                     <!-- Submit Button -->

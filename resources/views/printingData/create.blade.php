@@ -15,15 +15,15 @@
             <h1 class="text-center lead">REQUEST A JOB</h1>
             <form id="requestForm" class="form-horizontal" method="POST" action="/printingData">
                 {{ csrf_field() }}
-                <div class="form-group {{ $errors->has('printer_id') ? ' has-error' : '' }}">
+                <div class="form-group {{ $errors->has('printers_id') ? ' has-error' : '' }}">
                    {{--This is a Printer Number dropdown--}}
                     <div class="form-group">
-                        {!! Form::label('printer_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
+                        {!! Form::label('printers_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
                         <div class="col-md-6">
-                            {!! Form::select('printer_id', array('' => 'Select Available Printer') + $available_printers,  old('printer_id'), ['class' => 'form-control','required', 'data-help' => 'printer_id', 'id' => 'printer_id']) !!}
-                            @if ($errors->has('printer_id'))
+                            {!! Form::select('printers_id', array('' => 'Select Available Printer') + $available_printers,  old('printers_id'), ['class' => 'form-control','required', 'data-help' => 'printers_id', 'id' => 'printers_id']) !!}
+                            @if ($errors->has('printers_id'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('printer_id') }}</strong>
+                                    <strong>{{ $errors->first('printers_id') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -109,7 +109,7 @@
                 <div class="form-group{{ $errors->has('use_case') ? ' has-error' : '' }}">
                     <label for="use_case" class="col-sm-4 control-label">Module Name (Project) or Cost Code</label>
                     <div class="col-sm-8">
-                        <input id="use_case" data-help="use_case" type="text" class="form-control" name="use_case" value="{{ old('use_case') }}" placeholder="A 9 digit cost code or module name are allowed" required>
+                        <input id="use_case" data-help="use_case" type="text" class="form-control" name="use_case" value="{{ old('use_case', isset($member)  ? "Demonstrator" : '') }}" placeholder="A 9 digit cost code or module name are allowed" required>
                         @if ($errors->has('use_case'))
                             <span class="help-block">
                             <strong>{{ $errors->first('use_case') }}</strong>
@@ -161,12 +161,12 @@
             </div>
             <div class="hint text-left" data-hint="hours">
                 <h3 class="text-center lead">Printing time</h3>
-                <p>Please input the printing time that is provided by the slicing software in hours and minutes. Note,
+                <p>Please input the printing time that is provided by the software in hours and minutes. Note,
                     that 59 hours and 59 minutes is currently the maximum available printing time.</p>
             </div>
             <div class="hint text-left" data-hint="minutes">
                 <h3 class="text-center lead">Printing time</h3>
-                <p>Please input the printing time that is provided by the slicing software in hours and minutes. Note,
+                <p>Please input the printing time that is provided by the software in hours and minutes. Note,
                     that 59 hours and 59 minutes is currently the maximum available printing time.</p>
             </div>
             <div class="hint text-left" data-hint="material_amount">
@@ -200,6 +200,6 @@
 </div>
 @endsection
 
-{{--@section('scripts')--}}
-{{--<script src="/js/request_job_validation.js"></script>--}}
-{{--@endsection--}}
+@section('scripts')
+<script src="/js/request_job_validation.js"></script>
+@endsection

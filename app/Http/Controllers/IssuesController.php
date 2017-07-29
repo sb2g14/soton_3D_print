@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use App\Printers;
 use App\FaultData;
 use App\posts;
+use App\comments;
 use Auth;
 use Excel;
 
@@ -93,6 +94,12 @@ class IssuesController extends Controller
                 'body' => request('body')
             ]);
 
+        $post = new posts;
+        $post -> title = request('title');
+        $post -> body = request('body');
+        $post -> user_id = Auth::user()->id;
+        $post->save();
+
             session()->flash('message', 'The new issue created!');
             session()->flash('alert-class', 'alert-success');
 
@@ -163,6 +170,12 @@ class IssuesController extends Controller
             'days_out_of_order'=> floor((time() - strtotime($issue->created_at)) / (60 * 60 * 24)),
             'body' => request('body')
         ]);
+
+        $update = new comments;
+        $update -> body = request('body');
+        $update -> user_id = Auth::user()->id;
+        $update -> posts_id = $issue_id;
+        $update->save();
 
         session()->flash('message', 'The issue has been updated!');
         session()->flash('alert-class', 'alert-success');
@@ -237,6 +250,12 @@ class IssuesController extends Controller
             'resolved' => 1]);
         $printer = printers::findOrFail($issue->printers_id);
         $printer->update(['printer_status'=>'Available']);
+
+        $update = new comments;
+        $update -> body = request('body');
+        $update -> user_id = Auth::user()->id;
+        $update -> posts_id = $id;
+        $update->save();
 
         session()->flash('message', 'The issue has been resolved!');
         session()->flash('alert-class', 'alert-success');

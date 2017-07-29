@@ -29,8 +29,8 @@ class PrintingDataController extends Controller
     {
 
         // Get all jobs
+        $jobs = printing_data::select('printers_id','serial_no','created_at','purpose','student_name','student_id','time','material_amount','price','paid','approved_name','payment_category','use_case','cost_code','add_comment','month','id','successful','email')->get();
 
-        $jobs = printing_data::select('printers_id','serial_no','created_at','purpose','student_name','student_id','time','material_amount','price','paid','user_id','payment_category','use_case','cost_code','add_comment','month','id','successful','email')->get();
 
         // Initialize the array which will be passed into the Excel
         // generator.
@@ -43,12 +43,6 @@ class PrintingDataController extends Controller
         // and append it to the payments array.
         foreach ($jobs as $job) {
             $jobsArray[] = $job->toArray();
-//            $afterIndex = 1;
-//            $newVal= array(array('serial_no' => $job->printer->serial_no));
-//            foreach ($jobsArray as $jobArray) {
-//                $jobSliceArray[] = array_slice($jobArray,0,1);
-//            }
-//            $jobsArray = array(array_merge(array_slice($jobSliceArray,0,$afterIndex+1), $newVal,array_slice($jobSliceArray,$afterIndex+1)));
         }
 
         // Generate and return the spreadsheet
@@ -112,8 +106,12 @@ class PrintingDataController extends Controller
             'material_amount' => 'required|numeric|min:1|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
             'use_case' => 'required|min:3'
         ]);
-
+    if(Auth::check())
+    {
         $cost_codes = cost_code::all()->pluck('shortage','id')->toArray();
+    } else {
+        $cost_codes = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('shortage','id')->toArray();
+    }
        // $cost_codes = $cost_codes->toArray();
         $use_case = request('use_case');
         if( in_array($use_case, $cost_codes)) {
@@ -188,7 +186,8 @@ class PrintingDataController extends Controller
     public function show($id)
     {
         $job = printing_data::find($id);
-        return view('printingData.show',compact('job'));
+        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
+        return view('printingData.show',compact('job','available_printers'));
     }
 
     /**
@@ -212,30 +211,31 @@ class PrintingDataController extends Controller
     public function update($id)
     {
         $this -> validate(request(), [
-            'printers_id' => 'required|numeric',
             'student_name' => 'required|string',
             'student_id' => 'required|numeric',
             'email' => 'required|email',
-            'time' => 'required',
             'material_amount' => 'required|numeric',
-            'use_case' => 'required|string',
         ]);
 //        $staff_id = Auth::user()->id;
 //       dd(request()->all(), $staff_id, $id);
         $data = printing_data::findOrFail($id);
 
+        $hours = Input::get('hours');
+        $minutes = Input::get('minutes');
+        $time = $hours.':'.sprintf('%02d', $minutes);
+
         $data->update([
-            'printers_id' => request('printers_id'),
+            'printers_id' => Input::get('printers_id'),
             'student_name' => request('student_name'),
             'student_id' => request('student_id'),
             'email' => request('email'),
-            'time' => request('time'),
+            'time' => $time,
             'material_amount' => request('material_amount'),
-            'use_case' => request('use_case'),
             'add_comment' => request('comments'),
             'paid' => 'No',
             'purpose' => 'Use',
             'user_id' => Auth::user()->id,
+            'approved_name'=>Auth::user()->name,
             'approved' => 'Yes'
         ]);
 
