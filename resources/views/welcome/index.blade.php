@@ -63,56 +63,56 @@
                     </div>
 
                     {{--Here we show issues:--}}
-                    <ul id="form" class="list-group">
-                        <li class="list-group-item">
-                            <div class="alert alert-warning">
+                    {{--<ul id="form" class="list-group">--}}
+                        {{--<li class="list-group-item">--}}
+                            {{--<div class="alert alert-warning">--}}
                                 {{--Print title of a post--}}
-                                <h4><b>{{ $post_last->title }}:</b></h4>
+                                {{--<h4><b>{{ $post_last->title }}:</b></h4>--}}
                                 {{--Print name of a user who created a post--}}
-                                <h5 class="media-heading"> {{$post_last->user->name}}  <small><i>
+                                {{--<h5 class="media-heading"> {{$post_last->user->name}}  <small><i>--}}
                                             {{--Print date and time when a post was created--}}
-                                            Posted on {{ $post_last->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                            {{--Posted on {{ $post_last->created_at->toDayDateTimeString() }}:</i></small></h5>--}}
                                 {{--Print the text of a post--}}
-                                {{ $post_last->body }}
-                            </div>
+                                {{--{{ $post_last->body }}--}}
+                            {{--</div>--}}
 
                             {{--Here we show comments to each issue:--}}
-                            <div class="btn">
-                                <button id="show_comments" type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $post_last->id }}">
-                                    Show comments
-                                </button>
-                            </div>
-                            <div id="{{ $post_last->id}}" class="card collapse">
-                                <ul>
-                                    @foreach($post_last->comments as $comment)
-                                        <li>
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <img src="/Images/img_avatar3.png" class="media-object" style="width:30px">
-                                                </div>
-                                                <div class="media-body">
-                                                    <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>
-                                                    <p>{{ $comment->body }}</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                <div id="{{ $post_last->id }}" class="card">
-                                    <form method="POST" action="/posts/{{ $post_last->id }}/comments">
-                                        {{ csrf_field() }}
-                                        <div class="form-group">
-                                            <textarea id="comment_last" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                            <span id="comment_last_error" class="help-block" style="color: red"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <button id="comment_last" type="submit" class="btn btn-primary">Comment</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                            {{--<div class="btn">--}}
+                                {{--<button id="show_comments" type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $post_last->id }}">--}}
+                                    {{--Show comments--}}
+                                {{--</button>--}}
+                            {{--</div>--}}
+                            {{--<div id="{{ $post_last->id}}" class="card collapse">--}}
+                                {{--<ul>--}}
+                                    {{--@foreach($post_last->comments as $comment)--}}
+                                        {{--<li>--}}
+                                            {{--<div class="media">--}}
+                                                {{--<div class="media-left">--}}
+                                                    {{--<img src="/Images/img_avatar3.png" class="media-object" style="width:30px">--}}
+                                                {{--</div>--}}
+                                                {{--<div class="media-body">--}}
+                                                    {{--<h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>--}}
+                                                    {{--<p>{{ $comment->body }}</p>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                        {{--</li>--}}
+                                    {{--@endforeach--}}
+                                {{--</ul>--}}
+                                {{--<div id="{{ $post_last->id }}" class="card">--}}
+                                    {{--<form method="POST" action="/posts/{{ $post_last->id }}/comments">--}}
+                                        {{--{{ csrf_field() }}--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<textarea id="comment_last" name="body" placeholder="Your comment here"  class="form-control" required></textarea>--}}
+                                            {{--<span id="comment_last_error" class="help-block" style="color: red"></span>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<button id="comment_last" type="submit" class="btn btn-primary">Comment</button>--}}
+                                        {{--</div>--}}
+                                    {{--</form>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</li>--}}
+                    {{--</ul>--}}
 
                     <button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-issues">VIEW ALL</button>
 
@@ -287,7 +287,7 @@
     </section>
 
 @endsection
-@section('scripts')
-    <script src="/js/issue_validation.js"></script>
-    <script src="/js/message_validation.js"></script>
-@endsection
+{{--@section('scripts')--}}
+    {{--<script src="/js/issue_validation.js"></script>--}}
+    {{--<script src="/js/message_validation.js"></script>--}}
+{{--@endsection--}}
