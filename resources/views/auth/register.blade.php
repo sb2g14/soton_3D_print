@@ -1,6 +1,5 @@
 @extends('layouts.layout')
 
-
 @section('content')
     <div class="container">
         <div class="row">
@@ -21,7 +20,7 @@
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                     @endif
-                                    <td><span class="help-block" id="name_error"></span></td>
+                                    <span class="help-block" id="name_error"></span>
 
                                 </div>
                             </div>
@@ -37,7 +36,7 @@
                                         <strong>{{ $errors->first('id_number') }}</strong>
                                     </span>
                                     @endif
-                                    <td><span class="help-block" id="student_id_error"></span> </td>
+                                    <span class="help-block" id="student_id_error"></span>
                                 </div>
                             </div>
 
@@ -52,7 +51,7 @@
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                     @endif
-                                    <td><span class="help-block" id="email_error"></span></td>
+                                    <span class="help-block" id="email_error"></span>
                                 </div>
                             </div>
 
@@ -67,8 +66,7 @@
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                     @endif
-                                    <td><span class="help-block" id="password_error"></span></td>
-
+                                    <span class="help-block" id="password_error"></span>
                                 </div>
                             </div>
 
@@ -77,7 +75,7 @@
 
                                 <div class="col-md-6">
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required><br>
-                                    <td><span class="help-block" id="password_confirm_error"></span></td>
+                                    <span class="help-block" id="password_confirm_error"></span>
                                 </div>
                             </div>
                             @include('layouts.errors')
@@ -90,7 +88,7 @@
                                 </div>
                             </div>
                         </form>
-                        <h3 style="color:red;">NOTE! The registration and login services are currently available ONLY for workshop staff</h3><br>
+                        <h2 style="color:red;">NOTE! The registration and login services are currently available ONLY for workshop staff</h2><br>
                     </div>
                 </div>
             </div>
