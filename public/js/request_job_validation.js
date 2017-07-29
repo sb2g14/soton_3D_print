@@ -264,13 +264,13 @@ $(function () {
     function check_use_case() {
         var use_case = $("#use_case");
 
-        if (use_case.val().length < 3 || use_case.val().length > 13) {
+        if (use_case.val().length < 3 || use_case.val().length > 15) {
             $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
             $("#use_case_error").show();
             $("#use_case").focus();
             $("#use_case").addClass("parsley-error");
             error_use_case = true;
-        } else if (!use_case.val().match(/^[A-Z0-9-]*$/)) {
+        } else if (!use_case.val().match(/^[A-Z]{3}/) && !use_case.val().match(/^[a-z0-9]+$/i)) {
             $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
             $("#use_case_error").show();
             $("#use_case").focus();
