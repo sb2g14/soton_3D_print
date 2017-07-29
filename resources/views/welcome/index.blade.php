@@ -268,17 +268,17 @@
 
             <div id="all-announcements" class="card collapse">
 
-                @foreach($announcements as $announcement)
-                    <li class="list-group-item">
-                        <!-- <div class="alert alert-info"> -->
-                        <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
-                        <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
+                {{--@foreach($public_announcements as $announcement)--}}
+                    {{--<li class="list-group-item">--}}
+                        {{--<!-- <div class="alert alert-info"> -->--}}
+                        {{--<h4><b>Announcement {{ $announcement->id }}</b></h4>--}}
+                        {{--<h5 class="media-heading"> @if($announcement->user_id != 0) { {{$announcement->user->name}} }}<small><i>--}}
                                     {{--Print date and time when a post was created--}}
-                                    Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
-                        <h5> {{ $announcement->message }} </h5>
-                        <!-- </div> -->
-                    </li>
-                @endforeach
+                                    {{--Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>--}}
+                        {{--<h5> {{ $announcement->message }} </h5>--}}
+                        {{--<!-- </div> -->--}}
+                    {{--</li>--}}
+                {{--@endforeach--}}
             </div>
         </ul>
     </div>

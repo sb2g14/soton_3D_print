@@ -46,6 +46,10 @@ class User extends Authenticatable
     public function announcements(){
         return $this->hasMany(posts::class);
     }
+    // The function which shows the announcements of a user
+    public function publicAnnouncements(){
+        return $this->hasMany(posts::class);
+    }
     // The function which shows the comments of a user
     public function comments(){
         return $this->hasMany(comments::class);
