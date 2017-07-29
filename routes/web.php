@@ -91,9 +91,25 @@ Route::post('issues/resolve','IssuesController@resolve');
 // Route view resolved issue for each printer
 Route::get('issues/show/{id}','IssuesController@show');
 
+// Route to export issues to CSV
+
+Route::get('issues/export',
+    [
+        'as' => 'issues.export',
+        'uses' => 'IssuesController@printersIssuesExport'
+    ]);
+
 // Show a list of jobs waiting for approval
 
 Route::get('/printingData/index','PrintingDataController@index');
+
+// Route to export jobs to CSV
+
+Route::get('printingData/export',
+    [
+        'as' => 'printingData.export',
+        'uses' => 'PrintingDataController@printingDataExport'
+    ]);
 
 // Show a list of approved jobs
 

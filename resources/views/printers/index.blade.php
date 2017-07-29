@@ -21,6 +21,9 @@
             <button type="submit" class="btn btn-primary pull-right">Add Printer</button>
         </a>
         <a href="/issues/index" class="btn btn-success pull-left" >Manage Issues</a>
+        {!! link_to_route('issues.export',
+        'Export Issues to Excel', null,
+        ['class' => 'btn btn-info pull-left']) !!}
         <table class="table">
             <thead>
                 <tr style="font-weight: 600;">

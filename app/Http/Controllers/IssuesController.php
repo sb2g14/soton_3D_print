@@ -9,6 +9,7 @@ use App\Printers;
 use App\FaultData;
 use App\posts;
 use Auth;
+use Excel;
 
 class IssuesController extends Controller
 {
@@ -25,11 +26,48 @@ class IssuesController extends Controller
     }
     public function index()
     {
-        $excel = App::make('excel');
         $issues =  FaultData::orderBy('created_at', 'desc')->where('resolved', 0)->get();
+
         return view('issues.index', compact('issues','excel'));
     }
+    public function printersIssuesExport()
+    {
 
+        // Get all issues
+
+        $issues = FaultData::select('printers_id','serial_number','created_at','users_name_created_issue','printer_status','body','updated_at','users_name_resolved_issue','message_resolved','days_out_of_order')->get();
+
+        // Initialize the array which will be passed into the Excel
+        // generator.
+        $issuesArray = [];
+
+        // Define the Excel spreadsheet headers
+        $issuesArray[] = ['Printer ID', 'Printer SN','Date','Demonstrator Sign','Printer Status','Issue','Repair Date','Repair Demonstrator Sign','Comment','Days Out of Order'];
+
+        // Convert each member of the returned collection into an array,
+        // and append it to the payments array.
+        foreach ($issues as $issue) {
+            if(empty($issue->users_name_resolved_issue)){
+                $issue->updated_at = null;
+            }
+            $issuesArray[] = $issue->toArray();
+        }
+
+        // Generate and return the spreadsheet
+        Excel::create('FaultData', function($excel) use ($issuesArray) {
+
+            // Set the spreadsheet title, creator, and description
+            $excel->setTitle('3D_printers_issues');
+            $excel->setCreator(Auth::user()->name)->setCompany('3D printing workshop');
+            $excel->setDescription('Excel file used as a backup for information about 3D printers faults in the 3D printing workshop at University of Southampton');
+
+            // Build the spreadsheet, passing in the payments array
+            $excel->sheet('sheet1', function($sheet) use ($issuesArray) {
+                $sheet->fromArray($issuesArray, null, 'A1', false, false);
+            });
+
+        })->download('xlsx');
+    }
     /**
      * Show the form for creating a new resource.
      *

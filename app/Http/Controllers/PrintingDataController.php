@@ -9,6 +9,8 @@ use App\cost_code;
 use Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rules\In;
+use Excel;
+use Carbon\Carbon;
 
 class PrintingDataController extends Controller
 {
@@ -21,6 +23,48 @@ class PrintingDataController extends Controller
     {
         $jobs =  printing_data::where('approved', 'Waiting')->get();
         return view('printingData.index', compact('jobs'));
+    }
+
+    public function printingDataExport()
+    {
+
+        // Get all jobs
+
+        $jobs = printing_data::select('printers_id','serial_no','created_at','purpose','student_name','student_id','time','material_amount','price','paid','user_id','payment_category','use_case','cost_code','add_comment','month','id','successful','email')->get();
+
+        // Initialize the array which will be passed into the Excel
+        // generator.
+        $jobsArray = [];
+
+        // Define the Excel spreadsheet headers
+        $jobsArray[] = ['Printer No Common', 'Printer No','Date','Use/Loan','Student Name','Student ID','Time','Material Amount','Price','Paid','Demonstrator Sign','Payment Category', 'Use Case','Cost Code','Comment','Month','Job No','Successful?','Email'];
+
+        // Convert each member of the returned collection into an array,
+        // and append it to the payments array.
+        foreach ($jobs as $job) {
+            $jobsArray[] = $job->toArray();
+//            $afterIndex = 1;
+//            $newVal= array(array('serial_no' => $job->printer->serial_no));
+//            foreach ($jobsArray as $jobArray) {
+//                $jobSliceArray[] = array_slice($jobArray,0,1);
+//            }
+//            $jobsArray = array(array_merge(array_slice($jobSliceArray,0,$afterIndex+1), $newVal,array_slice($jobSliceArray,$afterIndex+1)));
+        }
+
+        // Generate and return the spreadsheet
+        Excel::create('PrintingData', function($excel) use ($jobsArray) {
+
+            // Set the spreadsheet title, creator, and description
+            $excel->setTitle('printing_data');
+            $excel->setCreator(Auth::user()->name)->setCompany('3D printing workshop');
+            $excel->setDescription('Excel file used as a backup for information about printing jobs in the 3D printing workshop at University of Southampton');
+
+            // Build the spreadsheet, passing in the payments array
+            $excel->sheet('sheet1', function($sheet) use ($jobsArray) {
+                $sheet->fromArray($jobsArray, null, 'A1', false, false);
+            });
+
+        })->download('xlsx');
     }
 
     public function approved()
@@ -95,16 +139,34 @@ class PrintingDataController extends Controller
         // Calculation the job price £3 per h + £5 per 100g
         $price = round(3*($hours + $minutes/60) + 5*$material_amount/100,2);
 
+        // Request id and identify the payment category
+        $student_id = request('student_id');
+        if (substr($student_id, 0,1) == '1')
+        {
+            $payment_category = 'staff';
+        } elseif (substr($student_id, 0,1) == '2')
+        {
+            $payment_category = 'postgraduate';
+        }
+        // Printer requested
+        $printers_id = Input::get('printers_id');
+        // Year and month of print
+        $year =  (string)Carbon::now('Europe/London')->year;
+        $month = (string)Carbon::now('Europe/London')->month;
+        $yearMonth = $year.'/'.$month;
        printing_data::create([
-           'printers_id' => Input::get('printers_id'),
+           'printers_id' => $printers_id,
+           'serial_no' => printers::where('id', $printers_id)->first()->serial_no,
            'student_name' => request('student_name'),
-           'student_id' => request('student_id'),
+           'student_id' => $student_id,
+           'payment_category' => $payment_category,
            'email' => request('email'),
            'use_case' => $use_case,
            'cost_code' => $cost_code,
            'time' => $time,
            'price'=> $price,
-           'material_amount' => $material_amount
+           'material_amount' => $material_amount,
+           'month' =>$yearMonth
        ]);
 
         printers::where('id','=', Input::get('printers_id'))->update(array('in_use'=> 1));
