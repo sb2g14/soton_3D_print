@@ -33,11 +33,12 @@ class PostsController extends Controller
             $printer_busy->changePrinterStatus($printers_busy);
         }
 
-        $posts =  posts::orderBy('id', 'desc')->take(20)->get();
+        $posts =  posts::orderBy('id', 'desc')->skip(1)->take(20)->get();
         $posts -> toArray($posts);
+        $post_last = posts::orderBy('id','desc')->first();
 //        $posts =  posts::first();
         $announcements =  Announcement::orderBy('id', 'desc')->take(20)->get();
-        return view('welcome.index', compact('posts','announcements'));
+        return view('welcome.index', compact('posts','post_last','announcements'));
     }
 
     /**
@@ -63,8 +64,8 @@ class PostsController extends Controller
         // Validate request from the form:
 
         $this -> validate(request(), [
-            'title' => 'required',
-            'body' => 'required'
+            'title' => 'required|string|max:180|regex:/^[a-z A-Z0-9.,!?]+$/',
+            'body' => 'required|string|max:300|regex:/^[a-z A-Z0-9.,!?]+$/'
         ]);
 
 //        dd(request()->all());

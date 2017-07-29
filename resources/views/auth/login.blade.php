@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         </form>
-                        <h3 style="color:red;">NOTE! The registration and login services are currently available ONLY for workshop staff</h3><br>
+                        <h2 style="color:red;">NOTE! The registration and login services are currently available ONLY for workshop staff</h2><br>
                     </div>
                 </div>
             </div>

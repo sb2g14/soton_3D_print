@@ -25,15 +25,15 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('id_number') ? ' has-error' : '' }}">
-                                <label for="id_number" class="col-md-4 control-label">Student/staff ID</label>
+                            <div class="form-group{{ $errors->has('student_id') ? ' has-error' : '' }}">
+                                <label for="student_id" class="col-md-4 control-label">Student/staff ID</label>
 
                                 <div class="col-md-6">
-                                    <input id="student_id" type="text" class="form-control" name="id_number" value="{{ old('id_number') }}" required><br>
+                                    <input id="student_id" type="text" class="form-control" name="student_id" value="{{ old('student_id') }}" required><br>
 
                                     @if ($errors->has('id_number'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('id_number') }}</strong>
+                                        <strong>{{ $errors->first('student_id') }}</strong>
                                     </span>
                                     @endif
                                     <span class="help-block" id="student_id_error"></span>

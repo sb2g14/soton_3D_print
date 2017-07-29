@@ -63,40 +63,24 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 15:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(3);
-
-
-/***/ }),
-
-/***/ 3:
+/***/ 1:
 /***/ (function(module, exports) {
 
 $(function () {
     $("#email_error").hide();
-    $("#password_error").hide();
 
     var error_email = true;
-    var error_password = true;
 
     $("#email").keyup(function () {
         check_email();
     });
-    $("#password").keyup(function () {
-        check_password();
-    });
     $("#email").focusout(function () {
         check_email();
-    });
-    $("#password").focusout(function () {
-        check_password();
     });
 
     function check_email() {
@@ -119,46 +103,26 @@ $(function () {
             $("#email").removeClass("parsley-error");
             $("#email").addClass("parsley-success");
             error_email = false;
-        }if (error_password === false && error_email === false) {
-            $("#login-button").addClass("btn-success");
+        }if (error_email === false) {
+            $("#reset_button").addClass("btn-success");
         } else {
-            $("#login-button").removeClass("btn-success");
+            $("#reset_button").removeClass("btn-success");
         }
     }
-    function check_password() {
-        var password = $("#password");
-
-        if (password.val().length < 6 || password.val().length > 16) {
-            $("#password_error").html("The password mast be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
-            $("#password_error").show();
-            $("#password").focus();
-            $("#password").addClass("parsley-error");
-            error_password = true;
-        } else if (!password.val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,16}$/)) {
-            $("#password_error").html("The password mast be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
-            $("#password_error").show();
-            $("#password").focus();
-            $("#password").addClass("parsley-error");
-            error_password = true;
-        } else {
-            $("#password_error").hide();
-            $("#password").removeClass("parsley-error");
-            $("#password").addClass("parsley-success");
-            error_password = false;
-        }if (error_password === false && error_email === false) {
-            $("#login-button").addClass("btn-success");
-        } else {
-            $("#login-button").removeClass("btn-success");
-        }
-    }
-    $("#login-button").click(function () {
+    $("#reset_button").click(function () {
         $("#email_error").hide();
-        $("#password_error").hide();
         $("#email").removeClass("parsley-success");
-        $("#password").removeClass("parsley-success");
-        $("#login-button").removeClass("btn-success");
+        $("#reset_button").removeClass("btn-success");
     });
 });
+
+/***/ }),
+
+/***/ 13:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(1);
+
 
 /***/ })
 

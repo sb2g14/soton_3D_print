@@ -20,4 +20,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .js('resources/assets/js/new_printer_validation.js', 'public/js')
     .js('resources/assets/js/issue_validation.js', 'public/js')
     .js('resources/assets/js/message_validation.js', 'public/js')
+    .js('resources/assets/js/email_validation.js', 'public/js')
+    .js('resources/assets/js/reset_validation.js', 'public/js')
     .less('resources/assets/less/app.less', 'public/css');
