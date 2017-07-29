@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'team@3dprint.soton.ac.uk'),
+        'name' => env('MAIL_FROM_NAME', 'Soton 3D printing workshop team'),
     ],
 
     /*
