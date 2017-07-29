@@ -126,14 +126,8 @@ $(function () {
     function check_name() {
         var name = $("#name");
 
-        if (name.val().length < 3 || name.val().length > 20) {
-            $("#name_error").html("The name should be between 2 and 20 characters");
-            $("#name_error").show();
-            $("#name").focus();
-            $("#name").addClass("parsley-error");
-            error_name = true;
-        } else if (!name.val().match(/[\w\-'\s]+/)) {
-            $("#name_error").html("Only letters and hyphens(-) are allowed");
+        if (!name.val().match(/^[a-z-A-Z- ]{3,20}$/)) {
+            $("#name_error").html("Only letters and hyphens(-) are allowed. Maximum name length is 25 characters");
             $("#name_error").show();
             $("#name").focus();
             $("#name").addClass("parsley-error");
@@ -219,7 +213,13 @@ $(function () {
         var password = $("#password");
 
         if (password.val().length < 6 || password.val().length > 16) {
-            $("#password_error").html("The password mast be between 6 and 16 characters long");
+            $("#password_error").html("The password mast be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
+            $("#password_error").show();
+            $("#password").focus();
+            $("#password").addClass("parsley-error");
+            error_password = true;
+        } else if (!password.val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,16}$/)) {
+            $("#password_error").html("The password mast be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
             $("#password_error").show();
             $("#password").focus();
             $("#password").addClass("parsley-error");
@@ -239,7 +239,7 @@ $(function () {
         var password = $("#password").val();
         var confirmPassword = $("#password-confirm").val();
 
-        if (password != confirmPassword) {
+        if (password !== confirmPassword) {
             $("#password-confirm_error").html("Passwords do not match");
             $("#password-confirm_error").show();
             $("#password-confirm").focus();
