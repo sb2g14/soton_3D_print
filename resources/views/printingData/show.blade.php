@@ -118,7 +118,7 @@
                         @php( list($h, $i, $s) = explode(':', $job->time) )
 
                         <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
-                            {!! Form::label('hours', 'Printing Time', ['class' => 'col-lg-4 control-label'] )  !!}
+                            {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
                             <div class="col-md-2">
                                 {!! Form::select('hours', range(0,59), $h, ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
                                 @if ($errors->has('hours'))

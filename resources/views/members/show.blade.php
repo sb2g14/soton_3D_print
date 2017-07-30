@@ -27,7 +27,4 @@
             <div class="col-sm-4"></div>
         </div>
     </div>
-    
-    {{--{{ Form::button('Hit Me', array('class' => 'btn')) }}--}}
-    {{--<button class="btn" type="button">Delete record</button>--}}
 @endsection
