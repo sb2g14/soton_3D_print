@@ -9,10 +9,10 @@
                     <div class="row">
                         <div class="col-xs-3"></div>
                         <div class="col-xs-2">
-                            <a href="https://www.facebook.com/ilya.khromov" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="https://www.facebook.com/EDMC-and-Design-Workshops-University-of-Southampton-1569152903360637/" target="_blank"><i class="fa fa-facebook"></i></a>
                         </div>
                         <div class="col-xs-2">
-                            <a href="https://groups.google.com/forum/#!forum/soton-3d-printing-demonstrators" target="_blank"><i class="fa fa-google"></i></a>
+                            <a href="https://sites.google.com/site/soton3dprinting/home" target="_blank"><i class="fa fa-google"></i></a>
                         </div>
                         <div class="col-xs-2">
                             <a href="https://www.youtube.com/channel/UCYrrokbBniAgVg_On7BSD3A" target="_blank"><i class="fa fa-youtube"></i></a>
