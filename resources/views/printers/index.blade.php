@@ -17,13 +17,19 @@
     </div>
 
     <div class="container">
+        @hasanyrole('LeadDemonstrator|administrator')
         <a href="{{ url('/printers/create') }}">
             <button type="submit" class="btn btn-primary pull-right">Add Printer</button>
         </a>
+        @endhasanyrole
+        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
         <a href="/issues/index" class="btn btn-success pull-left" >Manage Issues</a>
+        @endhasanyrole
+        @hasanyrole('LeadDemonstrator|administrator')
         {!! link_to_route('issues.export',
         'Export Issues to Excel', null,
         ['class' => 'btn btn-info pull-left']) !!}
+        @endhasanyrole
         <table class="table">
             <thead>
                 <tr style="font-weight: 600;">
