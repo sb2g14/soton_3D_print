@@ -192,10 +192,10 @@
                     <span id="announcement_error" style="color: red"></span>
                 </div>
                 <div class="checkbox">
-                    <label><input type="checkbox" name="critical" value="critical">Public announcement</label>
+                    <label><input type="checkbox" name="public" value="public">Public announcement</label>
                 </div>
                 <div class="checkbox">
-                    <label><input type="checkbox" name="critical" value="critical">Inform all by email</label>
+                    <label><input type="checkbox" name="email" value="email">Inform all by email</label>
                 </div>
                 <button id="post" type="submit" class="btn btn-primary">Post</button>
             </form>
@@ -247,38 +247,53 @@
             <div class="bl-logo logo-announcement"></div>
             <div>
                 <h3>ANNOUNCEMENTS</h3>
+                {{--<button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">--}}
+                    {{--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>--}}
+                {{--</button>--}}
             </div>
         </div>
 
+        {{--Form to add public announcement--}}
+        {{--<div id="addAnnouncement" class="card collapse text-left">--}}
+            {{--<form method="POST" action="/publicAnnouncements">--}}
+                {{--{{ csrf_field() }}--}}
+                {{--<div class="form-group">--}}
+                    {{--<label for="message">New Announcement</label><br>--}}
+                    {{--<textarea id="announcement" name="message" placeholder="Post something" class="form-control"></textarea>--}}
+                    {{--<span id="announcement_error" style="color: red"></span>--}}
+                {{--</div>--}}
+                {{--<button id="post" type="submit" class="btn btn-primary">Post</button>--}}
+            {{--</form>--}}
+        {{--</div>--}}
+
         <ul class="list-group">
+            @if(!empty($post_last))
             <li class="list-group-item">
                 <div class="alert alert-info">
-                    <h4><b>Announcement 1</b></h4>
-                    <h5> Please download an up-to-date FEE PGR Demonstrating policy and claim forms.</h5>
-                    <ul class="lsn">
-                        <li><a href={{ asset('files/Demonstrating_procedure_April2017.docx') }}>Demonstrating procedure</a></li>
-                        <li><a href={{ asset('files/FEE_Demonstrator_Consultancy_Policy_March4017.rtf') }}>Consultancy policy</a></li>
-                        <li><a href={{ asset('files/Demonstrating_Claim_April_2016.doc') }}>Claim form</a></li>
-                        <li><a href={{ asset('files/FORMS_DC1_AND_DC2_v2.doc') }}>Claim forms DC1 and DC2</a></li>
-                    </ul>
+                    <h4><b>Announcement {{ $public_announcement_last->id }}</b></h4>
+                    <h5 class="media-heading"> @if($public_announcement_last->user_id != 0)  {{$public_announcement_last->user->name}} @else Anonym @endif <small><i>
+                                Print date and time when a post was created
+                                Posted on {{ $public_announcement_last->created_at->toDayDateTimeString() }}:</i></small></h5>
+                    <h5> {{ $public_announcement_last->message }} </h5>
                 </div>
             </li>
+            @endif
 
             <button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>
 
             <div id="all-announcements" class="card collapse">
 
-                {{--@foreach($public_announcements as $announcement)--}}
-                    {{--<li class="list-group-item">--}}
-                        {{--<!-- <div class="alert alert-info"> -->--}}
-                        {{--<h4><b>Announcement {{ $announcement->id }}</b></h4>--}}
-                        {{--<h5 class="media-heading"> @if($announcement->user_id != 0) { {{$announcement->user->name}} }}<small><i>--}}
-                                    {{--Print date and time when a post was created--}}
-                                    {{--Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>--}}
-                        {{--<h5> {{ $announcement->message }} </h5>--}}
-                        {{--<!-- </div> -->--}}
-                    {{--</li>--}}
-                {{--@endforeach--}}
+                @foreach($public_announcements as $announcement)
+                    <li class="list-group-item">
+                        <!-- <div class="alert alert-info"> -->
+                        <h4><b>Announcement {{ $announcement->id }}</b></h4>
+                        <h5 class="media-heading"> @if($announcement->user_id != 0)  {{$announcement->user->name}} @else Anonym @endif <small><i>
+                                    Print date and time when a post was created
+                                    Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
+                        <h5> {{ $announcement->message }} </h5>
+                        <!-- </div> -->
+                    </li>
+                @endforeach
             </div>
         </ul>
     </div>
