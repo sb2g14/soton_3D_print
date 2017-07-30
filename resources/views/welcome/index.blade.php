@@ -36,9 +36,11 @@
                         <div>
                             <h3>ISSUES</h3>
                             {{--This is a button to add an issue:--}}
+                            @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                             <button id="add_issue" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addIssue">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </button>
+                            @endhasanyrole
                         </div>
                         {{--Form to add issue--}}
                         <div id="addIssue" class="card collapse text-left">
@@ -99,6 +101,7 @@
                                 </li>
                             @endforeach
                         </ul>
+                        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <div id="{{ $post_last->id }}" class="card">
                             <form method="POST" action="/posts/{{ $post_last->id }}/comments">
                                 {{ csrf_field() }}
@@ -111,6 +114,7 @@
                                 </div>
                             </form>
                         </div>
+                        @endhasanyrole
                     </div>
                 </li>
             </ul>
@@ -152,6 +156,7 @@
                         @endforeach
                     </ul>
                     {{--This is a form to add a comment--}}
+                    @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                     <div id="{{ $post->id }}" class="card">
                         <form method="POST" action="/posts/{{ $post->id }}/comments">
                             {{ csrf_field() }}
@@ -164,6 +169,7 @@
                             </div>
                         </form>
                     </div>
+                    @endhasanyrole
                 </div>
             </li>
         @endforeach
@@ -177,9 +183,11 @@
         <div>
             <h3>ANNOUNCEMENTS</h3>
             {{--This is a button to create an announcement:--}}
+            @hasanyrole('administrator|LeadDemonstrator|Demonstrator')
             <button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
+            @endhasanyrole
         </div>
 
         {{--Form to add announcement--}}
@@ -252,19 +260,6 @@
                 {{--</button>--}}
             </div>
         </div>
-
-        {{--Form to add public announcement--}}
-        {{--<div id="addAnnouncement" class="card collapse text-left">--}}
-            {{--<form method="POST" action="/publicAnnouncements">--}}
-                {{--{{ csrf_field() }}--}}
-                {{--<div class="form-group">--}}
-                    {{--<label for="message">New Announcement</label><br>--}}
-                    {{--<textarea id="announcement" name="message" placeholder="Post something" class="form-control"></textarea>--}}
-                    {{--<span id="announcement_error" style="color: red"></span>--}}
-                {{--</div>--}}
-                {{--<button id="post" type="submit" class="btn btn-primary">Post</button>--}}
-            {{--</form>--}}
-        {{--</div>--}}
 
         <ul class="list-group">
             @if(!empty($public_announcement_last))
