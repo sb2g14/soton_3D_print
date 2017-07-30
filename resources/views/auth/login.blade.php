@@ -72,6 +72,6 @@
     </div>
 
 @endsection
-@section('scripts')
-    <script src="/js/login_validation.js"></script>
-@endsection
+{{--@section('scripts')--}}
+    {{--<script src="/js/login_validation.js"></script>--}}
+{{--@endsection--}}

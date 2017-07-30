@@ -258,7 +258,7 @@
             {{--<form method="POST" action="/publicAnnouncements">--}}
                 {{--{{ csrf_field() }}--}}
                 {{--<div class="form-group">--}}
-                    {{--<label for="message">New Announcement</label><br>--}}
+                    {{--<label for="message">New AnnouncementNew</label><br>--}}
                     {{--<textarea id="announcement" name="message" placeholder="Post something" class="form-control"></textarea>--}}
                     {{--<span id="announcement_error" style="color: red"></span>--}}
                 {{--</div>--}}

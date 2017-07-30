@@ -78,8 +78,7 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         // Check weather the email is in the demonstrator database
-        $emails = staff::all()->pluck('email','id');
-        $emails = $emails->toArray();
+        $emails = staff::all()->pluck('email','id')->toArray();
         $email = request('email');
         if( in_array($email, $emails)) {
 
