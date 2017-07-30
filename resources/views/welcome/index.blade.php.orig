@@ -36,11 +36,9 @@
                         <div>
                             <h3>ISSUES</h3>
                             {{--This is a button to add an issue:--}}
-                            @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                             <button id="add_issue" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addIssue">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </button>
-                            @endhasanyrole
                         </div>
                         {{--Form to add issue--}}
                         <div id="addIssue" class="card collapse text-left">
@@ -65,6 +63,106 @@
                     </div>
 
                     {{--Here we show issues:--}}
+<<<<<<< HEAD
+                    {{--<ul id="form" class="list-group">--}}
+                        {{--<li class="list-group-item">--}}
+                            {{--<div class="alert alert-warning">--}}
+                                {{--Print title of a post--}}
+                                {{--<h4><b>{{ $post_last->title }}:</b></h4>--}}
+                                {{--Print name of a user who created a post--}}
+                                {{--<h5 class="media-heading"> {{$post_last->user->name}}  <small><i>--}}
+                                            {{--Print date and time when a post was created--}}
+                                            {{--Posted on {{ $post_last->created_at->toDayDateTimeString() }}:</i></small></h5>--}}
+                                {{--Print the text of a post--}}
+                                {{--{{ $post_last->body }}--}}
+                            {{--</div>--}}
+
+                            {{--Here we show comments to each issue:--}}
+                            {{--<div class="btn">--}}
+                                {{--<button id="show_comments" type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $post_last->id }}">--}}
+                                    {{--Show comments--}}
+                                {{--</button>--}}
+                            {{--</div>--}}
+                            {{--<div id="{{ $post_last->id}}" class="card collapse">--}}
+                                {{--<ul>--}}
+                                    {{--@foreach($post_last->comments as $comment)--}}
+                                        {{--<li>--}}
+                                            {{--<div class="media">--}}
+                                                {{--<div class="media-left">--}}
+                                                    {{--<img src="/Images/img_avatar3.png" class="media-object" style="width:30px">--}}
+                                                {{--</div>--}}
+                                                {{--<div class="media-body">--}}
+                                                    {{--<h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>--}}
+                                                    {{--<p>{{ $comment->body }}</p>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                        {{--</li>--}}
+                                    {{--@endforeach--}}
+                                {{--</ul>--}}
+                                {{--<div id="{{ $post_last->id }}" class="card">--}}
+                                    {{--<form method="POST" action="/posts/{{ $post_last->id }}/comments">--}}
+                                        {{--{{ csrf_field() }}--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<textarea id="comment_last" name="body" placeholder="Your comment here"  class="form-control" required></textarea>--}}
+                                            {{--<span id="comment_last_error" class="help-block" style="color: red"></span>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<button id="comment_last" type="submit" class="btn btn-primary">Comment</button>--}}
+                                        {{--</div>--}}
+                                    {{--</form>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</li>--}}
+                    {{--</ul>--}}
+
+                    <button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-issues">VIEW ALL</button>
+
+                    <div id="all-issues" class="card collapse">
+                        @foreach($posts as $post)
+                            <li class="list-group-item">
+                                {{--Print title of a post--}}
+                                <h4><b>{{ $post->title }}:</b></h4>
+                                {{--Print name of a user who created a post--}}
+                                <h5 class="media-heading"> {{$post->user->name}}  <small><i>
+                                            {{--Print date and time when a post was created--}}
+                                            Posted on {{ $post->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                {{--Print the text of a post--}}
+                                {{ $post->body }}
+                                <div class="btn">
+                                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
+                                        Show comments
+                                    </button>
+                                </div>
+                                <div id="{{ $post->id}}" class="card collapse">
+                                    {{--Here we show comments to each issue:--}}
+                                    <ul>
+                                        @foreach($post->comments as $comment)
+                                            <li>
+                                                <div class="media">
+                                                    <div class="media-left">
+                                                        <img src="/Images/img_avatar3.png" class="media-object" style="width:30px">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                                        <p>{{ $comment->body }}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                    {{--This is a form to add a comment--}}
+                                    <div id="{{ $post->id }}" class="card">
+                                        <form method="POST" action="/posts/{{ $post->id }}/comments">
+                                            {{ csrf_field() }}
+                                            <div class="form-group">
+                                                <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                                <span id="message_error" class="help-block" style="color: red"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <button id="comment" type="submit" class="btn btn-primary">Comment </button>
+                                            </div>
+                                        </form>
+=======
             @if(!empty($post_last))
             <ul id="form" class="list-group">
                 <li class="list-group-item">
@@ -97,11 +195,11 @@
                                             <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>
                                             <p>{{ $comment->body }}</p>
                                         </div>
+>>>>>>> 5e103d950c3b5700a9184f7d9cf0a4094e882d5d
                                     </div>
                                 </li>
                             @endforeach
                         </ul>
-                        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <div id="{{ $post_last->id }}" class="card">
                             <form method="POST" action="/posts/{{ $post_last->id }}/comments">
                                 {{ csrf_field() }}
@@ -114,7 +212,6 @@
                                 </div>
                             </form>
                         </div>
-                        @endhasanyrole
                     </div>
                 </li>
             </ul>
@@ -156,7 +253,6 @@
                         @endforeach
                     </ul>
                     {{--This is a form to add a comment--}}
-                    @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                     <div id="{{ $post->id }}" class="card">
                         <form method="POST" action="/posts/{{ $post->id }}/comments">
                             {{ csrf_field() }}
@@ -169,7 +265,6 @@
                             </div>
                         </form>
                     </div>
-                    @endhasanyrole
                 </div>
             </li>
         @endforeach
@@ -183,11 +278,9 @@
         <div>
             <h3>ANNOUNCEMENTS</h3>
             {{--This is a button to create an announcement:--}}
-            @hasanyrole('administrator|LeadDemonstrator|Demonstrator')
             <button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
-            @endhasanyrole
         </div>
 
         {{--Form to add announcement--}}
@@ -200,10 +293,10 @@
                     <span id="announcement_error" style="color: red"></span>
                 </div>
                 <div class="checkbox">
-                    <label><input type="checkbox" name="public" value="public">Public announcement</label>
+                    <label><input type="checkbox" name="critical" value="critical">Public announcement</label>
                 </div>
                 <div class="checkbox">
-                    <label><input type="checkbox" name="email" value="email">Inform all by email</label>
+                    <label><input type="checkbox" name="critical" value="critical">Inform all by email</label>
                 </div>
                 <button id="post" type="submit" class="btn btn-primary">Post</button>
             </form>
@@ -255,35 +348,33 @@
             <div class="bl-logo logo-announcement"></div>
             <div>
                 <h3>ANNOUNCEMENTS</h3>
-                {{--<button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">--}}
-                    {{--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>--}}
-                {{--</button>--}}
             </div>
         </div>
 
         <ul class="list-group">
-            @if(!empty($public_announcement_last))
             <li class="list-group-item">
                 <div class="alert alert-info">
-                    <h4><b>Announcement {{ $public_announcement_last->id }}</b></h4>
-                    <h5 class="media-heading"> @if($public_announcement_last->user_id != 0)  {{$public_announcement_last->user->name}} @else Anonym @endif <small><i>
-                                Print date and time when a post was created
-                                Posted on {{ $public_announcement_last->created_at->toDayDateTimeString() }}:</i></small></h5>
-                    <h5> {{ $public_announcement_last->message }} </h5>
+                    <h4><b>Announcement 1</b></h4>
+                    <h5> Please download an up-to-date FEE PGR Demonstrating policy and claim forms.</h5>
+                    <ul class="lsn">
+                        <li><a href={{ asset('files/Demonstrating_procedure_April2017.docx') }}>Demonstrating procedure</a></li>
+                        <li><a href={{ asset('files/FEE_Demonstrator_Consultancy_Policy_March4017.rtf') }}>Consultancy policy</a></li>
+                        <li><a href={{ asset('files/Demonstrating_Claim_April_2016.doc') }}>Claim form</a></li>
+                        <li><a href={{ asset('files/FORMS_DC1_AND_DC2_v2.doc') }}>Claim forms DC1 and DC2</a></li>
+                    </ul>
                 </div>
             </li>
-            @endif
 
             <button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>
 
             <div id="all-announcements" class="card collapse">
 
-                @foreach($public_announcements as $announcement)
+                @foreach($announcements as $announcement)
                     <li class="list-group-item">
                         <!-- <div class="alert alert-info"> -->
-                        <h4><b>Announcement {{ $announcement->id }}</b></h4>
-                        <h5 class="media-heading"> @if($announcement->user_id != 0)  {{$announcement->user->name}} @else Anonym @endif <small><i>
-                                    Print date and time when a post was created
+                        <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
+                        <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
+                                    {{--Print date and time when a post was created--}}
                                     Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
                         <h5> {{ $announcement->message }} </h5>
                         <!-- </div> -->
@@ -299,7 +390,14 @@
 </section>
 
 @endsection
+<<<<<<< HEAD
+{{--@section('scripts')--}}
+    {{--<script src="/js/issue_validation.js"></script>--}}
+    {{--<script src="/js/message_validation.js"></script>--}}
+{{--@endsection--}}
+=======
 @section('scripts')
 <script src="/js/issue_validation.js"></script>
 <script src="/js/message_validation.js"></script>
 @endsection
+>>>>>>> 5e103d950c3b5700a9184f7d9cf0a4094e882d5d
