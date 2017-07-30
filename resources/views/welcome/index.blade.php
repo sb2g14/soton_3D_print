@@ -267,7 +267,7 @@
         {{--</div>--}}
 
         <ul class="list-group">
-            @if(!empty($post_last))
+            @if(!empty($public_announcement_last))
             <li class="list-group-item">
                 <div class="alert alert-info">
                     <h4><b>Announcement {{ $public_announcement_last->id }}</b></h4>
