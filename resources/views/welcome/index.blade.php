@@ -199,12 +199,14 @@
                     <textarea id="announcement" name="message" placeholder="Post something" class="form-control"></textarea>
                     <span id="announcement_error" style="color: red"></span>
                 </div>
+                @hasanyrole('LeadDemonstrator|administrator')
                 <div class="checkbox">
                     <label><input type="checkbox" name="public" value="public">Public announcement</label>
                 </div>
                 <div class="checkbox">
                     <label><input type="checkbox" name="email" value="email">Inform all by email</label>
                 </div>
+                @endhasanyrole
                 <button id="post" type="submit" class="btn btn-primary">Post</button>
             </form>
         </div>

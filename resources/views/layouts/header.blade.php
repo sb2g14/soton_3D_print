@@ -38,12 +38,16 @@
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="{{ url('/printers/index') }}">View printers</a></li>
+                        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <li><a class="dropdown-item" href="{{ url('/issues/index') }}">Pending issues</a></li>
                         <li><a class="dropdown-item" href="{{ url('/issues/select') }}">Log an issue</a></li>
+                        @endhasanyrole
                     </ul>
                 </li>
                 <li><a href="{{ url('/members/index') }}">Staff</a></li>
+                @hasanyrole('LeadDemonstrator|Demonstrator|NewDemonstrator|administrator')
                 <li><a class="btn btn-lg" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+                @endhasanyrole
                 <li><a href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             @else
                 <ul class="lsn bl-menu" id="my-menu">
@@ -68,7 +72,7 @@
             @endif
         </ul>
         <div id="toggle-menu" for="hmt" class="hamburger hamburger--slider btn-menu">
-            <div class="hamburger-box""{{ route('auth.logout') }}">
+            <div class="hamburger-box" "{{ route('auth.logout') }}">
                 <div class="hamburger-inner"></div>
             </div>
         </div>
