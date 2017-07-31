@@ -13,8 +13,38 @@
     @endif
 
     <div class="title m-b-md">
-        Issues Printer {{ $id }}
+        Performance history of Printer {{ $id }}
     </div>
+
+    <div class="container well">
+        <div class="alert alert-info">
+            <div class="row">
+                <div class="col-sm-12 text-left">Test Issue 1</div>
+            </div>
+            <div class="row vdivide">
+                <div class="col-sm-3 text-left">
+                    <p>Created by</p>
+                    <p>Andrii Yakovliev</p>
+                </div>
+                <div class="col-sm-3 text-left">
+                    <p>Created on</p>
+                    <p>Created on</p>
+                </div>
+                <div class="col-sm-3 text-left">
+                    <p>Printer Status</p>    
+                    <p>Created on</p>
+                </div>
+                <div class="col-sm-3 text-left">
+                    <p>Days of Order</p>
+                    <p>Created on</p>
+                </div>
+            </div>
+        </div>
+    </div>
+                
+
+
+
 
     <section class="s-welcome" style="margin-top: -20px">
 
