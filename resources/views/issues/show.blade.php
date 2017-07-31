@@ -74,7 +74,9 @@
                         {{--Print the text of a post--}}
                         <h2><b> Message:</b></h2>
                         @if($issue->resolved == 0)
+                            @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                             <a href="/issues/update/{{$issue->id}}" class="btn btn-lg btn-info pull-right">View/Update or Resolve Issue</a><br>
+                            @endhasanyrole
                         @endif
                         <p>{{ $issue->body }}</p>
                     </div>

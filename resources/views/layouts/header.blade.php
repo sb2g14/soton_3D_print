@@ -17,7 +17,6 @@
                         <li><a href="{{ url('/roles') }}">Manage Account</a></li>
                     </ul>
                 </li>
-                {{--<li><a href="{{ url('/roles') }}">Manage Account</a></li>--}}
                 <li class="home"><a href="{{ url('/') }}">Home</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
@@ -32,6 +31,7 @@
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
                     </ul>
                 </li>
+                @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
                         3D printers
@@ -42,8 +42,11 @@
                         <li><a class="dropdown-item" href="{{ url('/issues/select') }}">Log an issue</a></li>
                     </ul>
                 </li>
+                @endhasanyrole
                 <li><a href="{{ url('/members/index') }}">Staff</a></li>
+                @hasanyrole('LeadDemonstrator|Demonstrator|NewDemonstrator|administrator')
                 <li><a class="btn btn-lg" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+                @endhasanyrole
                 <li><a href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             @else
                 <ul class="lsn bl-menu" id="my-menu">

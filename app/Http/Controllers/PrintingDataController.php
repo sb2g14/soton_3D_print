@@ -100,8 +100,8 @@ class PrintingDataController extends Controller
     {
 
         $this -> validate(request(), [
-            'student_name' => 'required|string|min:3|max:20|regex:/[\w\-\'\s]+/',
-            'email' => 'required|email|min:3|max:20|regex:/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/',
+            'student_name' => 'required|string|min:3|max:30|regex:/[\w\-\'\s]+/',
+            'email' => 'required|email|min:3|max:30|regex:/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/',
             'student_id' => 'required|numeric|min:8',
             'material_amount' => 'required|numeric|min:1|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
             'use_case' => 'required|min:3'

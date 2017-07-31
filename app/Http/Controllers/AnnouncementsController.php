@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\PublicAnnouncements;
 use Illuminate\Http\Request;
 use App\Announcement;
+use App\User;
 use Auth;
 use Illuminate\Support\Facades\Input;
+use App\Mail\AnnouncementNew;
+use App\Mail\Welcome;
 
 class AnnouncementsController extends Controller
 {
@@ -60,6 +63,15 @@ class AnnouncementsController extends Controller
             // Submit the data to the database
 
             $public_announcement->save();
+        }
+
+        if (Input::get('email', false)) {
+
+            $users = User::all();
+            foreach ($users as $user) {
+                \Mail::to($user)->send(new AnnouncementNew($user,$announcement));
+            }
+
         }
 
         // Return to the homepage:

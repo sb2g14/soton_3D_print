@@ -199,14 +199,12 @@
                     <textarea id="announcement" name="message" placeholder="Post something" class="form-control"></textarea>
                     <span id="announcement_error" style="color: red"></span>
                 </div>
-                @hasanyrole('LeadDemonstrator|administrator')
                 <div class="checkbox">
                     <label><input type="checkbox" name="public" value="public">Public announcement</label>
                 </div>
                 <div class="checkbox">
                     <label><input type="checkbox" name="email" value="email">Inform all by email</label>
                 </div>
-                @endhasanyrole
                 <button id="post" type="submit" class="btn btn-primary">Post</button>
             </form>
         </div>
@@ -263,6 +261,22 @@
             </div>
         </div>
 
+<<<<<<< HEAD
+        {{--Form to add public announcement--}}
+        {{--<div id="addAnnouncement" class="card collapse text-left">--}}
+            {{--<form method="POST" action="/publicAnnouncements">--}}
+                {{--{{ csrf_field() }}--}}
+                {{--<div class="form-group">--}}
+                    {{--<label for="message">New AnnouncementNew</label><br>--}}
+                    {{--<textarea id="announcement" name="message" placeholder="Post something" class="form-control"></textarea>--}}
+                    {{--<span id="announcement_error" style="color: red"></span>--}}
+                {{--</div>--}}
+                {{--<button id="post" type="submit" class="btn btn-primary">Post</button>--}}
+            {{--</form>--}}
+        {{--</div>--}}
+
+=======
+>>>>>>> f202711124e3e918eecd7649607d7d671be10282
         <ul class="list-group">
             @if(!empty($public_announcement_last))
             <li class="list-group-item">
