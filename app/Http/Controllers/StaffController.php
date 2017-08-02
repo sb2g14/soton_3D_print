@@ -20,7 +20,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $members = staff::all();
+        $members = staff::orderBy('first_name')->get();
         return view('members.index', compact('members'));
     }
 
