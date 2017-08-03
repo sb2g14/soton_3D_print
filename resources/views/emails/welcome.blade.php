@@ -4,7 +4,7 @@
 
 Thank you for registering!
 
-@component('mail::button', ['url' => 'http://soton3dprint.clients.soton.ac.uk'])
+@component('mail::button', ['url' => 'http://3dprint.clients.soton.ac.uk'])
 Continue browsing
 @endcomponent
 
