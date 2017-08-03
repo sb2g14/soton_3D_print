@@ -54,7 +54,7 @@
                         <td>{{ floor((time() - strtotime($issue->created_at)) / (60 * 60 * 24)) }}</td>
                         <td>{{ isset($issue->title) ? $issue->title : "Issue with printer ".$issue->printers_id }}</td>
                         <td>{{ $issue->body }}</td>
-                        <td><a href="/issues/update/{{$issue->id}}" class="btn btn-info">View/Update or Resolve Issue</a></td>
+                        <td><a href="/issues/update/{{$issue->id}}" class="btn btn-info">Update/Resolve</a></td>
                     </tr>
                 @endforeach
             </tbody>
