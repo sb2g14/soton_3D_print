@@ -67,7 +67,7 @@
                         @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <td><a href="/issues/show/{{$printer->id }}" class="btn btn-info btn-block">Details</a></td>
                             @hasanyrole('LeadDemonstrator|administrator')
-                            <td><a href="/printers/update/{{$printer->id }}" class="btn btn-primary btn-block">Update record</a></td>
+                            <td><a href="/printers/update/{{$printer->id }}" class="btn btn-primary btn-block">Update</a></td>
                             @endhasanyrole
                         @endhasanyrole
                     </tr>
