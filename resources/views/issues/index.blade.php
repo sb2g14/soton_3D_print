@@ -37,7 +37,7 @@
                     <th style="vertical-align: top;">Created on</th>
                     <th style="vertical-align: top;">Days out of Order</th>
                     <th style="vertical-align: top;">Title</th>
-                    <th style="vertical-align: top;">Message</th>
+                    <th style="vertical-align: top; width: 200px">Message</th>
                     <th style="vertical-align: top;">Modify</th>
                     <th></th>
                 </tr>
