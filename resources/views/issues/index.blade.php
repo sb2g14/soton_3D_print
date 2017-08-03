@@ -25,19 +25,17 @@
         </a>
     </div>
 
-    
-
     <div class="container">
         <table class="table">
             <thead>
                 <tr style="font-weight: 600;">
                     <th style="vertical-align: top;">ID</th>
-                    <th>Printer Number</th>
-                    <th>Serial Number</th>
-                    <th>Printer Status</th>
-                    <th>Created by</th>
+                    <th style="vertical-align: top;">Printer Number</th>
+                    <th style="vertical-align: top;">Serial Number</th>
+                    <th style="vertical-align: top;">Printer Status</th>
+                    <th style="vertical-align: top;">Created by</th>
                     <th style="vertical-align: top;">Created on</th>
-                    <th>Days out of Order</th>
+                    <th style="vertical-align: top;">Days out of Order</th>
                     <th style="vertical-align: top;">Title</th>
                     <th style="vertical-align: top;">Message</th>
                     <th style="vertical-align: top;">Modify</th>
