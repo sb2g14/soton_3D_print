@@ -25,21 +25,19 @@
         </a>
     </div>
 
-    
-
     <div class="container">
         <table class="table">
             <thead>
                 <tr style="font-weight: 600;">
                     <th style="vertical-align: top;">ID</th>
-                    <th>Printer Number</th>
-                    <th>Serial Number</th>
-                    <th>Printer Status</th>
-                    <th>Created by</th>
+                    <th style="vertical-align: top;">Printer Number</th>
+                    <th style="vertical-align: top;">Serial Number</th>
+                    <th style="vertical-align: top;">Printer Status</th>
+                    <th style="vertical-align: top;">Created by</th>
                     <th style="vertical-align: top;">Created on</th>
-                    <th>Days out of Order</th>
+                    <th style="vertical-align: top;">Days out of Order</th>
                     <th style="vertical-align: top;">Title</th>
-                    <th style="vertical-align: top;">Message</th>
+                    <th style="vertical-align: top; width: 200px">Message</th>
                     <th style="vertical-align: top;">Modify</th>
                     <th></th>
                 </tr>
@@ -56,7 +54,7 @@
                         <td>{{ floor((time() - strtotime($issue->created_at)) / (60 * 60 * 24)) }}</td>
                         <td>{{ isset($issue->title) ? $issue->title : "Issue with printer ".$issue->printers_id }}</td>
                         <td>{{ $issue->body }}</td>
-                        <td><a href="/issues/update/{{$issue->id}}" class="btn btn-info">View/Update or Resolve Issue</a></td>
+                        <td><a href="/issues/update/{{$issue->id}}" class="btn btn-info">Update/Resolve</a></td>
                     </tr>
                 @endforeach
             </tbody>
