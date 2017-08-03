@@ -68,6 +68,10 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     // Here we redirect to the page where we store a new printer
     Route::post('/printers','PrintersController@store');
 
+    // Here we redirect to the view where one can update a printer
+    Route::get('/printers/update/{{id}}','PrintersController@edit');
+
+
     // Redirect to the view where one can manage issues
 
     Route::get('/issues/index','IssuesController@index');

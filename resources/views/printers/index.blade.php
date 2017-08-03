@@ -37,7 +37,9 @@
                     <th>Serial Number</th>
                     <th>Printer Type</th>
                     <th>Status</th>
+                    @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                     <th>View History</th>
+                    @endhasanyrole
                 </tr>
             </thead>
             <tbody>
@@ -59,7 +61,9 @@
                          @elseif ($printer->printer_status == 'Signed out')
                             <td class="active">{{$printer->printer_status}}</td>
                         @endif
+                        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <td><a href="/issues/show/{{$printer->id }}" class="btn btn-info btn-block">Details</a></td>
+                        @endhasanyrole
                     </tr>
                 @endforeach
             </tbody>

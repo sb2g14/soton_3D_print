@@ -88,9 +88,10 @@ class PrintersController extends Controller
      * @param  \App\printers  $printers
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($id)
     {
-
+        $printer = Printers::find($id);
+        return view('printers.edit',compact('printer'));
     }
 
     /**

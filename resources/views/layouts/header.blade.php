@@ -13,7 +13,9 @@
                         Welcome {{Auth::user()->name}}!
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        @isset(Auth::user()->staff)
                         <li><a href="/members/{{Auth::user()->staff->id}}">View Personal Record</a></li>
+                        @endisset
                         <li><a href="{{ url('/roles') }}">Manage Account</a></li>
                     </ul>
                 </li>
