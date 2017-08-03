@@ -23,7 +23,7 @@
         </a>
         @endhasanyrole
         @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
-        <a href="/issues/index" class="btn btn-success pull-left" >Manage Issues</a>
+        <a href="/issues/index" class="btn btn-success pull-left" style="margin-right: 20px;" >Manage Issues</a>
         @endhasanyrole
         @hasanyrole('LeadDemonstrator|administrator')
         {!! link_to_route('issues.export',
