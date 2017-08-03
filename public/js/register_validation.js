@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -32,9 +32,6 @@
 /******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
@@ -63,12 +60,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 18:
+/***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(6);
@@ -153,13 +150,13 @@ $(function () {
             $("#student_id").addClass("parsley-error");
             error_id = true;
         } else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
-            $("#student_id_error").html("Id of a member of staff mast be 8 digits long");
+            $("#student_id_error").html("Id of a member of staff must be 8 digits long");
             $("#student_id_error").show();
             $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
         } else if (id.val()[0].match(/^[2345]/) && id.val().length !== 9) {
-            $("#student_id_error").html("The id of students mast be 9 digits long");
+            $("#student_id_error").html("The id of students must be 9 digits long");
             $("#student_id_error").show();
             $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
@@ -213,13 +210,13 @@ $(function () {
         var password = $("#password");
 
         if (password.val().length < 6 || password.val().length > 16) {
-            $("#password_error").html("The password mast be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
+            $("#password_error").html("The password must be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
             $("#password_error").show();
             $("#password").focus();
             $("#password").addClass("parsley-error");
             error_password = true;
         } else if (!password.val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,16}$/)) {
-            $("#password_error").html("The password mast be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
+            $("#password_error").html("The password must be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
             $("#password_error").show();
             $("#password").focus();
             $("#password").addClass("parsley-error");

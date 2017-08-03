@@ -88,9 +88,10 @@ class PrintersController extends Controller
      * @param  \App\printers  $printers
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($id)
     {
-
+        $printer = Printers::find($id);
+        return view('printers.edit',compact('printer'));
     }
 
     /**
@@ -100,9 +101,24 @@ class PrintersController extends Controller
      * @param  \App\printers  $printers
      * @return \Illuminate\Http\Response
      */
-    public function update()
+    public function update($id)
     {
-        //
+        $this -> validate(request(), [
+            'serial_no' => 'required|numeric',
+            'printer_type' => 'required',
+            'printer_status' => 'required'
+        ]);
+        $printer_type = request('printer_type');
+        if ($printer_type=="Other"){
+            $printer_type = request('other_printer_type');
+        }
+        $printer = Printers::find($id);
+        $printer->update([
+            'serial_no' => request('serial_no'),
+            'printer_type' => $printer_type,
+            'printer_status'=> request('printer_status')]);
+
+        return redirect('/printers/index');
     }
 
     public function updatePrinterStatus()

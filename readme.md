@@ -1,3 +1,9 @@
+## 3dprint.clients.soton.ac.uk web site 
+
+Detailed explanation goes here...
+
+Remember to fulfill all license requirements for the pulled packages ASAP...
+
 ## Laravel Roles Permissions Admin - Spatie version
 
 This is a Laravel 5.4 adminpanel starter project with roles-permissions management based on [Spatie Laravel-permission package](https://github.com/spatie/laravel-permission), [AdminLTE theme](https://adminlte.io/) and [Datatables.net](https://datatables.net).

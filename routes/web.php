@@ -12,7 +12,7 @@
 */
 
 // Manage roles blade
-Route::get('/roles', function () { return redirect('/admin/home'); });
+Route::get('/roles', 'RolesManageController@index');
 
 // Here we redirect users to the 'Welcome' page
 Route::get('/','PostsController@index')->name('home');
@@ -39,68 +39,84 @@ Route::get('/aboutWorkshop','AboutWorkshopController@index');
 Route::get('/members/index','StaffController@index');
 
 // This route uses controller to redirect to a personal page of every member
-Route::get('/members/{member}','StaffController@show');
+Route::get('/members/{id}','StaffController@show');
 
 // This route uses controller to redirect to a personal page to update the personal record of selected member
-Route::get('/members/edit/{member}','StaffController@edit');
+Route::get('/members/edit/{id}','StaffController@edit');
 
 // This route uses controller to update a personal page of selected member
-Route::post('/members/edit/{member}','StaffController@update');
+Route::post('/members/edit/{id}','StaffController@update');
 
 // This route uses controller to delete a personal page of selected member
-Route::get('/members/delete/{member}','StaffController@destroy');
-
-// Here we redirect users to the add new member post page
-Route::get('/aboutWorkshop/create','StaffController@create');
-
-// Here we redirect to the page where we store a new member
-Route::post('/aboutWorkshop','StaffController@store');
+Route::get('/members/delete/{id}','StaffController@destroy');
 
 // Here we redirect to the page containing general printer info using controller
 Route::get('/printers/index','PrintersController@index');
 
-// Here we redirect users to the add new printer post page
-Route::get('/printers/create','PrintersController@create');
+// Group of routes available only to roles administrator, Lead Demonstrator, Demonstrator
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator']], function () {
 
-// Here we redirect to the page where we store a new printer
-Route::post('/printers','PrintersController@store');
+    // Redirect to the view where one can manage issues
 
-// Redirect to the view where one can manage issues
+    Route::get('/issues/index','IssuesController@index');
 
-Route::get('/issues/index','IssuesController@index');
+    // Redirect to a form where demonstrator rise the issue and can update the printer status
 
-// Redirect to a form where demonstrator rise the issue and can update the printer status
+    Route::get('/issues/select', 'IssuesController@select');
 
-Route::get('/issues/select', 'IssuesController@select');
+    // Select printer for updating status
+    Route::post('/issues/select','IssuesController@selectPrinter');
 
-// Select printer for updating status
-Route::post('/issues/select','IssuesController@selectPrinter');
+    // The route for the raising the issue
+    Route::post('/issues/create','IssuesController@create');
 
-// The route for the raising the issue
-Route::post('/issues/create','IssuesController@create');
+    //Route to update the issue
+    Route::get('/issues/update/{id}','IssuesController@edit');
 
-//Route to update the issue
-Route::get('/issues/update/{id}','IssuesController@edit');
+    //Form updating the issue
+    Route::post('/issues/update','IssuesController@update');
 
-//Form updating the issue
-Route::post('/issues/update','IssuesController@update');
+    // Route to show the issue to be resolved
+    Route::get('issues/resolve/{id}','IssuesController@showResolve');
 
-// Route to show the issue to be resolved
-Route::get('issues/resolve/{id}','IssuesController@showResolve');
+    // Route to update database entry for a resolved issue
+    Route::post('issues/resolve','IssuesController@resolve');
 
-// Route to update database entry for a resolved issue
-Route::post('issues/resolve','IssuesController@resolve');
+    // Route view resolved issue for each printer
+    Route::get('issues/show/{id}','IssuesController@show');
 
-// Route view resolved issue for each printer
-Route::get('issues/show/{id}','IssuesController@show');
+    // Route to export issues to CSV
 
-// Route to export issues to CSV
+    Route::get('issues/export',
+        [
+            'as' => 'issues.export',
+            'uses' => 'IssuesController@printersIssuesExport'
+        ]);
 
-Route::get('issues/export',
-    [
-        'as' => 'issues.export',
-        'uses' => 'IssuesController@printersIssuesExport'
-    ]);
+});
+
+    // Group of routes available only to roles administrator, Lead Demonstrator
+    Route::group(['middleware' => ['role:administrator|LeadDemonstrator']], function () {
+
+    // Here we redirect users to the add new printer post page
+    Route::get('/printers/create','PrintersController@create');
+
+    // Here we redirect to the page where we store a new printer
+    Route::post('/printers','PrintersController@store');
+
+    // Here we redirect to the view where one can update a printer
+    Route::get('/printers/update/{id}','PrintersController@edit');
+
+    // Here we update printer information
+    Route::post('/printers/update/{id}','PrintersController@update');
+
+    // Here we redirect users to the add new member post page
+    Route::get('/members','StaffController@create');
+
+    // Here we redirect to the page where we store a new member
+    Route::post('/members','StaffController@store');
+
+});
 
 // Show a list of jobs waiting for approval
 

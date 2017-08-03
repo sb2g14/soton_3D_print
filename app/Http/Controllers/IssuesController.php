@@ -27,7 +27,7 @@ class IssuesController extends Controller
     }
     public function index()
     {
-        $issues =  FaultData::orderBy('created_at', 'desc')->where('resolved', 0)->get();
+        $issues =  FaultData::orderBy('id', 'desc')->where('resolved', 0)->get();
 
         return view('issues.index', compact('issues','excel'));
     }
@@ -125,7 +125,7 @@ class IssuesController extends Controller
      */
     public function show($id)
     {
-        $issues =  FaultData::orderBy('created_at', 'desc')->where('printers_id', $id)->get();
+        $issues =  FaultData::orderBy('id', 'desc')->where('printers_id', $id)->get();
 
         return view('issues.show', compact('issues', 'id'));
     }

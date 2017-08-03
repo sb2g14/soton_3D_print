@@ -7,14 +7,9 @@
     </div>
     @endif
 
-    <div class="row">
-        <div class="col-lg-12">
-            <a href="/printingData/index" class="btn btn-lg btn-info pull-left" style="position: relative; margin-left: 10%">Show pending jobs</a>
-        </div>
-    </div>
-
-    <div class="title m-b-md">
-        Approved Jobs
+    <div class="text-center m-b-md">
+        <div class="title">Approved Jobs</div>
+        <a href="/printingData/index" class="btn btn-lg btn-info">Show pending jobs</a>
     </div>
 
     <div class="container">
@@ -39,6 +34,7 @@
             @foreach($approved_jobs as $job)
                 {{--Separate hours from minutes and seconds in printing time--}}
                 @php( list($h, $i, $s) = explode(':', $job->time) )
+                @endphp
                 {{--Add number of hours job takes to the time when it was approved--}}
                 {{--Add number of minutes job takes--}}
                 {{--Plus 15 minutes--}}

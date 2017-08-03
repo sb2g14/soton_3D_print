@@ -7,15 +7,16 @@
     </div>
     @endif
 
-    @hasanyrole('LeadDemonstrator|administrator')
-    {!! link_to_route('printingData.export',
-    'Export Jobs to Excel', null,
-    ['class' => 'btn btn-primary pull-right']) !!}
-    @endhasanyrole
    
     <div class="text-center m-b-md">
-        <div class="title" style="display: inline-block; vertical-align: middle;">Pending Jobs</div>
+        <div class="title">Pending Jobs</div>
         <a href="/printingData/approved" type="button" class="btn btn-lg btn-info" style="display: inline-block;">Show approved jobs</a>
+
+        @hasanyrole('LeadDemonstrator|administrator')
+        {!! link_to_route('printingData.export',
+        'Export Jobs to Excel', null,
+        ['class' => 'btn btn-lg btn-primary']) !!}
+        @endhasanyrole
     </div>
     
     <div class="container">

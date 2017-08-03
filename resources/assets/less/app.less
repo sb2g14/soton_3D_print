@@ -301,6 +301,7 @@ body {
     h3 {
         font-size: 20px;
         font-weight: 600; 
+        margin-bottom: 20px;
     } 
 
     p {
@@ -504,6 +505,32 @@ footer {
       right: 0;
       min-height: 220px;
     }
+        
+    .row.vdivide [class*='col-sm-3']:not(:last-child):after {
+      background: #e0e0e0;
+      width: 1px;
+      content: "";
+      display: block;
+      position: absolute;
+      top:0;
+      bottom: 0;
+      right: 0;
+      min-height: 70px;
+    }
+
+    .row.vdivide [class*='col-sm-4']:not(:last-child):after {
+      background: #e0e0e0;
+      width: 1px;
+      content: "";
+      display: block;
+      position: absolute;
+      top:0;
+      bottom: 0;
+      right: 0;
+      min-height: 70px;
+    }
+
+
 }
 
 @media screen and (min-width: 1023px) {

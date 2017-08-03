@@ -8,6 +8,12 @@ use Auth;
 
 class CommentsController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->middleware('auth');
+
+    }
     public function store(posts $post){
 
         // Validate requests:

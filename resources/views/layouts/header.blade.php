@@ -13,11 +13,12 @@
                         Welcome {{Auth::user()->name}}!
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        @isset(Auth::user()->staff)
                         <li><a href="/members/{{Auth::user()->staff->id}}">View Personal Record</a></li>
+                        @endisset
                         <li><a href="{{ url('/roles') }}">Manage Account</a></li>
                     </ul>
                 </li>
-                {{--<li><a href="{{ url('/roles') }}">Manage Account</a></li>--}}
                 <li class="home"><a href="{{ url('/') }}">Home</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
@@ -72,7 +73,7 @@
             @endif
         </ul>
         <div id="toggle-menu" for="hmt" class="hamburger hamburger--slider btn-menu">
-            <div class="hamburger-box" "{{ route('auth.logout') }}">
+            <div class="hamburger-box""{{ route('auth.logout') }}">
                 <div class="hamburger-inner"></div>
             </div>
         </div>
