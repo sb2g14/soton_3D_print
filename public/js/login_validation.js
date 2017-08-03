@@ -102,7 +102,7 @@ $(function () {
     function check_email() {
         var email = $("#email");
 
-        if (email.val().length < 11 || email.val().length > 30) {
+        if (email.val().length < 11 || email.val().length > 100) {
             $("#email_error").html("Email is too short or too long");
             $("#email_error").show();
             $("#email").focus();
