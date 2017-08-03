@@ -52,13 +52,13 @@
                             {{--</div>--}}
 
                             <div class="form-group">
-                                <div class="col-md-8 col-md-offset-4">
+                                <div class="col-md-8 col-md-offset-4 text-left">
                                     <button id="login-button" type="submit" class="btn">
                                         Login
                                     </button><br>
                                     @include('layouts.errors')
                                     {{--Forgot password button, send email--}}
-                                    <a class="btn btn-link" href="{{ route('auth.password.reset') }}">
+                                    <a style="padding-left: 0;" class="btn btn-link" href="{{ route('auth.password.reset') }}">
                                         Forgot Your Password?
                                     </a>
                                 </div>

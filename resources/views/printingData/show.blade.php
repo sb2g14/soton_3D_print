@@ -7,7 +7,7 @@
 
     <div class="container well">
         <div class="row vdivide">
-            <div class="col-sm-6 text-left">
+            <div class="col-sm-6 text-left job-details">
                 <div class="alert alert-info text-left">
                     <p>
                         Printer number: <b>{{ $job->printers_id }}</b><br>
@@ -122,17 +122,17 @@
                             <div class="col-md-2">
                                 {!! Form::select('hours', range(0,59), $h, ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
                                 @if ($errors->has('hours'))
-                                    <span class="help-block">
-                            <strong>{{ $errors->first('hours') }}</strong>
-                        </span>
+                                    <span class="help-block"> 
+                                        <strong>{{ $errors->first('hours') }}</strong>
+                                    </span>
                                 @endif
                             </div>
                             <div class="col-md-2">
                                 {!! Form::select('minutes', range(0,59), $i, ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
                                 @if ($errors->has('minutes'))
                                     <span class="help-block">
-                            <strong>{{ $errors->first('minutes') }}</strong>
-                        </span>
+                                        <strong>{{ $errors->first('minutes') }}</strong>
+                                    </span>
                                 @endif
                             </div>
                         </div>
@@ -166,9 +166,11 @@
                         <h4 style="color:red; font-weight: 600; font-size: large">To be filled by demonstrator:</h4><br> -->
 
                         <div class="form-group text-left">
-                            <label for="comments">Add comments (optional):</label><br>
-                            <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
-                            <span class="help-block" id="message_error"></span>
+                            <div class="col-md-12">
+                                <label for="comments">Add comments (optional):</label><br>
+                                <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                <span class="help-block" id="message_error"></span>
+                            </div>
                         </div>
 
                         <div class="col-sm-12 text-left">

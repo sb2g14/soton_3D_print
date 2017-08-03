@@ -14,7 +14,7 @@ $(function () {
         var message = $("#message_last");
 
         if(message.val().length < 8 || message.val().length > 300){
-            $("#message_last_error").html("The message mast be between 8 and 300 characters long");
+            $("#message_last_error").html("The message must be between 8 and 300 characters long");
             $("#message_last_error").show();
             $("#message_last").addClass("parsley-error");
             error_message = true;
