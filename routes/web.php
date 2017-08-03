@@ -56,10 +56,11 @@ Route::get('/aboutWorkshop/create','StaffController@create');
 // Here we redirect to the page where we store a new member
 Route::post('/aboutWorkshop','StaffController@store');
 
-Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator']], function () {
+// Here we redirect to the page containing general printer info using controller
+Route::get('/printers/index','PrintersController@index');
 
-    // Here we redirect to the page containing general printer info using controller
-    Route::get('/printers/index','PrintersController@index');
+// Group of routes available only to roles
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator']], function () {
 
     // Here we redirect users to the add new printer post page
     Route::get('/printers/create','PrintersController@create');

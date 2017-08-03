@@ -31,18 +31,18 @@
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
                     </ul>
                 </li>
-                @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
                         3D printers
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="{{ url('/printers/index') }}">View printers</a></li>
+                        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <li><a class="dropdown-item" href="{{ url('/issues/index') }}">Pending issues</a></li>
                         <li><a class="dropdown-item" href="{{ url('/issues/select') }}">Log an issue</a></li>
+                        @endhasanyrole
                     </ul>
                 </li>
-                @endhasanyrole
                 <li><a href="{{ url('/members/index') }}">Staff</a></li>
                 @hasanyrole('LeadDemonstrator|Demonstrator|NewDemonstrator|administrator')
                 <li><a class="btn btn-lg" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>

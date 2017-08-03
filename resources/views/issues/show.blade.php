@@ -155,13 +155,13 @@
                 <ul class="container" style="margin-top: 20px">
                     <div class="col-sm-6">
                         {{--Print title of an issue--}}
-                        <h2><b>{{ $issue->title }}:</b></h2><br>
+                        <h2><b>{{ isset($issue->title) ? $issue->title : 'Issue with printer '.$issue->printers_id }}:</b></h2><br>
                         {{--Print name of a user who created an issue--}}
                         <h4 class="media-heading"> {{$issue->users_name_created_issue}}  <small><i>
                                     {{--Print date and time when an issue was created--}}
-                                    Created on {{ $issue->created_at->toDayDateTimeString() }}</i></small></h4><br>
+                                    Created on {{ isset($issue->Date)  ? $issue->Date : $issue->created_at->toDayDateTimeString()}}</i></small></h4><br>
                         <h4 class="media-heading"> Printer Status: <b>{{$issue->printer_status}}</b></h4><br>
-                        <h4 class="media-heading"> Days out of order: <b>{{floor((strtotime($issue->updated_at) - strtotime($issue->created_at)) / (60 * 60 * 24))}}</b></h4><br>
+                        <h4 class="media-heading"> Days out of order: <b>{{ isset($issue->Date) ? $issue->days_out_of_order : floor((strtotime($issue->updated_at) - strtotime($issue->created_at)) / (60 * 60 * 24))}}</b></h4><br>
                     </div>
                     <div class="col-sm-6 item">
                         {{--Print the text of a post--}}
@@ -209,7 +209,7 @@
                             <div class="media">
                                 <div class="media-body">
                                     <h2><b>Resolved:</b></h2><br>
-                                    <h4 class="media-heading"> {{$issue->users_name_resolved_issue}}  <small><i>Resolved on {{ $issue->updated_at->toDayDateTimeString() }}:</i></small></h4><br>
+                                    <h4 class="media-heading"> {{$issue->users_name_resolved_issue}}  <small><i> Resolved on {{ isset($issue->Repair_Date) ? $issue->Repair_Date : $issue->updated_at->toDayDateTimeString() }}:</i></small></h4><br>
                                 </div>
                             </div>
                     </div>
