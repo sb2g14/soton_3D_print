@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <hr>
-                <div style="font-weight: 500;">Development version 2.0</div>
+                <div style="font-weight: 500;">Production version 1.1</div>
             </div>
         </div>
     </div>
