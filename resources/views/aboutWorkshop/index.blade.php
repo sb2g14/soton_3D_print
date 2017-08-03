@@ -1,10 +1,5 @@
 @extends('layouts.layout')
 @section('content')
-    @if ($flash=session('message'))
-        <div id="flash_message" class="alert alert-success" role="alert" style="position: relative; top: -100px">
-            {{ $flash }}
-        </div>
-    @endif
     {{--<div class="title m-b-md">--}}
         {{--About us--}}
     {{--</div>--}}

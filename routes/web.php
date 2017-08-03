@@ -39,38 +39,22 @@ Route::get('/aboutWorkshop','AboutWorkshopController@index');
 Route::get('/members/index','StaffController@index');
 
 // This route uses controller to redirect to a personal page of every member
-Route::get('/members/{member}','StaffController@show');
+Route::get('/members/{id}','StaffController@show');
 
 // This route uses controller to redirect to a personal page to update the personal record of selected member
-Route::get('/members/edit/{member}','StaffController@edit');
+Route::get('/members/edit/{id}','StaffController@edit');
 
 // This route uses controller to update a personal page of selected member
-Route::post('/members/edit/{member}','StaffController@update');
+Route::post('/members/edit/{id}','StaffController@update');
 
 // This route uses controller to delete a personal page of selected member
-Route::get('/members/delete/{member}','StaffController@destroy');
-
-// Here we redirect users to the add new member post page
-Route::get('/aboutWorkshop/create','StaffController@create');
-
-// Here we redirect to the page where we store a new member
-Route::post('/aboutWorkshop','StaffController@store');
+Route::get('/members/delete/{id}','StaffController@destroy');
 
 // Here we redirect to the page containing general printer info using controller
 Route::get('/printers/index','PrintersController@index');
 
-// Group of routes available only to roles
+// Group of routes available only to roles administrator, Lead Demonstrator, Demonstrator
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator']], function () {
-
-    // Here we redirect users to the add new printer post page
-    Route::get('/printers/create','PrintersController@create');
-
-    // Here we redirect to the page where we store a new printer
-    Route::post('/printers','PrintersController@store');
-
-    // Here we redirect to the view where one can update a printer
-    Route::get('/printers/update/{{id}}','PrintersController@edit');
-
 
     // Redirect to the view where one can manage issues
 
@@ -108,6 +92,29 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
             'as' => 'issues.export',
             'uses' => 'IssuesController@printersIssuesExport'
         ]);
+
+});
+
+    // Group of routes available only to roles administrator, Lead Demonstrator
+    Route::group(['middleware' => ['role:administrator|LeadDemonstrator']], function () {
+
+    // Here we redirect users to the add new printer post page
+    Route::get('/printers/create','PrintersController@create');
+
+    // Here we redirect to the page where we store a new printer
+    Route::post('/printers','PrintersController@store');
+
+    // Here we redirect to the view where one can update a printer
+    Route::get('/printers/update/{id}','PrintersController@edit');
+
+    // Here we update printer information
+    Route::post('/printers/update/{id}','PrintersController@update');
+
+    // Here we redirect users to the add new member post page
+    Route::get('/members','StaffController@create');
+
+    // Here we redirect to the page where we store a new member
+    Route::post('/members','StaffController@store');
 
 });
 

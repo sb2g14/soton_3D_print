@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Auth;
 
 class StaffController extends Controller
 {
@@ -31,7 +33,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        return view('aboutWorkshop.create');
+        return view('members.create');
     }
 
     /**
@@ -47,13 +49,12 @@ class StaffController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email',
-            'phone' => 'required|numeric|digits:11',
-            'role' => 'required'
+            'phone' => 'required|numeric|digits:11'
         ]);
-        staff::create(request(['first_name', 'last_name', 'email', 'phone','role']));
+        staff::create(request(['first_name', 'last_name', 'email', 'phone']),Input::get('role'));
         session()->flash('message', 'The record has been successfully added to the database!');
 
-        return redirect('/aboutWorkshop');
+        return redirect('/members/index');
     }
 
     /**
@@ -92,15 +93,21 @@ class StaffController extends Controller
         $this -> validate(request(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
+            'student_id' => 'required|numeric',
             'email' => 'required|email',
             'phone' => 'required|numeric|digits:11',
         ]);
         $member = staff::findOrFail($id);
-        $member->update(request(['first_name', 'last_name', 'email', 'phone']));
+        $member->update(request(['first_name', 'last_name', 'email', 'phone','student_id']));
+
+        if(Auth::user()->hasAnyRole(['administrator','LeadDemonstrator']))
+        {
+            staff::where('id','=', $id)->update(array('role'=> Input::get('role')));
+        }
 
         session()->flash('message', 'The record has been successfully updated!');
 
-        return redirect('/members/{member}');
+        return redirect('/members/index');
     }
 
     /**
@@ -111,7 +118,7 @@ class StaffController extends Controller
      */
     public function destroy($id)
     {
-        staff::destroy($id);
+//        staff::destroy($id);
         session()->flash('message', 'The record has been deleted');
 
         return redirect('/aboutWorkshop');

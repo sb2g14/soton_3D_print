@@ -273,8 +273,9 @@
                                             @if($public_announcement_last->user_id != 0)  
                                             {{$public_announcement_last->user->name}} 
                                             @else Anonym 
-                                            @endif 
-                                            <small><i>Print date and time when a post was created Posted on {{ $public_announcement_last->created_at->toDayDateTimeString() }}:</i></small>
+                                            @endif
+                                                {{--Print date and time when a post was created--}}
+                                            <small><i>Posted on {{ $public_announcement_last->created_at->toDayDateTimeString() }}:</i></small>
                                         </h5>
                                         <h5> {{ $public_announcement_last->message }} </h5>
                                     </div>

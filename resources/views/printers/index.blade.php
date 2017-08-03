@@ -19,11 +19,11 @@
     <div class="container">
         @hasanyrole('LeadDemonstrator|administrator')
         <a href="{{ url('/printers/create') }}">
-            <button type="submit" class="btn btn-primary pull-right">Add Printer</button>
+            <button type="submit" class="btn btn-success pull-right">Add Printer</button>
         </a>
         @endhasanyrole
         @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
-        <a href="/issues/index" class="btn btn-success pull-left" style="margin-right: 20px;" >Manage Issues</a>
+        <a href="/issues/index" class="btn btn-primary pull-left" style="margin-right: 20px;" >Manage Issues</a>
         @endhasanyrole
         @hasanyrole('LeadDemonstrator|administrator')
         {!! link_to_route('issues.export',
@@ -39,6 +39,9 @@
                     <th>Status</th>
                     @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                     <th>View History</th>
+                        @hasanyrole('LeadDemonstrator')
+                        <th>Update Record</th>
+                        @endhasanyrole
                     @endhasanyrole
                 </tr>
             </thead>
@@ -63,6 +66,9 @@
                         @endif
                         @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <td><a href="/issues/show/{{$printer->id }}" class="btn btn-info btn-block">Details</a></td>
+                            @hasanyrole('LeadDemonstrator|administrator')
+                            <td><a href="/printers/update/{{$printer->id }}" class="btn btn-primary btn-block">Update record</a></td>
+                            @endhasanyrole
                         @endhasanyrole
                     </tr>
                 @endforeach

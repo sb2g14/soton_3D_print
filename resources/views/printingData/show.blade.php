@@ -116,6 +116,7 @@
                         {{--</div>--}}
                        {{--Get numbers of hours and minutes from the requested time--}}
                         @php( list($h, $i, $s) = explode(':', $job->time) )
+                        @endphp
 
                         <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                             {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
