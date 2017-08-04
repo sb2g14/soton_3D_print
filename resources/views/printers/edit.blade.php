@@ -33,6 +33,7 @@
                             <input type="text" name="other_printer_type" class="form-control" placeholder="Please input if other"/><br>
                         </div> <!-- Class radio -->
                     </div> <!-- /form-group -->
+                    @hasrole('administrator')
                     <label for="body">Printer status: </label> <br>
                     <!-- Radio list for the printer status -->
                     <div class="form-group" style="text-align: left;">
@@ -49,6 +50,7 @@
                                 && $printer->printer_status=="Signed out") echo "checked";?> value="Signed out">Signed out <br>
                         </div> <!-- Class radio -->
                     </div> <!-- /form-group -->
+                    @endhasrole
                     @include('layouts.errors')
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>

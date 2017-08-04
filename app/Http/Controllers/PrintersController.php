@@ -56,7 +56,6 @@ class PrintersController extends Controller
             'id' => 'required|numeric',
             'serial_no' => 'required|numeric',
             'printer_type' => 'required',
-            'printer_status' => 'required'
         ]);
         $printer_type = request('printer_type');
         if ($printer_type=="Other"){
@@ -66,7 +65,7 @@ class PrintersController extends Controller
             'id' => request('id'),
             'serial_no' => request('serial_no'),
             'printer_type' => $printer_type,
-            'printer_status'=> request('printer_status')]);
+            'printer_status'=> 'Available']);
 
         return redirect('/printers/index');
     }
@@ -105,18 +104,24 @@ class PrintersController extends Controller
     {
         $this -> validate(request(), [
             'serial_no' => 'required|numeric',
-            'printer_type' => 'required',
-            'printer_status' => 'required'
+            'printer_type' => 'required'
         ]);
         $printer_type = request('printer_type');
         if ($printer_type=="Other"){
             $printer_type = request('other_printer_type');
         }
+
         $printer = Printers::find($id);
+        if(!empty(request('printer_status')))
+        {
+            $printer_status = request('printer_status');
+        }else{
+            $printer_status = $printer->printer_status;
+        }
         $printer->update([
             'serial_no' => request('serial_no'),
             'printer_type' => $printer_type,
-            'printer_status'=> request('printer_status')]);
+            'printer_status'=> $printer_status]);
 
         return redirect('/printers/index');
     }

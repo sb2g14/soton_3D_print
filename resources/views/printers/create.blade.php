@@ -36,23 +36,6 @@
                             <td><span class="help-block" id="other_error"></span> </td>
                         </div> <!-- Class radio -->
                     </div> <!-- /form-group -->
-
-                    <label for="body">Printer status: </label> <br>
-                    <!-- Radio list for the printer status -->
-                    <div class="form-group" style="text-align: left;">
-                        <div class="radio" style="margin: 10%; margin-top: -2px">
-                            <input type="radio" name="printer_status" <?php if (isset($printer_status)
-                                && $printer_status=="Available") echo "checked";?> value="Available">Available <br>
-                            <input type="radio" name="printer_status" <?php if (isset($printer_status)
-                                && $printer_status=="Missing") echo "checked";?> value="Missing">Missing <br>
-                            <input type="radio" name="printer_status" <?php if (isset($printer_status)
-                                && $printer_status=="Broken") echo "checked";?> value="Broken">Broken <br>
-                            <input type="radio" name="printer_status" <?php if (isset($printer_status)
-                                && $printer_status=="On Loan") echo "checked";?> value="On Loan">On Loan <br>
-                            <input type="radio" name="printer_status" <?php if (isset($printer_status)
-                                && $printer_status=="Signed out") echo "checked";?> value="Signed out">Signed out <br>
-                        </div> <!-- Class radio -->
-                    </div> <!-- /form-group -->
                     @include('layouts.errors')
                     <button type="submit" id="submit" class="btn btn-lg">Register new 3D printer</button>
                     

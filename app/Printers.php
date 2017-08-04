@@ -16,8 +16,7 @@ class printers extends Model
     public function printing_data()
     {
 
-            return $this->hasMany
-            (printing_data::class);
+            return $this->hasMany(printing_data::class);
 
     }
     public function changePrinterStatus()
