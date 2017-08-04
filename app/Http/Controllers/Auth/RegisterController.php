@@ -88,11 +88,13 @@ class RegisterController extends Controller
             // Update staff database
             $staff_id = array_search($email,$emails);
             staff::where('id','=',$staff_id)->update(array('user_id'=> $user->id, 'student_id' => request('student_id')));
+            
+            $user->assignRole('writer');
             // Sign then in
             $this->guard()->login($user);
             // Send an confirmation email
 
-            \Mail::to($user)->send(new Welcome($user));
+//            \Mail::to($user)->send(new Welcome($user));
 
             // Snow a flashing message
 
