@@ -97,8 +97,14 @@ class StaffController extends Controller
             'email' => 'required|email',
             'phone' => 'required|numeric|digits:11',
         ]);
+        $student_id = (int) Input::get('student_id');
+//        dd(request()->all(), $student_id);
+
         $member = staff::findOrFail($id);
         $member->update(request(['first_name', 'last_name', 'email', 'phone','student_id']));
+
+        staff::where('id','=', $member->id)->update(array('student_id'=> $student_id));
+
 
         if(Auth::user()->hasAnyRole(['administrator','LeadDemonstrator']))
         {
