@@ -15,7 +15,7 @@
                 </div>
                 <div class="container well" style="text-align: left;">
                     <div>
-                        Visit <a href="https://www.3dhubs.com/service/44587">3Dhubs</a> and click "GET A QUOTE FROM THIS HUB". The follow the steps:<br>
+                        Visit <a href="https://www.3dhubs.com/service/254134">3Dhubs</a> and click "GET A QUOTE FROM THIS HUB". The follow the steps:<br>
                         <ol style="margin-left: 50px">
                             <li>Upload your model (make sure it is in STL format).</li>
                             <li>Select Material (ABS, PLA), COLOR and Resolution (e.g. 200Micron = 0.2mm per layer). Then write down Your Name, Student ID, Project Number (e.g. FEEG2001-UAV05, IP02, GDP27), Cost Code, Print comment.</li>
