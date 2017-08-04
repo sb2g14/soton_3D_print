@@ -24,10 +24,10 @@ class PrintersController extends Controller
     public function index()
     {
             // Check if all current jobs are finished
-//            $printers_busy = Printers::where('in_use','=', 1)->get();
-//            foreach ($printers_busy as $printer_busy) {
-//                $printer_busy->changePrinterStatus($printers_busy);
-//            }
+            $printers_busy = Printers::where('in_use','=', 1)->get();
+            foreach ($printers_busy as $printer_busy) {
+                $printer_busy->changePrinterStatus($printers_busy);
+            }
 
             $printers = Printers::all();
             return view('printers.index', compact('printers'));

@@ -192,7 +192,7 @@ class PrintingDataController extends Controller
     public function show($id)
     {
         $job = printing_data::find($id);
-        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
+        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
         return view('printingData.show',compact('job','available_printers'));
     }
 
