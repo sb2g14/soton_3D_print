@@ -11,7 +11,9 @@
 
             <div class="col-sm-4 well" style="text-align: left;">
                 <p><span class="glyphicon glyphicon-user"></span> {{$member -> role}}</p>
+                @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                 <p><span class="glyphicon glyphicon-phone"></span> {{$member -> phone}}</p>
+                @endhasanyrole
                 <p><span class="glyphicon glyphicon-envelope"></span> {{$member -> email}}</p> 
             @if(Auth::user()->email == $member->email)
                     <p><span class="glyphicon glyphicon-th-list"></span> ID: {{$member -> id_number}}</p>
