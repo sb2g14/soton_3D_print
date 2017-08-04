@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                         </form>
-                        <h2 style="color:red;">NOTE! The registration and login services are currently available ONLY for workshop staff
+                        <h2 style="color:red;">NOTE! The registration and login services are currently available ONLY for workshop staff. <br>
                             For security reasons we encourage you to use a strong password and NOT to use the same password
                             as for your university account!!!</h2><br>
                     </div>
