@@ -22,7 +22,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $members = staff::orderBy('first_name')->get();
+        $members = staff::orderBy('first_name')->where('role','!=', 'Former member')->get();
         return view('members.index', compact('members'));
     }
 
@@ -125,8 +125,16 @@ class StaffController extends Controller
     public function destroy($id)
     {
 //        staff::destroy($id);
+        // Find the record associated with id in staff table
+//        $member = staff::find($id);
+//        // Find the record associated with id in users table
+//        $user = $member->user;
+//        // Assign role old demonstrator
+//        $user->syncRoles('OldDemonstrator');
+        // Update record in staff table
+        staff::where('id','=', $id)->update(array('role'=> 'Former member'));
         session()->flash('message', 'The record has been deleted');
 
-        return redirect('/aboutWorkshop');
+        return redirect('/members/index');
     }
 }
