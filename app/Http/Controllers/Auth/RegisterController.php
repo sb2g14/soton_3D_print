@@ -93,7 +93,10 @@ class RegisterController extends Controller
             if($member->role == 'Lead Demonstrator')
             {
                 $user->assignRole('LeadDemonstrator');
-            }else{
+            }elseif($member->role == 'Former member'){
+                $user->assignRole('OldDemonstrator');
+            }
+            else{
                 $user->assignRole('Demonstrator');
             }
 

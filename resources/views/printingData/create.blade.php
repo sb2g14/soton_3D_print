@@ -63,7 +63,7 @@
                 <div class="form-group{{ $errors->has('student_id') ? ' has-error' : '' }}">
                     <label for="student_id" class="col-sm-4 control-label">Student/Staff ID</label>
                     <div class="col-sm-8">
-                        <input id="student_id" data-help="student_id" type="text" class="form-control" name="student_id" value="{{ old('student_id', isset($member)  ? $member->id_number : '') }}" placeholder="Please input your university ID number" required>
+                        <input id="student_id" data-help="student_id" type="text" class="form-control" name="student_id" value="{{ old('student_id', isset($member)  ? $member->student_id : '') }}" placeholder="Please input your university ID number" required>
                         @if ($errors->has('student_id'))
                             <span class="help-block">
                             <strong>{{ $errors->first('student_id') }}</strong>
