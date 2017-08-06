@@ -223,7 +223,9 @@
                                         <li><a href={{ asset('files/FEE_Demonstrator_Consultancy_Policy_March4017.rtf') }}>Consultancy policy</a></li>
                                         <li><a href={{ asset('files/Demonstrating_Claim_April_2016.doc') }}>Claim form</a></li>
                                         <li><a href={{ asset('files/FORMS_DC1_AND_DC2_v2.doc') }}>Claim forms DC1 and DC2</a></li>
-                                    </ul>
+                                    </ul><br>
+                                    <h4 style="color: red"><b>Please visit <a href="{{ url('http://3dprint.clients.soton.ac.uk/news') }}"
+                                                                target="_blank">NEWS</a> to check how to use this recourse.</b></h4>
                                 </div>
                             </li>
                         </ul>
