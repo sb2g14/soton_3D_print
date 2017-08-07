@@ -32,7 +32,7 @@
         @endhasanyrole
         <table class="table">
             <thead>
-                <tr style="font-weight: 600;">
+                <tr">
                     <th>Printer Number</th>
                     <th>Serial Number</th>
                     <th>Printer Type</th>
@@ -47,7 +47,7 @@
             </thead>
             <tbody>
                 @foreach($printers as $printer)
-                    <tr style="text-align: left;">
+                    <tr class="text-left">
                         <td>{{$printer->id}}</td>
                         <td>{{$printer->serial_no}}</td>
                         <td>{{$printer->printer_type}}</td>

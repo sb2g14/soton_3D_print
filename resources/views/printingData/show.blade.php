@@ -30,7 +30,7 @@
             </div>
             <div class="col-sm-6">
                 <div id="reviewJob" class="text-center card">
-                    <h4 style="color:red; font-weight: 600; font-size: large">Please check student input:</h4><br>
+                    <h4>Please check student input:</h4><br>
                     <form class="form-horizontal" role="form" method="POST" action="/printingData/{{ $job->id }}">
 
                         {{ csrf_field() }}

@@ -6,17 +6,17 @@
         </div>
     @endif
 
-
-        <div class="title m-b-md">
-            Our team
+        <div class="text-center m-b-md">
+        <div class="title">Our team</div>
+            @hasanyrole('LeadDemonstrator|administrator')
+                <a href="{{ url('/members') }}" type="button" class="btn btn-lg btn-info">
+                    Add new member
+                </a>
+            @endhasanyrole
         </div>
 
         <div class="container">
-            @hasanyrole('LeadDemonstrator|administrator')
-            <a href="{{ url('/members') }}">
-                <button class="btn btn-success pull-right">Add new member</button>
-            </a>
-            @endhasanyrole
+           
             <div class="row">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">

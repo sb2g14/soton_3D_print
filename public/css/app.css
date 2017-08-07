@@ -392,6 +392,36 @@ body {
 .content .m-b-md {
   margin-bottom: 30px;
 }
+.content .m-b-md.add-printer-issue .title {
+  display: inline-block;
+  vertical-align: middle;
+}
+.content .m-b-md.add-printer-issue a {
+  display: inline-block;
+}
+.content ol {
+  margin-left: 50px;
+}
+.content .radio {
+  margin: 10%;
+  margin-top: -2px;
+}
+.content .help-block {
+  color: red;
+}
+.content table thead,
+.content .table thead {
+  font-weight: 600;
+}
+.content table th,
+.content .table th {
+  vertical-align: top;
+}
+.content #reviewJob h4 {
+  color: red;
+  font-weight: 600;
+  font-size: large;
+}
 .well {
   background: #fff;
   margin-bottom: 30px;
@@ -443,6 +473,9 @@ body {
 .s-welcome .list-group-item h5 {
   margin-bottom: 10px;
 }
+.s-welcome .list-group-item .media-left img {
+  width: 30px;
+}
 .s-welcome .view-all {
   background: #5dbd9f;
   margin-bottom: 30px;
@@ -457,9 +490,12 @@ body {
 .s-map .scrolloff {
   pointer-events: none;
 }
-.form-horizontal .help-block {
-  color: red;
+/* .form-horizontal{
+    .help-block{
+        color: red;
+    }
 }
+ */
 .s-request-form .instructions .hint {
   display: none;
 }

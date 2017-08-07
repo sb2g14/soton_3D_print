@@ -14,7 +14,6 @@ body {
 }
 
 
-
 .ctr {
     .clearfix;
 }
@@ -316,6 +315,45 @@ body {
 
     .m-b-md {
         margin-bottom: 30px;
+        &.add-printer-issue {
+            .title {
+                display: inline-block; vertical-align: middle
+            }
+            
+            a {
+                display: inline-block;
+            }
+        }
+    }
+
+    ol {
+        margin-left: 50px;
+    }
+
+    .radio {
+        margin: 10%; 
+        margin-top: -2px;
+    }
+
+    .help-block{
+        color: red;
+    }
+
+    table, .table {
+        thead {
+            font-weight: 600;
+        }
+        th {
+            vertical-align: top; 
+        }
+    }
+
+    #reviewJob {
+        h4 {
+            color:red; 
+            font-weight: 600; 
+            font-size: large;
+        }
     }
 } 
 
@@ -372,12 +410,21 @@ body {
             background-size: cover;
         }
     }
+
+    
+
     .list-group-item {
         margin-bottom: 30px;
         h4, h5 {
             margin-bottom: 10px;
         }
+        .media-left {
+            img {
+                width:30px;
+            }
+        }
     }
+
 
     .view-all {
        background: @turq; 
@@ -400,12 +447,12 @@ body {
 
 
 
-.form-horizontal{
+/* .form-horizontal{
     .help-block{
         color: red;
     }
 }
-
+ */
 
 
 

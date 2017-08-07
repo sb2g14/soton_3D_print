@@ -22,8 +22,8 @@
                     <label for="body">Printer type: </label> <br>
 
                     <!-- Radio list for the printer type -->
-                    <div class="form-group" style="text-align: left;">
-                        <div class="radio" style="margin: 10%; margin-top: -2px">
+                    <div class="form-group text-left">
+                        <div class="radio">
                             <input type="radio" name="printer_type" <?php if (isset($printer_type)
                                 && $printer_type=="UP!") echo "checked";?> value="UP!">UP! <br>
                             <input type="radio" name="printer_type" <?php if (isset($printer_type)

@@ -172,7 +172,7 @@
             <div class="hint text-left" data-hint="material_amount">
                 <h3 class="text-center lead">Estimated price</h3>
                 <p>Based on the print duration and the material amount we
-                    estimate the cost of your print to be £  <span id="price" style="color:red"></span> </p>
+                    estimate the cost of your print to be £  <span id="price" style="color: red;"></span> </p>
             </div>
             <div class="hint text-left" data-hint="use_case">
                 <h3 class="text-center lead">Module name or Cost Code</h3>
@@ -185,7 +185,7 @@
             </div>
             <div class="hint text-left after-filling" data-hint="final">
                 <h3 class="text-center lead">The estimated cost of the print</h3>
-                <p>The cost of your print is £ <span id="price-final" style="color:red"></span>.</p>
+                <p>The cost of your print is £ <span id="price-final" style="color: red;"></span>.</p>
                 <p>The price was calculated based on the print duration and the amount of material used.</p>
                 <p>After you press Submit button, the request will be sent to the demonstrator for approval. At this
                     stage, the cost may change if the amount of material or the duration of print are altered by the

@@ -99,7 +99,7 @@ $(function () {
         var number = $("#number");
 
         if (number.val().length < 1 || number.val().length > 3) {
-            $("#number_error").html("Printer number should contan between 1 and 3 digits");
+            $("#number_error").html("Printer number should contain between 1 and 3 digits");
             $("#number_error").show();
             $("#number").focus();
             $("#number").addClass("parsley-error");
@@ -125,7 +125,7 @@ $(function () {
         var serial = $("#serial");
 
         if (serial.val().length < 1 || serial.val().length > 10) {
-            $("#serial_error").html("The serial number mast be between 1 and 10 digits long");
+            $("#serial_error").html("The serial number must be between 1 and 10 digits long");
             $("#serial_error").show();
             $("#serial").focus();
             $("#serial").addClass("parsley-error");
