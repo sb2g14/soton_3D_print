@@ -15,7 +15,7 @@
     <div class="container">
         <table class="table">
             <thead>
-            <tr style="font-weight: 600;">
+            <tr>
                 <th>ID</th>
                 <th>Printer No</th>
                 <th>Name</th>
@@ -39,7 +39,7 @@
                 {{--Plus 15 minutes--}}
                 {{--If time for job finish plus 15 minutes didn't pass we show approved job--}}
                 @if ($job->updated_at->addHour($h)->addMinutes($i)->addMinutes(15)->gte(Carbon\Carbon::now('Europe/London')))
-                <tr style="text-align: left;">
+                <tr class="text-left">
                     <td>{{ $job->id }}</td>
                     <td>{{ $job->printers_id }}</td>
                     <td>{{$job->student_name}}</td>

@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-4"></div>
 
-            <div class="col-sm-4 well">
+            <div class="col-sm-4 well text-left">
             
                 <form method="post" action="/printers/update/{{$printer->id}}">
                     {{--Generate security key --}}
@@ -20,8 +20,8 @@
                     <label for="body">Printer type: </label> <br>
                     {{--<input type="text" name="printer_type" class="form-control"/><br>--}}
                     <!-- Radio list for the printer type -->
-                    <div class="form-group" style="text-align: left;">
-                        <div class="radio" style="margin: 10%; margin-top: -2px">
+                    <div class="form-group text-left">
+                        <div class="radio">
                             <input type="radio" name="printer_type" <?php if (isset($printer->printer_type)
                                 && $printer->printer_type=="UP!") echo "checked";?> value="UP!">UP! <br>
                             <input type="radio" name="printer_type" <?php if (isset($printer->printer_type)
@@ -36,8 +36,8 @@
                     @hasrole('administrator')
                     <label for="body">Printer status: </label> <br>
                     <!-- Radio list for the printer status -->
-                    <div class="form-group" style="text-align: left;">
-                        <div class="radio" style="margin: 10%; margin-top: -2px">
+                    <div class="form-group text-left">
+                        <div class="radio">
                             <input type="radio" name="printer_status" <?php if (isset($printer->printer_status)
                                 && $printer->printer_status=="Available") echo "checked";?> value="Available">Available <br>
                             <input type="radio" name="printer_status" <?php if (isset($printer->printer_status)

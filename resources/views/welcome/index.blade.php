@@ -50,12 +50,12 @@
                                     <div class="form-group">
                                         <label for="title">Issue Name</label><br>
                                         <input id="issue" name="title" placeholder="Specify issue name" class="form-control">
-                                        <span id="issue_error" class="help-block" style="color: red"></span>
+                                        <span id="issue_error" class="help-block"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="body">Message</label><br>
                                         <textarea id="message" name="body" placeholder="Describe your issue" class="form-control"></textarea>
-                                        <span id="message_error" class="help-block" style="color: red"></span>
+                                        <span id="message_error" class="help-block"></span>
                                     </div>
                                     <div class="checkbox">
                                         <label><input type="checkbox" name="critical" value="critical">Issue affects printer status</label>
@@ -67,7 +67,7 @@
 
                         {{--Here we show issues:--}}
                         @if(!empty($post_last))
-                            <ul id="form" class="list-group">
+                            <ul id="form" class=" lsn list-group">
                                 <li class="list-group-item">
                                     <div class="alert alert-warning">
                                         {{--Print title of a post--}}
@@ -87,12 +87,12 @@
                                         </button>
                                     </div>
                                     <div id="{{ $post_last->id}}" class="card collapse">
-                                        <ul>
+                                        <ul class="lsn">
                                             @foreach($post_last->comments as $comment)
                                                 <li>
                                                     <div class="media">
                                                         <div class="media-left">
-                                                            <img src="/Images/img_avatar3.png" class="media-object" style="width:30px">
+                                                            <img src="/Images/img_avatar3.png" class="media-object">
                                                         </div>
                                                         <div class="media-body">
                                                             <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>
@@ -108,7 +108,7 @@
                                                 {{ csrf_field() }}
                                                 <div class="form-group">
                                                     <textarea id="comment_last" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                    <span id="comment_last_error" class="help-block" style="color: red"></span>
+                                                    <span id="comment_last_error" class="help-block"></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <button id="comment_last" type="submit" class="btn btn-primary">Comment</button>
@@ -141,12 +141,12 @@
                                     </div>
                                     <div id="{{ $post->id}}" class="card collapse">
                                         {{--Here we show comments to each issue:--}}
-                                        <ul>
+                                        <ul class="lsn">
                                             @foreach($post->comments as $comment)
                                                 <li>
                                                     <div class="media">
                                                         <div class="media-left">
-                                                            <img src="/Images/img_avatar3.png" class="media-object" style="width:30px">
+                                                            <img src="/Images/img_avatar3.png" class="media-object">
                                                         </div>
                                                         <div class="media-body">
                                                             <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>
@@ -163,7 +163,7 @@
                                                 {{ csrf_field() }}
                                                 <div class="form-group">
                                                     <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                    <span id="message_error" class="help-block" style="color: red"></span>
+                                                    <span id="message_error" class="help-block"></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <button id="comment" type="submit" class="btn btn-primary">Comment </button>
@@ -198,7 +198,7 @@
                                     <div class="form-group">
                                         <label for="message">New Announcement</label><br>
                                         <textarea id="announcement" name="message" placeholder="Post something" class="form-control"></textarea>
-                                        <span id="announcement_error" style="color: red"></span>
+                                        <span id="announcement_error" class="help-block"></span>
                                     </div>
                                     @hasanyrole('LeadDemonstrator|administrator')
                                     <div class="checkbox">
@@ -213,7 +213,7 @@
                             </div>
                         </div>
 
-                        <ul class="list-group">
+                        <ul class="lsn list-group">
                             <li class="list-group-item">
                                 <div class="alert alert-info">
                                     <h4><b>Announcement 1</b></h4>
@@ -264,7 +264,7 @@
                             </div>
                         </div>
 
-                        <ul class="list-group">
+                        <ul class=" lsn list-group">
                             @if(!empty($public_announcement_last))
                                 <li class="list-group-item">
                                     <div class="alert alert-info">

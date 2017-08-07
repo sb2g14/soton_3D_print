@@ -22,7 +22,7 @@ $(function () {
         var issue = $("#issue");
 
         if(issue.val().length < 8 || issue.val().length > 180){
-            $("#issue_error").html("Issue name mast be between 8 and 180 characters long");
+            $("#issue_error").html("Issue name must be between 8 and 180 characters long");
             $("#issue_error").show();
             $("#issue").addClass("parsley-error");
             error_issue = true;
@@ -46,7 +46,7 @@ $(function () {
         var message = $("#message");
 
         if(message.val().length < 8 || message.val().length > 300){
-            $("#message_error").html("The message mast be between 8 and 300 characters long");
+            $("#message_error").html("The message must be between 8 and 300 characters long");
             $("#message_error").show();
             $("#message").addClass("parsley-error");
             error_message = true;

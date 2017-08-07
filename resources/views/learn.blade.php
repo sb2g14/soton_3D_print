@@ -3,7 +3,7 @@
                 <div class="title m-b-md">
                     Learn to 3D print
                 </div>
-                <div class="container well" style="text-align: left;">
+                <div class="container well text-left">
                     <div>
                         Since 2016-17 a 30 minute Introduction to 3D Printing with the FEE 3D Printing Service have been offered as part of UG and MSc Student Workshop Introductions (for UGs in Part I Induction Week, for MSc project students in Mar/Apr). Additional 2 hour hands-on sessions have been offered in June.
                         Since the 3D Printing Service started, UG students, PGRs and other members of FEE wishing to use the UP! 3D Printers have always been able to request advice from the 3D Printing Service Demonstrators during the Open Access sessions - sessions are notified on the Home page.

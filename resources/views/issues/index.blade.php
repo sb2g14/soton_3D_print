@@ -18,9 +18,9 @@
         </div>
     </div> -->
 
-    <div class="text-center m-b-md">
-        <div class="title" style="display: inline-block; vertical-align: middle;">Printer Issues</div>
-        <a href="/issues/select" type="button" class="btn btn-lg btn-info" style="display: inline-block;">
+    <div class="text-center m-b-md add-printer-issue">
+        <div class="title">Printer Issues</div>
+        <a href="/issues/select" type="button" class="btn btn-lg btn-info">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </a>
     </div>
@@ -28,23 +28,23 @@
     <div class="container">
         <table class="table">
             <thead>
-                <tr style="font-weight: 600;">
-                    <th style="vertical-align: top;">ID</th>
-                    <th style="vertical-align: top;">Printer Number</th>
-                    <th style="vertical-align: top;">Serial Number</th>
-                    <th style="vertical-align: top;">Printer Status</th>
-                    <th style="vertical-align: top;">Created by</th>
-                    <th style="vertical-align: top;">Created on</th>
-                    <th style="vertical-align: top;">Days out of Order</th>
-                    <th style="vertical-align: top;">Title</th>
-                    <th style="vertical-align: top; width: 200px">Message</th>
-                    <th style="vertical-align: top;">Modify</th>
+                <tr">
+                    <th>ID</th>
+                    <th>Printer Number</th>
+                    <th>Serial Number</th>
+                    <th>Printer Status</th>
+                    <th>Created by</th>
+                    <th>Created on</th>
+                    <th>Days out of Order</th>
+                    <th>Title</th>
+                    <th style="width: 200px;">Message</th>
+                    <th>Modify</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($issues as $issue)
-                    <tr style="text-align: left;">
+                    <tr class="text-left">
                         <td>{{ $issue->id }}</td>
                         <td>{{$issue->printers_id}}</td>
                         <td>{{$issue->serial_number}}</td>
