@@ -28,7 +28,7 @@
     <div class="container">
         <table class="table">
             <thead>
-                <tr">
+                <tr>
                     <th>ID</th>
                     <th>Printer Number</th>
                     <th>Serial Number</th>

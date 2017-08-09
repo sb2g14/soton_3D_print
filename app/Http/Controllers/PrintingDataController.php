@@ -120,19 +120,19 @@ class PrintingDataController extends Controller
     }
        // $cost_codes = $cost_codes->toArray();
         $use_case = request('use_case');
-        if( in_array($use_case, $cost_codes)) {
-
-            // Update record in staff database in order to link with users database
-            $cost_code_id = array_search($use_case, $cost_codes);
-            $cost_code = cost_code::where('id', $cost_code_id)->first()->cost_code;
-
-        } elseif(preg_match('/123456789/', $use_case) === true) {
+//        if( in_array($use_case, $cost_codes)) {
+//
+//            // Update record in staff database in order to link with users database
+//            $cost_code_id = array_search($use_case, $cost_codes);
+//            $cost_code = cost_code::where('id', $cost_code_id)->first()->cost_code;
+//
+//        } elseif(preg_match('/123456789/', $use_case) === true) {
             $cost_code = (int) $use_case;
             $use_case = 'Cost Code';
-        } else {
-            session()->flash('message', 'Please check the module name or enter a valid cost code');
-            return redirect('printingData/create')->withInput();
-        }
+//        } else {
+//            session()->flash('message', 'Please check the module name or enter a valid cost code');
+//            return redirect('printingData/create')->withInput();
+//        }
 
             // Calculating printing time from the dropdown
         $hours = Input::get('hours');
