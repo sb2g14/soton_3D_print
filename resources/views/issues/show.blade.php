@@ -52,14 +52,13 @@
                         <p style="font-size: 18px;"><b>Description:</b></p>
                         <p style="font-size: 18px;">{{ $issue->body }}</p>
                     </div>
-                    @if($issue->resolved == 0)
                         @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <div class="col-sm-4">
+                            @if($issue->resolved == 0)
                             <a href="/issues/update/{{$issue->id}}" class="btn btn-lg btn-info">View/Update or Resolve</a>
-                            <a href="/issues/select/" class="btn btn-lg btn-info">Log new issue</a>
+                            @endif
                         </div>
                         @endhasanyrole
-                    @endif
                 </div>
 
                 @if(!empty(array_filter( (array) $issue->FaultUpdates)))
