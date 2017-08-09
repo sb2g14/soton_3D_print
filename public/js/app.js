@@ -171,7 +171,7 @@
 
     function evaluate_price() {
         if ($('#material_amount') !== null && $("#hours") !== null && $("#minutes") !== null) {
-            var $price = 3 * ($("#hours").val() + $("#minutes").val()) / 60 + 5 * $("#material_amount").val() / 100;
+            var $price = 3 * ($("#hours").val() + $("#minutes").val() / 60) + 5 * $("#material_amount").val() / 100;
             $("#price").html($price);
             $("#price-final").html($price);
         }
