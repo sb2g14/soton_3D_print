@@ -266,11 +266,14 @@ class PrintingDataController extends Controller
     public function abort($id)
 {
     $data = printing_data::findOrFail($id);
-    $time = time() - strtotime($data->updated_at);
-    $hours = date('H', $time);
-    $minutes = date('i', $time);
+    $now = Carbon::now('Europe/London');
+    //$time = time() - strtotime($data->updated_at);
+    //$hours = date('H', $time);
+    //$minutes = date('i', $time);
+    $hours = $now->diffInHours($data->updated_at);
+    $minutes = $now->diffInMinutes($data->updated_at);
     $new_time = $hours.':'.sprintf('%02d', $minutes);
-    $new_price = round(3*($hours + $minutes/60) + 5*$data->material_amount/100,2);
+    $new_price = round(3*($hours + $minutes/60),2);
     $data->update(['successful'=>'No',
         'approved'=>'No',
         'time' => $new_time,
