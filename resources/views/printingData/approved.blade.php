@@ -52,8 +52,8 @@
                     <td>{{ $job->updated_at->toDayDateTimeString() }}</td>
                     <td>{{ $job->user->name }}</td>
                     <td>{{ $job->use_case  }}</td>
-                    <td><a href="/printingData/abort/{{$job->id}}" class="btn btn-danger">Job Failed</a></td>
-                    <td><a href="/printingData/success/{{$job->id}}" class="btn btn-success">Job Successful</a></td>
+                    <td><a href="/printingData/abort/{{$job->id}}" class="btn btn-danger">Job Failed</a><br><br>
+                        <a href="/printingData/success/{{$job->id}}" class="btn btn-success">Job Successful</a></td>
                 </tr>
                 @endif
             @endforeach
