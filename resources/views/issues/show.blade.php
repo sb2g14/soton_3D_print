@@ -56,6 +56,7 @@
                         @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <div class="col-sm-4">
                             <a href="/issues/update/{{$issue->id}}" class="btn btn-lg btn-info">View/Update or Resolve</a>
+                            <a href="/issues/select/" class="btn btn-lg btn-info">Log new issue</a>
                         </div>
                         @endhasanyrole
                     @endif
