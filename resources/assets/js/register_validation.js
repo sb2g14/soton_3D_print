@@ -47,8 +47,8 @@ $(function () {
     function check_name() {
         var name = $("#name");
 
-        if (!name.val().match(/^[a-z-A-Z- ]{3,20}$/)){
-            $("#name_error").html("Only letters and hyphens(-) are allowed. Maximum name length is 25 characters");
+        if (!name.val().match(/^[a-z-A-Z- ]{3,100}$/)){
+            $("#name_error").html("Only letters and hyphens(-) are allowed. Maximum name length is 100 characters");
             $("#name_error").show();
             $("#name").focus();
             $("#name").addClass("parsley-error");

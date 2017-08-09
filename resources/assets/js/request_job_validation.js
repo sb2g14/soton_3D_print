@@ -60,7 +60,7 @@ $(function () {
     function check_student_name() {
      var name = $("#student_name");
 
-     if(name.val().length < 3 || name.val().length > 30){
+     if(name.val().length < 3 || name.val().length > 100){
          $("#student_name_error").html("The name should be between 2 and 20 characters");
          $("#student_name_error").show();
          $("#student_name").focus();
