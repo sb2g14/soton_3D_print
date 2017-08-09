@@ -93,6 +93,47 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
             'uses' => 'IssuesController@printersIssuesExport'
         ]);
 
+    // Show a list of jobs waiting for approval
+
+    Route::get('/printingData/index','PrintingDataController@index');
+
+// Route to export jobs to CSV
+
+    Route::get('printingData/export',
+        [
+            'as' => 'printingData.export',
+            'uses' => 'PrintingDataController@printingDataExport'
+        ]);
+
+// Show a list of approved jobs
+
+    Route::get('/printingData/approved','PrintingDataController@approved');
+
+// Show a list of finished jobs
+
+    Route::get('/printingData/finished','PrintingDataController@finished');
+
+// Show a blade to edit the job
+    Route::get('/printingData/edit/{id}','PrintingDataController@');
+
+// Show a blade to save edit the job
+    Route::post('/printingData/edit/{id}','PrintingDataController@');
+
+// Show each job requested in a separate blade
+    Route::get('/printingData/show/{id}','PrintingDataController@show');
+
+// Update the requested record and approve/reject a job
+    Route::post('/printingData/show/{id}','PrintingDataController@update');
+
+// Reporting that current job is unsuccessful
+    Route::get('/printingData/abort/{id}','PrintingDataController@abort');
+
+// Reporting that current job is successful
+    Route::get('/printingData/success/{id}','PrintingDataController@success');
+
+// Reject current job and delete it from the database
+    Route::get('/printingData/delete/{id}','PrintingDataController@destroy');
+
 });
 
     // Group of routes available only to roles administrator, Lead Demonstrator
@@ -118,42 +159,11 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 
 });
 
-// Show a list of jobs waiting for approval
-
-Route::get('/printingData/index','PrintingDataController@index');
-
-// Route to export jobs to CSV
-
-Route::get('printingData/export',
-    [
-        'as' => 'printingData.export',
-        'uses' => 'PrintingDataController@printingDataExport'
-    ]);
-
-// Show a list of approved jobs
-
-Route::get('/printingData/approved','PrintingDataController@approved');
-
 // Open a form to request a job
 Route::get('/printingData/create','PrintingDataController@create');
 
 // Save the job to a database and send to a demonstrator for approval
 Route::post('/printingData','PrintingDataController@store');
-
-// Show each job requested ina separate blade
-Route::get('/printingData/{id}','PrintingDataController@show');
-
-// Update the requested record and approve/reject a job
-Route::post('/printingData/{id}','PrintingDataController@update');
-
-// Reporting that current job is unsuccessful
-Route::get('/printingData/abort/{id}','PrintingDataController@abort');
-
-// Reporting that current job is successful
-Route::get('/printingData/success/{id}','PrintingDataController@success');
-
-// Reject current job and delete it from the database
-Route::get('/printingData/delete/{id}','PrintingDataController@destroy');
 
 // Here we redirect users to 'News' page
 Route::get('news', 'NewsController@index');

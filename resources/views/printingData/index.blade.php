@@ -10,7 +10,7 @@
    
     <div class="text-center m-b-md">
         <div class="title">Pending Jobs</div>
-        <a href="/printingData/approved" type="button" class="btn btn-lg btn-info" style="display: inline-block;">Show approved jobs</a>
+        <a href="/printingData/approved" type="button" class="btn btn-lg btn-success" style="display: inline-block;">Show currently approved jobs</a>
 
         @hasanyrole('LeadDemonstrator|administrator')
         {!! link_to_route('printingData.export',
@@ -34,7 +34,7 @@
                                 Requested by: <b>{{$job->student_name}}</b><br>
                                 Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b>
                             </p>
-                            <a href="/printingData/{{$job->id}}" class="btn btn-info">Manage</a>
+                            <a href="/printingData/show/{{$job->id}}" class="btn btn-info">Manage</a>
                         </li>
                     @endforeach
                 </ul>

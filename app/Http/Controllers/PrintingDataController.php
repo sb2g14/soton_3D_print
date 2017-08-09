@@ -73,6 +73,19 @@ class PrintingDataController extends Controller
         return view('printingData.approved', compact('approved_jobs'));
     }
 
+    public function finished()
+    {
+        $finished_jobs = printing_data::orderBy('created_at', 'desc')->get();
+//        foreach ($jobs as $job)
+//        {
+//            list($h, $i, $s) = explode(':', $job->time);
+//            if (Carbon::now('Europe/London')->gte($job->updated_at->addHour($h)->addMinutes($i))) {
+//                $finished_jobs = $finished_jobs->push($job);
+//            }
+//        }
+        return view('printingData.finished', compact('finished_jobs'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

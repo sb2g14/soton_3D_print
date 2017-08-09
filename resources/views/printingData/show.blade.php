@@ -12,7 +12,7 @@
                     <p>
                         Printer number: <b>{{ $job->printers_id }}</b><br>
                         Printer serial number: <b>{{ $job->serial_no }}</b><br>
-                        Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b>
+                        Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
                         Requested by: <b>{{$job->student_name}}</b><br>
                         Requester id: <b>{{$job->student_id}}</b><br>
                         Requester email: <b>{{$job->email}}</b><br>
@@ -22,7 +22,6 @@
                         Estimated price: <b>£{{$job->price}}</b><br>
                         Module name or cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @else <b style="color: red"> @endif {{$job->use_case}} </b><br>
                         Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @else <b style="color: red"> @endif {{$job->cost_code}} </b><br>
-                        Comment: <b>{{$job->comment}}</b><br>
                         Job number: <b>{{$job->id}}</b><br>
                     </p>
                 </div>
@@ -31,22 +30,9 @@
             <div class="col-sm-6">
                 <div id="reviewJob" class="text-center card">
                     <h4>Please check student input:</h4><br>
-                    <form class="form-horizontal" role="form" method="POST" action="/printingData/{{ $job->id }}">
+                    <form class="form-horizontal" role="form" method="POST" action="/printingData/show/{{ $job->id }}">
 
                         {{ csrf_field() }}
-
-                        {{--<div class="form-group{{ $errors->has('printers_id') ? ' has-error' : '' }}">--}}
-                            {{--<label for="printers_id" class="col-md-4 control-label">Printer number:</label>--}}
-                            {{--<div class="col-md-6">--}}
-                                {{--<input type="text" id="printers_id" name="printers_id" value="{{ $job->printers_id }}" class="form-control" required>--}}
-                                    {{--@if ($errors->has('printers_id'))--}}
-                                        {{--<span class="help-block">--}}
-                                            {{--<strong>{{ $errors->first('printers_id') }}</strong>--}}
-                                        {{--</span>--}}
-                                    {{--@endif--}}
-                                    {{--<span class="help-block" id="printers_id_error"></span>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
 
                         <div class="form-group {{ $errors->has('printers_id') ? ' has-error' : '' }}">
                             {{--This is a Printer Number dropdown--}}
@@ -102,18 +88,6 @@
                             </div>
                         </div>
 
-                        {{--<div class="form-group{{ $errors->has('time') ? ' has-error' : '' }}">--}}
-                            {{--<label for="time" class="col-md-4 control-label">Estimated duration:</label>--}}
-                            {{--<div class="col-md-6">--}}
-                                {{--<input type="text" id="time" name="time" value="{{ date("H:i", strtotime($job->time)) }}" class="form-control">--}}
-                                    {{--@if ($errors->has('time'))--}}
-                                        {{--<span class="help-block">--}}
-                                            {{--<strong>{{ $errors->first('time') }}</strong>--}}
-                                        {{--</span>--}}
-                                    {{--@endif--}}
-                                    {{--<span class="help-block" id="time_error"></span>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
                        {{--Get numbers of hours and minutes from the requested time--}}
                         @php( list($h, $i, $s) = explode(':', $job->time) )
 
