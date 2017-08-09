@@ -31,7 +31,7 @@
             </div>
             <div class="col-sm-6">
                 <div id="reviewJob" class="text-center card">
-                    <h4>Please check student input:</h4><br>
+                    <h4>Please update the following information:</h4><br>
                     <form class="form-horizontal" role="form" method="POST" action="/printingData/edit/{{ $job->id }}">
 
                         {{ csrf_field() }}
@@ -81,9 +81,9 @@
                             </div> <!-- /form-group -->
 
                         <div class="col-sm-12 text-left">
-                                <button id="submit" type="submit" class="btn btn-lg">Accept</button>
-                                <a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>
-                                <a href="/printingData/index" class="btn btn-lg btn-info">Back</a>
+                                <button id="submit" type="submit" class="btn btn-lg">Submit</button>
+                                {{--<a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>--}}
+                                <a href="/printingData/finished" class="btn btn-lg btn-info">Back</a>
                         </div>
                     </form>
                 </div>

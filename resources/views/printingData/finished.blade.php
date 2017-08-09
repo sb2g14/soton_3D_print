@@ -2,7 +2,7 @@
 
 @section('content')
     @if ($flash=session('message'))
-    <div id="flash_message" class="alert alert-success" role="alert" style="position: relative; top: -100px">
+    <div id="flash_message" class="alert alert-success" role="alert" style="position: relative; top: -10px">
         {{ $flash }}
     </div>
     @endif
@@ -29,7 +29,9 @@
                 <th>Approved by</th>
                 <th>Use Case</th>
                 <th>Successful</th>
+                @hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')
                 <th>Edit</th>
+                @endhasanyrole
             </tr>
             </thead>
             <tbody>
@@ -54,7 +56,9 @@
                     <td>{{ $job->user->name }}</td>
                     <td>{{ $job->use_case  }}</td>
                     <td>{{ $job->successful }}</td>
+                    @hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')
                     <td><a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a><br><br>
+                    @endhasanyrole
                 </tr>
                 {{--@endif--}}
             @endforeach

@@ -224,7 +224,35 @@ class PrintingDataController extends Controller
      */
     public function edit($id)
     {
-        //
+        $job = printing_data::findOrFail($id);
+        return view('printingData.edit',compact('job'));
+    }
+
+    public function review($id)
+    {
+        $this -> validate(request(), [
+            'material_amount' => 'required|numeric',
+            'successful' => 'required'
+        ]);
+        $data = printing_data::findOrFail($id);
+
+        $hours = Input::get('hours');
+        $minutes = Input::get('minutes');
+        $time = $hours.':'.sprintf('%02d', $minutes);
+        $material_amount =request('material_amount');
+
+        // Calculation the job price £3 per h + £5 per 100g
+        $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+
+        $data->update([
+            'time' => $time,
+            'material_amount' => $material_amount,
+            'price' => $price,
+            'successful'=> request('successful'),
+        ]);
+
+        session()->flash('message', 'The job has been revised!');
+        return redirect('printingData/finished');
     }
 
     /**

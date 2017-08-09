@@ -114,10 +114,10 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     Route::get('/printingData/finished','PrintingDataController@finished');
 
 // Show a blade to edit the job
-    Route::get('/printingData/edit/{id}','PrintingDataController@');
+    Route::get('/printingData/edit/{id}','PrintingDataController@edit');
 
 // Show a blade to save edit the job
-    Route::post('/printingData/edit/{id}','PrintingDataController@');
+    Route::post('/printingData/edit/{id}','PrintingDataController@review');
 
 // Show each job requested in a separate blade
     Route::get('/printingData/show/{id}','PrintingDataController@show');
