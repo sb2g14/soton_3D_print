@@ -217,7 +217,8 @@ $(function () {
     }
     function evaluate_price() {
         if( error_material === false && $("#hours") != null && $("#minutes" != null)){
-            var $price = 3*($("#hours").val() + $("#minutes").val()/60) + 5*$("#material_amount").val()/100;
+            var $price = (3*(parseInt($("#hours").val()) + parseInt($("#minutes").val())/60) +
+                5*parseFloat($("#material_amount").val())/100).toFixed(2);
             $("#price").html($price);
         }
     }
