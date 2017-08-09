@@ -113,21 +113,27 @@ class PrintingDataController extends Controller
             'use_case' => 'required|min:3'
         ]);
         if (Auth::check()) {
-            $cost_codes = cost_code::all()->pluck('shortage', 'id')->toArray();
+            $shortages = cost_code::all()->pluck('shortage', 'id')->toArray();
+            $cost_codes = cost_code::all()->pluck('cost_code', 'id')->toArray();
         } else {
-            $cost_codes = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('shortage', 'id')->toArray();
+            $shortages = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('shortage', 'id')->toArray();
+            $cost_codes = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('cost_code', 'id')->toArray();
         }
         // $cost_codes = $cost_codes->toArray();
         $use_case = request('use_case');
-        if( in_array($use_case, $cost_codes)) {
+        if( in_array($use_case, $shortages)) {
 
             // Update record in staff database in order to link with users database
-            $cost_code_id = array_search($use_case, $cost_codes);
-            $cost_code = cost_code::where('id', $cost_code_id)->first()->cost_code;
+            $shortage_id = array_search($use_case, $shortages);
+            $cost_code = cost_code::where('id', $shortage_id)->first()->cost_code;
 
         } elseif(preg_match('/^(\d{9,10})$/', $use_case) === 1) {
         $cost_code = (int)$use_case;
-        $use_case = 'Cost Code';
+            if (in_array($cost_code, $cost_codes)){
+            $use_case = 'Cost Code - approved';
+            } else {
+                $use_case = 'Cost Code - unknown';
+            }
         } else {
             session()->flash('message', 'Please check the module name or enter a valid cost code');
             return redirect('printingData/create')->withInput();
