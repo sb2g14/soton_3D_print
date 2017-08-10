@@ -100,8 +100,14 @@ class PrintingDataController extends Controller
         }
 
     if (Auth::check()) {
-        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
-        $member = Auth::user()->staff;
+        if (Auth::user()->hasRole('3dhubs_manager')) {
+            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
+        } else {
+            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
+        }
+        if (!Auth::user()->hasRole('3dhubs_manager')) {
+            $member = Auth::user()->staff;
+        }
         return view('printingData.create',compact('available_printers','member'));
     } else {
         $available_printers = printers::where('printer_status', 'Available')->where('in_use', 0)->where('printer_type', '!=', 'UP BOX')->pluck('id', 'id')->all();
@@ -241,8 +247,14 @@ class PrintingDataController extends Controller
         $time = $hours.':'.sprintf('%02d', $minutes);
         $material_amount =request('material_amount');
 
-        // Calculation the job price £3 per h + £5 per 100g
-        $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+        if (Auth::user()->hasRole('3dhubs_manager')) {
+            if (request('successful') == 'No') {
+                $price = 0;
+            }
+        } else {
+            // Calculation the job price £3 per h + £5 per 100g
+            $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+        }
 
         $data->update([
             'time' => $time,
@@ -314,7 +326,11 @@ class PrintingDataController extends Controller
     $hours = $now->diffInHours($data->updated_at);
     $minutes = $now->diffInMinutes($data->updated_at);
     $new_time = $hours.':'.sprintf('%02d', $minutes);
-    $new_price = round(3*($hours + $minutes/60),2);
+    if (Auth::user()->hasRole('3dhubs_manager')) {
+        $new_price = 0;
+    } else {
+        $new_price = round(3 * ($hours + $minutes / 60), 2);
+    }
     $data->update(['successful'=>'No',
         'approved'=>'No',
         'time' => $new_time,
