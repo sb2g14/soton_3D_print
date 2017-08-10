@@ -1,39 +1,96 @@
 @extends('layouts.layout')
 @section('content')
     <div class="title m-b-md">
-        News
+        Updates in version 1.3
     </div>
-	<div class=" container well">
-	    <div class="row">
-	    	<div class="col-xs-12 text-left">
-	    		<p>Dear all,</p>
-	    		<p>
-	    			As many of you know, we have been developing a new website for improving the ease of logging prints over the past months.The website is accessible to everyone on the university network or VPN connection under <a href="http://3dprint.clients.soton.ac.uk/">http://3dprint.clients.soton.ac.uk/</a>. It will streamline the workflow of managing the printers and printing jobs and thus reduce the time you have to spend reading students handwriting, searching for their correct email and copying information in general, thus giving you more time to take care of the students in the workshop and help them with their prints or fix broken printers.
-	    		</p>
-	    		<p>
-	    			In order to fully test the website and get your feedback implemented, we decided to introduce the website during a time of low traffic, meaning from today onwards. ☺ I will disable access to the google recording spreadsheet soon and everyone will have to use the new website. If you have any issues, questions or feedback, please contact either of us (emails are on the website). Please note that I will be away for the next 2 weeks, so any problems should be directly reported to <b>Andrii</b> (<a href="mailto:A.Iakovliev@soton.ac.uk">A.Iakovliev@soton.ac.uk</a>) during that time!
-	    		</p>
-				<p>
-					I expect everyone to spend 10 minutes to click around the website to familiarise themselves with the website before coming to the workshop. Below is a short introduction on the most important things you need to know.
-				</p>
-				<p>Students should fill their details on the website and request jobs.</p>
-				<img src="/Images/image003.jpg">
-				<p>
-					They should NOT start the print until you accept the job! As they won’t be aware of this new procedure, please do point them at the website as they get to the workshop!
-				</p>
-				<p>As a demonstrator you now need to log in to the web-page and click on</p>
-				<img src="/Images/image005.jpg">
-				<p>
-					Which will link you to a page where you can manage new and approved jobs. Please check the details with the student and click accept as they start the print. If a print fails, please go from the pending jobs list to “Show Approved Jobs”. There you click the red button next to the job and say why the print failed. You can also mark jobs as completed here.
-				</p>
-				<p>If printers break, you can manage them from the 3D Printers->View Printers page.</p>
-				<p>
-					I hope the page is self-explanatory for most ways. If you have any questions of how to achieve anything you could do on the spreadsheet before but don’t know how to do now, please let us know and we will try to give a more detailed explanation. Please note that the Availability/Rota spreadsheet will remain on google for now. We do plan to remove it in the long time though so that your Gmail accounts won’t be needed any longer but you can manage all from one page ☺
-				</p>
-				<p>If there are any major problems while I am absent, please record the prints on a sheet of paper as we used to and I will sort things out once I am back!<br> I hope you have a great start in the weekend and hope that even if this change came without warning to you, you will soon appreciate the advantages of this new system. ☺
-				</p>
-				<p>All the best,<br><b>Lasse</b></p>
-	    	</div>
-	    </div>
-	</div>
+    <div class="container well text-left">
+        <div>
+            Here we present a short outline to the updates we have made since lounching the web site as well as a short
+            guidance on how to manage printer issues.
+        </div><br>
+        <h3>New functionality</h3>
+        <ol>
+            <li>
+                The <a href="http://3dprint.clients.soton.ac.uk/printingData/index">Pending Jobs</a> page has been updated.
+                New button <a href="http://3dprint.clients.soton.ac.uk/printingData/approved">Show currently approved jobs</a> leads to the list of jobs that have just been approved by a demonstrator.
+                We also added a link to display all the jobs history.
+            </li>
+            <li>
+                The 3dhubs manager now can edit any job after it has finished by adjusting the printing time and material amount.
+                Therefore, it is now possible to manage overnight jobs. And the cost tracking is more precise.
+                The failed jobs requested by the 3Dhubs manager are not charged. In addition to that, while performing
+                joined jobs the 3dhubs manager can request multiple jobs on the same printer.
+            </li>
+        </ol><br>
+        <h3>How to use <a href="http://3dprint.clients.soton.ac.uk/printers/index">3D printers</a> page</h3>
+        <div>
+            The options of each 3D printer are <a href="http://3dprint.clients.soton.ac.uk/issues/show/1">Details</a> and
+            <a href="http://3dprint.clients.soton.ac.uk/printers/update/1">Update</a>. The <a href="http://3dprint.clients.soton.ac.uk/issues/show/1">Details</a>
+            button leads to the Performance history of each printer as shown below.
+            <br><br>
+            <div>
+                <img src="/Images/view_update_resolve_printer.pdf">
+            </div>
+            <br><br>
+            The button "View/Update or Resolve" is available only for the printers with unresolved issues and
+            leads to the page from which you can manage the issue.
+            <br>
+            The button <a href="http://3dprint.clients.soton.ac.uk/printers/update/1">Update</a> is currently available only
+            to the Lead Demonstrator and provides means of updating printer records such as ID, number and etc.
+            <br><br>
+            If you would like update or resolve the current issue with a certain printer you just need to click on
+            "View/Update or Resolve button" or you can also access issues via "3Dprinters"->
+            <a href="http://3dprint.clients.soton.ac.uk/issues/index">Pending issues</a>.
+            <br><br>
+            <div>
+                <img src="/Images/Pending_issues.pdf">
+            </div>
+            <br><br>
+            To log a new printer issue go to "3Dprinters"-><a href="http://3dprint.clients.soton.ac.uk/issues/select">Log an Issue</a>
+            ->"Select printer"-><a href="http://3dprint.clients.soton.ac.uk/issues/select">Log a New Issue</a>
+            or via <a href="http://3dprint.clients.soton.ac.uk">home</a>->"Issues"->"+" as shown below.
+            <br><br>
+            <div>
+                <img src="/Images/Issues_home.pdf">
+            </div>
+        </div>
+        <div>
+            <br>Poseted by <a href="mailto:ai1v14@soton.ac.uk?Subject=Soton3Dprint" target="_blank"><b>Andrii Iakovliev</b></a>
+            and
+            <a href="mailto:sb2g14.ac.uk?Subject=Soton3Dprint" target="_blank"><b>Svitlana Braichenko</b></a>
+        </div>
+    </div>
+    <div class="title m-b-md">
+        How to request and manage jobs
+    </div>
+    <div class="container well text-left">
+        <div>
+            <p>
+            As many of you know, we have been developing a new website for improving the ease of logging prints over the past months.The website is accessible to everyone on the university network or VPN connection under <a href="http://3dprint.clients.soton.ac.uk/">http://3dprint.clients.soton.ac.uk/</a>. It will streamline the workflow of managing the printers and printing jobs and thus reduce the time you have to spend reading students handwriting, searching for their correct email and copying information in general, thus giving you more time to take care of the students in the workshop and help them with their prints or fix broken printers.
+            </p>
+            <p>
+            In order to fully test the website and get your feedback implemented, we decided to introduce the website during a time of low traffic, meaning from today onwards. ☺ I will disable access to the google recording spreadsheet soon and everyone will have to use the new website. If you have any issues, questions or feedback, please contact either of us (emails are on the website). Please note that I will be away for the next 2 weeks, so any problems should be directly reported to <b>Andrii</b> (<a href="mailto:A.Iakovliev@soton.ac.uk">A.Iakovliev@soton.ac.uk</a>) during that time!
+            </p>
+            <p>
+            I expect everyone to spend 10 minutes to click around the website to familiarise themselves with the website before coming to the workshop. Below is a short introduction on the most important things you need to know.
+            </p>
+            <p>Students should fill their details on the website and request jobs.</p>
+            <img src="/Images/image003.jpg">
+            <p>
+            They should NOT start the print until you accept the job! As they won’t be aware of this new procedure, please do point them at the website as they get to the workshop!
+            </p>
+            <p>As a demonstrator you now need to log in to the web-page and click on</p>
+            <img src="/Images/image005.jpg">
+            <p>
+            Which will link you to a page where you can manage new and approved jobs. Please check the details with the student and click accept as they start the print. If a print fails, please go from the pending jobs list to “Show Approved Jobs”. There you click the red button next to the job and say why the print failed. You can also mark jobs as completed here.
+            </p>
+            <p>If printers break, you can manage them from the 3D Printers->View Printers page.</p>
+            <p>
+            I hope the page is self-explanatory for most ways. If you have any questions of how to achieve anything you could do on the spreadsheet before but don’t know how to do now, please let us know and we will try to give a more detailed explanation. Please note that the Availability/Rota spreadsheet will remain on google for now. We do plan to remove it in the long time though so that your Gmail accounts won’t be needed any longer but you can manage all from one page ☺
+            </p>
+            <p>If there are any major problems while I am absent, please record the prints on a sheet of paper as we used to and I will sort things out once I am back!<br> I hope you have a great start in the weekend and hope that even if this change came without warning to you, you will soon appreciate the advantages of this new system. ☺
+            </p>
+            <br>Posted by <a href="mailto:l.wollatz@soton.ac.uk?Subject=Soton3Dprint" target="_blank"><b>Lasse Wollatz</b></a></p>
+        </div>
+    </div>
 @endsection
