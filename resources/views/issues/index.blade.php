@@ -51,7 +51,8 @@
                         <td>{{ $issue->printer_status }}</td>
                         <td>{{ $issue->users_name_created_issue}}</td>
                         <td>{{ isset($issue->Date)  ? $issue->Date : $issue->created_at->toDayDateTimeString() }}</td>
-                        <td>{{ isset($issue->Date) ? $issue->days_out_of_order : floor((strtotime($issue->updated_at) - strtotime($issue->created_at)) / (60 * 60 * 24)) }}</td>
+                        <td>{{ isset($issue->Date) ? $issue->days_out_of_order : \Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at) }}</td>
+                        {{--floor((strtotime($issue->updated_at) - strtotime($issue->created_at)) / (60 * 60 * 24))--}}
                         <td>{{ isset($issue->title) ? $issue->title : "Issue with printer ".$issue->printers_id }}</td>
                         <td>{{ $issue->body }}</td>
                         <td><a href="/issues/update/{{$issue->id}}" class="btn btn-info">Update/Resolve</a></td>

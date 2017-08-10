@@ -18,7 +18,7 @@
                 Created on {{ isset($issue->Date) ? $issue->Date : $issue->created_at->toDayDateTimeString() }}</i></small></h5><br>
                 <p>Printer Number: <b>{{$issue->printers_id}}</b><br>
                     Printer Status: <b>{{$issue->printer_status}}</b><br>
-                    Days out of order: <b>{{isset($issue->Date) ? $issue->days_out_of_order : floor((strtotime($issue->updated_at) - strtotime($issue->created_at)) / (60 * 60 * 24))}}</b><br>
+                    Days out of order: <b>{{isset($issue->Date) ? $issue->days_out_of_order : \Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at) }}</b><br>
                     {{--Print the text of a post--}}
                     Description: <b>{{ $issue->body }}</b>
                 </p>
