@@ -71,12 +71,13 @@
                             </div>
                         </div>
 
+                            <label for="successful" class="col-md-4 control-label">Was the job successful?</label>
                             <div class="form-group text-left">
                                 <div class="radio">
-                                    <input type="radio" name="successful" <?php if (isset($job->successful)
-                                        && $job->successful=="Yes") echo "checked";?> value="Yes">Yes <br>
-                                    <input type="radio" name="successful" <?php if (isset($job->successful)
-                                        && $job->successful=="No") echo "checked";?> value="No">No <br>
+                                    <label class="radio-inline"><input type="radio" name="successful" <?php if (isset($job->successful)
+                                            && $job->successful=="Yes") echo "checked";?> value="Yes">Yes </label>
+                                    <label class="radio-inline"><input type="radio" name="successful" <?php if (isset($job->successful)
+                                            && $job->successful=="No") echo "checked";?> value="No">No </label><br>
                                 </div> <!-- Class radio -->
                             </div> <!-- /form-group -->
 
