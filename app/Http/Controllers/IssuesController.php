@@ -11,6 +11,7 @@ use App\posts;
 use App\comments;
 use Auth;
 use Excel;
+use Carbon\Carbon;
 
 class IssuesController extends Controller
 {
@@ -167,7 +168,7 @@ class IssuesController extends Controller
             'users_name' => Auth::user()->name,
             'fault_data_id' => $issue_id,
             'printer_status' => Input::get('select'),
-            'days_out_of_order'=> floor((time() - strtotime($issue->created_at)) / (60 * 60 * 24)),
+            'days_out_of_order'=> Carbon::now('Europe/London')->diffInDays($issue->created_at),
             'body' => request('body')
         ]);
 
@@ -245,7 +246,7 @@ class IssuesController extends Controller
         $issue->update(['users_id_resolved_issue'=>Auth::user()->id,
             'users_name_resolved_issue' => Auth::user()->name,
             'printer_status' => 'Available',
-            'days_out_of_order' => floor((time() - strtotime($issue->created_at)) / (60 * 60 * 24)),
+            'days_out_of_order' => Carbon::now('Europe/London')->diffInDays($issue->created_at),
             'message_resolved' => request('body'),
             'resolved' => 1]);
         $printer = printers::findOrFail($issue->printers_id);
