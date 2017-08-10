@@ -75,7 +75,7 @@ class PrintingDataController extends Controller
 
     public function finished()
     {
-        $finished_jobs = printing_data::orderBy('created_at', 'desc')->get();
+        $finished_jobs = printing_data::orderBy('created_at', 'desc')->where('approved','!=', 'Waiting')->get();
 //        foreach ($jobs as $job)
 //        {
 //            list($h, $i, $s) = explode(':', $job->time);
