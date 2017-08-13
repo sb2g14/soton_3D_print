@@ -17,30 +17,32 @@
     </div>
 
     <div class="container">
-        @hasanyrole('LeadDemonstrator|administrator')
-        <a href="{{ url('/printers/create') }}">
-            <button type="submit" class="btn btn-success pull-right">Add Printer</button>
-        </a>
-        @endhasanyrole
-        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
-        <a href="/issues/index" class="btn btn-primary pull-left" style="margin-right: 20px;" >Manage Issues</a>
-        @endhasanyrole
-        @hasanyrole('LeadDemonstrator|administrator')
-        {!! link_to_route('issues.export',
-        'Export Issues to Excel', null,
-        ['class' => 'btn btn-info pull-left']) !!}
-        @endhasanyrole
+        <div>
+            @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
+                <a href="/issues/index" class="btn btn-primary pull-left" style="margin-right: 20px;" >Manage Issues</a>
+            @endhasanyrole
+            @hasanyrole('LeadDemonstrator|administrator')
+                {!! link_to_route('issues.export',
+                'Export Issues to Excel', null,
+                ['class' => 'btn btn-info pull-left']) !!}
+            @endhasanyrole
+            @hasanyrole('LeadDemonstrator|administrator')
+                <a href="{{ url('/printers/create') }}" class="btn btn-success pull-right">Add Printer</a>
+            @endhasanyrole
+        </div>
+        
+            
         <table class="table">
             <thead>
-                <tr">
+                <tr>
                     <th>Printer Number</th>
                     <th>Serial Number</th>
                     <th>Printer Type</th>
                     <th>Status</th>
                     @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
-                    <th>View History</th>
+                        <th>View History</th>
                         @hasanyrole('LeadDemonstrator')
-                        <th>Update Record</th>
+                            <th>Update Record</th>
                         @endhasanyrole
                     @endhasanyrole
                 </tr>
@@ -48,26 +50,26 @@
             <tbody>
                 @foreach($printers as $printer)
                     <tr class="text-left">
-                        <td>{{$printer->id}}</td>
-                        <td>{{$printer->serial_no}}</td>
-                        <td>{{$printer->printer_type}}</td>
+                        <td data-th="Printer Number">{{$printer->id}}</td>
+                        <td data-th="Serial Number">{{$printer->serial_no}}</td>
+                        <td data-th="Printer Type">{{$printer->printer_type}}</td>
                         @if ($printer->printer_status == 'Available' && $printer->in_use == 0)
-                            <td class="success">{{$printer->printer_status}}</td>
-                        @elseif($printer->printer_status == 'Available' && $printer->in_use == 1)
-                            <td style="background-color:yellowgreen;color:white;">In Use</td>
-                        @elseif ($printer->printer_status == 'Missing')
-                            <td class="warning">{{$printer->printer_status}}</td>
-                        @elseif ($printer->printer_status == 'Broken')
-                            <td class="danger">{{$printer->printer_status}}</td>
-                         @elseif ($printer->printer_status == 'On Loan')
-                            <td class="info">{{$printer->printer_status}}</td>
-                         @elseif ($printer->printer_status == 'Signed out')
-                            <td class="active">{{$printer->printer_status}}</td>
+                            <td data-th="Status" class="success">{{$printer->printer_status}}</td>
+                            @elseif($printer->printer_status == 'Available' && $printer->in_use == 1)
+                                <td data-th="Status" style="background-color:yellowgreen;color:white;">In Use</td>
+                            @elseif ($printer->printer_status == 'Missing')
+                                <td data-th="Status" class="warning">{{$printer->printer_status}}</td>
+                            @elseif ($printer->printer_status == 'Broken')
+                                <td data-th="Status" class="danger">{{$printer->printer_status}}</td>
+                            @elseif ($printer->printer_status == 'On Loan')
+                                <td data-th="Status" class="info">{{$printer->printer_status}}</td>
+                            @elseif ($printer->printer_status == 'Signed out')
+                                <td data-th="Status" class="active">{{$printer->printer_status}}</td>
                         @endif
                         @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
-                        <td><a href="/issues/show/{{$printer->id }}" class="btn btn-info btn-block">Details</a></td>
+                            <td data-th="View History"><a href="/issues/show/{{$printer->id }}" class="btn btn-info">Details</a></td>
                             @hasanyrole('LeadDemonstrator|administrator')
-                            <td><a href="/printers/update/{{$printer->id }}" class="btn btn-primary btn-block">Update</a></td>
+                                <td data-th="Update Record"><a href="/printers/update/{{$printer->id }}" class="btn btn-primary">Update</a></td>
                             @endhasanyrole
                         @endhasanyrole
                     </tr>

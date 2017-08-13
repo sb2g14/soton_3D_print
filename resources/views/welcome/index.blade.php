@@ -4,8 +4,7 @@
     {{--Slider --}}
     <div class="ctr">
         <div class="bl-welcome">
-            <p>Welcome to 3D printing workshop</p>
-            <p>at University of Southampton</p>
+            <p>Welcome to 3D printing workshop<br>at University of Southampton</p>
             <div class="btn btn-lg"><a href="{{ url('/printingData/create') }}">Request a job!</a></div>
         </div>
         <div id="image-slider_home" class="image-slider bl-slider owl-carousel owl-theme">
@@ -81,11 +80,9 @@
                                     </div>
 
                                     {{--Here we show comments to each issue:--}}
-                                    <div class="btn">
-                                        <button id="show_comments" type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $post_last->id }}">
+                                    <button id="show_comments" type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $post_last->id }}">
                                             Show comments
-                                        </button>
-                                    </div>
+                                    </button>
                                     <div id="{{ $post_last->id}}" class="card collapse">
                                         <ul class="lsn">
                                             @foreach($post_last->comments as $comment)
@@ -133,12 +130,10 @@
                                                 {{--Print date and time when a post was created--}}
                                                 Posted on {{ $post->created_at->toDayDateTimeString() }}:</i></small></h5>
                                     {{--Print the text of a post--}}
-                                    {{ $post->body }}
-                                    <div class="btn">
-                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
+                                    <p>{{ $post->body }}</p>
+                                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
                                             Show comments
-                                        </button>
-                                    </div>
+                                    </button>
                                     <div id="{{ $post->id}}" class="card collapse">
                                         {{--Here we show comments to each issue:--}}
                                         <ul class="lsn">

@@ -286,10 +286,9 @@ body {
 }
 .bl-welcome p {
   font-weight: 500;
-  position: relative;
-  float: left;
   font-size: 32px;
   line-height: 1;
+  margin-bottom: 20px;
 }
 .bl-welcome a {
   color: #fff;
@@ -371,7 +370,7 @@ body {
   border-radius: 8px;
 }
 .content {
-  margin-top: 100px;
+  /* margin-top: 100px; */
   text-align: center;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
@@ -416,6 +415,10 @@ body {
 .content table th,
 .content .table th {
   vertical-align: top;
+}
+.content table td,
+.content .table td {
+  vertical-align: middle;
 }
 .content #reviewJob h4 {
   color: red;
@@ -473,6 +476,9 @@ body {
 .s-welcome .list-group-item h5 {
   margin-bottom: 10px;
 }
+.s-welcome .list-group-item button {
+  margin-bottom: 10px;
+}
 .s-welcome .list-group-item .media-left img {
   width: 30px;
 }
@@ -489,6 +495,55 @@ body {
 }
 .s-map .scrolloff {
   pointer-events: none;
+}
+.table {
+  min-width: 300px;
+}
+.table th {
+  display: none;
+}
+.table td {
+  display: block;
+  /*         &:last-child {
+  padding-bottom: 3.5em;
+}  */
+}
+.table td:first-child {
+  margin-top: 2.5em;
+}
+.table td:before {
+  content: attr(data-th) ": ";
+  font-weight: bold;
+  width: 10.5em;
+  display: inline-block;
+}
+@media (min-width: 760px) {
+  .table td:before {
+    display: none;
+  }
+}
+.table th,
+.table td {
+  text-align: left;
+}
+@media (min-width: 760px) {
+  .table th,
+  .table td {
+    display: table-cell;
+    /* padding: .25em .5em;
+      
+      &:first-child {
+        padding-left: 0;
+      }
+      
+      &:last-child {
+        padding-right: 0;
+      } */
+  }
+  .table th td,
+  .table td td {
+    vertical-align: middle;
+  }
 }
 /* .form-horizontal{
     .help-block{
@@ -510,18 +565,24 @@ body {
 }
 footer {
   font-weight: 100;
+  font-size: 14px;
   background: #002e3b;
   color: #fff;
   margin-top: 20px;
   padding: 15px;
 }
+footer p {
+  text-align: center;
+}
 footer .social-media {
-  margin-top: 66px;
-  font-size: 24px;
+  font-size: 20px;
+}
+footer .support {
+  display: none;
 }
 footer .copyright,
 footer .team {
-  font-size: 14px;
+  font-size: 12px;
 }
 @media screen and (min-width: 450px) {
   .image-slider .item {
@@ -529,9 +590,6 @@ footer .team {
   }
 }
 @media screen and (min-width: 650px) {
-  .bl-welcome p {
-    margin-right: 10%;
-  }
   .s-welcome .is-table-row {
     display: table;
     margin-top: 30px;
@@ -550,6 +608,23 @@ footer .team {
 }
 /* Tablet and bigger */
 @media screen and (min-width: 768px) {
+  footer {
+    font-size: 16px;
+  }
+  footer p {
+    text-align: left;
+  }
+  footer .social-media {
+    margin-top: 66px;
+    font-size: 24px;
+  }
+  footer .support {
+    display: block;
+  }
+  footer .copyright,
+  footer .team {
+    font-size: 14px;
+  }
   .row.vdivide [class*='col-sm-6']:not(:last-child):after {
     background: #e0e0e0;
     width: 1px;
@@ -590,7 +665,6 @@ footer .team {
   }
   .bl-welcome p {
     font-size: 50px;
-    margin-right: 32%;
     margin-bottom: 10px;
   }
 }
