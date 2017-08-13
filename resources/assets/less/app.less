@@ -179,15 +179,12 @@ body {
     left: 10%;
     z-index: 2;
     color: #fff;
-    
-
-
+   
     p {
         font-weight: 500;
-        position: relative;
-        float: left;
         font-size: 32px;
         line-height: 1;
+        margin-bottom: 20px;
     }
 
     a {
@@ -293,7 +290,7 @@ body {
 
 //content styles for all pages
 .content {
-    margin-top: 100px;
+    /* margin-top: 100px; */
     text-align: center;
     flex-grow: 1;  // flexbox to make a sticky footer
     
@@ -344,7 +341,10 @@ body {
             font-weight: 600;
         }
         th {
-            vertical-align: top; 
+           vertical-align: top; 
+        } 
+        td {
+            vertical-align: middle;
         }
     }
 
@@ -418,6 +418,9 @@ body {
         h4, h5 {
             margin-bottom: 10px;
         }
+        button {
+            margin-bottom: 10px;
+        }
         .media-left {
             img {
                 width:30px;
@@ -444,7 +447,62 @@ body {
     }
 }
 
+// content styles for tables, making them look good on phones and tablets
 
+
+.table {
+    min-width: 300px; // adjust to your needs
+  
+    th {
+    display: none;   
+    }
+
+    td {
+        display: block; 
+
+        &:first-child {
+          margin-top: 2.5em;
+        }
+/*         &:last-child {
+  padding-bottom: 3.5em;
+}  */
+
+        &:before {
+          content: attr(data-th)": "; 
+          font-weight: bold;
+
+          // optional stuff to make it look nicer
+          width: 10.5em; // magic number :( adjust according to your own content
+          display: inline-block;
+          // end options
+          
+          @media (min-width: @breakpoint-alpha) {
+            display: none;
+          }
+        }
+    }
+
+    th, td {
+    text-align: left;
+
+    @media (min-width: @breakpoint-alpha) {
+      display: table-cell;
+      td {
+        vertical-align: middle;
+      }
+      /* padding: .25em .5em;
+      
+      &:first-child {
+        padding-left: 0;
+      }
+      
+      &:last-child {
+        padding-right: 0;
+      } */
+    }
+    
+    } 
+}
 
 
 /* .form-horizontal{
@@ -471,7 +529,10 @@ body {
             }
         }
     }
-} // s-requeset-form
+} // s-request-form
+
+
+
 
 
 .contacts {
@@ -486,18 +547,25 @@ body {
 
 footer {
     font-weight: 100;
+    font-size: 14px;
     background: @dark-blue;
     color: #fff;
     margin-top: 20px;
     padding: 15px;
-
+    p {
+      text-align: center;
+    }
+    
     .social-media {
-        margin-top: 66px;
-        font-size: 24px;
+       font-size: 20px;
+    }
+
+    .support {
+        display: none;
     }
     
     .copyright, .team {
-        font-size: 14px;
+        font-size: 12px;
     }
 }
 
@@ -511,11 +579,7 @@ footer {
 } 
 
 @media  screen and (min-width: 650px ) {
-    .bl-welcome {
-        p {
-            margin-right: 10%;
-        }
-    }
+    
     .s-welcome {
         .is-table-row {
             display: table;
@@ -540,7 +604,29 @@ footer {
 
 /* Tablet and bigger */
 @media screen and ( min-width: 768px ) {
+    
+    footer {
 
+        font-size: 16px;
+
+        p {
+          text-align: left;
+        }
+
+        .social-media {
+            margin-top: 66px;
+            font-size: 24px;
+        }
+
+        .support {
+            display: block;
+        }
+        
+        .copyright, .team {
+            font-size: 14px;
+        }
+    }
+   
     .row.vdivide [class*='col-sm-6']:not(:last-child):after {
       background: #e0e0e0;
       width: 1px;
@@ -585,7 +671,6 @@ footer {
         top: 200px;
         p {
             font-size: 50px;
-            margin-right: 32%;
             margin-bottom: 10px;
         }
     }
