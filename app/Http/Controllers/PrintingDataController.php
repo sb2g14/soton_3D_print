@@ -73,6 +73,19 @@ class PrintingDataController extends Controller
         return view('printingData.approved', compact('approved_jobs'));
     }
 
+    public function finished()
+    {
+        $finished_jobs = printing_data::orderBy('created_at', 'desc')->where('approved','!=', 'Waiting')->get();
+//        foreach ($jobs as $job)
+//        {
+//            list($h, $i, $s) = explode(':', $job->time);
+//            if (Carbon::now('Europe/London')->gte($job->updated_at->addHour($h)->addMinutes($i))) {
+//                $finished_jobs = $finished_jobs->push($job);
+//            }
+//        }
+        return view('printingData.finished', compact('finished_jobs'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -87,8 +100,14 @@ class PrintingDataController extends Controller
         }
 
     if (Auth::check()) {
-        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
-        $member = Auth::user()->staff;
+        if (Auth::user()->hasRole('3dhubs_manager')) {
+            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
+        } else {
+            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
+        }
+        if (!Auth::user()->hasRole('3dhubs_manager')) {
+            $member = Auth::user()->staff;
+        }
         return view('printingData.create',compact('available_printers','member'));
     } else {
         $available_printers = printers::where('printer_status', 'Available')->where('in_use', 0)->where('printer_type', '!=', 'UP BOX')->pluck('id', 'id')->all();
@@ -105,52 +124,59 @@ class PrintingDataController extends Controller
     public function store(Request $request)
     {
 
-        $this -> validate(request(), [
-            'student_name' => 'required|string|min:3|max:30|regex:/[\w\-\'\s]+/',
+        $this->validate(request(), [
+            'student_name' => 'required|string|min:3|max:100|regex:/[\w\-\'\s]+/',
             'email' => 'required|email|min:3|max:30|regex:/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/',
             'student_id' => 'required|numeric|min:8',
             'material_amount' => 'required|numeric|min:1|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
             'use_case' => 'required|min:3'
         ]);
-    if(Auth::check())
-    {
-        $cost_codes = cost_code::all()->pluck('shortage','id')->toArray();
-    } else {
-        $cost_codes = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('shortage','id')->toArray();
-    }
-       // $cost_codes = $cost_codes->toArray();
+        if (Auth::check()) {
+            $shortages = cost_code::all()->pluck('shortage', 'id')->toArray();
+            $cost_codes = cost_code::all()->pluck('cost_code', 'id')->toArray();
+        } else {
+            $shortages = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('shortage', 'id')->toArray();
+            $cost_codes = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('cost_code', 'id')->toArray();
+        }
+        // $cost_codes = $cost_codes->toArray();
         $use_case = request('use_case');
-        if( in_array($use_case, $cost_codes)) {
+        if( in_array($use_case, $shortages)) {
 
             // Update record in staff database in order to link with users database
-            $cost_code_id = array_search($use_case, $cost_codes);
-            $cost_code = cost_code::where('id', $cost_code_id)->first()->cost_code;
+            $shortage_id = array_search($use_case, $shortages);
+            $cost_code = cost_code::where('id', $shortage_id)->first()->cost_code;
 
-        } elseif(preg_match('/123456789/', $use_case) === true) {
-            $cost_code = (int) $use_case;
-            $use_case = 'Cost Code';
+        } elseif(preg_match('/^(\d{9,10})$/', $use_case) === 1) {
+        $cost_code = (int)$use_case;
+            if (in_array($cost_code, $cost_codes)){
+            $use_case = 'Cost Code - approved';
+            } else {
+                $use_case = 'Cost Code - unknown';
+            }
         } else {
             session()->flash('message', 'Please check the module name or enter a valid cost code');
             return redirect('printingData/create')->withInput();
         }
 
-            // Calculating printing time from the dropdown
+        // Calculating printing time from the dropdown
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
-        $time = $hours.':'.sprintf('%02d', $minutes);
+        $time = $hours . ':' . sprintf('%02d', $minutes);
 
         $material_amount = request('material_amount');
         // Calculation the job price £3 per h + £5 per 100g
-        $price = round(3*($hours + $minutes/60) + 5*$material_amount/100,2);
+        $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
 
         // Request id and identify the payment category
         $student_id = request('student_id');
-        if (substr($student_id, 0,1) == '1')
-        {
+        if (substr($student_id, 0, 1) == '1') {
             $payment_category = 'staff';
-        } elseif (substr($student_id, 0,1) == '2')
-        {
+        } elseif (substr($student_id, 0, 1) == '2') {
             $payment_category = 'postgraduate';
+        } elseif (substr($student_id, 0, 1) == '3') {
+            $payment_category = 'masters';
+        } else {
+            $payment_category = 'undergraduate';
         }
         // Printer requested
         $printers_id = Input::get('printers_id');
@@ -204,7 +230,41 @@ class PrintingDataController extends Controller
      */
     public function edit($id)
     {
-        //
+        $job = printing_data::findOrFail($id);
+        return view('printingData.edit',compact('job'));
+    }
+
+    public function review($id)
+    {
+        $this -> validate(request(), [
+            'material_amount' => 'required|numeric',
+            'successful' => 'required'
+        ]);
+        $data = printing_data::findOrFail($id);
+
+        $hours = Input::get('hours');
+        $minutes = Input::get('minutes');
+        $time = $hours.':'.sprintf('%02d', $minutes);
+        $material_amount =request('material_amount');
+
+        if (Auth::user()->hasRole('3dhubs_manager')) {
+            if (request('successful') == 'No') {
+                $price = 0;
+            }
+        } else {
+            // Calculation the job price £3 per h + £5 per 100g
+            $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+        }
+
+        $data->update([
+            'time' => $time,
+            'material_amount' => $material_amount,
+            'price' => $price,
+            'successful'=> request('successful'),
+        ]);
+
+        session()->flash('message', 'The job has been revised!');
+        return redirect('printingData/finished');
     }
 
     /**
@@ -259,11 +319,18 @@ class PrintingDataController extends Controller
     public function abort($id)
 {
     $data = printing_data::findOrFail($id);
-    $time = time() - strtotime($data->updated_at);
-    $hours = date('H', $time);
-    $minutes = date('i', $time);
-    $new_time = $hours.':'.sprintf('%02d', $minutes);
-    $new_price = round(3*($hours + $minutes/60) + 5*$data->material_amount/100,2);
+    $now = Carbon::now('Europe/London');
+    //$time = time() - strtotime($data->updated_at);
+    //$hours = date('H', $time);
+    //$minutes = date('i', $time);
+    $hours = $now->diffInHours($data->updated_at);
+    $minutes = $now->diffInMinutes($data->updated_at) - $hours*60;
+    $new_time = Carbon::$hours.':'.sprintf('%02d', $minutes);
+    if (Auth::user()->hasRole('3dhubs_manager')) {
+        $new_price = 0;
+    } else {
+        $new_price = round(3 * ($hours + $minutes / 60), 2);
+    }
     $data->update(['successful'=>'No',
         'approved'=>'No',
         'time' => $new_time,

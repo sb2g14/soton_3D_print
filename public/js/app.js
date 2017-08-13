@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -32,6 +32,9 @@
 /******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
@@ -60,19 +63,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-__webpack_require__(1);
-module.exports = __webpack_require__(2);
-
-
-/***/ }),
-/* 1 */
+/***/ 0:
 /***/ (function(module, exports) {
 
 (function () {
@@ -175,7 +171,7 @@ module.exports = __webpack_require__(2);
 
     function evaluate_price() {
         if ($('#material_amount') !== null && $("#hours") !== null && $("#minutes") !== null) {
-            var $price = 3 * ($("#hours").val() + $("#minutes").val()) / 60 + 5 * $("#material_amount").val() / 100;
+            var $price = (3 * (parseInt($("#hours").val()) + parseInt($("#minutes").val()) / 60) + 5 * parseFloat($("#material_amount").val()) / 100).toFixed(2);
             $("#price").html($price);
             $("#price-final").html($price);
         }
@@ -193,10 +189,21 @@ module.exports = __webpack_require__(2);
 })();
 
 /***/ }),
-/* 2 */
+
+/***/ 11:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
+/***/ }),
+
+/***/ 12:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(0);
+module.exports = __webpack_require__(11);
+
+
 /***/ })
-/******/ ]);
+
+/******/ });

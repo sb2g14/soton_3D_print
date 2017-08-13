@@ -60,7 +60,7 @@ $(function () {
     function check_student_name() {
      var name = $("#student_name");
 
-     if(name.val().length < 3 || name.val().length > 30){
+     if(name.val().length < 3 || name.val().length > 100){
          $("#student_name_error").html("The name should be between 2 and 20 characters");
          $("#student_name_error").show();
          $("#student_name").focus();
@@ -217,7 +217,8 @@ $(function () {
     }
     function evaluate_price() {
         if( error_material === false && $("#hours") != null && $("#minutes" != null)){
-            var $price = 3*($("#hours").val() + $("#minutes").val())/60 + 5*$("#material_amount").val()/100;
+            var $price = (3*(parseInt($("#hours").val()) + parseInt($("#minutes").val())/60) +
+                5*parseFloat($("#material_amount").val())/100).toFixed(2);
             $("#price").html($price);
         }
     }
