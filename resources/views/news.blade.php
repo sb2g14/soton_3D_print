@@ -29,7 +29,7 @@
             button leads to the Performance history of each printer as shown below.
             <br><br>
             <div>
-                <img src="/Images/view_update_resolve_printer.pdf">
+                <img src="/Images/view_update_resolve_printer.svg">
             </div>
             <br><br>
             The button "View/Update or Resolve" is available only for the printers with unresolved issues and
@@ -43,7 +43,7 @@
             <a href="http://3dprint.clients.soton.ac.uk/issues/index">Pending issues</a>.
             <br><br>
             <div>
-                <img src="/Images/Pending_issues.pdf">
+                <img src="/Images/Pending_issues.svg">
             </div>
             <br><br>
             To log a new printer issue go to "3Dprinters"-><a href="http://3dprint.clients.soton.ac.uk/issues/select">Log an Issue</a>
@@ -51,7 +51,7 @@
             or via <a href="http://3dprint.clients.soton.ac.uk">home</a>->"Issues"->"+" as shown below.
             <br><br>
             <div>
-                <img src="/Images/Issues_home.pdf">
+                <img src="/Images/Issues_home.svg">
             </div>
         </div>
         <div>
