@@ -90,13 +90,15 @@ class RegisterController extends Controller
             staff::where('id','=',$staff_id)->update(array('user_id'=> $user->id, 'student_id' => request('student_id')));
 
             $member = staff::find($staff_id);
-            if($member->role == 'Lead Demonstrator')
-            {
+            if($member->role == 'Lead Demonstrator') {
                 $user->assignRole('LeadDemonstrator');
             }elseif($member->role == 'Former member'){
                 $user->assignRole('OldDemonstrator');
-            }
-            else{
+            }elseif($member->role == '3D Hub Manager'){
+                $user->assignRole('3dhubs_manager');
+            }elseif($member->role == 'New Demonstrator'){
+                $user->assignRole('NewDemonstrator');
+            }else{
                 $user->assignRole('Demonstrator');
             }
 

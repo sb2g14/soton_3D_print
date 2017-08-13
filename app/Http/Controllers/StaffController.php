@@ -51,7 +51,31 @@ class StaffController extends Controller
             'email' => 'required|email',
             'phone' => 'required|numeric|digits:11'
         ]);
-        staff::create(request(['first_name', 'last_name', 'email', 'phone']),Input::get('role'));
+        $role = Input::get('role');
+        $member = new staff;
+        $member -> first_name = request('first_name');
+        $member -> last_name = request('last_name');
+        $member -> email = request('email');
+        $member -> phone = request('phone');
+        $member -> role = $role;
+
+        // Submit the data to the database
+
+        $member->save();
+
+        if(!empty($member->user)) {
+            if ($role == 'Lead Demonstrator') {
+                $member->user->assignRole('LeadDemonstrator');
+            } elseif ($member->role == 'Former member') {
+                $member->user->assignRole('OldDemonstrator');
+            } elseif ($member->role == '3D Hub Manager') {
+                $member->user->assignRole('3dhubs_manager');
+            } elseif ($member->role == 'New Demonstrator') {
+                $member->user->assignRole('NewDemonstrator');
+            } else {
+                $member->user->assignRole('Demonstrator');
+            }
+        }
         session()->flash('message', 'The record has been successfully added to the database!');
 
         return redirect('/members/index');
@@ -108,7 +132,24 @@ class StaffController extends Controller
 
         if(Auth::user()->hasAnyRole(['administrator','LeadDemonstrator']))
         {
-            staff::where('id','=', $id)->update(array('role'=> Input::get('role')));
+            $role = Input::get('role');
+            staff::where('id','=', $id)->update(array('role'=> $role));
+            if(!empty($member->user)) {
+                // Find the record associated with id in users table
+                $user = $member->user;
+                // Assign relevant role
+                if($role == 'Lead Demonstrator') {
+                    $user->syncRoles(['LeadDemonstrator']);
+                }elseif($role == 'Former member'){
+                    $user->syncRoles(['OldDemonstrator']);
+                }elseif($role == '3D Hub Manager'){
+                    $user->syncRoles(['3dhubs_manager']);
+                }elseif($role == 'New Demonstrator'){
+                    $user->syncRoles(['NewDemonstrator']);
+                }else{
+                    $user->syncRoles(['Demonstrator']);
+                }
+            }
         }
 
         session()->flash('message', 'The record has been successfully updated!');
@@ -126,11 +167,13 @@ class StaffController extends Controller
     {
 //        staff::destroy($id);
         // Find the record associated with id in staff table
-//        $member = staff::find($id);
-//        // Find the record associated with id in users table
-//        $user = $member->user;
-//        // Assign role old demonstrator
-//        $user->syncRoles('OldDemonstrator');
+        $member = staff::find($id);
+        if(!empty($member->user)) {
+            // Find the record associated with id in users table
+            $user = $member->user;
+            // Assign role old demonstrator
+            $user->syncRoles(['OldDemonstrator']);
+        }
         // Update record in staff table
         staff::where('id','=', $id)->update(array('role'=> 'Former member'));
         session()->flash('message', 'The record has been deleted');

@@ -20,8 +20,8 @@
                         Estimated duration: <b>{{$job->time}}</b><br>
                         Estimated material amount: <b>{{$job->material_amount}} grams</b><br>
                         Estimated price: <b>£{{$job->price}}</b><br>
-                        Module name or cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @else <b style="color: red"> @endif {{$job->use_case}} </b><br>
-                        Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @else <b style="color: red"> @endif {{$job->cost_code}} </b><br>
+                        Module name or cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @elseif($job->use_case == 'Cost Code - unknown') <b style="color: red"> @endif {{$job->use_case}} </b><br>
+                        Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @elseif($job->use_case == 'Cost Code - unknown') <b style="color: red"> @endif {{$job->cost_code}} </b><br>
                         Job number: <b>{{$job->id}}</b><br>
                     </p>
                 </div>
