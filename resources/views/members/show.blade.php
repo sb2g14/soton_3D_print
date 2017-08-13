@@ -7,9 +7,9 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-4"></div>
+            <div class="col-xs-2 col-sm-4"></div>
 
-            <div class="col-sm-4 well text-left">
+            <div class="col-xs-8 col-sm-4 well text-left">
                 <p><span class="glyphicon glyphicon-user"></span> {{$member -> role}}</p>
                 @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                 <p><span class="glyphicon glyphicon-phone"></span> {{$member -> phone}}</p>
@@ -35,7 +35,7 @@
                 {{--@endhasanyrole--}}
             </div>
             
-            <div class="col-sm-4"></div>
+            <div class="col-xs-2 col-sm-4"></div>
         </div>
     </div>
 @endsection

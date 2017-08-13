@@ -370,7 +370,7 @@ body {
   border-radius: 8px;
 }
 .content {
-  /* margin-top: 100px; */
+  margin-top: 100px;
   text-align: center;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
@@ -504,12 +504,13 @@ body {
 }
 .table td {
   display: block;
-  /*         &:last-child {
-  padding-bottom: 3.5em;
-}  */
+  /*          &:last-child {
+ padding-bottom: 4.5em;
+        }  
+ */
 }
 .table td:first-child {
-  margin-top: 2.5em;
+  margin-top: 4.5em;
 }
 .table td:before {
   content: attr(data-th) ": ";
