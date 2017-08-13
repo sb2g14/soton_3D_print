@@ -4,7 +4,7 @@
     {{--Slider --}}
     <div class="ctr">
         <div class="bl-welcome">
-            <p>Welcome to 3D printing workshop<br>at University of Southampton</p>
+            <p>Welcome to 3D printing workshop<br>at the University of Southampton</p>
             <div class="btn btn-lg"><a href="{{ url('/printingData/create') }}">Request a job!</a></div>
         </div>
         <div id="image-slider_home" class="image-slider bl-slider owl-carousel owl-theme">
