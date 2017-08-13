@@ -137,13 +137,13 @@ $(function () {
         var password = $("#password");
 
         if (password.val().length < 6 || password.val().length > 16) {
-            $("#password_error").html("The password mast be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
+            $("#password_error").html("The password must be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
             $("#password_error").show();
             $("#password").focus();
             $("#password").addClass("parsley-error");
             error_password = true;
         } else if (!password.val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,16}$/)) {
-            $("#password_error").html("The password mast be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
+            $("#password_error").html("The password must be 6 to 16 character long and contain at least one upper " + "case letter, one lower case letter, and one digit");
             $("#password_error").show();
             $("#password").focus();
             $("#password").addClass("parsley-error");

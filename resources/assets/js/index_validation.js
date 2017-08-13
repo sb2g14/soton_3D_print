@@ -47,7 +47,7 @@ $(function () {
     function check_issue() {
         var issue = $("#issue");
         if(issue.val().length < 8 || issue.val().length > 180){
-            $("#issue_error").html("Issue name mast be between 8 and 180 characters long");
+            $("#issue_error").html("Issue name must be between 8 and 180 characters long");
             $("#issue_error").show();
             $("#issue").addClass("parsley-error");
             error_issue = true;
@@ -71,7 +71,7 @@ $(function () {
     function check_message() {
         var message = $("#message_last");
         if(message.val().length < 8 || message.val().length > 300){
-            $("#message_last_error").html("The message mast be between 8 and 300 characters long");
+            $("#message_last_error").html("The message must be between 8 and 300 characters long");
             $("#message_last_error").show();
             $("#message_last").addClass("parsley-error");
             error_message = true;
@@ -95,7 +95,7 @@ $(function () {
     function check_comment() {
         var comment = $("#comment_last");
         if(comment.val().length < 8 || comment.val().length > 300){
-            $("#comment_last_error").html("The comment mast be between 8 and 300 characters long");
+            $("#comment_last_error").html("The comment must be between 8 and 300 characters long");
             $("#comment_last_error").show();
             $("#comment_last").addClass("parsley-error");
             error_comment_last = true;

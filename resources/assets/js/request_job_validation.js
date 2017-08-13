@@ -126,13 +126,13 @@ $(function () {
             $("#student_id").addClass("parsley-error");
             error_id = true;
         }else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
-            $("#student_id_error").html("Id of a member of staff mast be 8 digits long");
+            $("#student_id_error").html("Id of a member of staff must be 8 digits long");
             $("#student_id_error").show();
             $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
         } else if (id.val()[0].match(/^[2345]/) && id.val().length !== 9) {
-            $("#student_id_error").html("The id of students mast be 9 digits long");
+            $("#student_id_error").html("The id of students must be 9 digits long");
             $("#student_id_error").show();
             $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
