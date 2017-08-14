@@ -206,13 +206,10 @@ body {
 }
 .p-header .dropdown .dropdown-menu {
   background: #005C85;
+  margin-left: 120px;
 }
 .p-header .dropdown .dropdown-menu a:hover {
   background: none;
-}
-.p-header .dropdown .dropdown-menu.dropdown-login {
-  margin-left: -94px;
-  min-width: 130px;
 }
 .p-header .dropdown-backdrop {
   position: static;
@@ -714,6 +711,13 @@ footer .team {
   .p-header .bl-menu a:hover,
   .p-header .bl-menu .active {
     color: #fff;
+  }
+  .p-header .dropdown .dropdown-menu {
+    margin-left: 0;
+  }
+  .p-header .dropdown .dropdown-menu.dropdown-login {
+    margin-left: -94px;
+    min-width: 130px;
   }
   .content .title {
     font-size: 48px;
