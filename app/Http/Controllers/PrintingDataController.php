@@ -250,6 +250,8 @@ class PrintingDataController extends Controller
         if (Auth::user()->hasRole('3dhubs_manager')) {
             if (request('successful') == 'No') {
                 $price = 0;
+            } else {
+                $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
             }
         } else {
             // Calculation the job price £3 per h + £5 per 100g
