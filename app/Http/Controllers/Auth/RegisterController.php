@@ -97,7 +97,7 @@ class RegisterController extends Controller
             }elseif($member->role == 'IT Manager' || $member->role == 'IT'){
                 $user->assignRole('administrator');
             }elseif($member->role == '3D Hub Manager'){
-                $user->assignRole('3dhubs_manager');
+                $user->assignRole(['3dhubs_manager','Demonstrator']);
             }elseif($member->role == 'New Demonstrator'){
                 $user->assignRole('NewDemonstrator');
             }else{
