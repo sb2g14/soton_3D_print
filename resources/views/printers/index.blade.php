@@ -19,7 +19,7 @@
     <div class="container">
         <div>
             @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
-                <a href="/issues/index" class="btn btn-primary pull-left" style="margin-right: 20px;" >Manage Issues</a>
+                <a href="/issues/index" class="btn btn-primary pull-left" style="margin-right: 8px;" >Manage Issues</a>
             @endhasanyrole
             @hasanyrole('LeadDemonstrator|administrator')
                 {!! link_to_route('issues.export',

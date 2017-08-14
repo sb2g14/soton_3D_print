@@ -220,7 +220,7 @@
                                         <li><a href={{ asset('files/FORMS_DC1_AND_DC2_v2.doc') }}>Claim forms DC1 and DC2</a></li>
                                     </ul><br>
                                     <h4 style="color: red"><b>Please visit <a href="{{ url('http://3dprint.clients.soton.ac.uk/news') }}"
-                                                                target="_blank">NEWS</a> to check how to use this recourse.</b></h4>
+                                                                target="_blank">NEWS</a> to check how to use this resourse.</b></h4>
                                 </div>
                             </li>
                         </ul>
