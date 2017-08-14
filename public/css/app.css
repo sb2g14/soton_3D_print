@@ -214,6 +214,9 @@ body {
   margin-left: -94px;
   min-width: 130px;
 }
+.p-header .dropdown-backdrop {
+  position: static;
+}
 .hamburger-box {
   width: 24px;
   height: 32px;
@@ -722,10 +725,10 @@ footer .team {
     position: absolute !important;
     overflow: hidden;
   }
-  nav a:hover,
-  nav a:focus {
-    outline: none;
-  }
+  /* Snav a:hover,
+nav a:focus {
+	outline: none;
+} */
   /* Effect 4: bottom border enlarge
 .cl-effect-4 a {
 	padding: 0 0 10px;

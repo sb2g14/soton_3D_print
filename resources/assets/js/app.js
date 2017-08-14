@@ -43,7 +43,11 @@
         });
 
         if ($(window).width() < 900) {
-            $('#my-menu a').click(function() {
+            $('#my-menu a.no-dropdown').click(function() {
+                $('.hamburger').removeClass('is-active');
+                $('#my-menu').slideUp("slow");
+            });
+            $('#my-menu a.dropdown-item').click(function() {
                 $('.hamburger').removeClass('is-active');
                 $('#my-menu').slideUp("slow");
             });
@@ -120,4 +124,5 @@
     $("#material_amount").keyup(function () {
         evaluate_price();
     });
+
 })();
