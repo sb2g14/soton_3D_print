@@ -23,7 +23,7 @@
             @endhasanyrole
             @hasanyrole('LeadDemonstrator|administrator')
                 {!! link_to_route('issues.export',
-                'Export Issues to Excel', null,
+                'Export to Excel', null,
                 ['class' => 'btn btn-info pull-left']) !!}
             @endhasanyrole
             @hasanyrole('LeadDemonstrator|administrator')

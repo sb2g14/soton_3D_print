@@ -44,20 +44,20 @@
                 {{--If time for job finish plus 15 minutes didn't pass we show approved job--}}
                 {{--@if ($job->updated_at->addHour($h)->addMinutes($i)->addMinutes(15)->gte(Carbon\Carbon::now('Europe/London')))--}}
                 <tr class="text-left">
-                    <td>{{ $job->id }}</td>
-                    <td>{{ $job->printers_id }}</td>
-                    <td>{{ $job->student_name}}</td>
-                    <td>{{ $job->payment_category}}</td>
-                    <td>{{ date("H:i", strtotime($job->time)) }}</td>
-                    <td>{{ $job->material_amount }} g</td>
-                    <td>£{{ $job->price }}</td>
-                    <td>{{ $job->created_at->toDateTimeString() }}</td>
-                    <td>{{ $job->updated_at->toDateTimeString() }}</td>
-                    <td>{{ $job->user->name }}</td>
-                    <td>{{ $job->use_case  }}</td>
-                    <td>{{ $job->successful }}</td>
+                    <td data-th="ID">{{ $job->id }}</td>
+                    <td data-th="Printer No">{{ $job->printers_id }}</td>
+                    <td data-th="Name">{{$job->student_name}}</td>
+                    <td data-th="Payment Category">{{$job->payment_category}}</td>
+                    <td data-th="Time">{{ date("H:i", strtotime($job->time)) }}</td>
+                    <td data-th="Material Amount">{{ $job->material_amount }} g</td>
+                    <td data-th="Price">£{{ $job->price }}</td>
+                    <td data-th="Created on">{{ $job->created_at->toDayDateTimeString() }}</td>
+                    <td data-th="Approved on">{{ $job->updated_at->toDayDateTimeString() }}</td>
+                    <td data-th="Approved by">{{ $job->user->name }}</td>
+                    <td data-th="Use Case">{{ $job->use_case  }}</td>
+                    <td data-th="Successful">{{ $job->successful }}</td>
                     @hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')
-                    <td><a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a><br><br>
+                    <td data-th="Edit"><a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a><br><br>
                     @endhasanyrole
                 </tr>
                 {{--@endif--}}

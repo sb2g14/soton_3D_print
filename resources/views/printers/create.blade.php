@@ -6,9 +6,9 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-4"></div>
+            <div class="col-sm-3"></div>
 
-            <div class="col-sm-4 text-left well">
+            <div class="col-sm-6 text-left well">
             
                 <form method="post" action="/printers">
                     {{--Generate security key --}}
@@ -41,7 +41,7 @@
                     
                 </form>
             </div>
-            <div class="col-sm-4"></div>
+            <div class="col-sm-3"></div>
         </div>
     </div>
 @endsection
