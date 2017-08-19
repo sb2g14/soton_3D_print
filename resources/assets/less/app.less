@@ -60,13 +60,15 @@ body {
 
         li {
 
-            a {
-                color: @light-grey;
+            a,
+            > span {
                 .font-size( (20/@fs-base) );
-                display: block;
+                color: @light-grey;
                 padding: 5px 20px;
-               /*  font-weight: 600; */
                 text-decoration: none; 
+                text-shadow: 0 1px 1px rgba(0,0,0,.4);
+
+                display: block;
             }
             .btn {
                 background: @light-red;
@@ -78,7 +80,8 @@ body {
             }
         }
 
-        a:hover,.active {
+        a:hover,
+        li > span:hover {
             color: @c-link;
             text-decoration: none; 
         }
@@ -86,21 +89,92 @@ body {
         &.no-active {
             display: none;
         }
+
+        /* .item {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+        } */
     } //.bl-menu
 
-    .dropdown {
-        .dropdown-menu {
-            background: @blue;
-            margin-left: 120px;
-            a:hover {
-                background: none;
+    @media screen and (max-width: 1099px ) {
+       .bl-menu {
+           .item {
+               .dropdown-bl {
+                   display: none;
+                   background: @blue;
+                   a {
+                       .font-size( (16/@fs-base) );
+                       display: block;
+                   }
+               }
+               
+               &.is-active {
+                   .dropdown-bl {
+                       display: block;
+                   }
+               }
+           }
+       }
+    } 
+
+    @media screen and (min-width: 1100px ) {
+      .bl-menu {
+            .item {
+                position: relative;
+                a, > span {
+                    .font-size( (16/@fs-base) );
+                }
+                .dropdown-bl {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    width: 200px;
+                    background: @blue;
+                    border-radius:0 2.5px 2.5px 2.5px;
+                    &.dropdown-login {
+                        width: 164px;
+                        border-radius:2.5px 0 2.5px 2.5px;
+                    }
+                    
+                    display: none;
+
+                    li {
+                        display: block;
+                        border-bottom: 1px solid #00557b;
+                        padding: 10px 20px;
+                        &:hover {
+                            background: @light-blue;
+                            > a {
+                               color: @c-link;
+                            }
+                        }
+                    }
+
+                    a {
+                        .font-size( (14/@fs-base) );
+                        display: block;
+                    }
+                }
+                
+                &:hover {
+                    > span {
+                        background: @blue;
+                        color: @c-link;
+                        border-radius: 5px 5px 0 0;
+                    }
+                    .dropdown-bl {
+
+                        display: block;
+
+                    }
+                }
             }
-        }
+        }  
     }
 
-    .dropdown-backdrop {
-        position: static;
-    }
 }// .p-header
 
 
@@ -184,7 +258,7 @@ body {
    
     p {
         font-weight: 500;
-        font-size: 32px;
+       .font-size( (32/@fs-base) );
         line-height: 1;
         margin-bottom: 20px;
     }
@@ -297,7 +371,7 @@ body {
     flex-grow: 1;  // flexbox to make a sticky footer
     
     h3 {
-        font-size: 20px;
+        .font-size( (20/@fs-base) );
         font-weight: 600; 
         margin-bottom: 20px;
     } 
@@ -309,7 +383,7 @@ body {
 
     .title {
         font-family: @f-extra;
-        font-size: 32px;
+        .font-size( (32/@fs-base) );
     }
 
     .m-b-md {
@@ -507,17 +581,6 @@ body {
 }
 
 
-/* .form-horizontal{
-    .help-block{
-        color: red;
-    }
-}
- */
-
-
-
-
-
 .s-request-form {
 
     .instructions {
@@ -549,7 +612,7 @@ body {
 
 footer {
     font-weight: 100;
-    font-size: 14px;
+    .font-size( (14/@fs-base) );
     background: @dark-blue;
     color: #fff;
     margin-top: 20px;
@@ -559,7 +622,7 @@ footer {
     }
     
     .social-media {
-       font-size: 20px;
+       .font-size( (20/@fs-base) );
     }
 
     .support {
@@ -567,7 +630,7 @@ footer {
     }
     
     .copyright, .team {
-        font-size: 12px;
+        .font-size( (12/@fs-base) );
     }
 }
 
@@ -586,6 +649,7 @@ footer {
         .is-table-row {
             display: table;
             margin-top: 30px;
+            width: 100%;
         }
         .is-table-row [class*="col-"] {
             background: white;
@@ -599,17 +663,33 @@ footer {
 @media  screen and (min-width: 732px ) {
     .bl-welcome {
         p {
-            font-size: 36px;
+            .font-size( (36/@fs-base) );
         }
     }
 }
 
 /* Tablet and bigger */
 @media screen and ( min-width: 768px ) {
+
+    /* .p-header {
+        .bl-menu {
+            li {
+                a, > span {
+                    .font-size( (16/@fs-base) );
+                }
+            }
+            .dropdown-bl {
+                li > a {
+                    .font-size( (14/@fs-base) );
+                }
+            }
+        }
+    }  */
+    
     
     footer {
 
-        font-size: 16px;
+        .font-size( (16/@fs-base) );
 
         p {
           text-align: left;
@@ -617,7 +697,7 @@ footer {
 
         .social-media {
             margin-top: 66px;
-            font-size: 24px;
+           .font-size( (24/@fs-base) );
         }
 
         .support {
@@ -625,7 +705,7 @@ footer {
         }
         
         .copyright, .team {
-            font-size: 14px;
+            .font-size( (14/@fs-base) );
         }
     }
    
@@ -672,7 +752,7 @@ footer {
     .bl-welcome {
         top: 200px;
         p {
-            font-size: 50px;
+            .font-size( (50/@fs-base) );
             margin-bottom: 10px;
         }
     }
