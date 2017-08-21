@@ -32,6 +32,7 @@
                 @hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')
                 <th>Edit</th>
                 @endhasanyrole
+                <th>Restart</th>
             </tr>
             </thead>
             <tbody>
@@ -51,14 +52,17 @@
                     <td data-th="Time">{{ date("H:i", strtotime($job->time)) }}</td>
                     <td data-th="Material Amount">{{ $job->material_amount }} g</td>
                     <td data-th="Price">£{{ $job->price }}</td>
-                    <td data-th="Created on">{{ $job->created_at->toDayDateTimeString() }}</td>
-                    <td data-th="Approved on">{{ $job->updated_at->toDayDateTimeString() }}</td>
+                    <td data-th="Created on">{{ $job->created_at->toDateTimeString() }}</td>
+                    <td data-th="Approved on">{{ $job->updated_at->toDateTimeString() }}</td>
                     <td data-th="Approved by">{{ $job->user->name }}</td>
                     <td data-th="Use Case">{{ $job->use_case  }}</td>
                     <td data-th="Successful">{{ $job->successful }}</td>
                     @hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')
-                    <td data-th="Edit"><a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a><br><br>
+                    <td data-th="Edit"><a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a></td>
                     @endhasanyrole
+                    @if($job->successful == 'No')
+                    <td data-th="Restart"><a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a></td><br>
+                    @endif
                 </tr>
                 {{--@endif--}}
             @endforeach

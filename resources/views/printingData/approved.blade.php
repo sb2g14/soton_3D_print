@@ -33,7 +33,8 @@
             <tbody>
                 @foreach($approved_jobs as $job)
                     {{--Separate hours from minutes and seconds in printing time--}}
-                    @php( list($h, $i, $s) = explode(':', $job->time) )
+                    @php list($h, $i, $s) = explode(':', $job->time)
+                    @endphp
                     {{--Add number of hours job takes to the time when it was approved--}}
                     {{--Add number of minutes job takes--}}
                     {{--Plus 15 minutes--}}

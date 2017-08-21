@@ -134,6 +134,9 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 // Reject current job and delete it from the database
     Route::get('/printingData/delete/{id}','PrintingDataController@destroy');
 
+// Route to restart a failed job
+    Route::get('/printingData/restart/{id}','PrintingDataController@restart');
+
 });
 
     // Group of routes available only to roles administrator, Lead Demonstrator

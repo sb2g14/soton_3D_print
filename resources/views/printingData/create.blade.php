@@ -9,6 +9,30 @@
         </div>
     @endif
 
+ {{--Defining variables for restart a job prefil of forms--}}
+    @if(isset($data))
+        @php
+            $printers_id = $data->printers_id;
+            $student_name = $data->student_name;
+            $email = $data->email;
+            $student_id = $data->student_id;
+            list($hours, $minutes, $s) = explode(':', $data->time);
+            $material_amount = $data->material_amount;
+            $use_case = $data->use_case;
+        @endphp
+    @else
+        @php
+            $printers_id = '';
+            $student_name = '';
+            $email = '';
+            $student_id = '';
+            $hours = '';
+            $minutes = '';
+            $material_amount = '';
+            $use_case = '';
+        @endphp
+    @endif
+
 <div class="container well s-request-form">
     <div class="row vdivide">
         <div class="col-sm-6">
@@ -20,7 +44,7 @@
                     <div class="form-group">
                         {!! Form::label('printers_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
                         <div class="col-md-6">
-                            {!! Form::select('printers_id', array('' => 'Select Available Printer') + $available_printers,  old('printers_id'), ['class' => 'form-control','required', 'data-help' => 'printers_id', 'id' => 'printers_id']) !!}
+                            {!! Form::select('printers_id', array('' => 'Select Available Printer') + $available_printers,  old('printers_id', $printers_id), ['class' => 'form-control','required', 'data-help' => 'printers_id', 'id' => 'printers_id']) !!}
                             @if ($errors->has('printers_id'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('printers_id') }}</strong>
@@ -35,7 +59,7 @@
                     <label for="student_name" class="col-sm-4 control-label">Name</label>
 
                     <div class="col-sm-8">
-                        <input id="student_name" data-help="" type="text" class="form-control" name="student_name" value="{{ old('student_name', isset($member)  ? $member->first_name.' '.$member->last_name : '') }}" placeholder="Please input your First and Last name" required>
+                        <input id="student_name" data-help="" type="text" class="form-control" name="student_name" value="{{ old('student_name', isset($member)  ? $member->first_name.' '.$member->last_name : $student_name) }}" placeholder="Please input your First and Last name" required>
                         @if ($errors->has('student_name'))
                             <span class="help-block">
                             <strong>{{ $errors->first('student_name') }}</strong>
@@ -49,7 +73,7 @@
                     <label for="email" class="col-md-4 control-label">Email</label>
 
                     <div class="col-md-6">
-                        <input id="email" data-help="email" type="email" class="form-control" name="email" value="{{ old('email', isset($member)  ? $member->email : '') }}" placeholder="Please input soton email" required><br>
+                        <input id="email" data-help="email" type="email" class="form-control" name="email" value="{{ old('email', isset($member)  ? $member->email : $email) }}" placeholder="Please input soton email" required><br>
 
                         @if ($errors->has('email'))
                             <span class="help-block">
@@ -63,7 +87,7 @@
                 <div class="form-group{{ $errors->has('student_id') ? ' has-error' : '' }}">
                     <label for="student_id" class="col-sm-4 control-label">Student/Staff ID</label>
                     <div class="col-sm-8">
-                        <input id="student_id" data-help="student_id" type="text" class="form-control" name="student_id" value="{{ old('student_id', isset($member)  ? $member->student_id : '') }}" placeholder="Please input your university ID number" required>
+                        <input id="student_id" data-help="student_id" type="text" class="form-control" name="student_id" value="{{ old('student_id', isset($member)  ? $member->student_id : $student_id) }}" placeholder="Please input your university ID number" required>
                         @if ($errors->has('student_id'))
                             <span class="help-block">
                             <strong>{{ $errors->first('student_id') }}</strong>
@@ -76,7 +100,7 @@
                 <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                     {!! Form::label('hours', 'Printing Time', ['class' => 'col-lg-4 control-label'] )  !!}
                     <div class="col-md-4">
-                        {!! Form::select('hours',array('' => 'Hours')+ range(0,59), old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
+                        {!! Form::select('hours',array('' => 'Hours')+ range(0,59), old('hours', $hours), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
                         @if ($errors->has('hours'))
                             <span class="help-block">
                             <strong>{{ $errors->first('hours') }}</strong>
@@ -84,7 +108,7 @@
                         @endif
                     </div>
                     <div class="col-md-4">
-                        {!! Form::select('minutes',array('' => 'Minutes')+ range(0,59), old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
+                        {!! Form::select('minutes',array('' => 'Minutes')+ range(0,59), old('minutes', $minutes), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
                         @if ($errors->has('minutes'))
                             <span class="help-block">
                             <strong>{{ $errors->first('minutes') }}</strong>
@@ -96,7 +120,7 @@
                 <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
                     <label for="material_amount" class="col-sm-4 control-label">Material Amount (grams) </label>
                     <div class="col-sm-8">
-                        <input id="material_amount" data-help="material_amount" type="text" class="form-control" name="material_amount" value="{{ old('material_amount') }}" placeholder="Please specify the amount of material requested" required>
+                        <input id="material_amount" data-help="material_amount" type="text" class="form-control" name="material_amount" value="{{ old('material_amount', $material_amount) }}" placeholder="Please specify the amount of material requested" required>
                         @if ($errors->has('material_amount'))
                             <span class="help-block">
                             <strong>{{ $errors->first('material_amount') }}</strong>
@@ -109,7 +133,7 @@
                 <div class="form-group{{ $errors->has('use_case') ? ' has-error' : '' }}">
                     <label for="use_case" class="col-sm-4 control-label">Module Name (Project) or Cost Code</label>
                     <div class="col-sm-8">
-                        <input id="use_case" data-help="use_case" type="text" class="form-control" name="use_case" value="{{ old('use_case', isset($member)  ? "Demonstrator" : '') }}" placeholder="A 9 digit cost code or module name are allowed" required>
+                        <input id="use_case" data-help="use_case" type="text" class="form-control" name="use_case" value="{{ old('use_case', isset($member)  ? "Demonstrator" : $use_case) }}" placeholder="A 9 digit cost code or module name are allowed" required>
                         @if ($errors->has('use_case'))
                             <span class="help-block">
                             <strong>{{ $errors->first('use_case') }}</strong>
