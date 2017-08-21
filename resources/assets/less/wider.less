@@ -24,12 +24,13 @@
 		float: right;
 		text-align: left;
 		padding: 0;
+		margin-bottom: 12px;
 
-		li {
+		> li {
 			border: none;
-			margin-left: 25px;
+			margin-left: 15px;
 			display: inline-block;
-			padding: 12px 0;
+			padding: 12px 0 0;
 
 			a {
 				padding: 0;
@@ -49,8 +50,9 @@
   		}
 	}  //.bl-menu
 
-	.dropdown {
-        .dropdown-menu {
+	.item {
+		cursor: pointer;
+        .dropdown-bl {
             margin-left: 0;
             &.dropdown-login {
                 margin-left: -94px;
@@ -64,7 +66,7 @@
 
 .content {
 	.title {
-		font-size: 48px;
+		.font-size( (48/@fs-base) );
 	}
 }
 

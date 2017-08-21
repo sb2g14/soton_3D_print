@@ -42,6 +42,10 @@
             $('#my-menu').slideToggle("slow");
         });
 
+        $('.p-header .bl-menu .item > span').click(function(){
+            $(this).parent('.item').toggleClass('is-active');
+        });
+
         if ($(window).width() < 900) {
             $('#my-menu a.no-dropdown').click(function() {
                 $('.hamburger').removeClass('is-active');
