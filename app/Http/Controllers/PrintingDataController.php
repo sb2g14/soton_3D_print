@@ -327,7 +327,7 @@ class PrintingDataController extends Controller
     //$minutes = date('i', $time);
     $hours = $now->diffInHours($data->created_at);
     $minutes = $now->diffInMinutes($data->created_at) - $hours*60;
-    $new_time = Carbon::$hours.':'.sprintf('%02d', $minutes);
+    $new_time = $hours.':'.sprintf('%02d', $minutes);
     if (Auth::user()->hasRole('3dhubs_manager')) {
         $new_price = 0;
     } else {
