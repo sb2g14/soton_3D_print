@@ -61,7 +61,7 @@
                     <td data-th="Edit"><a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a></td>
                     @endhasanyrole
                     @if($job->successful == 'No')
-                    <td data-th="Restart"><a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a></td><br>
+                    <td data-th="Restart"><a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a></td>
                     @endif
                 </tr>
                 {{--@endif--}}
