@@ -58,15 +58,15 @@
                         <td data-th="Use Case">{{ $job->use_case  }}</td>
                         <td data-th="Successful">{{ $job->successful }}</td>
                         <td data-th="Edit">
-                        @hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')
-                        <a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a>
-                        @endhasanyrole
+                            @hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')
+                            <a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a>
+                            @endhasanyrole
                         </td>
-                        <td data-th="Restart">
-                        {{--@if($job->successful == 'No')--}}
-                        <a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a>
-                        {{--@endif--}}
-                        </td>
+                        {{--<td data-th="Restart">--}}
+                            {{--@if($job->successful == 'No')--}}
+                            {{--<a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a>--}}
+                            {{--@endif--}}
+                        {{--</td>--}}
                     </tr>
                     {{--@endif--}}
                 @endforeach
