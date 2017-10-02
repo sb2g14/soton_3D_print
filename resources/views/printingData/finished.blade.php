@@ -60,9 +60,11 @@
                     @hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')
                     <td data-th="Edit"><a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a></td>
                     @endhasanyrole
+                    <td data-th="Restart">
                     @if($job->successful == 'No')
-                    <td data-th="Restart"><a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a></td>
+                    <a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a>
                     @endif
+                    </td>
                 </tr>
                 {{--@endif--}}
             @endforeach
