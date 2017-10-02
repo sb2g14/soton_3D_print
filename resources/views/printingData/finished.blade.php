@@ -24,8 +24,8 @@
                     <th>Time</th>
                     <th>Material Amount</th>
                     <th>Price</th>
-                    <th>Created on</th>
-                    <th>Approved on</th>
+                    <th>Created</th>
+                    <th>Approved</th>
                     <th>Approved by</th>
                     <th>Use Case</th>
                     <th>Successful</th>
