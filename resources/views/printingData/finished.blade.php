@@ -20,7 +20,7 @@
                     <th>ID</th>
                     <th>Printer No</th>
                     <th>Name</th>
-                    <th>Payment Category</th>
+                    {{--<th>Payment Category</th>--}}
                     <th>Time</th>
                     <th>Material Amount</th>
                     <th>Price</th>
@@ -48,7 +48,7 @@
                         <td data-th="ID">{{ $job->id }}</td>
                         <td data-th="Printer No">{{ $job->printers_id }}</td>
                         <td data-th="Name">{{$job->student_name}}</td>
-                        <td data-th="Payment Category">{{$job->payment_category}}</td>
+                        {{--<td data-th="Payment Category">{{$job->payment_category}}</td>--}}
                         <td data-th="Time">{{ date("H:i", strtotime($job->time)) }}</td>
                         <td data-th="Material Amount">{{ $job->material_amount }} g</td>
                         <td data-th="Price">£{{ $job->price }}</td>
@@ -62,11 +62,11 @@
                             <a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a>
                             @endhasanyrole
                         </td>
-                        {{--<td data-th="Restart">--}}
-                            {{--@if($job->successful == 'No')--}}
-                            {{--<a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a>--}}
-                            {{--@endif--}}
-                        {{--</td>--}}
+                        <td data-th="Restart">
+                            @if($job->successful == 'No')
+                            <a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a>
+                            @endif
+                        </td>
                     </tr>
                     {{--@endif--}}
                 @endforeach
