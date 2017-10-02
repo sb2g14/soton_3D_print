@@ -37,13 +37,13 @@
             </thead>
             <tbody>
                 @foreach($finished_jobs as $job)
-                    Separate hours from minutes and seconds in printing time
-                    @php( list($h, $i, $s) = explode(':', $job->time) )
-                    Add number of hours job takes to the time when it was approved
-                    Add number of minutes job takes
-                    Plus 15 minutes
-                    If time for job finish plus 15 minutes didn't pass we show approved job
-                    @if ($job->updated_at->addHour($h)->addMinutes($i)->addMinutes(15)->gte(Carbon\Carbon::now('Europe/London')))
+                    {{--Separate hours from minutes and seconds in printing time--}}
+                    {{--@php( list($h, $i, $s) = explode(':', $job->time) )--}}
+                    {{--Add number of hours job takes to the time when it was approved--}}
+                    {{--Add number of minutes job takes--}}
+                    {{--Plus 15 minutes--}}
+                    {{--If time for job finish plus 15 minutes didn't pass we show approved job--}}
+                    {{--@if ($job->updated_at->addHour($h)->addMinutes($i)->addMinutes(15)->gte(Carbon\Carbon::now('Europe/London')))--}}
                     <tr class="text-left">
                         <td data-th="ID">{{ $job->id }}</td>
                         <td data-th="Printer No">{{ $job->printers_id }}</td>
@@ -68,7 +68,7 @@
                         {{--@endif--}}
                         </td>
                     </tr>
-                    @endif
+                    {{--@endif--}}
                 @endforeach
             </tbody>
         </table>
