@@ -214,7 +214,7 @@
                                     <h4><b>Announcement 1</b></h4>
                                     <h5> Please download an up-to-date FEE PGR Demonstrating policy and claim forms.</h5>
                                     <h4 style="color: red"><b>Download the induction presentation <a href={{ asset('files/induction_presentation.ppt') }}>
-                                                                             here</a>.</b></h4>
+                                                here</a>.</b></h4>
                                     <ul class="lsn">
                                         <li><a href={{ asset('files/Demonstrating_procedure_April2017.docx') }}>Demonstrating procedure</a></li>
                                         <li><a href={{ asset('files/FEE_Demonstrator_Consultancy_Policy_March4017.rtf') }}>Consultancy policy</a></li>
@@ -222,7 +222,21 @@
                                         <li><a href={{ asset('files/FORMS_DC1_AND_DC2_v2.doc') }}>Claim forms DC1 and DC2</a></li>
                                     </ul><br>
                                     <h4 style="color: red"><b>Please visit <a href="{{ url('http://3dprint.clients.soton.ac.uk/news') }}"
-                                                                target="_blank">NEWS</a> to check how to use this resourse.</b></h4>
+                                                                              target="_blank">NEWS</a> to check how to use this resourse.</b></h4>
+                                    <br><br>
+                                    <h1>Development team.</h1>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul class="lsn list-group">
+                            <li class="list-group-item">
+                                <div class="alert alert-info">
+                                    <h4><b>Announcement 2</b></h4>
+                                    The statuses of all printers and issues associated with them have been brought into
+                                    order with the current state of affairs. There is one exception with printer <b style="color: red">7</b> though.
+                                    <br><br>
+                                    <h1>Development team.</h1>
                                 </div>
                             </li>
                         </ul>
@@ -232,7 +246,7 @@
                             @foreach($announcements as $announcement)
                                 <li class="list-group-item">
                                     <!-- <div class="alert alert-info"> -->
-                                    <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
+                                    <h4><b>Announcement {{ $announcement->id + 2 }}</b></h4>
                                     <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
                                                 {{--Print date and time when a post was created--}}
                                                 Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
