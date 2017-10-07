@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-sm-3 text-left">
                             <p>Days out of Order</p>
-                            <p style="color:red;"><b>{{ isset($issue->Date) ? $issue->days_out_of_order : floor((strtotime($issue->updated_at) - strtotime($issue->created_at)) / (60 * 60 * 24))}}</b></p>
+                            <p style="color:red;"><b>{{ isset($issue->Date) ? $issue->days_out_of_order : \Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at) }}</b></p>
                         </div>
                     </div>
                 </div>
