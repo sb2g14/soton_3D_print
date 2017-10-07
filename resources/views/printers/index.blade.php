@@ -41,7 +41,7 @@
                     <th>Status</th>
                     @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                         <th>View History</th>
-                        @hasanyrole('LeadDemonstrator')
+                        @hasanyrole('administrator')
                             <th>Update Record</th>
                         @endhasanyrole
                     @endhasanyrole
@@ -68,7 +68,7 @@
                         @endif
                         @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                             <td data-th="View History"><a href="/issues/show/{{$printer->id }}" class="btn btn-info">Details</a></td>
-                            @hasanyrole('LeadDemonstrator|administrator')
+                            @hasanyrole('administrator')
                                 <td data-th="Update Record"><a href="/printers/update/{{$printer->id }}" class="btn btn-primary">Update</a></td>
                             @endhasanyrole
                         @endhasanyrole

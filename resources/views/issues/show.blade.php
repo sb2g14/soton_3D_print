@@ -74,7 +74,7 @@
                     
                             <div class="alert alert-info">
                                 <div class="row">
-                                    <div class="col-sm-12 text-left"><h3><b>Issue update {{$update->id}}</b></h3></div>
+                                    <div class="col-sm-12 text-left"><h3><b>Issue update</b></h3></div>
                                 </div>
                                 <div class="row vdivide ">
                                     <div class="col-sm-4 text-left">
