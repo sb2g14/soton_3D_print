@@ -213,6 +213,8 @@
                                 <div class="alert alert-info">
                                     <h4><b>Announcement 1</b></h4>
                                     <h5> Please download an up-to-date FEE PGR Demonstrating policy and claim forms.</h5>
+                                    <h4 style="color: red"><b>Download the induction presentation <a href={{ asset('files/induction_presentation.ppt') }}>
+                                                                             here</a>.</b></h4>
                                     <ul class="lsn">
                                         <li><a href={{ asset('files/Demonstrating_procedure_April2017.docx') }}>Demonstrating procedure</a></li>
                                         <li><a href={{ asset('files/FEE_Demonstrator_Consultancy_Policy_March4017.rtf') }}>Consultancy policy</a></li>
