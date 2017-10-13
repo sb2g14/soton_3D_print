@@ -25,27 +25,31 @@
                 <table class="contacts">
                     <tr>
                         <td>Location:</td>
-                        <td class="col-left row-last"><span class="glyphicon glyphicon-map-marker"></span> University of Southampton, B13/R1055</td> 
+                        <td class="col-left"><span class="glyphicon glyphicon-map-marker"></span> University of Southampton, B13/R1055</td>
                     </tr>
                     <tr>
                         <td>Service enquiries:</td>
-                        <td class="col-left">Lead Demonstrator, Gianluca Cidonio</td> 
+                        <td class="col-left">Katherine Crawford</td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> g.cidonio@soton.ac.uk</td> 
+                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> K.A.Crawford@soton.ac.uk</td>
                     </tr>
                     <tr>
-                        <td>Other enquiries about 3D Printing</td>
-                        <td class="col-left">Dr. Shoufeng Yang, (7/4045)</td> 
-                    </tr>     
-                    <tr>
-                        <td>and the 3D Printing Service to:</td>
-                        <td class="col-left"><span class="glyphicon glyphicon-phone"></span> 023 8059 8697</td> 
-                    </tr>   
+                        <td></td>
+                        <td class="col-left">Apostolos Grammatikopoulos</td>
+                    </tr>
                     <tr>
                         <td></td>
-                        <td class="col-left"><span class="glyphicon glyphicon-envelope"></span> S.Yang@soton.ac.uk</td>             
+                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> ag3e15@soton.ac.uk</td>
+                    </tr>
+                    <tr>
+                        <td>Faculty contact:</td>
+                        <td class="col-left">Andrew Hamilton, 7/4045/M7</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="col-left"><span class="glyphicon glyphicon-envelope"></span> A.R.Hamilton@soton.ac.uk</td>
                     </tr>
                 </table>
             </div>
