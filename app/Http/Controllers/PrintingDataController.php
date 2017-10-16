@@ -250,16 +250,23 @@ class PrintingDataController extends Controller
         $time = $hours.':'.sprintf('%02d', $minutes);
         $material_amount =request('material_amount');
 
-        if (Auth::user()->hasRole('3dhubs_manager')) {
-            if (request('successful') == 'No') {
+        if (request('successful') == 'No') {
                 $price = 0;
-            } else {
-                $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
-            }
         } else {
-            // Calculation the job price £3 per h + £5 per 100g
-            $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+                $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
         }
+
+//        Condition for 3Dhubs manager only
+//        if (Auth::user()->hasRole('3dhubs_manager')) {
+//            if (request('successful') == 'No') {
+//                $price = 0;
+//            } else {
+//                $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+//            }
+//        } else {
+//            // Calculation the job price £3 per h + £5 per 100g
+//            $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+//        }
 
         $data->update([
             'time' => $time,
@@ -330,11 +337,14 @@ class PrintingDataController extends Controller
     $hours = $now->diffInHours($data->created_at);
     $minutes = $now->diffInMinutes($data->created_at) - $hours*60;
     $new_time = $hours.':'.sprintf('%02d', $minutes);
-    if (Auth::user()->hasRole('3dhubs_manager')) {
-        $new_price = 0;
-    } else {
-        $new_price = round(3 * ($hours + $minutes / 60), 2);
-    }
+    $new_price = 0;
+
+//    Condition to reduce price only for 3Dhubs manager
+//    if (Auth::user()->hasRole('3dhubs_manager')) {
+//        $new_price = 0;
+//    } else {
+//        $new_price = round(3 * ($hours + $minutes / 60), 2);
+//    }
     $data->update(['successful'=>'No',
         'approved'=>'No',
         'time' => $new_time,

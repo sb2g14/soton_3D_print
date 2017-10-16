@@ -460,6 +460,10 @@ body {
 .content .m-b-md.add-printer-issue a {
   display: inline-block;
 }
+.content .m-b-md .nav li {
+  font-size: 20px;
+  font-size: 1.25rem;
+}
 .content ol {
   margin-left: 50px;
 }
