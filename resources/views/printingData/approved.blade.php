@@ -7,10 +7,18 @@
     </div>
     @endif
 
-    <div class="text-center m-b-md">
+<div class="container text-center m-b-md">
+    <ul class="nav nav-pills nav-justified">
+        <li><a href="/printingData/index">Pending Jobs</a></li>
+        <li class="active"><a href="#">Approved Jobs / Printing</a></li>
+        <li><a href="/printingData/finished">Completed Jobs</a></li>
+    </ul>
+</div>
+
+    <!-- <div class="text-center m-b-md">
         <div class="title">Currently Approved Jobs</div>
         <a href="/printingData/index" class="btn btn-lg btn-danger">Show pending jobs</a>
-    </div>
+    </div> -->
 
     <div class="container">
         <table class="table">
@@ -60,7 +68,7 @@
                 @endforeach
             </tbody>
         </table>
-        <a href="/printingData/finished" class="btn btn-lg"> Show jobs history</a>
+        <!-- <a href="/printingData/finished" class="btn btn-lg"> Show jobs history</a> -->
     </div>
 
 @endsection

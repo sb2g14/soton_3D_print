@@ -7,11 +7,19 @@
         </div>
     @endif
 
-    <div class="text-center m-b-md">
+ <div class="container text-center m-b-md">
+     <ul class="nav nav-pills nav-justified">
+        <li><a href="/printingData/index">Pending Jobs</a></li>
+        <li><a href="/printingData/approved">Approved Jobs / Printing</a></li>
+        <li class="active"><a href="#">Completed Jobs</a></li>
+    </ul>
+</div>
+    <!-- <div class="text-center m-b-md">
         <div class="title">Printing Jobs History</div>
         <a href="/printingData/index" class="btn btn-lg btn-danger">Show pending jobs</a>
         <a href="/printingData/approved" type="button" class="btn btn-lg btn-success" style="display: inline-block;">Show currently approved jobs</a>
-    </div>
+        
+    </div> -->
 
     <div class="container">
         <table class="table">
