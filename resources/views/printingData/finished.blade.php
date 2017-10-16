@@ -27,7 +27,7 @@
                     <th>Created</th>
                     <th>Approved</th>
                     <th>Approved by</th>
-                    <th>Use Case</th>
+                    <th>Project Name</th>
                     <th>Successful</th>
                     {{--@hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')--}}
                     <th>Edit</th>
@@ -54,8 +54,8 @@
                         <td data-th="Price">£{{ $job->price }}</td>
                         <td data-th="Created on">{{ $job->created_at->toDateTimeString() }}</td>
                         <td data-th="Approved on">{{ $job->updated_at->toDateTimeString() }}</td>
-                        <td data-th="Approved by">{{ $job->user->name }}</td>
-                        <td data-th="Use Case">{{ $job->use_case  }}</td>
+                        <td data-th="Approved by">{{ $job->staff->first_name }} {{ $job->staff->last_name }}</td>
+                        <td data-th="Project Name">{{ $job->use_case  }}</td>
                         <td data-th="Successful">{{ $job->successful }}</td>
                         <td data-th="Edit">
                             @hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')

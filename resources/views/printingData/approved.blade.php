@@ -27,7 +27,7 @@
                     <th>Created on</th>
                     <th>Approved on</th>
                     <th>Approved by</th>
-                    <th>Use Case</th>
+                    <th>Project Name</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,8 +51,8 @@
                         <td data-th="Price">£{{ $job->price }}</td>
                         <td data-th="Created on">{{ $job->created_at->toDayDateTimeString() }}</td>
                         <td data-th="Aproved on">{{ $job->updated_at->toDayDateTimeString() }}</td>
-                        <td data-th="Aproved by">{{ $job->user->name }}</td>
-                        <td data-th="Use Case">{{ $job->use_case  }}</td>
+                        <td data-th="Aproved by">{{ $job->staff->first_name }} {{ $job->staff->last_name }}</td>
+                        <td data-th="Project Name">{{ $job->use_case  }}</td>
                         <td><a href="/printingData/abort/{{$job->id}}" class="btn btn-danger">Job Failed</a><br><br>
                             <a href="/printingData/success/{{$job->id}}" class="btn btn-success">Job Successful</a></td>
                     </tr>

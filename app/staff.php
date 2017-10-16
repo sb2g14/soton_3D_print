@@ -17,4 +17,8 @@ class staff extends BaseModel
    {
        return $this->belongsTo(User::class);
    }
+    // The function shows jobs approved by user
+    public function printing_data(){
+        return $this->hasMany(printing_data::class, 'approved_by');
+    }
 }

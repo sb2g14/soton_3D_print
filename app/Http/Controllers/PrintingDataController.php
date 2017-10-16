@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\printers;
 use Illuminate\Http\Request;
 use App\printing_data;
+use App\Jobs;
+use App\Prints;
 use App\cost_code;
 use Auth;
 use Illuminate\Support\Facades\Input;
@@ -27,7 +29,8 @@ class PrintingDataController extends Controller
      */
     public function index()
     {
-        $jobs =  printing_data::where('approved', 'Waiting')->get();
+        // $jobs =  printing_data::where('approved', 'Waiting')->get();
+        $jobs = Jobs::where('status','Waiting')->get();
         return view('printingData.index', compact('jobs'));
     }
 
@@ -43,7 +46,7 @@ class PrintingDataController extends Controller
         $jobsArray = [];
 
         // Define the Excel spreadsheet headers
-        $jobsArray[] = ['Printer No Common', 'Printer No','Date','Use/Loan','Student Name','Student ID','Time','Material Amount','Price','Paid','Demonstrator Sign','Payment Category', 'Use Case','Cost Code','Comment','Month','Job No','Successful?','Email'];
+        $jobsArray[] = ['Printer No Common', 'Printer No','Date','Use/Loan','Student Name','Student ID','Time','Material Amount','Price','Paid','Demonstrator Sign','Payment Category', 'Use Case','Cost Code','Comment','Month','Jobs No','Successful?','Email'];
 
         // Convert each member of the returned collection into an array,
         // and append it to the payments array.
@@ -202,7 +205,7 @@ class PrintingDataController extends Controller
         printers::where('id','=', Input::get('printers_id'))->update(array('in_use'=> 1));
 
        // Show flashing message
-       session()->flash('message', 'Your job request has been successfully accepted!');
+       session()->flash('message', 'Your job request has been successfully accepted! Please wait for a demonstrator to come and approve the job before start printing.');
        session()->flash('alert-class', 'alert-success');
 
        // Redirect to home directory
@@ -302,8 +305,7 @@ class PrintingDataController extends Controller
             'add_comment' => request('comments'),
             'paid' => 'No',
             'purpose' => 'Use',
-            'user_id' => Auth::user()->id,
-            'approved_name'=>Auth::user()->name,
+            'staff_id' => Auth::user()->staff->id,
             'approved' => 'Yes'
         ]);
 

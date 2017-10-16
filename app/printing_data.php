@@ -12,6 +12,10 @@ class printing_data extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function staff()
+    {
+        return $this->belongsTo(staff::class);
+    }
     public function printer()
     {
         return $this->belongsTo(Printers::class);

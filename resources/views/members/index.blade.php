@@ -24,7 +24,7 @@
                         {{--<a href="/members/create" class="list-group-item"> Add member <br></a>--}}
                         @foreach($members as $member)
                             <a href="/members/{{$member->id}}" class="list-group-item">
-                                {{$member->first_name}} {{$member->last_name}}<br></a>
+                                {{$member->first_name}} {{$member->last_name}}: <b>{{ $member->role }}</b><br></a>
                         @endforeach
                     </div>
                 </div>

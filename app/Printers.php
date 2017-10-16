@@ -19,6 +19,12 @@ class printers extends Model
             return $this->hasMany(printing_data::class);
 
     }
+    public function prints()
+    {
+
+        return $this->hasMany(Prints::class);
+
+    }
     public function changePrinterStatus()
     {
             $job = $this->printing_data->last();
