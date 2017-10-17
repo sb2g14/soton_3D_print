@@ -12,12 +12,13 @@
  {{--Defining variables for restart a job prefil of forms--}}
     @if(isset($data))
         @php
-            $printers_id = $data->printers_id;
-            $student_name = $data->student_name;
-            $email = $data->email;
-            $student_id = $data->student_id;
-            list($hours, $minutes, $s) = explode(':', $data->time);
-            $material_amount = $data->material_amount;
+            $print = $data->prints->first();
+            $printers_id = $print->printers_id;
+            $student_name = $data->customer_name;
+            $email = $data->customer_email;
+            $student_id = $data->customer_id;
+            list($hours, $minutes, $s) = explode(':', $data->total_duration);
+            $material_amount = $data->total_material_amount;
             $use_case = $data->use_case;
         @endphp
     @else

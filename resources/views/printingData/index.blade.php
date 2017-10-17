@@ -50,9 +50,12 @@
                         <li class="text-left well">
                         {{--Print short description and a link--}}
                             <p>
-                                Printer number: <b>{{ $job->printers_id }}</b><br>
-                                Requested by: <b>{{$job->student_name}}</b><br>
+                                Requested by: <b>{{$job->customer_name}}</b><br>
                                 Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b>
+                                Job is printed on <br>
+                                @foreach($job->prints as $print)
+                                    Printer number: <b>{{ $print->printers_id }}</b><br>
+                                @endforeach
                             </p>
                             <a href="/printingData/show/{{$job->id}}" class="btn btn-info">Manage</a>
                         </li>

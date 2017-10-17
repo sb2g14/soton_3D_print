@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\JobsPrints;
 use App\printers;
 use Illuminate\Http\Request;
 use App\printing_data;
@@ -34,51 +35,53 @@ class PrintingDataController extends Controller
         return view('printingData.index', compact('jobs'));
     }
 
-    public function printingDataExport()
-    {
-
-        // Get all jobs
-        $jobs = printing_data::select('printers_id','serial_no','created_at','purpose','student_name','student_id','time','material_amount','price','paid','approved_name','payment_category','use_case','cost_code','add_comment','month','id','successful','email')->get();
-
-
-        // Initialize the array which will be passed into the Excel
-        // generator.
-        $jobsArray = [];
-
-        // Define the Excel spreadsheet headers
-        $jobsArray[] = ['Printer No Common', 'Printer No','Date','Use/Loan','Student Name','Student ID','Time','Material Amount','Price','Paid','Demonstrator Sign','Payment Category', 'Use Case','Cost Code','Comment','Month','Jobs No','Successful?','Email'];
-
-        // Convert each member of the returned collection into an array,
-        // and append it to the payments array.
-        foreach ($jobs as $job) {
-            $jobsArray[] = $job->toArray();
-        }
-
-        // Generate and return the spreadsheet
-        Excel::create('PrintingData', function($excel) use ($jobsArray) {
-
-            // Set the spreadsheet title, creator, and description
-            $excel->setTitle('printing_data');
-            $excel->setCreator(Auth::user()->name)->setCompany('3D printing workshop');
-            $excel->setDescription('Excel file used as a backup for information about printing jobs in the 3D printing workshop at University of Southampton');
-
-            // Build the spreadsheet, passing in the payments array
-            $excel->sheet('sheet1', function($sheet) use ($jobsArray) {
-                $sheet->fromArray($jobsArray, null, 'A1', false, false);
-            });
-
-        })->download('xlsx');
-    }
+//    public function printingDataExport()
+//    {
+//
+//        // Get all jobs
+//        $jobs = printing_data::select('printers_id','serial_no','created_at','purpose','student_name','student_id','time','material_amount','price','paid','approved_name','payment_category','use_case','cost_code','add_comment','month','id','successful','email')->get();
+//
+//
+//        // Initialize the array which will be passed into the Excel
+//        // generator.
+//        $jobsArray = [];
+//
+//        // Define the Excel spreadsheet headers
+//        $jobsArray[] = ['Printer No Common', 'Printer No','Date','Use/Loan','Student Name','Student ID','Time','Material Amount','Price','Paid','Demonstrator Sign','Payment Category', 'Use Case','Cost Code','Comment','Month','Jobs No','Successful?','Email'];
+//
+//        // Convert each member of the returned collection into an array,
+//        // and append it to the payments array.
+//        foreach ($jobs as $job) {
+//            $jobsArray[] = $job->toArray();
+//        }
+//
+//        // Generate and return the spreadsheet
+//        Excel::create('PrintingData', function($excel) use ($jobsArray) {
+//
+//            // Set the spreadsheet title, creator, and description
+//            $excel->setTitle('printing_data');
+//            $excel->setCreator(Auth::user()->name)->setCompany('3D printing workshop');
+//            $excel->setDescription('Excel file used as a backup for information about printing jobs in the 3D printing workshop at University of Southampton');
+//
+//            // Build the spreadsheet, passing in the payments array
+//            $excel->sheet('sheet1', function($sheet) use ($jobsArray) {
+//                $sheet->fromArray($jobsArray, null, 'A1', false, false);
+//            });
+//
+//        })->download('xlsx');
+//    }
 
     public function approved()
     {
-        $approved_jobs = printing_data::orderBy('created_at', 'desc')->where('approved', 'Yes')->get();
+//        $approved_jobs = printing_data::orderBy('created_at', 'desc')->where('approved', 'Yes')->get();
+        $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->get();
         return view('printingData.approved', compact('approved_jobs'));
     }
 
     public function finished()
     {
-        $finished_jobs = printing_data::orderBy('created_at', 'desc')->where('approved','!=', 'Waiting')->get();
+//        $finished_jobs = printing_data::orderBy('created_at', 'desc')->where('approved','!=', 'Waiting')->get();
+        $finished_jobs = Jobs::where('created_at', '>=', Carbon::now()->subMonth())->where('status','!=', 'Waiting')->get();
 //        foreach ($jobs as $job)
 //        {
 //            list($h, $i, $s) = explode(':', $job->time);
@@ -115,7 +118,7 @@ class PrintingDataController extends Controller
     } else {
         $available_printers = printers::where('printer_status', 'Available')->where('in_use', 0)->where('printer_type', '!=', 'UP BOX')->pluck('id', 'id')->all();
         return view('printingData.create',compact('available_printers'));
-    }
+        }
     }
 
     /**
@@ -183,24 +186,41 @@ class PrintingDataController extends Controller
         }
         // Printer requested
         $printers_id = Input::get('printers_id');
-        // Year and month of print
-        $year =  (string)Carbon::now('Europe/London')->year;
-        $month = (string)Carbon::now('Europe/London')->month;
-        $yearMonth = $year.'/'.$month;
-       printing_data::create([
-           'printers_id' => $printers_id,
-           'serial_no' => printers::where('id', $printers_id)->first()->serial_no,
-           'student_name' => request('student_name'),
-           'student_id' => $student_id,
-           'payment_category' => $payment_category,
-           'email' => request('email'),
-           'use_case' => $use_case,
-           'cost_code' => $cost_code,
-           'time' => $time,
-           'price'=> $price,
-           'material_amount' => $material_amount,
-           'month' =>$yearMonth
-       ]);
+
+        // Submit the data to the database
+
+        $job = new Jobs;
+
+         $job -> total_material_amount = $material_amount;
+         $job -> total_price = $price;
+         $job -> total_duration = $time;
+         $job -> paid = 'No';
+         $job -> payment_category = $payment_category;
+         $job -> cost_code = $cost_code;
+         $job -> use_case = $use_case;
+         $job -> customer_id = $student_id;
+         $job -> customer_name = request('student_name');
+         $job -> customer_email = request('email');
+         $job -> requested_online = 0;
+
+         $job->save();
+
+        $print = new Prints;
+
+        $print -> printers_id = $printers_id;
+        $print -> time = $time;
+        $print -> material_amount = $material_amount;
+        $print -> purpose = 'Use';
+        $print -> price = $price;
+
+        $print->save();
+
+        $job_print = new JobsPrints;
+
+        $job_print -> jobs_id = $job->id;
+        $job_print -> prints_id = $print->id;
+
+        $job_print->save();
 
         printers::where('id','=', Input::get('printers_id'))->update(array('in_use'=> 1));
 
@@ -220,63 +240,10 @@ class PrintingDataController extends Controller
      */
     public function show($id)
     {
-        $job = printing_data::find($id);
+//        $job = printing_data::find($id);
+        $job = Jobs::findOrFail($id);
         $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
         return view('printingData.show',compact('job','available_printers'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $job = printing_data::findOrFail($id);
-        return view('printingData.edit',compact('job'));
-    }
-
-    public function review($id)
-    {
-        $this -> validate(request(), [
-            'material_amount' => 'required|numeric',
-            'successful' => 'required'
-        ]);
-        $data = printing_data::findOrFail($id);
-
-        $hours = Input::get('hours');
-        $minutes = Input::get('minutes');
-        $time = $hours.':'.sprintf('%02d', $minutes);
-        $material_amount =request('material_amount');
-
-        if (request('successful') == 'No') {
-                $price = 0;
-        } else {
-                $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
-        }
-
-//        Condition for 3Dhubs manager only
-//        if (Auth::user()->hasRole('3dhubs_manager')) {
-//            if (request('successful') == 'No') {
-//                $price = 0;
-//            } else {
-//                $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
-//            }
-//        } else {
-//            // Calculation the job price £3 per h + £5 per 100g
-//            $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
-//        }
-
-        $data->update([
-            'time' => $time,
-            'material_amount' => $material_amount,
-            'price' => $price,
-            'successful'=> request('successful'),
-        ]);
-
-        session()->flash('message', 'The job has been revised!');
-        return redirect('printingData/finished');
     }
 
     /**
@@ -295,30 +262,119 @@ class PrintingDataController extends Controller
             'material_amount' => 'required|numeric',
         ]);
 //        $staff_id = Auth::user()->id;
-//       dd(request()->all(), $staff_id, $id);
-        $data = printing_data::findOrFail($id);
+//        dd(request()->all(), $staff_id, $id);
+//        $data = printing_data::findOrFail($id);
 
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
         $time = $hours.':'.sprintf('%02d', $minutes);
+        $material_amount = request('material_amount');
+        $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
 
-        $data->update([
+        $job = Jobs::findOrFail($id);
+        $print_id = $job->prints->first()->id;
+//        $data->update([
+//            'printers_id' => Input::get('printers_id'),
+//            'student_name' => request('student_name'),
+//            'student_id' => request('student_id'),
+//            'email' => request('email'),
+//            'time' => $time,
+//            'material_amount' => request('material_amount'),
+//            'add_comment' => request('comments'),
+//            'paid' => 'No',
+//            'purpose' => 'Use',
+//            'staff_id' => Auth::user()->staff->id,
+//            'approved' => 'Yes'
+//        ]);
+        $job->update([
+            'customer_name' => request('student_name'),
+            'customer_id' => request('student_id'),
+            'customer_email' => request('email'),
+            'total_duration' => $time,
+            'total_material_amount' => $material_amount,
+            'total_price' => $price,
+            'job_approved_comment' => request('comments'),
+            'job_approved_by' => Auth::user()->staff->id,
+            'requested_online' => 0,
+            'status' => 'Approved',
+        ]);
+        $print = Prints::findOrFail($print_id);
+        $print->update([
             'printers_id' => Input::get('printers_id'),
-            'student_name' => request('student_name'),
-            'student_id' => request('student_id'),
-            'email' => request('email'),
             'time' => $time,
-            'material_amount' => request('material_amount'),
-            'add_comment' => request('comments'),
-            'paid' => 'No',
-            'purpose' => 'Use',
-            'staff_id' => Auth::user()->staff->id,
-            'approved' => 'Yes'
+            'material_amount' => $material_amount,
+            'price' => $price,
+            'status' => 'Approved',
         ]);
 
         session()->flash('message', 'The job has been successfully approved!');
 
         return redirect('printingData/index');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function edit($id)
+    {
+//        $job = printing_data::findOrFail($id);
+        $job = Jobs::findOrFail($id);
+        return view('printingData.edit',compact('job'));
+    }
+
+    public function review($id)
+    {
+        $this -> validate(request(), [
+            'material_amount' => 'required|numeric',
+            'successful' => 'required'
+        ]);
+//        $data = printing_data::findOrFail($id);
+        $job = Jobs::findOrFail($id);
+        $print_id = $job->prints->first()->id;
+        $print = Prints::findOrFail($print_id);
+
+        $hours = Input::get('hours');
+        $minutes = Input::get('minutes');
+        $time = $hours.':'.sprintf('%02d', $minutes);
+        $material_amount =request('material_amount');
+
+        if (request('successful') == 'Failed') {
+            $price = 0;
+        } else {
+            $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+        }
+
+//        Condition for 3Dhubs manager only
+//        if (Auth::user()->hasRole('3dhubs_manager')) {
+//            if (request('successful') == 'No') {
+//                $price = 0;
+//            } else {
+//                $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+//            }
+//        } else {
+//            // Calculation the job price £3 per h + £5 per 100g
+//            $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+//        }
+
+        $job->update([
+            'total_duration' => $time,
+            'total_material_amount' => $material_amount,
+            'total_price' => $price,
+            'status'=> request('successful'),
+        ]);
+        $print->update([
+            'time' => $time,
+            'material_amount' => $material_amount,
+            'price' => $price,
+            'status' => request('successful'),
+        ]);
+
+        session()->flash('message', 'The job has been revised!');
+        return redirect('printingData/finished');
     }
 
     /**
@@ -329,13 +385,16 @@ class PrintingDataController extends Controller
      */
     public function abort($id)
 {
-    $data = printing_data::findOrFail($id);
+//    $data = printing_data::findOrFail($id);
+    $job = Jobs::findOrFail($id);
+    $print_id = $job->prints->first()->id;
+    $print = Prints::findOrFail($print_id);
     $now = Carbon::now('Europe/London');
     //$time = time() - strtotime($data->updated_at);
     //$hours = date('H', $time);
     //$minutes = date('i', $time);
-    $hours = $now->diffInHours($data->created_at);
-    $minutes = $now->diffInMinutes($data->created_at) - $hours*60;
+    $hours = $now->diffInHours($job->created_at);
+    $minutes = $now->diffInMinutes($job->created_at) - $hours*60;
     $new_time = $hours.':'.sprintf('%02d', $minutes);
     $new_price = 0;
 
@@ -345,13 +404,18 @@ class PrintingDataController extends Controller
 //    } else {
 //        $new_price = round(3 * ($hours + $minutes / 60), 2);
 //    }
-    $data->update(['successful'=>'No',
-        'approved'=>'No',
-        'time' => $new_time,
-        'price' => $new_price
+    $job->update(['status'=>'Failed',
+        'total_duration' => $new_time,
+        'total_price' => $new_price
         ]);
+    $print->update([
+        'time' => $new_time,
+        'price' => $new_price,
+        'status' => 'Failed',
+    ]);
 
-    printers::where('id','=', $data->printers_id)->update(array('in_use'=> 0));
+
+    printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
 
     session()->flash('message', 'The job has been canceled');
 
@@ -359,9 +423,11 @@ class PrintingDataController extends Controller
 }
     public function success($id)
     {
-        printing_data::where('id','=',$id)->update(array('approved'=> 'Success'));
-        $data = printing_data::findOrFail($id);
-        printers::where('id','=', $data->printers_id)->update(array('in_use'=> 0));
+        Jobs::where('id','=',$id)->update(array('status'=> 'Success'));
+        $job = Jobs::findOrFail($id);
+        $print_id = $job->prints->first()->id;
+        $print = Prints::findOrFail($print_id);
+        printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
 
         session()->flash('message', 'The job is successful');
 
@@ -369,9 +435,12 @@ class PrintingDataController extends Controller
     }
     public function destroy($id)
     {
-        $data = printing_data::findOrFail($id);
-        printers::where('id','=', $data->printers_id)->update(array('in_use'=> 0));
-        $data->delete();
+        $job = Jobs::findOrFail($id);
+        $print_id = $job->prints->first()->id;
+        $print = Prints::findOrFail($print_id);
+        printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
+        $job->delete();
+        $print->delete();
 
         session()->flash('message', 'The job has been rejected');
 
@@ -379,7 +448,7 @@ class PrintingDataController extends Controller
     }
     public function restart($id)
     {
-        $data = printing_data::findOrFail($id);
+        $data = Jobs::findOrFail($id);
 
         if (Auth::user()->hasRole('3dhubs_manager')) {
             $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();

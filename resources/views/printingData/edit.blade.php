@@ -5,26 +5,29 @@
         Job details
     </div>
 
+    @php $print = $job->prints->first()
+    @endphp
+
     <div class="container well">
         <div class="row vdivide">
             <div class="col-sm-6 text-left job-details">
                 <div class="alert alert-info text-left">
                     <p>
-                        Printer number: <b>{{ $job->printers_id }}</b><br>
-                        Printer serial number: <b>{{ $job->serial_no }}</b><br>
-                        Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b>
-                        Requested by: <b>{{$job->student_name}}</b><br>
-                        Requester id: <b>{{$job->student_id}}</b><br>
-                        Requester email: <b>{{$job->email}}</b><br>
+                        Printer number: <b>{{ $print->printers_id }}</b><br>
+                        Printer serial number: <b>{{ $print->printer->serial_no }}</b><br>
+                        Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
+                        Requested by: <b>{{$job->customer_name}}</b><br>
+                        Requester id: <b>{{$job->customer_id}}</b><br>
+                        Requester email: <b>{{$job->customer_email}}</b><br>
                         Payment category: <b>{{$job->payment_category}}</b><br>
-                        Estimated duration: <b>{{$job->time}}</b><br>
-                        Estimated material amount: <b>{{$job->material_amount}} grams</b><br>
-                        Estimated price: <b>£{{$job->price}}</b><br>
+                        Estimated duration: <b>{{$job->total_duration}}</b><br>
+                        Estimated material amount: <b>{{$job->total_material_amount}} grams</b><br>
+                        Estimated price: <b>£{{$job->total_price}}</b><br>
                         Module name or cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @else <b style="color: red"> @endif {{$job->use_case}} </b><br>
                         Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @else <b style="color: red"> @endif {{$job->cost_code}} </b><br>
-                        Comment: <b>{{$job->comment}}</b><br>
+                        Comment: <b>{{$job->job_approved_comment}}</b><br>
                         Job number: <b>{{$job->id}}</b><br>
-                        Successful: <b>{{$job->successful}}</b>
+                        Status: <b>{{$job->status}}</b>
                     </p>
                 </div>
                
@@ -36,7 +39,7 @@
 
                         {{ csrf_field() }}
                     {{--Edit the printing time --}}
-                        @php list($h, $i, $s) = explode(':', $job->time)
+                        @php list($h, $i, $s) = explode(':', $job->total_duration)
                         @endphp
 
                         <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
@@ -62,7 +65,7 @@
                         <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
                             <label for="material_amount" class="col-md-4 control-label">Estimated material amount (grams):</label>
                             <div class="col-md-6">
-                                <input type="text" id="material_amount" name="material_amount" value="{{ $job->material_amount }}" class="form-control">
+                                <input type="text" id="material_amount" name="material_amount" value="{{ $job->total_material_amount }}" class="form-control">
                                     @if ($errors->has('material_amount'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('material_amount') }}</strong>
@@ -75,10 +78,10 @@
                             <label for="successful" class="col-md-4 control-label">Was the job successful?</label>
                             <div class="form-group text-left">
                                 <div class="radio">
-                                    <label class="radio-inline"><input type="radio" name="successful" <?php if (isset($job->successful)
-                                            && $job->successful=="Yes") echo "checked";?> value="Yes">Yes </label>
-                                    <label class="radio-inline"><input type="radio" name="successful" <?php if (isset($job->successful)
-                                            && $job->successful=="No") echo "checked";?> value="No">No </label><br>
+                                    <label class="radio-inline"><input type="radio" name="successful" <?php if (isset($job->status)
+                                            && $job->status=="Success") echo "checked";?> value="Success">Yes </label>
+                                    <label class="radio-inline"><input type="radio" name="successful" <?php if (isset($job->status)
+                                            && $job->status=="Failed") echo "checked";?> value="Failed">No </label><br>
                                 </div> <!-- Class radio -->
                             </div> <!-- /form-group -->
 

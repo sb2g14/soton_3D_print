@@ -27,7 +27,7 @@ class printers extends Model
     }
     public function changePrinterStatus()
     {
-            $job = $this->printing_data->last();
+            $job = $this->prints->last();
             list($h, $i, $s) = explode(':', $job->time);
             if (Carbon::now('Europe/London')->gte($job->updated_at->addHour($h)->addMinutes($i))) {
                 $this->update(array('in_use' => 0));
