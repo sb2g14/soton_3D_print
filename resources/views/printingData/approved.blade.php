@@ -33,7 +33,7 @@
                     <th>Material Amount</th>
                     <th>Price</th>
                     <th>Created on</th>
-                    <th>Approved on</th>
+                    <th>Last edited on</th>
                     <th>Approved by</th>
                     <th>Project Name</th>
                 </tr>
@@ -57,8 +57,8 @@
                         <td data-th="Material Amount">{{ $job->totat_material_amount }} g</td>
                         <td data-th="Price">£{{ $job->total_price }}</td>
                         <td data-th="Created on">{{ $job->created_at->toDayDateTimeString() }}</td>
-                        <td data-th="Aproved on">{{ $job->updated_at->toDayDateTimeString() }}</td>
-                        <td data-th="Aproved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
+                        <td data-th="Last edited on">{{ $job->updated_at->toDayDateTimeString() }}</td>
+                        <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
                         <td data-th="Project Name">{{ $job->use_case  }}</td>
                         <td><a href="/printingData/abort/{{$job->id}}" class="btn btn-danger">Job Failed</a><br><br>
                             <a href="/printingData/success/{{$job->id}}" class="btn btn-success">Job Successful</a></td>

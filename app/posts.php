@@ -36,4 +36,8 @@ class posts extends Model
         $this->comments()->create(compact('body'));
 
     }
+    public function printer()
+    {
+        return $this->belongsTo(Printers::class,'printers_id');
+    }
 }

@@ -21,11 +21,11 @@
             @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
                 <a href="/issues/index" class="btn btn-primary pull-left" style="margin-right: 8px;" >Manage Issues</a>
             @endhasanyrole
-            @hasanyrole('LeadDemonstrator|administrator')
-                {!! link_to_route('issues.export',
-                'Export to Excel', null,
-                ['class' => 'btn btn-info pull-left']) !!}
-            @endhasanyrole
+            {{--@hasanyrole('LeadDemonstrator|administrator')--}}
+                {{--{!! link_to_route('issues.export',--}}
+                {{--'Export to Excel', null,--}}
+                {{--['class' => 'btn btn-info pull-left']) !!}--}}
+            {{--@endhasanyrole--}}
             @hasanyrole('LeadDemonstrator|administrator')
                 <a href="{{ url('/printers/create') }}" class="btn btn-success pull-right">Add Printer</a>
             @endhasanyrole
