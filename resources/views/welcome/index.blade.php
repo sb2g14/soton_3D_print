@@ -70,7 +70,7 @@
                                 <li class="list-group-item">
                                     <div class="alert alert-warning">
                                         {{--Print title of a post--}}
-                                         <h4><b> {{ isset($post_last->printer)  ? 'Printer '.$post_last->printer->id.':' : '' }}{{ $post_last->title }}</b></h4>
+                                         <h4><b> {{ isset($post_last->printer)  ? 'Printer '.$post_last->printer->id.':' : '' }} {{ $post_last->title }}</b></h4>
                                         {{--Print name of a user who created a post--}}
                                         <h5 class="media-heading"> {{$post_last->user->name}}  <small><i>
                                                     {{--Print date and time when a post was created--}}
