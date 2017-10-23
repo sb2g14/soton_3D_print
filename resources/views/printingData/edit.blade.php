@@ -98,7 +98,7 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/approve_job_validation.js"></script>
+    <script src="/js/edit_job_validation.js"></script>
 @endsection
 
 

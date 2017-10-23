@@ -3,13 +3,13 @@ $(function () {
     $("#email_error").hide();
     $("#student_id_error").hide();
     $("#material_amount_error").hide();
-    $("#use_case_error").hide();
+    $("#message_error").hide();
 
     var error_name = true;
     var error_email = true;
     var error_id = true;
     var error_material = true;
-    var error_use_case = true;
+    var error_message = true;
 
     $("#student_name").keyup(function () {
         check_student_name();
@@ -22,9 +22,6 @@ $(function () {
     });
     $("#material_amount").keyup(function () {
         check_material_amount();
-    });
-    $("#use_case").keyup(function () {
-       check_use_case();
     });
 
     $("#student_name").focusout(function () {
@@ -39,9 +36,6 @@ $(function () {
     $("#material_amount").focusout(function () {
         check_material_amount();
     });
-    $("#use_case").focusout(function () {
-        check_use_case();
-    });
     $("#hours").focusout(function () {
         evaluate_price();
     });
@@ -50,6 +44,9 @@ $(function () {
     });
     $("#material_amount").focusout(function () {
         evaluate_price();
+    });
+    $("#message").keyup(function () {
+        check_message();
     });
     $( window ).load(function() {
         check_student_name();
@@ -186,30 +183,28 @@ $(function () {
             $("#submit").removeClass("btn-success");
         }
     }
-    function check_use_case() {
-        var use_case = $("#use_case");
+    function check_message() {
+        var message = $("#message");
 
-        if(use_case.val().length < 3 || use_case.val().length > 13) {
-            $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
-            $("#use_case_error").show();
-            $("#use_case").focus();
-            $("#use_case").addClass("parsley-error");
-            error_use_case = true;
-        } else if(!use_case.val().match(/^[A-Z0-9-]*$/)){
-            $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
-            $("#use_case_error").show();
-            $("#use_case").focus();
-            $("#use_case").addClass("parsley-error");
+        if(message.val().length < 8 || message.val().length > 300){
+            $("#message_error").html("The message must be between 8 and 300 characters long");
+            $("#message_error").show();
+            $("#message").focus();
+            $("#message").addClass("parsley-error");
+            error_message = true;
+        } else if(!message.val().match(/^[a-z A-Z0-9.,!?']+$/)){
+            $("#message_error").html("Only alphanumeric characters are allowed");
+            $("#message_error").show();
+            $("#message").focus();
+            $("#message").addClass("parsley-error");
+            error_message = true;
         } else {
-            $("#use_case_error").hide();
-            $("#use_case").removeClass("parsley-error");
-            $("#use_case").addClass("parsley-success");
-            error_use_case = false;
-        } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false && error_use_case === false){
+            $("#message_error").hide();
+            $("#message").removeClass("parsley-error");
+            $("#message").addClass("parsley-success");
+            error_message = false;
+        } if(error_message === false){
             $("#submit").addClass("btn-success");
-            $("#submit").trigger("cssClassChanged");
-            $("#submit").prop('disabled', false);
         } else {
             $("#submit").removeClass("btn-success");
         }
@@ -225,11 +220,11 @@ $(function () {
         $("#email_error").hide();
         $("#student_id_error").hide();
         $("#material_amount_error").hide();
-        $("#use_case_error").hide();
         $("#student_name").removeClass("parsley-success");
         $("#email").removeClass("parsley-success");
         $("#student_id").removeClass("parsley-success");
         $("#material_amount").removeClass("parsley-success");
         $("#submit").removeClass("btn-success");
+
     });
 });
