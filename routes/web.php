@@ -177,8 +177,11 @@ Route::get('loan', 'LoanController@index');
 // Redirection to a page with generic information and possibly some lessons
 Route::get('/learn', 'LearnController@index');
 
-// Order online blade with the link to 3dhubs and the instruction how to use it
-Route::get('/orderOnline','OrderOnlineController@index');
+//// Order online blade with the link to 3dhubs and the instruction how to use it
+//Route::get('/orderOnline','OrderOnlineController@index');
+
+// Routes to manage online job requests
+Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
