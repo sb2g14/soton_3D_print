@@ -5,8 +5,8 @@
     <div class="ctr">
         <div class="bl-welcome">
             <p>Welcome to 3D printing workshop<br>at the University of Southampton</p>
-            <div class="btn btn-lg"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
-            <div class="btn-lg btn-success pull-right"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>
+            <div class="btn btn-lg pull-right"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
+            <div class="btn-lg btn-success pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>
         </div>
 
         <div id="image-slider_home" class="image-slider bl-slider owl-carousel owl-theme">

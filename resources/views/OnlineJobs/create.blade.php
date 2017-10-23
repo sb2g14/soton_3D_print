@@ -37,7 +37,7 @@
 <div class="container well s-request-form">
     <div class="row vdivide">
         <div class="col-sm-6">
-            <h1 class="text-center lead">ONLINE JOB REQUEST</h1>
+            <h1 class="text-center lead">ONLINE JOB REQUEST FORM</h1>
             <form id="requestForm" class="form-horizontal" method="POST" action="/printingData">
                 {{ csrf_field() }}
 
@@ -117,7 +117,7 @@
 
                 {{--Dropoff cliam id--}}
                 <div class="form-group{{ $errors->has('claim_id') ? ' has-error' : '' }}">
-                    <label for="claim_id" class="col-sm-4 control-label">Dropoff file id</label>
+                    <label for="claim_id" class="col-sm-4 control-label">Drop-off file id</label>
 
                     <div class="col-sm-8">
                         <input id="claim_id" data-help="claim_id" type="text" class="form-control"
@@ -134,7 +134,7 @@
 
                 {{--Dropoff claim passcode--}}
                 <div class="form-group{{ $errors->has('claim_passcode') ? ' has-error' : '' }}">
-                    <label for="claim_passcode" class="col-sm-4 control-label">Dropoff file passcode</label>
+                    <label for="claim_passcode" class="col-sm-4 control-label">Drop-off file passcode</label>
 
                     <div class="col-sm-8">
                         <input id="claim_passcode" data-help="claim_passcode" type="text" class="form-control"
@@ -160,25 +160,20 @@
         </div>
         <div class="col-sm-6 instructions">
             <div class="hint text-left is-active before-filling" data-hint="general">
-                <h3 class="text-center lead">How to request a 3D print</h3>
-                <p>Submit the Request form to the left providing all the necessary details.</p>
-                <p>After the form is submitted it is redirected to the demonstrator for approval.</p>
-                <p>Please do not start printing until the demonstrator checks all the details and approves the request.</p>
-                <p>If your job was approved but something went wrong with the print itself ask the demonstrator to
-                    cancel the job. Therefore, you will be charged only for the printing time spent before cancelling
-                    the job and not for the whole job.</p>
+                <h3 class="text-center lead">How to request a print using online service</h3>
+                <p>Submit the Request form to the left providing all the necessary details. Click on each field of the
+                form and read the detailed guidance on how to fill it.</p>
+                <p>After the form is submitted it is redirected to the online job manager for initial check.</p>
+                <p>After the check is complete you will receive an email from the manager with the estimated duration and
+                    cost of your print.</p>
+                <p>If you are happy with the estimated figures please reply to the manager confirming your order.</p>
             </div>
-            
-            <div class="hint text-left" data-hint="printer_id">
-                <h3 class="text-center lead">If the chosen printer is unavailable</h3>
-                <p>If the printer you have selected is not on the list of available printers this means that it is
-                    either broken or scheduled to use for other print. In either case please contact the demonstrator
-                    for further information.</p>
-            </div>
+
             <div class="hint text-left" data-hint="email">
-                <h3 class="text-center lead">Why do we need your email?</h3>
-                <p>Your university email may be used to contact you regarding the prints you have just requested or the
-                    prints did previously.</p>
+                <h3 class="text-center lead">Please provide your university email address</h3>
+                <p>We need your University of Southampton email address in order to be able to communicate with you
+                concerning your job request. After finishing this form you will be contacted by the online jobs manager
+                    with the estimated cost and duration of your print.</p>
             </div>
             <div class="hint text-left" data-hint="student_id">
                 <h3 class="text-center lead">How to find out my student/staff ID?</h3>
@@ -188,37 +183,44 @@
                     <img src="/Images/studentID.svg" width="300" alt="studentID">
                 </div>
             </div>
-            <div class="hint text-left" data-hint="claim_id">
-                <h3 class="text-center lead">Dropoff claim id</h3>
-                <p>Based on the print duration and the material amount we
-                    estimate the cost of your print to be £ </p>
-            </div>
-            <div class="hint text-left" data-hint="claim_passcode">
-                <h3 class="text-center lead">Dropoff claim passcode</h3>
-                <p>Based on the print duration and the material amount we
-                    estimate the cost of your print to be £ </p>
-            </div>
             <div class="hint text-left" data-hint="use_case">
                 <h3 class="text-center lead">Module name or Cost Code</h3>
                 <p>If you are a student and your print is part of a project, please input the short abbreviation of your
                     module name or course. Note that course or module abbreviations must be in capital letters. The
                     system will recognise most of the standard modules that are registered with the workshop.</p>
-                <p>If your abbreviation was not recognised, please contact the demonstrator.</p>
                 <p>If you are a PhD student, postdoc or an academic, please input the Cost Code that will be charged for
                     the current print. If in doubt or if you have any questions, please contact the demonstrator.</p>
+                <p>If your abbreviation or cost code was not recognised, please contact Andrew Everitt via email
+                <a href="mailto:aje2g15@soton.ac.uk?Subject=Online job request issue" target="_top">aje2g15@soton.ac.uk</a> <br></p>
             </div>
-            <div class="hint text-left after-filling" data-hint="final">
-                <h3 class="text-center lead">The estimated cost of the print</h3>
-                <p>The cost of your print is £ </p>
-                <p>The price was calculated based on the print duration and the amount of material used.</p>
-                <p>After you press Submit button, the request will be sent to the demonstrator for approval. At this
-                    stage, the cost may change if the amount of material or the duration of print are altered by the
-                    demonstrator.</p>
-                <p>Please, do not start printing until notified that your job was approved. You will get a notification
-                    when the job will be approved or rejected by a demonstrator.</p>
-                <p>You may cancel your job if it is unsuccessful. In this case, you will be charged only for the
-                    printing time spent before cancellation. To do that contact the demonstrator.</p>
-            </div>            
+            <div class="hint text-left" data-hint="claim_id">
+                <h3 class="text-center lead">Drop-off claim id</h3>
+                <p>To submit your 3D print request online you need to provide the drawing of your model in <b>.stl</b> format.</p>
+                <p>We currently receive files uploaded via university drop-off service that can be accessed via the
+                button below.</p>
+                <p>On the drop-off website you need to <b>Login</b>, click <b>Drop-off</b> add
+                    <b>Andrew Everitt, aje2g15@soton.ac.uk</b> as your recepient and upload your files. </p>
+                <div>
+                    <img class="align" src="/Images/icons/drop_off_manual.svg">
+                </div>
+                <div class="text-center text-bold"><a href="{{ url('https://dropoff.soton.ac.uk') }}">In order to proceed to drop-off click here </a></div>
+            </div>
+            <div class="hint text-left" data-hint="claim_passcode">
+                <h3 class="text-center lead">Drop-off claim passcode</h3>
+                <p>Copy and paste the drop-off passcode for file you have uploaded</p>
+            </div>
+            {{--<div class="hint text-left after-filling" data-hint="final">--}}
+                {{--<h3 class="text-center lead">The estimated cost of the print</h3>--}}
+                {{--<p>The cost of your print is £ </p>--}}
+                {{--<p>The price was calculated based on the print duration and the amount of material used.</p>--}}
+                {{--<p>After you press Submit button, the request will be sent to the demonstrator for approval. At this--}}
+                    {{--stage, the cost may change if the amount of material or the duration of print are altered by the--}}
+                    {{--demonstrator.</p>--}}
+                {{--<p>Please, do not start printing until notified that your job was approved. You will get a notification--}}
+                    {{--when the job will be approved or rejected by a demonstrator.</p>--}}
+                {{--<p>You may cancel your job if it is unsuccessful. In this case, you will be charged only for the--}}
+                    {{--printing time spent before cancellation. To do that contact the demonstrator.</p>--}}
+            {{--</div>            --}}
         </div>
     </div>
 </div>
