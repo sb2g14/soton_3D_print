@@ -3,13 +3,11 @@ $(function () {
     $("#email_error").hide();
     $("#student_id_error").hide();
     $("#material_amount_error").hide();
-    $("#use_case_error").hide();
 
     var error_name = true;
     var error_email = true;
     var error_id = true;
     var error_material = true;
-    var error_use_case = true;
 
     $("#student_name").keyup(function () {
         check_student_name();
@@ -22,9 +20,6 @@ $(function () {
     });
     $("#material_amount").keyup(function () {
         check_material_amount();
-    });
-    $("#use_case").keyup(function () {
-       check_use_case();
     });
 
     $("#student_name").focusout(function () {
@@ -39,8 +34,6 @@ $(function () {
     $("#material_amount").focusout(function () {
         check_material_amount();
     });
-    $("#use_case").focusout(function () {
-        check_use_case();
     });
     $("#hours").focusout(function () {
         evaluate_price();
@@ -78,7 +71,7 @@ $(function () {
          $("#student_name").addClass("parsley-success");
          error_name = false;
      } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false && error_use_case === false){
+            error_id === false && error_material === false){
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -108,7 +101,7 @@ $(function () {
             $("#email").addClass("parsley-success");
             error_email = false;
         } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false && error_use_case === false){
+            error_id === false && error_material === false){
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -149,7 +142,7 @@ $(function () {
             $("#student_id").addClass("parsley-success");
             error_id = false;
         } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false && error_use_case === false){
+            error_id === false && error_material === false ){
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -178,35 +171,7 @@ $(function () {
             $("#material_amount").addClass("parsley-success");
             error_material = false;
         } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false && error_use_case === false){
-            $("#submit").addClass("btn-success");
-            $("#submit").trigger("cssClassChanged");
-            $("#submit").prop('disabled', false);
-        } else {
-            $("#submit").removeClass("btn-success");
-        }
-    }
-    function check_use_case() {
-        var use_case = $("#use_case");
-
-        if(use_case.val().length < 3 || use_case.val().length > 13) {
-            $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
-            $("#use_case_error").show();
-            $("#use_case").focus();
-            $("#use_case").addClass("parsley-error");
-            error_use_case = true;
-        } else if(!use_case.val().match(/^[A-Z0-9-]*$/)){
-            $("#use_case_error").html("Either 9 digit cost code or standard module name are allowed");
-            $("#use_case_error").show();
-            $("#use_case").focus();
-            $("#use_case").addClass("parsley-error");
-        } else {
-            $("#use_case_error").hide();
-            $("#use_case").removeClass("parsley-error");
-            $("#use_case").addClass("parsley-success");
-            error_use_case = false;
-        } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false && error_use_case === false){
+            error_id === false && error_material === false ){
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -225,11 +190,9 @@ $(function () {
         $("#email_error").hide();
         $("#student_id_error").hide();
         $("#material_amount_error").hide();
-        $("#use_case_error").hide();
         $("#student_name").removeClass("parsley-success");
         $("#email").removeClass("parsley-success");
         $("#student_id").removeClass("parsley-success");
         $("#material_amount").removeClass("parsley-success");
         $("#submit").removeClass("btn-success");
     });
-});
