@@ -45,7 +45,17 @@
                         @endhasanyrole
                     </ul>
                 </li>
-                <li class="item"><a class="no-dropdown" href="{{ url('/members/index') }}">Staff</a></li>
+                {{--<li class="item"><a class="no-dropdown" href="{{ url('/members/index') }}">Staff</a></li>--}}
+                <li class="item">
+                    <span>
+                        Staff
+                        <span class="caret"></span></span>
+                    <ul class="dropdown-bl">
+                        <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our team</a></li>
+                        {{--<li><a class="dropdown-item" href="{{ url('/documents') }}">Documents</a></li>--}}
+                        <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting Paid</a></li>
+                    </ul>
+                </li>
                 @hasanyrole('LeadDemonstrator|Demonstrator|NewDemonstrator|administrator')
                 <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 @endhasanyrole

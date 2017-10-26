@@ -18,6 +18,7 @@
         <link href="/css/font-awesome.min.css" rel="stylesheet">
         <link href="/css/app.css" rel="stylesheet">
         <link href="/css/parsley.css" rel="stylesheet">
+        {!! Html::style('/css/sweetalert.css') !!}
 
     </head>
 
@@ -40,6 +41,7 @@
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/app.js"></script>
         <script src="/js/parsley.min.js"></script>
+        <script src="/js/sweetalert.min.js"></script>
          @yield('scripts')
          
     </body>

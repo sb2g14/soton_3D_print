@@ -9,6 +9,7 @@ $(function () {
     var error_email = true;
     var error_id = true;
     var error_material = true;
+
     var error_message = true;
 
     $("#student_name").keyup(function () {
@@ -36,6 +37,7 @@ $(function () {
     $("#material_amount").focusout(function () {
         check_material_amount();
     });
+
     $("#hours").focusout(function () {
         evaluate_price();
     });
@@ -75,7 +77,7 @@ $(function () {
          $("#student_name").addClass("parsley-success");
          error_name = false;
      } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false && error_use_case === false){
+            error_id === false && error_material === false){
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -105,7 +107,7 @@ $(function () {
             $("#email").addClass("parsley-success");
             error_email = false;
         } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false && error_use_case === false){
+            error_id === false && error_material === false){
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -146,7 +148,7 @@ $(function () {
             $("#student_id").addClass("parsley-success");
             error_id = false;
         } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false && error_use_case === false){
+            error_id === false && error_material === false ){
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -175,6 +177,7 @@ $(function () {
             $("#material_amount").addClass("parsley-success");
             error_material = false;
         } if( error_name === false && error_email === false &&
+
             error_id === false && error_material === false && error_use_case === false){
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
@@ -227,4 +230,3 @@ $(function () {
         $("#submit").removeClass("btn-success");
 
     });
-});

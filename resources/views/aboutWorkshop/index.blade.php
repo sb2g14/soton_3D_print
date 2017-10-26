@@ -1,4 +1,10 @@
 @extends('layouts.layout')
+{{--<script>--}}
+    {{--swal({--}}
+        {{--title: 'Great job!',--}}
+        {{--type: 'success'--}}
+    {{--})--}}
+{{--</script>--}}
 @section('content')
     {{--<div class="title m-b-md">--}}
         {{--About us--}}
