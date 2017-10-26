@@ -177,16 +177,24 @@ Route::get('loan', 'LoanController@index');
 // Redirection to a page with generic information and possibly some lessons
 Route::get('/learn', 'LearnController@index');
 
-//// Order online blade with the link to 3dhubs and the instruction how to use it
-//Route::get('/orderOnline','OrderOnlineController@index');
+// Order online blade with the link to 3dhubs and the instruction how to use it
+Route::get('/orderOnline','OrderOnlineController@index');
 
 // Routes to manage online job requests
 Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
 
-Route::get('/notify', function () {
-    notify()->flash('You have signed in!', 'success');
-    return redirect() -> to('/aboutWorkshop');
-});
+// Route to getting paid page
+
+Route::get('/gettingPaid', 'StaffController@gettingPaid');
+
+// Route to documents page
+
+Route::get('/documents', 'StaffController@documents');
+
+//Route::get('/notify', function () {
+//    notify()->flash('You have signed in!', 'success');
+//    return redirect() -> to('/aboutWorkshop');
+//});
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
