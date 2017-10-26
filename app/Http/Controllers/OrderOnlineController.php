@@ -10,4 +10,9 @@ class OrderOnlineController extends Controller
     {
         return view('orderOnline');
     }
+
+    public function create()
+    {
+        return view('OnlineJobs.create');
+    }
 }

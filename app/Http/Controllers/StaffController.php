@@ -182,4 +182,14 @@ class StaffController extends Controller
 
         return redirect('/members/index');
     }
+
+    public function gettingPaid()
+    {
+        return view('gettingPaid');
+    }
+
+    public function documents()
+    {
+        return view('documents');
+    }
 }
