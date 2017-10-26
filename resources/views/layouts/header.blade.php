@@ -53,7 +53,7 @@
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our team</a></li>
                         {{--<li><a class="dropdown-item" href="{{ url('/documents') }}">Documents</a></li>--}}
-                        <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting Paid</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting paid</a></li>
                     </ul>
                 </li>
                 @hasanyrole('LeadDemonstrator|Demonstrator|NewDemonstrator|administrator')
