@@ -20,6 +20,12 @@
                 <p>Open Access to 3D Printing Service in Design Workshop ​<br>
                 Wednesdays  9:00-18:00</p>
             </div>
+            <script>
+                swal({
+                    title: 'Great job!',
+                    type: 'success'
+                })
+            </script>
             <div class="col-sm-6 text-left">
                 <h3 class="text-center lead">CONTACTS</h3>
                 <table class="contacts">

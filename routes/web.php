@@ -183,6 +183,11 @@ Route::get('/learn', 'LearnController@index');
 // Routes to manage online job requests
 Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
 
+Route::get('/notify', function () {
+    notify()->flash('You have signed in!', 'success');
+    return redirect() -> to('/aboutWorkshop');
+});
+
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
 $this->post('login', 'Auth\LoginController@login')->name('auth.login');
