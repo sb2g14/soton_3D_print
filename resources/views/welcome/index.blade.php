@@ -223,8 +223,8 @@
                                         <li><a href={{ asset('files/Demonstrating_Claim_April_2016.doc') }}>Claim form</a></li>
                                         <li><a href={{ asset('files/FORMS_DC1_AND_DC2_v2.doc') }}>Claim forms DC1 and DC2</a></li>
                                     </ul><br>
-                                    <h4 style="color: red"><b>Please visit <a href="{{ url('http://3dprint.clients.soton.ac.uk/news') }}"
-                                                                              target="_blank">NEWS</a> to check how to use this resourse.</b></h4>
+                                    <h4 style="color: red"><b>Please visit <a href="{{ url('https://3dprint.clients.soton.ac.uk/news') }}"
+                                                                              target="_blank">NEWS</a> to check how to use this resource.</b></h4>
                                     <br><br>
                                     <h1>Development team.</h1>
                                 </div>
@@ -235,10 +235,6 @@
                             <li class="list-group-item">
                                 <div class="alert alert-info">
                                     <h4><b>Announcement {{  $announcement_last->id + 1 }} </b></h4>
-                                    {{--The statuses of all printers and issues associated with them have been brought into--}}
-                                    {{--order with the current state of affairs. There is one exception with printer <b style="color: red">7</b> though.--}}
-                                    {{--<br><br>--}}
-                                    {{--<h1>Development team.</h1>--}}
                                     <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
                                                 {{--Print date and time when a post was created--}}
                                                 Posted on {{ $announcement_last->created_at->toDayDateTimeString() }}:</i></small></h5>

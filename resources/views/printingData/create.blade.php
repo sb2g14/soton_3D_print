@@ -147,7 +147,6 @@
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-8 text-left">
                         <button id="submit" type="submit" class="btn">Submit</button>
-                        <a href="/" class="btn btn-danger">Go back</a>
                         <a href="/" class="btn btn-danger">Home</a>
                         <a href="{{  url('https://www.3dhubs.com/service/254134') }}" target="_blank" class="btn btn-info">Order online</a>
                     </div>
