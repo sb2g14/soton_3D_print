@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a754608fffa54a5ec940ee2dbf72f79a",
+    "content-hash": "733a09a29f9089ef49f1951b08ec0ab2",
     "packages": [
         {
             "name": "codecourse/notify",
@@ -45,6 +45,51 @@
             ],
             "description": "Flexible flash notifications for Laravel",
             "time": "2015-12-01T09:20:03+00:00"
+        },
+        {
+            "name": "coderjp/notify",
+            "version": "0.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/coderjp/laravel-notify.git",
+                "reference": "6a802c00a9b4524ea77ceaae566460387f1399e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/coderjp/laravel-notify/zipball/6a802c00a9b4524ea77ceaae566460387f1399e4",
+                "reference": "6a802c00a9b4524ea77ceaae566460387f1399e4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "~5.0",
+                "illuminate/session": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Coderjp\\Notify\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jack Powell",
+                    "homepage": "https://github.com/coderjp"
+                }
+            ],
+            "description": "Notifications for Laravel 5",
+            "keywords": [
+                "alert",
+                "laravel",
+                "message",
+                "notify"
+            ],
+            "time": "2015-06-25T09:56:38+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
