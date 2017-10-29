@@ -39,26 +39,25 @@
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/printers/index') }}">View printers</a></li>
-                        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
+                        @can('issues_manage')
                         <li><a class="dropdown-item" href="{{ url('/issues/index') }}">Pending issues</a></li>
                         <li><a class="dropdown-item" href="{{ url('/issues/select') }}">Log an issue</a></li>
-                        @endhasanyrole
+                        @endcan
                     </ul>
                 </li>
-                {{--<li class="item"><a class="no-dropdown" href="{{ url('/members/index') }}">Staff</a></li>--}}
                 <li class="item">
                     <span>
                         Staff
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our team</a></li>
-                        {{--<li><a class="dropdown-item" href="{{ url('/documents') }}">Documents</a></li>--}}
+                        <li><a class="dropdown-item" href="{{ url('/documents') }}">Documents</a></li>
                         <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting paid</a></li>
                     </ul>
                 </li>
-                @hasanyrole('LeadDemonstrator|Demonstrator|NewDemonstrator|administrator')
+                @can('jobs_manage')
                 <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
-                @endhasanyrole
+                @endcan
                 <li class="item"><a class="no-dropdown" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
             @else
@@ -70,8 +69,6 @@
                 <li class="item"><a class="no-dropdown" href="{{ url('/news') }}">News</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/learn') }}">Learn to 3D print</a></li>
-                {{--<li><a href="{{ route('auth.register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>--}}
-                {{--<li><a href="{{ route('auth.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>--}}
                 <li class="item">
                     <span>
                     <span class="glyphicon glyphicon-lock"></span>
