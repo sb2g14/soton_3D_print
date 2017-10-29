@@ -38,11 +38,11 @@
                             <div>
                                 <h3>ISSUES</h3>
                                 {{--This is a button to add an issue:--}}
-                                @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
+                                @can('add_private_posts_and_announcements')
                                 <button id="add_issue" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addIssue">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                 </button>
-                                @endhasanyrole
+                                @endcan
                             </div>
                             {{--Form to add issue--}}
                             <div id="addIssue" class="card collapse text-left">
@@ -101,7 +101,7 @@
                                                 </li>
                                             @endforeach
                                         </ul>
-                                        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
+                                        @can('add_private_posts_and_announcements')
                                         <div id="{{ $post_last->id }}" class="card">
                                             <form method="POST" action="/posts/{{ $post_last->id }}/comments">
                                                 {{ csrf_field() }}
@@ -114,7 +114,7 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        @endhasanyrole
+                                        @endcan
                                     </div>
                                 </li>
                             </ul>
@@ -154,7 +154,7 @@
                                             @endforeach
                                         </ul>
                                         {{--This is a form to add a comment--}}
-                                        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
+                                        @can('add_private_posts_and_announcements')
                                         <div id="{{ $post->id }}" class="card">
                                             <form method="POST" action="/posts/{{ $post->id }}/comments">
                                                 {{ csrf_field() }}
@@ -167,7 +167,7 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        @endhasanyrole
+                                        @endcan
                                     </div>
                                 </li>
                             @endforeach
@@ -181,11 +181,11 @@
                             <div>
                                 <h3>ANNOUNCEMENTS</h3>
                                 {{--This is a button to create an announcement:--}}
-                                @hasanyrole('administrator|LeadDemonstrator|Demonstrator')
+                                @can('add_private_posts_and_announcements')
                                 <button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                 </button>
-                                @endhasanyrole
+                                @endcan
                             </div>
 
                             {{--Form to add announcement--}}
@@ -194,17 +194,17 @@
                                     {{ csrf_field() }}
                                     <div class="form-group">
                                         <label for="message">New Announcement</label><br>
-                                        <textarea id="announcement" name="message" placeholder="Post something" class="form-control"></textarea>
+                                        <textarea id="announcement" name="message" @if(Auth::user()->can('add_private_posts_and_announcements')) placeholder="Post will appear only for registered users unless you check 'Public announcement' " @else placeholder="Post will appear only for registered users" @endif class="form-control"></textarea>
                                         <span id="announcement_error" class="help-block"></span>
                                     </div>
-                                    @hasanyrole('LeadDemonstrator|administrator')
+                                    @can('add_public_posts_and_announcements')
                                     <div class="checkbox">
                                         <label><input type="checkbox" name="public" value="public">Public announcement</label>
                                     </div>
                                     <div class="checkbox">
                                         <label><input type="checkbox" name="email" value="email">Inform all by email</label>
                                     </div>
-                                    @endhasanyrole
+                                    @endcan
                                     <button id="post" type="submit" class="btn btn-primary">Post</button>
                                 </form>
                             </div>
@@ -234,11 +234,15 @@
                         <ul class="lsn list-group">
                             <li class="list-group-item">
                                 <div class="alert alert-info">
-                                    <h4><b>Announcement 2</b></h4>
-                                    The statuses of all printers and issues associated with them have been brought into
-                                    order with the current state of affairs. There is one exception with printer <b style="color: red">7</b> though.
-                                    <br><br>
-                                    <h1>Development team.</h1>
+                                    <h4><b>Announcement {{  $announcement_last->id + 1 }} </b></h4>
+                                    {{--The statuses of all printers and issues associated with them have been brought into--}}
+                                    {{--order with the current state of affairs. There is one exception with printer <b style="color: red">7</b> though.--}}
+                                    {{--<br><br>--}}
+                                    {{--<h1>Development team.</h1>--}}
+                                    <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
+                                                {{--Print date and time when a post was created--}}
+                                                Posted on {{ $announcement_last->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                    <h5> {{ $announcement_last->message }} </h5>
                                 </div>
                             </li>
                         </ul>
@@ -248,7 +252,7 @@
                             @foreach($announcements as $announcement)
                                 <li class="list-group-item">
                                     <!-- <div class="alert alert-info"> -->
-                                    <h4><b>Announcement {{ $announcement->id + 2 }}</b></h4>
+                                    <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
                                     <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
                                                 {{--Print date and time when a post was created--}}
                                                 Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
@@ -306,7 +310,7 @@
                                         <!-- <div class="alert alert-info"> -->
                                         <h4><b>Announcement {{ $announcement->id }}</b></h4>
                                         <h5 class="media-heading"> @if($announcement->user_id != 0)  {{$announcement->user->name}} @else Anonym @endif <small><i>
-                                                    Print date and time when a post was created
+                                                    {{--Print date and time when a post was created--}}
                                                     Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
                                         <h5> {{ $announcement->message }} </h5>
                                         <!-- </div> -->

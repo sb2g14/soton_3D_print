@@ -734,7 +734,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES (1,'administrator','web','2017-07-31 14:54:24','2017-07-31 14:54:24'),(2,'LeadDemonstrator','web','2017-08-03 13:46:45','2017-08-03 13:46:45'),(3,'Demonstrator','web','2017-08-03 14:02:04','2017-08-03 14:02:04'),(4,'NewDemonstrator','web','2017-08-03 14:02:21','2017-08-03 14:02:21'),(5,'OldDemonstrator','web','2017-08-03 14:02:33','2017-08-03 14:02:33'),(6,'3dhubs_manager','web','2017-08-09 10:58:49','2017-08-09 10:58:49');
+INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES (1,'administrator','web','2017-07-31 14:54:24','2017-07-31 14:54:24'),(2,'LeadDemonstrator','web','2017-08-03 13:46:45','2017-08-03 13:46:45'),(3,'Demonstrator','web','2017-08-03 14:02:04','2017-08-03 14:02:04'),(4,'NewDemonstrator','web','2017-08-03 14:02:21','2017-08-03 14:02:21'),(5,'OldDemonstrator','web','2017-08-03 14:02:33','2017-08-03 14:02:33'),(6,'OnlineJobsManager','web','2017-08-09 10:58:49','2017-08-09 10:58:49');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 

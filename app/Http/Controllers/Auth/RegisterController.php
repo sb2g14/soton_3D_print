@@ -79,7 +79,8 @@ class RegisterController extends Controller
 
         // Check weather the email is in the demonstrator database
         $emails = staff::all()->pluck('email','id')->toArray();
-        $email = request('email');
+        $emails = array_map('strtolower', $emails);
+        $email = strtolower(request('email'));
         if( in_array($email, $emails)) {
 
             // Create ad save a new user
@@ -97,9 +98,13 @@ class RegisterController extends Controller
             }elseif($member->role == 'IT Manager' || $member->role == 'IT'){
                 $user->assignRole('administrator');
             }elseif($member->role == '3D Hub Manager'){
-                $user->assignRole(['3dhubs_manager','Demonstrator']);
-            }elseif($member->role == 'New Demonstrator'){
+                $user->assignRole(['OnlineJobsManager','Demonstrator']);
+            }elseif($member->role == 'New Demonstrator') {
                 $user->assignRole('NewDemonstrator');
+            }elseif($member->role == 'Coordinator' || $member->role == 'Co-Cordinator') {
+                $user->assignRole('Coordinator');
+            }elseif($member->role == 'Technician') {
+                $user->assignRole('Technician');
             }else{
                 $user->assignRole('Demonstrator');
             }

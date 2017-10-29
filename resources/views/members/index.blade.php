@@ -8,11 +8,11 @@
 
         <div class="text-center m-b-md">
         <div class="title">Our team</div>
-            @hasanyrole('LeadDemonstrator|administrator')
+            @can('staff_manage')
                 <a href="{{ url('/members') }}" type="button" class="btn btn-lg btn-info">
                     Add new member
                 </a>
-            @endhasanyrole
+            @endcan
         </div>
 
         <div class="container">

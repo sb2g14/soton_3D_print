@@ -54,7 +54,7 @@ Route::get('/members/delete/{id}','StaffController@destroy');
 Route::get('/printers/index','PrintersController@index');
 
 // Group of routes available only to roles administrator, Lead Demonstrator, Demonstrator
-Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator']], function () {
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician']], function () {
 
     // Redirect to the view where one can manage issues
 
