@@ -73,9 +73,4 @@
                </div>
             </div> -->
 
-    {{--@if (Auth::check())--}}
-        {{--<div class="title m-b-md">--}}
-            {{--Our team--}}
-        {{--</div>--}}
-
 @endsection

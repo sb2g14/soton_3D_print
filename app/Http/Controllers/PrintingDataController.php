@@ -30,7 +30,6 @@ class PrintingDataController extends Controller
      */
     public function index()
     {
-        // $jobs =  printing_data::where('approved', 'Waiting')->get();
         $jobs = Jobs::where('status','Waiting')->get();
         return view('printingData.index', compact('jobs'));
     }
@@ -73,22 +72,14 @@ class PrintingDataController extends Controller
 
     public function approved()
     {
-//        $approved_jobs = printing_data::orderBy('created_at', 'desc')->where('approved', 'Yes')->get();
         $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->get();
         return view('printingData.approved', compact('approved_jobs'));
     }
 
     public function finished()
     {
-//        $finished_jobs = printing_data::orderBy('created_at', 'desc')->where('approved','!=', 'Waiting')->get();
         $finished_jobs = Jobs::where('created_at', '>=', Carbon::now()->subMonth())->orderBy('created_at', 'desc')->where('status','!=', 'Waiting')->get();
-//        foreach ($jobs as $job)
-//        {
-//            list($h, $i, $s) = explode(':', $job->time);
-//            if (Carbon::now('Europe/London')->gte($job->updated_at->addHour($h)->addMinutes($i))) {
-//                $finished_jobs = $finished_jobs->push($job);
-//            }
-//        }
+
         return view('printingData.finished', compact('finished_jobs'));
     }
 
@@ -106,12 +97,12 @@ class PrintingDataController extends Controller
         }
 
     if (Auth::check()) {
-        if (Auth::user()->hasRole('3dhubs_manager')) {
+        if (Auth::user()->hasRole('OnlineJobsManager')) {
             $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
         } else {
             $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
         }
-        if (!Auth::user()->hasRole('3dhubs_manager')) {
+        if (!Auth::user()->hasRole('OnlineJobsManager')) {
             $member = Auth::user()->staff;
         }
         return view('printingData.create',compact('available_printers','member'));
@@ -273,19 +264,6 @@ class PrintingDataController extends Controller
 
         $job = Jobs::findOrFail($id);
         $print_id = $job->prints->first()->id;
-//        $data->update([
-//            'printers_id' => Input::get('printers_id'),
-//            'student_name' => request('student_name'),
-//            'student_id' => request('student_id'),
-//            'email' => request('email'),
-//            'time' => $time,
-//            'material_amount' => request('material_amount'),
-//            'add_comment' => request('comments'),
-//            'paid' => 'No',
-//            'purpose' => 'Use',
-//            'staff_id' => Auth::user()->staff->id,
-//            'approved' => 'Yes'
-//        ]);
         $job->update([
             'customer_name' => request('student_name'),
             'customer_id' => request('student_id'),
@@ -321,7 +299,6 @@ class PrintingDataController extends Controller
 
     public function edit($id)
     {
-//        $job = printing_data::findOrFail($id);
         $job = Jobs::findOrFail($id);
         return view('printingData.edit',compact('job'));
     }
@@ -332,7 +309,6 @@ class PrintingDataController extends Controller
             'material_amount' => 'required|numeric',
             'successful' => 'required'
         ]);
-//        $data = printing_data::findOrFail($id);
         $job = Jobs::findOrFail($id);
         $print_id = $job->prints->first()->id;
         $print = Prints::findOrFail($print_id);
@@ -349,7 +325,7 @@ class PrintingDataController extends Controller
         }
 
 //        Condition for 3Dhubs manager only
-//        if (Auth::user()->hasRole('3dhubs_manager')) {
+//        if (Auth::user()->hasRole('OnlineJobsManager')) {
 //            if (request('successful') == 'No') {
 //                $price = 0;
 //            } else {
@@ -385,7 +361,6 @@ class PrintingDataController extends Controller
      */
     public function abort($id)
 {
-//    $data = printing_data::findOrFail($id);
     $job = Jobs::findOrFail($id);
     $print_id = $job->prints->first()->id;
     $print = Prints::findOrFail($print_id);
@@ -399,7 +374,7 @@ class PrintingDataController extends Controller
     $new_price = 0;
 
 //    Condition to reduce price only for 3Dhubs manager
-//    if (Auth::user()->hasRole('3dhubs_manager')) {
+//    if (Auth::user()->hasRole('OnlineJobsManager')) {
 //        $new_price = 0;
 //    } else {
 //        $new_price = round(3 * ($hours + $minutes / 60), 2);
@@ -450,7 +425,7 @@ class PrintingDataController extends Controller
     {
         $data = Jobs::findOrFail($id);
 
-        if (Auth::user()->hasRole('3dhubs_manager')) {
+        if (Auth::user()->hasRole('OnlineJobsManager')) {
             $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
         } else {
             $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();

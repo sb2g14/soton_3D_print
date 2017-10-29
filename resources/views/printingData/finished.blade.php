@@ -37,7 +37,7 @@
                     <th>Approved by</th>
                     <th>Project Name</th>
                     <th>Status</th>
-                    {{--@hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')--}}
+                    {{--@hasanyrole('LeadDemonstrator|administrator|OnlineJobsManager')--}}
                     <th>Edit</th>
                     {{--@endhasanyrole--}}
                     <th>Restart</th>
@@ -65,7 +65,7 @@
                         <td data-th="Project Name">{{ $job->use_case  }}</td>
                         <td data-th="Status">{{ $job->status }}</td>
                         <td data-th="Edit">
-                            {{--@hasanyrole('LeadDemonstrator|administrator|3dhubs_manager')--}}
+                            {{--@hasanyrole('LeadDemonstrator|administrator|OnlineJobsManager')--}}
                             <a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a>
                             {{--@endhasanyrole--}}
                         </td>

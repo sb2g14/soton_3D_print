@@ -18,17 +18,17 @@
 
     <div class="container">
         <div>
-            @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
+            @can('issues_manage')
                 <a href="/issues/index" class="btn btn-primary pull-left" style="margin-right: 8px;" >Manage Issues</a>
-            @endhasanyrole
+            @endcan
             {{--@hasanyrole('LeadDemonstrator|administrator')--}}
                 {{--{!! link_to_route('issues.export',--}}
                 {{--'Export to Excel', null,--}}
                 {{--['class' => 'btn btn-info pull-left']) !!}--}}
             {{--@endhasanyrole--}}
-            @hasanyrole('LeadDemonstrator|administrator')
+            @can('printers_manage')
                 <a href="{{ url('/printers/create') }}" class="btn btn-success pull-right">Add Printer</a>
-            @endhasanyrole
+            @endcan
         </div>
         
             
@@ -39,12 +39,12 @@
                     <th>Serial Number</th>
                     <th>Printer Type</th>
                     <th>Status</th>
-                    @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
+                    @can('issues_manage')
                         <th>View History</th>
                         @hasanyrole('administrator')
                             <th>Update Record</th>
                         @endhasanyrole
-                    @endhasanyrole
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -66,12 +66,12 @@
                             @elseif ($printer->printer_status == 'Signed out')
                                 <td data-th="Status" class="active">{{$printer->printer_status}}</td>
                         @endif
-                        @hasanyrole('LeadDemonstrator|Demonstrator|administrator')
+                        @can('issues_manage')
                             <td data-th="View History"><a href="/issues/show/{{$printer->id }}" class="btn btn-info">Details</a></td>
                             @hasanyrole('administrator')
                                 <td data-th="Update Record"><a href="/printers/update/{{$printer->id }}" class="btn btn-primary">Update</a></td>
                             @endhasanyrole
-                        @endhasanyrole
+                        @endcan
                     </tr>
                 @endforeach
             </tbody>

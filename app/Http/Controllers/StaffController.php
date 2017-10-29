@@ -69,7 +69,7 @@ class StaffController extends Controller
             } elseif ($member->role == 'Former member') {
                 $member->user->assignRole('OldDemonstrator');
             } elseif ($member->role == '3D Hub Manager') {
-                $member->user->assignRole(['3dhubs_manager','Demonstrator']);
+                $member->user->assignRole(['OnlineJobsManager','Demonstrator']);
             } elseif ($member->role == 'New Demonstrator') {
                 $member->user->assignRole('NewDemonstrator');
             } else {
@@ -145,9 +145,13 @@ class StaffController extends Controller
                 }elseif($role == 'IT Manager' || $role == 'IT'){
                     $user->syncRoles(['administrator']);
                 }elseif($role == '3D Hub Manager'){
-                    $user->syncRoles(['3dhubs_manager','Demonstrator']);
-                }elseif($role == 'New Demonstrator'){
+                    $user->syncRoles(['OnlineJobsManager','Demonstrator']);
+                }elseif($role == 'New Demonstrator') {
                     $user->syncRoles(['NewDemonstrator']);
+                }elseif($role == 'Coordinator' || $role == 'Co-Coordinator') {
+                    $user->syncRoles(['Coordinator']);
+                }elseif($role == 'Technician') {
+                    $user->syncRoles(['Technician']);
                 }else{
                     $user->syncRoles(['Demonstrator']);
                 }

@@ -28,14 +28,14 @@
                     <label for="body">Phone: </label><br>
                         <input id="phone" type="text" name="phone" class="form-control" value="{{ $member-> phone}}"/><br>
                         <td><span class="help-block" id="phone_error"></span></td>
-                    @hasanyrole('LeadDemonstrator|administrator')
+                    @can('staff_manage')
                     <div class="field-inner">
                         <div class="form-group">
                             {!! Form::label('role', 'Role' )  !!}
                             {!! Form::select('role',['Demonstrator'=>'Demonstrator', 'Lead Demonstrator'=>'Lead Demonstrator', '3D Hub Manager'=> '3D Hub Manager', 'PR Manager'=> 'PR Manager', 'Technical Manager' => 'Technical Manager', 'IT Manager' => 'IT Manager','IT'=>'IT', 'Coordinator'=> 'Coordinator', 'Co-Coordinator' => 'Co-Coordinator', 'Technician'=>'Technician','New Demonstrator'=>'New Demonstrator', 'Former member'=>'Former member' ], $member->role, ['class' => 'form-control' ]) !!}
                         </div>
                     </div>
-                    @endhasanyrole
+                    @endcan
                     @include('layouts.errors')
                     <button id="update-button" type="submit" class="btn-lg btn-primary">Update</button>
                 </form>
