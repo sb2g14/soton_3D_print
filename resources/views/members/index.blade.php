@@ -66,12 +66,12 @@
                     <h3>Coordinators</h3>
                     <div class="list-group">
                         @foreach($members as $member)
-                            @if($member->role == 'Technical Manager' || $member->role == 'PR Manager')
+                            @if($member->role == 'Coordinator' || $member->role == 'Co-coordinator')
                                 <a href="/members/{{$member->id}}" class="list-group-item" style="background-color: #FFCDD2">
                                     {{$member->first_name}} {{$member->last_name}}</a>
                             @endif
                         @endforeach
-                    </div>   
+                    </div>
                 </div>
 
             </div>
