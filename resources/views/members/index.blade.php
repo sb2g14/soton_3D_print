@@ -20,19 +20,19 @@
             <div class="row">
                 <div class="col-sm-3">
                     <h3>Lead Demonstrators</h3>
-                    <div class="list-group">
+                    <div class="list-group demonstrator">
                         @foreach($members as $member)
                             @if($member->role == 'Lead Demonstrator')
-                                <a href="/members/{{$member->id}}" class="list-group-item" style="background-color: #C8E6C9">
+                                <a href="/members/{{$member->id}}" class="list-group-item demonstrator-lead">
                                     {{$member->first_name}} {{$member->last_name}}</a>
                             @endif
                         @endforeach
                     </div>
                     <h3>Demonstrators</h3>
-                    <div class="list-group">
+                    <div class="list-group demonstrator">
                         @foreach($members as $member)
                             @if($member->role == 'Demonstrator' || $member->role == 'unknown')
-                                <a href="/members/{{$member->id}}" class="list-group-item" style="background-color: #BBDEFB">
+                                <a href="/members/{{$member->id}}" class="list-group-item demonstrator-norm">
                                     {{$member->first_name}} {{$member->last_name}}</a>
 
                             @endif
@@ -41,10 +41,10 @@
                 </div>
                 <div class="col-sm-3">
                     <h3>IT Support</h3>
-                    <div class="list-group">
+                    <div class="list-group demonstrator">
                         @foreach($members as $member)
                             @if($member->role == 'IT' || $member->role == 'IT Manager')
-                                <a href="/members/{{$member->id}}" class="list-group-item" style="background-color: #C5CAE9">
+                                <a href="/members/{{$member->id}}" class="list-group-item it-manager">
                                     {{$member->first_name}} {{$member->last_name}}</a>
 
                             @endif
@@ -53,10 +53,10 @@
                 </div>
                 <div class="col-sm-3">
                     <h3>Online request managers</h3>
-                    <div class="list-group">
+                    <div class="list-group demonstrator">
                         @foreach($members as $member)
                             @if($member->role == '3D Hub Manager')
-                                <a href="/members/{{$member->id}}" class="list-group-item" style="background-color: #FFE0B2">
+                                <a href="/members/{{$member->id}}" class="list-group-item hub-manager">
                                     {{$member->first_name}} {{$member->last_name}}</a>
                             @endif
                         @endforeach
@@ -64,10 +64,10 @@
                 </div>
                 <div class="col-sm-3">
                     <h3>Coordinators</h3>
-                    <div class="list-group">
+                    <div class="list-group demonstrator">
                         @foreach($members as $member)
                             @if($member->role == 'Technical Manager' || $member->role == 'PR Manager')
-                                <a href="/members/{{$member->id}}" class="list-group-item" style="background-color: #FFCDD2">
+                                <a href="/members/{{$member->id}}" class="list-group-item technical-manager">
                                     {{$member->first_name}} {{$member->last_name}}</a>
                             @endif
                         @endforeach

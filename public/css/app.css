@@ -624,6 +624,39 @@ body {
 .contacts .row-last {
   padding-bottom: 20px;
 }
+.demonstrator .list-group-item:hover {
+  color: #fff;
+}
+.demonstrator .demonstrator-lead {
+  background-color: #A5D6A7;
+}
+.demonstrator .demonstrator-lead:hover {
+  background-color: #C8E6C9;
+}
+.demonstrator .demonstrator-norm {
+  background-color: #90CAF9;
+}
+.demonstrator .demonstrator-norm:hover {
+  background-color: #BBDEFB;
+}
+.demonstrator .it-manager {
+  background-color: #9FA8DA;
+}
+.demonstrator .it-manager:hover {
+  background-color: #C5CAE9;
+}
+.demonstrator .hub-manager {
+  background-color: #FFCC80;
+}
+.demonstrator .hub-manager:hover {
+  background-color: #FFE0B2;
+}
+.demonstrator .technical-manager {
+  background-color: #EF9A9A;
+}
+.demonstrator .technical-manager:hover {
+  background-color: #FFCDD2;
+}
 footer {
   font-weight: 100;
   font-size: 14px;
