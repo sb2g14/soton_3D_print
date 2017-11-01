@@ -130,13 +130,15 @@ class PrintingDataController extends Controller
         ]);
         if (Auth::check()) {
             $shortages = cost_code::all()->pluck('shortage', 'id')->toArray();
+            $shortages = array_map('strtolower', $shortages);
             $cost_codes = cost_code::all()->pluck('cost_code', 'id')->toArray();
         } else {
             $shortages = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('shortage', 'id')->toArray();
+            $shortages = array_map('strtolower', $shortages);
             $cost_codes = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('cost_code', 'id')->toArray();
         }
         // $cost_codes = $cost_codes->toArray();
-        $use_case = request('use_case');
+        $use_case = strtolower(request('use_case'));
         if( in_array($use_case, $shortages)) {
 
             // Update record in staff database in order to link with users database

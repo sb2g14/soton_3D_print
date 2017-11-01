@@ -23,6 +23,7 @@
             <li>Type of Work (FOR UGs): Student Demonstrator</li>
             <li>Pay Rate: Demonstrator rate</li>
             <li>Fill in your hours worked for each date.</li>
+            <li>Fill in the “Job ID number” using the "assignment ID number” that you received via email upon appointment.</li>
         </ol> <br>
         At the end of each month, send your form to Andrew Hamilton (<a href="mailto:a.r.hamilton@soton.ac.uk">A.R.Hamilton@soton.ac.uk</a>) for approval.
     </div>

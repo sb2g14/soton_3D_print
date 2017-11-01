@@ -27,11 +27,11 @@
             @if(!empty(array_filter( (array) $issue->FaultUpdates)))
                 <h3 class="text-center lead">ISSUE LOG</h3>
                 <ul class="list-group text-left">
-                    Here we show updates to each issue:
+                    {{--Here we show updates to each issue:--}}
                     @foreach($issue->FaultUpdates as $update)
                         <li class="list-group-item">
                             <h5 class="media-heading">Update: {{$issue->users_name_created_issue}}<small><i>
-                            Print date and time when an issue was updated
+                            {{--Print date and time when an issue was updated--}}
                             Updated on {{ $update->created_at->toDayDateTimeString() }}:</i></small></h5><br>
                             <p>Printer Status: <b>{{$update->printer_status}}</b><br>
                                 Description: <b>{{ $update->body }}</b>
