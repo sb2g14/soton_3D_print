@@ -66,28 +66,14 @@
                     <h3>Coordinators</h3>
                     <div class="list-group demonstrator">
                         @foreach($members as $member)
-                            @if($member->role == 'Technical Manager' || $member->role == 'PR Manager')
-                                <a href="/members/{{$member->id}}" class="list-group-item technical-manager">
+                            @if($member->role == 'Coordinator' || $member->role == 'Co-coordinator')
+                                <a href="/members/{{$member->id}}" class="list-group-item coordinator">
                                     {{$member->first_name}} {{$member->last_name}}</a>
                             @endif
                         @endforeach
-                    </div>   
+                    </div>
                 </div>
 
             </div>
-           
-           <!-- <div class="row">
-               <div class="col-xs-2 col-sm-4"></div>
-               <div class="col-xs-8 col-sm-4">
-                   <div class="list-group">
-                       {{--@foreach($members as $member)
-           
-                           <a href="/members/{{$member->id}}" class="list-group-item">
-                               {{$member->first_name}} {{$member->last_name}}: <b>{{ $member->role }}</b><br></a>
-                       @endforeach--}}
-                   </div>
-               </div>
-               <div class="col-xs-2 col-sm-4"></div>
-           </div> -->
         </div>
 @endsection

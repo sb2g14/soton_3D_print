@@ -651,10 +651,10 @@ body {
 .demonstrator .hub-manager:hover {
   background-color: #FFE0B2;
 }
-.demonstrator .technical-manager {
+.demonstrator .coordinator {
   background-color: #EF9A9A;
 }
-.demonstrator .technical-manager:hover {
+.demonstrator .coordinator:hover {
   background-color: #FFCDD2;
 }
 footer {

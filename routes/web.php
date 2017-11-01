@@ -54,7 +54,7 @@ Route::get('/members/delete/{id}','StaffController@destroy');
 Route::get('/printers/index','PrintersController@index');
 
 // Group of routes available only to roles administrator, Lead Demonstrator, Demonstrator
-Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician']], function () {
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
 
     // Redirect to the view where one can manage issues
 
@@ -140,7 +140,7 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 });
 
     // Group of routes available only to roles administrator, Lead Demonstrator
-    Route::group(['middleware' => ['role:administrator|LeadDemonstrator']], function () {
+    Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
 
     // Here we redirect users to the add new printer post page
     Route::get('/printers/create','PrintersController@create');

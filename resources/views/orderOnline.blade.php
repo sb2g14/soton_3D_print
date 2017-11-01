@@ -24,7 +24,7 @@
         Once your order is accepted, you will be in touch with us shortly and you will receive a 100% discount voucher code for this print. Apply this code in the “Add voucher” section to complete the online payment process. (The payment will be made by deduction from your project budget, not from your bank)
         Once the print is completed, our demonstrator will contact you via email for pick up.<br>
 
-        For reference purposes please download the <a href={{ asset('files/Online_3D_Printing_Service_v2.pdf') }}>PDF Version</a>.
+        {{--For reference purposes please download the <a href={{ asset('files/Online_3D_Printing_Service_v2.pdf') }}>PDF Version</a>.--}}
     </div>
 </div>
 @endsection
