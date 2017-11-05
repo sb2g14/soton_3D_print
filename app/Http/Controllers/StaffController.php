@@ -186,6 +186,11 @@ class StaffController extends Controller
 
         return redirect('/members/index');
     }
+    public function former()
+    {
+        $members = staff::orderBy('first_name')->where('role','=', 'Former member')->get();
+        return view('members.former', compact('members'));
+    }
 
     public function gettingPaid()
     {
