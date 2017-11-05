@@ -13,14 +13,16 @@
         <div class="container">
 
             <div class="row">
-                <div class="col-sm-3">
-                    <div class="list-group demonstrator">
-                        @foreach($members as $member)
-                                <a href="/members/{{$member->id}}" class="list-group-item it-manager">
-                                    {{$member->first_name}} {{$member->last_name}}</a>
-                        @endforeach
+                <div class="col-xs-2 col-sm-4"></div>
+                <div class="col-xs-8 col-sm-4">
+                    <div class="list-group">
+                            @foreach($members as $member)
+                            <a href="/members/{{$member->id}}" class="list-group-item">
+                                {{$member->first_name}} {{$member->last_name}} </a>
+                            @endforeach
                     </div>
                 </div>
+                <div class="col-xs-2 col-sm-4"></div>
 
             </div>
         </div>

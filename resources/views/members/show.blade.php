@@ -2,7 +2,7 @@
 
 @section('content')
     <h2 style="margin-bottom: 20px; font-weight: 600;">
-        {{ $member -> title }} {{ $member -> first_name }} {{ $member -> last_name }} <br>
+        {{ $member -> first_name }} {{ $member -> last_name }} <br>
     </h2>
 
     <div class="container">

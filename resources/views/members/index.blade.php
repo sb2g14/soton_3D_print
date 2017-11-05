@@ -12,7 +12,7 @@
                 <a href="{{ url('/members') }}" type="button" class="btn btn-lg btn-success">
                     Add new member
                 </a>
-                <a href="{{ url('/members/former') }}" type="button" class="btn btn-lg btn-info">
+                <a href="{{ url('/members/former/show') }}" type="button" class="btn btn-lg btn-info">
                     View former members
                 </a>
             @endcan

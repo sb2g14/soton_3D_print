@@ -51,7 +51,7 @@ Route::post('/members/edit/{id}','StaffController@update');
 Route::get('/members/delete/{id}','StaffController@destroy');
 
 // This route uses controller to access former member blade
-Route::get('/members/former','StaffController@former');
+Route::get('/members/former/show','StaffController@former');
 
 // Here we redirect to the page containing general printer info using controller
 Route::get('/printers/index','PrintersController@index');
