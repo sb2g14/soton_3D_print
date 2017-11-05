@@ -25,7 +25,7 @@
                     <h3>Coordinators</h3>
                     <div class="list-group demonstrator">
                         @foreach($members as $member)
-                            @if($member->role == 'Coordinator' || $member->role == 'Co-coordinator')
+                            @if($member->role == 'Coordinator' || $member->role == 'Co-Coordinator')
                                 <a href="/members/{{$member->id}}" class="list-group-item coordinator">
                                     {{$member->first_name}} {{$member->last_name}}</a>
                             @endif
@@ -34,7 +34,7 @@
                     <h3>Managers</h3>
                     <div class="list-group demonstrator">
                         @foreach($members as $member)
-                            @if($member->role == 'Technician' || $member->role == 'PR Manager' || $member == 'Technical Manager')
+                            @if($member->role == 'Technician' || $member->role == 'PR Manager' || $member->role == 'Technical Manager')
                                 <a href="/members/{{$member->id}}" class="list-group-item coordinator">
                                     {{$member->first_name}} {{$member->last_name}}</a>
 

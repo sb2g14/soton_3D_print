@@ -14,9 +14,9 @@
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         @isset(Auth::user()->staff)
-                        <li><a href="/members/{{Auth::user()->staff->id}}">View Record</a></li>
+                        <li><a href="/members/{{Auth::user()->staff->id}}">View record</a></li>
                         @endisset
-                        <li><a class="dropdown-item" href="{{ url('/roles') }}">Manage Account</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/roles') }}">Manage account</a></li>
                     </ul>
                 </li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
@@ -51,7 +51,7 @@
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our team</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/documents') }}">Documents</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/documents') }}">For demonstrators</a></li>
                         <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting paid</a></li>
                     </ul>
                 </li>
