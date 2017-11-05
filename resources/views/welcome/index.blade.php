@@ -27,7 +27,7 @@
         </div>
     @endif
     {{--Main content--}}
-    <section class="s-welcome">
+    <section class="s-welcome" style="position: relative; top: -130px">
         <div class="container">
             
             @if (Auth::check())  {{--Check whether user is logged in--}}
@@ -269,7 +269,44 @@
 
                 @else
                 <div class="row is-table-row">
-                    <div class="col-sm-4 item"></div>
+                    <div class="col-sm-4 item">
+                        <div class="bl-header">
+                            <div class="bl-logo logo-issue"></div>
+                            <div>
+                                <h3>RULES FOR USING THE 3D PRINTERS</h3>
+                            </div>
+                        </div>
+                        <p>
+                        <ol>
+                            <li>Export your file to .stl format and bring it with you to the workshop
+                            <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOUSELF to the cupboards!</b></li>
+                            <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
+                            <li>Request a job
+                                <ol type="a">
+                                    <li>Access the workshop website <a href="https://3dprint.clients.soton.ac.uk/">https://3dprint.clients.soton.ac.uk/</a></a></li>
+                                    <li>Select <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">Request a job in the workshop!</a></q></li>
+                                    <li>Fill in all required details</li>
+                                    <li>Click submit</li>
+                                </ol>
+                            </li>
+                            <li>Ask a demonstrator to come to you to approve the print</li>
+                            <li>Press the print button to start the print <b>after your print has been approved</b></li>
+                            <li>Wait for at least 10 layers to see if there are any errors. Most errors will happen at this point</li>
+                            <li type="disc" style="list-style-type:disc">If there is an error:
+                                <ol type="a">
+                                    <li>Stop the print</li>
+                                    <li>Tell a demonstrator to mark the print as failed so you don't get charged</li>
+                                    <li>Set up the print again. Ask a demonstrator for advice on how to avoid this error</li>
+                                    <li>Go through the same <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">Request a job in the workshop!</a></q> procedure.</li>
+                                </ol>
+                            </li>
+                            <li type="disc" style="list-style-type:disc">If you need to leave the workshop during your print, leave your contact details on a piece of paper with your expected return time next to your printer</li>
+                            <li value="8">Once your print is finished, tell a demonstrator to mark the print as finished</li>
+                            <li>Remove the print from the platform</li>
+                            <li>Once finished, return all printing materials to the cupboards</li>
+                        </ol>
+                        </p>
+                    </div>
                     <div class="col-sm-4 item">
                         <div class="bl-header">
                             <div class="bl-logo logo-announcement"></div>
