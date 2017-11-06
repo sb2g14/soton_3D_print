@@ -1,11 +1,57 @@
 @extends('layouts.layout')
 @section('content')
     <div class="title m-b-md">
+        Updates in version 1.4
+    </div>
+    <div class="container well text-left">
+        <h3>Functionality updates</h3>
+            <ol>
+                <li>
+                    There have been several issues with cost codes and/or module names entered in a
+                    <a href="http://3dprint.clients.soton.ac.uk/printingData/create" target="_blank"><b>request a job form</b></a>.
+                    Please, make sure that you type in the module name that is in the following format <b>FEEG2001-MECH</b>.
+                </li>
+                <li>
+                    The new demonstrator workflow has been documented and is accessible <a href="http://3dprint.clients.soton.ac.uk/documents">
+                        <b>here</b></a>.
+                </li>
+            </ol><br>
+        <h3>New pages and pages look updates</h3>
+            <ol>
+                <li>
+                    The page <a href="http://3dprint.clients.soton.ac.uk/members/index"><b>Our Team</b></a>
+                    now has staff members names assembled in a more user friendly way. Notice the
+                    <a type="button" class="btn btn-lg btn-info">
+                        View former members
+                    </a> button available for lead demonstrators and managers.
+                </li>
+                <li>
+                    Page <a href="http://3dprint.clients.soton.ac.uk/documents"><b>For demonstrators</b></a> contains the
+                    description of the demonstrator workflow as well as UP 3D printer and UP BOX manuals in addition to
+                    Request a loan form.
+                </li>
+                <li>
+                    The set of rules for students can be accessed via home page if logged out.
+                </li>
+                <li>
+                    Extensive information on how to claim the demonstrating hours can be found on the page
+                    <a href="http://3dprint.clients.soton.ac.uk/gettingPaid"><b>Getting paid</b></a>.
+                </li>
+            </ol><br>
+
+        <div>
+            <br>Poseted by <a href="mailto:ai1v14@soton.ac.uk?Subject=Soton3Dprint" target="_blank"><b>Andrii Iakovliev</b></a>
+            and
+            <a href="mailto:sb2g14.ac.uk?Subject=Soton3Dprint" target="_blank"><b>Svitlana Braichenko</b></a>
+        </div>
+    </div>
+
+    <div class="title m-b-md">
         Updates in version 1.3
     </div>
     <div class="container well text-left">
         <div>
-            Here we present a short outline to the updates we have made since lounching the web site as well as a short
+            Here we present a short outline to the updates we have made since launching the web site as well as a short
             guidance on how to manage printer issues.
         </div><br>
         <h3>New functionality</h3>

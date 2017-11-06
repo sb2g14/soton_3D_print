@@ -18,6 +18,7 @@
                 </div>
             </div>
         </div>
+        
         <div id="image-slider_home" class="image-slider bl-slider owl-carousel owl-theme">
             <div class="item img_1"></div>
             <div class="item img_2"></div>
