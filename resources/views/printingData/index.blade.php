@@ -42,8 +42,7 @@
     <div class="container">
         
         <div class="row">
-            <div class="col-xs-2 col-sm-4"></div>
-            <div class="col-xs-8 col-sm-4">
+            <div class="col-xs-12">
                 <ul class="list-group lsn">
                     @foreach($jobs as $job)
 
@@ -62,7 +61,6 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="col-xs-2 col-sm-4"></div>
         </div>
     </div>
 @endsection
