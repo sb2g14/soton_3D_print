@@ -17,6 +17,10 @@
                     </div>
                 </div>
             </div>
+
+    <div class="ctr">
+        <div class="bl-welcome">
+            <p>Welcome to 3D printing workshop<br>at the University of Southampton</p>
         </div>
         
         <div id="image-slider_home" class="image-slider bl-slider owl-carousel owl-theme">
