@@ -514,6 +514,7 @@ body {
 .s-welcome .bl-header h3 {
   display: inline-block;
   vertical-align: middle;
+  margin-bottom: 0px;
 }
 .s-welcome .bl-header button {
   display: inline-block;
@@ -522,6 +523,7 @@ body {
   width: 50px;
   height: 50px;
   display: inline-block;
+  margin-bottom: 20px;
 }
 .s-welcome .bl-logo.logo-issue {
   background: url('/Images/icons/issue.svg') 50% 50% no-repeat;
