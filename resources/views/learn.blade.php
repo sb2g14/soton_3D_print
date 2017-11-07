@@ -11,6 +11,12 @@
 
             To supplement these face-to-face options, and provide a more complete explanation/reminder of how to set-up and use the UP! 3D Printers, the following video clips were assembled as a draft training video please go to the <a href="https://www.youtube.com/watch?v=j8jcmwBK-bE&feature=player_embedded"> Watch this video </a> on YouTube link. ( A further version with higher resolution video will be prepared.)<br>
 
+            Printer manuals are available for download here
+            <ul>
+                <li><a href={{ asset('files/UP_Manual.pdf') }}>UP Manual</a></li>
+                <li><a href={{ asset('files/UPBOX_Manual.pdf') }}>UP BOX Manual</a></li>
+            </ul>
+
             Any queries meanwhile, please contact Tim Woolman, Design Service Experimental Officer.
         </div>
     </div>
