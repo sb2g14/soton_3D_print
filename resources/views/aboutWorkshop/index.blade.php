@@ -1,10 +1,16 @@
 @extends('layouts.layout')
-{{--<script>--}}
-    {{--swal({--}}
-        {{--title: 'Great job!',--}}
-        {{--type: 'success'--}}
-    {{--})--}}
-{{--</script>--}}
+@section('scripts')
+    @if (notify()->ready())
+        <script>
+            swal({
+                title: "{!! notify()->message() !!}",
+                text: "{!! notify()->option('text') !!}",
+                type: "{{ notify()->type() }}",
+                showConfirmButton: true
+            });
+        </script>
+    @endif
+@stop
 @section('content')
     {{--<div class="title m-b-md">--}}
         {{--About us--}}
@@ -35,20 +41,17 @@
                     </tr>
                     <tr>
                         <td>Service enquiries:</td>
-                        <td class="col-left">Katherine Crawford</td>
+                    </tr>
+                        @foreach($lead_demonstrators as $lead_demonstrator)
+                    <tr>
+                        <td></td>
+                            <td class="col-left">{{ $lead_demonstrator->first_name }} {{ $lead_demonstrator->last_name }}</td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> K.A.Crawford@soton.ac.uk</td>
+                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{$lead_demonstrator->email}}">{{  $lead_demonstrator->email }}</a></td>
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td class="col-left">Apostolos Grammatikopoulos</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> ag3e15@soton.ac.uk</td>
-                    </tr>
+                        @endforeach
                     <tr>
                         <td>Faculty contact:</td>
                         <td class="col-left">Andrew Hamilton, 7/4045/M7</td>
@@ -61,16 +64,8 @@
             </div>
         </div>
     </div>
-
-    <!-- <div class="container well"> -->
-        <!-- <div class="row">
-            <div class="col-xs-12"> -->
-   
                 <section id="canvas1" class="s-map">
                     <iframe id="map_canvas1" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4480.157517437024!2d-1.3984993030069568!3d50.93475279559591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x28ef7c4fb80298da!2sThe+Tizard!5e0!3m2!1sen!2sde!4v1497548468301" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
                 </section>
-        <!--    </div>
-               </div>
-            </div> -->
 
 @endsection

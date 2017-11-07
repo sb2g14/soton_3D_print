@@ -12,11 +12,16 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="btn btn-lg pull-right"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
+                        {{--<div class="btn btn-lg pull-right"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
                         <div class="btn-lg btn-success pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>
                     </div>
                 </div>
             </div>
+        </div>
+
+    <div class="ctr">
+        <div class="bl-welcome">
+            <p>Welcome to 3D printing workshop<br>at the University of Southampton</p>
         </div>
         
         <div id="image-slider_home" class="image-slider bl-slider owl-carousel owl-theme">
@@ -26,7 +31,7 @@
             <div class="item img_4"></div>
             {{--<div class="item print3"></div>--}}
         </div>
-    
+    </div>
 @endsection
 
 @section('content')
@@ -37,8 +42,8 @@
         </div>
     @endif
     {{--Main content--}}
-    <section class="s-welcome" style="position: relative; top: -130px">
-        <div class="container">
+    <div class="s-welcome">
+        <div class="container" style="position: relative; top: -130px">
             
             @if (Auth::check())  {{--Check whether user is logged in--}}
                 <div class="row is-table-row">
@@ -297,12 +302,12 @@
                         </div>
                         <p>
                         <ol>
-                            <li>Export your file to .stl format and bring it with you to the workshop
+                            <li>Export your file to .stl format and bring it with you to the workshop</li>
                             <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOUSELF to the cupboards!</b></li>
                             <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
                             <li>Request a job
                                 <ol type="a">
-                                    <li>Access the workshop website <a href="https://3dprint.clients.soton.ac.uk/">https://3dprint.clients.soton.ac.uk/</a></a></li>
+                                    <li>Access the workshop website <a href="https://3dprint.clients.soton.ac.uk/">https://3dprint.clients.soton.ac.uk/</a></li>
                                     <li>Select <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">Request a job in the workshop!</a></q></li>
                                     <li>Fill in all required details</li>
                                     <li>Click submit</li>
@@ -382,6 +387,7 @@
             @endif
         </div>
 
+
         <!-- Modal -->
         <div id="myModal" class="modal fade" role="dialog">
           <div class="modal-dialog">
@@ -402,10 +408,12 @@
 
           </div>
         </div>
-        
-    </section>
+    </div>
+
+     
 @endsection
 @section('scripts')
 <script src="/js/issue_validation.js"></script>
 <script src="/js/message_validation.js"></script>
 @endsection
+
