@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\staff;
 
 class AboutWorkshopController extends Controller
 {
@@ -13,7 +14,9 @@ class AboutWorkshopController extends Controller
      */
     public function index()
     {
-        return view('aboutWorkshop.index');
+        $coordinators = staff::where('role','=', 'Coordinator')->get();
+        $lead_demonstrators = staff::where('role','=', 'Lead Demonstrator')->get();
+        return view('aboutWorkshop.index',compact('coordinators','lead_demonstrators'));
     }
 
     /**
