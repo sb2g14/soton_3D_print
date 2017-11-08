@@ -135,7 +135,7 @@
                         </div>
 
                         <div class="col-sm-12 text-left">
-                                <button id="submit" type="submit" class="btn btn-lg">Accept</button>
+                                <button id="submit" type="submit" class="btn btn-lg btn-primary">Accept</button>
                                 <a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>
                                 <a href="/printingData/index" class="btn btn-lg btn-info">Back</a>
                         </div>
