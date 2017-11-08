@@ -11,6 +11,10 @@ body {
     margin: 0;
     display: flex; // flexbox to make a sticky footer
     flex-direction: column;
+    &.is-fixed {
+        height: 100%;
+        overflow: hidden;
+    }
 }
 
 
@@ -120,7 +124,7 @@ body {
        }
     } 
 
-    @media screen and (min-width: 1100px ) {
+     @media screen and (min-width: 1100px ) {
       .bl-menu {
             .item {
                 position: relative;
@@ -140,7 +144,7 @@ body {
                     }
                     
                     display: none;
-
+    
                     li {
                         display: block;
                         border-bottom: 1px solid #00557b;
@@ -152,7 +156,7 @@ body {
                             }
                         }
                     }
-
+    
                     a {
                         .font-size( (14/@fs-base) );
                         display: block;
@@ -166,14 +170,14 @@ body {
                         border-radius: 5px 5px 0 0;
                     }
                     .dropdown-bl {
-
+    
                         display: block;
-
+    
                     }
                 }
             }
         }  
-    }
+    } 
 
 }// .p-header
 
@@ -714,22 +718,21 @@ footer {
 }
 
 /* Tablet and bigger */
-@media screen and ( min-width: 768px ) {
-
-    /* .p-header {
-        .bl-menu {
-            li {
-                a, > span {
-                    .font-size( (16/@fs-base) );
-                }
-            }
-            .dropdown-bl {
-                li > a {
-                    .font-size( (14/@fs-base) );
-                }
-            }
-        }
-    }  */
+@media screen and ( min-width: 768px ) { 
+    /*  .p-header {
+       .bl-menu {
+           li {
+               a, > span {
+                   .font-size( (16/@fs-base) );
+               }
+           }
+           .dropdown-bl {
+               li > a {
+                   .font-size( (14/@fs-base) );
+               }
+           }
+       }
+        }   */
     
     
     footer {
@@ -803,9 +806,9 @@ footer {
     }
 }
 
-@media screen and (min-width: 1100px ) {
+ @media screen and (min-width: 1100px ) {
     @import "wider.less";
-}
+} 
 
 
 

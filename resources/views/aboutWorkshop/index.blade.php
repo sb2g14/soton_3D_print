@@ -41,27 +41,24 @@
                     </tr>
                     <tr>
                         <td>Service enquiries:</td>
-                        <td class="col-left">Katherine Crawford</td>
+                    </tr>
+                        @foreach($lead_demonstrators as $lead_demonstrator)
+                    <tr>
+                        <td></td>
+                            <td class="col-left">{{ $lead_demonstrator->first_name }} {{ $lead_demonstrator->last_name }}</td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> K.A.Crawford@soton.ac.uk</td>
+                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{$lead_demonstrator->email}}">{{  $lead_demonstrator->email }}</a></td>
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td class="col-left">Apostolos Grammatikopoulos</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> ag3e15@soton.ac.uk</td>
-                    </tr>
+                        @endforeach
                     <tr>
                         <td>Faculty contact:</td>
                         <td class="col-left">Andrew Hamilton, 7/4045/M7</td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td class="col-left"><span class="glyphicon glyphicon-envelope"></span> A.R.Hamilton@soton.ac.uk</td>
+                        <td class="col-left"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:A.R.Hamilton@soton.ac.uk">A.R.Hamilton@soton.ac.uk</a></td>
                     </tr>
                 </table>
             </div>

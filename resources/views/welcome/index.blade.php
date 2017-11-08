@@ -282,6 +282,15 @@
                     </div>
                 </div>
 
+                
+
+
+
+
+
+
+
+
                 @else
                 <div class="row is-table-row">
                     <div class="col-sm-4 item">
@@ -293,7 +302,7 @@
                         </div>
                         <p>
                         <ol>
-                            <li>Export your file to .stl format and bring it with you to the workshop
+                            <li>Export your file to .stl format and bring it with you to the workshop</li>
                             <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOUSELF to the cupboards!</b></li>
                             <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
                             <li>Request a job
@@ -377,8 +386,31 @@
                 </div>
             @endif
         </div>
+
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+              </div>
+              <div class="modal-body">
+                <p>Some text in the modal.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
     </div>
-    </section>
+
+     
 @endsection
 @section('scripts')
 <script src="/js/issue_validation.js"></script>

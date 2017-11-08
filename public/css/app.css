@@ -126,6 +126,10 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
 }
+body.is-fixed {
+  height: 100%;
+  overflow: hidden;
+}
 .ctr {
   *zoom: 1;
 }
@@ -709,20 +713,20 @@ footer .team {
 }
 /* Tablet and bigger */
 @media screen and (min-width: 768px) {
-  /* .p-header {
-        .bl-menu {
-            li {
-                a, > span {
-                    .font-size( (16/@fs-base) );
-                }
-            }
-            .dropdown-bl {
-                li > a {
-                    .font-size( (14/@fs-base) );
-                }
-            }
-        }
-    }  */
+  /*  .p-header {
+       .bl-menu {
+           li {
+               a, > span {
+                   .font-size( (16/@fs-base) );
+               }
+           }
+           .dropdown-bl {
+               li > a {
+                   .font-size( (14/@fs-base) );
+               }
+           }
+       }
+        }   */
   footer {
     font-size: 16px;
     font-size: 1rem;
@@ -813,7 +817,7 @@ footer .team {
   }
   .p-header .bl-menu > li {
     border: none;
-    margin-left: 15px;
+    /* margin-left: 15px; */
     display: inline-block;
     padding: 12px 0 0;
   }
@@ -852,41 +856,6 @@ footer .team {
     position: absolute !important;
     overflow: hidden;
   }
-  /* Snav a:hover,
-nav a:focus {
-	outline: none;
-} */
-  /* Effect 4: bottom border enlarge
-.cl-effect-4 a {
-	padding: 0 0 10px;
-}
-
-.cl-effect-4 a::after {
-	position: absolute;
-	top: 100%;
-	left: 0;
-	width: 100%;
-	height: 1px;
-	background: #fff;
-	content: '';
-	opacity: 0;
-	-webkit-transition: height 0.3s, opacity 0.3s, -webkit-transform 0.3s;
-	-moz-transition: height 0.3s, opacity 0.3s, -moz-transform 0.3s;
-	transition: height 0.3s, opacity 0.3s, transform 0.3s;
-	-webkit-transform: translateY(-10px);
-	-moz-transform: translateY(-10px);
-	transform: translateY(-10px);
-}
-
-.cl-effect-4 a:hover::after,
-.cl-effect-4 a:focus::after,
-.cl-effect-4 a.active::after {
-	height: 3px;
-	opacity: 1;
-	-webkit-transform: translateY(0px);
-	-moz-transform: translateY(0px);
-	transform: translateY(0px);
-} */
 }
 @media screen and (min-width: 1091px) {
   /* .ctr {
