@@ -19,7 +19,7 @@
             $student_id = $data->customer_id;
             list($hours, $minutes, $s) = explode(':', $data->total_duration);
             $material_amount = $data->total_material_amount;
-            $use_case = $data->use_case;
+            $use_case = $data->cost_code;
         @endphp
     @else
         @php
