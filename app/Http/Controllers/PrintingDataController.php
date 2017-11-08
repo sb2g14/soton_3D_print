@@ -30,7 +30,7 @@ class PrintingDataController extends Controller
      */
     public function index()
     {
-        $jobs = Jobs::where('status','Waiting')->get();
+        $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->get();
         return view('printingData.index', compact('jobs'));
     }
 
