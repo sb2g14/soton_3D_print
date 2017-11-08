@@ -54,7 +54,7 @@
                         <td data-th="Email">{{$job->customer_email}}</td>
                         <td data-th="Payment Category">{{$job->payment_category}}</td>
                         <td data-th="Time">{{ date("H:i", strtotime($job->total_duration)) }}</td>
-                        <td data-th="Material Amount">{{ $job->totat_material_amount }} g</td>
+                        <td data-th="Material Amount">{{ $job->total_material_amount }} g</td>
                         <td data-th="Price">£{{ $job->total_price }}</td>
                         <td data-th="Created on">{{ $job->created_at->toDayDateTimeString() }}</td>
                         <td data-th="Last edited on">{{ $job->updated_at->toDayDateTimeString() }}</td>
