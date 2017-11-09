@@ -38,7 +38,7 @@
     <div class="row vdivide">
         <div class="col-sm-6">
             <h1 class="text-center lead">ONLINE JOB REQUEST FORM</h1>
-            <form id="requestForm" class="form-horizontal" method="POST" action="/printingData">
+            <form id="requestForm" class="form-horizontal" method="POST" action="/onlineJobs">
                 {{ csrf_field() }}
 
                 {{--Customer Name field--}}
@@ -50,6 +50,7 @@
                                class="form-control" name="student_name" value="{{ old('student_name',
                                isset($member)  ? $member->first_name.' '.$member->last_name : $student_name) }}"
                                placeholder="Please input your First and Last name" required>
+
                         @if ($errors->has('student_name'))
                             <span class="help-block">
                             <strong>{{ $errors->first('student_name') }}</strong>
