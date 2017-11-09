@@ -101,7 +101,7 @@ class RegisterController extends Controller
                 $user->assignRole(['OnlineJobsManager','Demonstrator']);
             }elseif($member->role == 'New Demonstrator') {
                 $user->assignRole('NewDemonstrator');
-            }elseif($member->role == 'Coordinator' || $member->role == 'Co-Cordinator') {
+            }elseif($member->role == 'Coordinator' || $member->role == 'Co-Coordinator') {
                 $user->assignRole('Coordinator');
             }elseif($member->role == 'Technician') {
                 $user->assignRole('Technician');

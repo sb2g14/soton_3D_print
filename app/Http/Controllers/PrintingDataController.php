@@ -416,6 +416,7 @@ class PrintingDataController extends Controller
         $print_id = $job->prints->first()->id;
         $print = Prints::findOrFail($print_id);
         printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
+        $job->prints()->detach($print_id);
         $job->delete();
         $print->delete();
 

@@ -15,7 +15,7 @@
                 <p><span class="glyphicon glyphicon-phone"></span> {{$member -> phone}}</p>
                 @endhasanyrole
                 <p><span class="glyphicon glyphicon-envelope"></span> {{$member -> email}}</p> 
-                @if(Auth::user()->email == $member->email || Auth::user()->can('staff_manage'))
+                @if(strtolower(Auth::user()->email) == strtolower($member->email) || Auth::user()->can('staff_manage'))
                     <p><span class="glyphicon glyphicon-th-list"></span> ID: {{$member -> student_id}}</p>
                     <a href="/members/edit/{{$member->id}}">
                         <button type="submit" class="btn btn-info" style="margin: 20px 20px 20px 0px ;">Update Record</button>
@@ -24,15 +24,6 @@
                         <button type="submit" class="btn btn-danger" style="margin: 20px 0px;">Delete Record</button>
                     </a>
                 @endif
-                {{--@hasanyrole('LeadDemonstrator|administrator')--}}
-                {{--<p><span class="glyphicon glyphicon-th-list"></span> ID: {{$member -> student_id}}</p>--}}
-                {{--<a href="/members/edit/{{$member->id}}">--}}
-                    {{--<button type="submit" class="btn btn-info" style="margin: 20px 20px 20px 0px ;">Update Record</button>--}}
-                {{--</a>--}}
-                {{--<a href="/members/delete/{{$member->id}}">--}}
-                    {{--<button type="submit" class="btn btn-danger" style="margin: 20px 0px;">Delete Record</button>--}}
-                {{--</a>--}}
-                {{--@endhasanyrole--}}
             </div>
             
             <div class="col-xs-2 col-sm-4"></div>
