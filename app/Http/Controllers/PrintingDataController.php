@@ -275,6 +275,7 @@ class PrintingDataController extends Controller
             'total_price' => $price,
             'job_approved_comment' => request('comments'),
             'job_approved_by' => Auth::user()->staff->id,
+            'job_finished_by' => Auth::user()->staff->id,
             'requested_online' => 0,
             'status' => 'Approved',
         ]);
@@ -285,6 +286,8 @@ class PrintingDataController extends Controller
             'material_amount' => $material_amount,
             'price' => $price,
             'status' => 'Approved',
+            'print_started_by' => Auth::user()->staff->id,
+            'print_finished_by' => Auth::user()->staff->id,
         ]);
 
         session()->flash('message', 'The job has been successfully approved!');
