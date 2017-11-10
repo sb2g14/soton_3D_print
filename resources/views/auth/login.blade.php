@@ -53,7 +53,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-4 text-left">
-                                    <button id="login-button" type="submit" class="btn">
+                                    <button id="login-button" type="submit" class="btn btn-primary">
                                         Login
                                     </button><br>
                                     @include('layouts.errors')
@@ -72,6 +72,6 @@
     </div>
 
 @endsection
-@section('scripts')
-    <script src="/js/login_validation.js"></script>
-@endsection
+{{--@section('scripts')--}}
+    {{--<script src="/js/login_validation.js"></script>--}}
+{{--@endsection--}}

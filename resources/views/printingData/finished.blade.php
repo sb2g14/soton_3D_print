@@ -33,7 +33,7 @@
                     <th>Material Amount</th>
                     <th>Price</th>
                     <th>Created</th>
-                    <th>Last edited</th>
+                    <th>Approved</th>
                     <th>Approved by</th>
                     <th>Project Name</th>
                     <th>Status</th>
@@ -50,7 +50,7 @@
                     @endphp
                     {{--Add number of hours job takes to the time when it was approved--}}
                     {{--Add number of minutes job takes--}}
-                    @if (Carbon\Carbon::now('Europe/London')->gte($job->created_at->addHour($h)->addMinutes($i)))
+                    @if (Carbon\Carbon::now('Europe/London')->gte($job->approved_at->addHour($h)->addMinutes($i)))
                     <tr class="text-left">
                         <td data-th="ID">{{ $job->id }}</td>
                         <td data-th="Printer No">{{ $print->printers_id }}</td>
@@ -60,7 +60,7 @@
                         <td data-th="Material Amount">{{ $job->total_material_amount }} g</td>
                         <td data-th="Price">£{{ $job->total_price }}</td>
                         <td data-th="Created on">{{ $job->created_at->toDateTimeString() }}</td>
-                        <td data-th="Last edited on">{{ $job->updated_at->toDateTimeString() }}</td>
+                        <td data-th="Approved on">{{ $job->approved_at->toDateTimeString() }}</td>
                         <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
                         <td data-th="Project Name">{{ $job->use_case  }}</td>
                         <td data-th="Status">{{ $job->status }}</td>

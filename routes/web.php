@@ -183,15 +183,15 @@ Route::get('/learn', 'LearnController@index');
 // Order online blade with the link to 3dhubs and the instruction how to use it
 Route::get('/orderOnline','OrderOnlineController@index');
 
-// Routes to manage online job requests
+// Routes to display online job request form
 Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
+// Route to store an online request
+Route::post('onlineJobs', 'OrderOnlineController@store');
 
 // Route to getting paid page
-
 Route::get('/gettingPaid', 'StaffController@gettingPaid');
 
 // Route to documents page
-
 Route::get('/documents', 'StaffController@documents');
 
 Route::get('/notify', function () {
