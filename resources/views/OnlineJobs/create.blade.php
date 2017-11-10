@@ -228,5 +228,5 @@
 @endsection
 
 @section('scripts')
-<script src="/js/request_job_validation.js"></script>
+{{--<script src="/js/request_job_validation.js"></script>--}}
 @endsection
