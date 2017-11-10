@@ -276,6 +276,7 @@ class PrintingDataController extends Controller
             'job_approved_comment' => request('comments'),
             'job_approved_by' => Auth::user()->staff->id,
             'job_finished_by' => Auth::user()->staff->id,
+            'approved_at' => Carbon::now('Europe/London'),
             'requested_online' => 0,
             'status' => 'Approved',
         ]);
