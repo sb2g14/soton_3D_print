@@ -4,8 +4,13 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class CustomerNameValidation implements Rule
+class SotonEmail implements Rule
 {
+    /**
+     * Create a new rule instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         //
@@ -20,7 +25,7 @@ class CustomerNameValidation implements Rule
      */
     public function passes($attribute, $value)
     {
-        return (bool) preg_match("/^[a-z ,.'-]+$/i", $value);
+        return preg_match("/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/", $value);
     }
 
     /**
@@ -30,6 +35,6 @@ class CustomerNameValidation implements Rule
      */
     public function message()
     {
-        return 'Only letters and hyphens are allowed';
+        return 'Make sure you entered a valid soton email';
     }
 }
