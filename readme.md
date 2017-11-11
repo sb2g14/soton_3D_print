@@ -1,6 +1,46 @@
 ## 3dprint.clients.soton.ac.uk web site 
 
-What is new in version 1.3?
+
+## Version 1.4
+<h3>Functionality updates</h3>
+
+<ol>
+                <li>
+                    There have been several issues with cost codes and/or module names entered in a
+                    <a href="http://3dprint.clients.soton.ac.uk/printingData/create" target="_blank"><b>request a job form</b></a>.
+                    Please, make sure that you type in the module name that is in the following format <b>FEEG2001-MECH</b>.
+                </li>
+                <li>
+                    The new demonstrator workflow has been documented and is accessible <a href="http://3dprint.clients.soton.ac.uk/documents">
+                        <b>here</b></a>.
+                </li>
+</ol><br>
+                        
+<h3>New pages and pages look updates</h3>
+
+<ol>
+                <li>
+                    The page <a href="http://3dprint.clients.soton.ac.uk/members/index"><b>Our Team</b></a>
+                    now has staff members names assembled in a more user friendly way. Notice the
+                    <a type="button" class="btn btn-lg btn-info">
+                        View former members
+                    </a> button available for lead demonstrators and managers.
+                </li>
+                <li>
+                    Page <a href="http://3dprint.clients.soton.ac.uk/documents"><b>For demonstrators</b></a> contains the
+                    description of the demonstrator workflow as well as UP 3D printer and UP BOX manuals in addition to
+                    Request a loan form.
+                </li>
+                <li>
+                    The set of rules for students can be accessed via home page if logged out.
+                </li>
+                <li>
+                    Extensive information on how to claim the demonstrating hours can be found on the page
+                    <a href="http://3dprint.clients.soton.ac.uk/gettingPaid"><b>Getting paid</b></a>.
+                </li>
+  </ol>
+
+## Version 1.3
 
 - How to use page with 3D printers?  
 (http://3dprint.clients.soton.ac.uk/printers/index)
@@ -20,35 +60,9 @@ What is new in version 1.3?
 
 Remember to fulfill all license requirements for the pulled packages ASAP...
 
-## Laravel Roles Permissions Admin - Spatie version
-
-This is a Laravel 5.4 adminpanel starter project with roles-permissions management based on [Spatie Laravel-permission package](https://github.com/spatie/laravel-permission), [AdminLTE theme](https://adminlte.io/) and [Datatables.net](https://datatables.net).
-
-We've also created almost identical project based on Joseph Silber's Bouncer package: [see here](https://github.com/LaravelDaily/laravel-roles-permissions-bouncer)
-
-Part of this project was generated automatically by [QuickAdminPanel system](https://quickadminpanel.com/).
-
-![Larancer screenshot](http://webcoderpro.com/roles-permissions-manager-spatie.png)
-
-## Usage
-
-This is not a package - it's a full Laravel project that you should use as a starter boilerplate, and then add your own custom functionality.
-
-- Clone the repository with `git clone`
-- Copy `.env.example` file to `.env` and edit database credentials there
-- Run `composer install`
-- Run `php artisan key:generate`
-- Run `php artisan migrate --seed` (it has some seeded data - see below)
-- That's it: launch the main URL and login with default credentials `admin@admin.com` - `password`
-
-This boilerplate has one role (`administrator`), one permission (`users_manage`) and one administrator user.
-
-With that user you can create more roles/permissions/users, and then use them in your code, by using functionality like `Gate` or `@can`, as in default Laravel, or with help of Spatie's package methods.
 
 ## License
 
 The [MIT license](http://opensource.org/licenses/MIT).
 
-## Notice
 
-We are not responsible for any functionality or bugs in **AdminLTE**, **Laravel-permission** or **Datatables** packages or their future versions, if you find bugs there - please contact vendors directly.
