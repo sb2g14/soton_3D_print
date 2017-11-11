@@ -3,8 +3,9 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use App\cost_code;
 
-class Alphanumeric implements Rule
+class UseCase implements Rule
 {
     /**
      * Create a new rule instance.
@@ -25,7 +26,14 @@ class Alphanumeric implements Rule
      */
     public function passes($attribute, $value)
     {
-        return (bool) preg_match("/^[a-zA-Z0-9_-]*$/", $value);
+        // Check the module name is in the database
+        $query = cost_code::all()->where('shortage','=',strtoupper($value))->first();
+        if ($query !== null){
+            return true;
+        } else {
+            // Otherwise, accept a cost code
+            return (bool) preg_match('/^(\d{9})$/', $value);
+        }
     }
 
     /**
@@ -35,6 +43,6 @@ class Alphanumeric implements Rule
      */
     public function message()
     {
-        return 'Only letters, numbers and hyphens are allowed';
+        return 'Please provide a valid module name or cost code';
     }
 }
