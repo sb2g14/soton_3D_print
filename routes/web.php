@@ -163,6 +163,12 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     // Here we redirect to the page where we store a new member
     Route::post('/members','StaffController@store');
 
+    // Here we redirect to the view where all cost codes are shown
+    Route::get('/costCodes/index','CostCodesController@index');
+
+    // Here we redirect to the view where all cost codes can be updated
+    Route::get('/costCodes/update/{id}','CostCodesController@edit');
+
 });
 
 // Open a form to request a job

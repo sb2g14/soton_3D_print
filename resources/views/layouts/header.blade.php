@@ -20,6 +20,16 @@
                     </ul>
                 </li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
+                @can('manage_cost_codes')
+                <li class="item">
+                    <span>
+                        Finance
+                        <span class="caret"></span></span>
+                    <ul class="dropdown-bl">
+                        <li><a class="dropdown-item" href="{{ url('/costCodes/index') }}">Cost codes</a></li>
+                    </ul>
+                </li>
+                @endcan
                 <li class="item">
                     <span>
                         Workshop
