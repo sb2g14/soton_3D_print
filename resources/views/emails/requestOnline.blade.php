@@ -16,13 +16,13 @@
 </div>
 
 @component('mail::button', ['url' => 'https://soton3dprint.clients.soton.ac.uk'])
-3D printing workshop
+Go to the website
 @endcomponent
 
 
-@component('mail::button', ['url' => 'https://dropoff.soton.ac.uk/pickup.php?claimID='.$claim_id.'&claimPasscode='.
+@component('mail::vendor.mail.html.promotion.button', ['url' => 'https://dropoff.soton.ac.uk/pickup.php?claimID='.$claim_id.'&claimPasscode='.
 $claim_passcode.'&emailAddr='.explode("@",$email)[0].'%40soton.ac.uk'])
-Reply with a quote
+Download .stl files
 @endcomponent
 
 Thanks<br>
