@@ -166,8 +166,21 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     // Here we redirect to the view where all cost codes are shown
     Route::get('/costCodes/index','CostCodesController@index');
 
+    // Here we redirect to the view where a cost codes can be created
+    Route::get('/costCodes/create','CostCodesController@create');
+
+    // Post update cost code information
+    Route::post('/costCodes/create', 'CostCodesController@store');
+
     // Here we redirect to the view where all cost codes can be updated
     Route::get('/costCodes/update/{id}','CostCodesController@edit');
+
+    // Post update cost code information
+    Route::post('/costCodes/update/{id}', 'CostCodesController@update');
+
+    // Delete cost code
+    Route::get('/costCodes/delete/{id}', 'CostCodesController@destroy');
+
 
 });
 
