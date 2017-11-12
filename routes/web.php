@@ -163,6 +163,25 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     // Here we redirect to the page where we store a new member
     Route::post('/members','StaffController@store');
 
+    // Here we redirect to the view where all cost codes are shown
+    Route::get('/costCodes/index','CostCodesController@index');
+
+    // Here we redirect to the view where a cost codes can be created
+    Route::get('/costCodes/create','CostCodesController@create');
+
+    // Post update cost code information
+    Route::post('/costCodes/create', 'CostCodesController@store');
+
+    // Here we redirect to the view where all cost codes can be updated
+    Route::get('/costCodes/update/{id}','CostCodesController@edit');
+
+    // Post update cost code information
+    Route::post('/costCodes/update/{id}', 'CostCodesController@update');
+
+    // Delete cost code
+    Route::get('/costCodes/delete/{id}', 'CostCodesController@destroy');
+
+
 });
 
 // Open a form to request a job
@@ -180,11 +199,12 @@ Route::get('loan', 'LoanController@index');
 // Redirection to a page with generic information and possibly some lessons
 Route::get('/learn', 'LearnController@index');
 
-// Order online blade with the link to 3dhubs and the instruction how to use it
+// Display a form for online orders
 Route::get('/orderOnline','OrderOnlineController@index');
 
 // Routes to display online job request form
 Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
+
 // Route to store an online request
 Route::post('onlineJobs', 'OrderOnlineController@store');
 
