@@ -186,11 +186,12 @@ Route::get('loan', 'LoanController@index');
 // Redirection to a page with generic information and possibly some lessons
 Route::get('/learn', 'LearnController@index');
 
-// Order online blade with the link to 3dhubs and the instruction how to use it
+// Display a form for online orders
 Route::get('/orderOnline','OrderOnlineController@index');
 
 // Routes to display online job request form
 Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
+
 // Route to store an online request
 Route::post('onlineJobs', 'OrderOnlineController@store');
 

@@ -6,6 +6,7 @@ use App\Rules\Alphanumeric;
 use App\Rules\SotonEmail;
 use App\Rules\SotonID;
 use App\Rules\SotonIdMinMax;
+use App\Rules\UseCase;
 use Illuminate\Http\Request;
 use App\Rules\CustomerNameValidation;
 use App\JobsPrints;
@@ -30,21 +31,21 @@ class OrderOnlineController extends Controller
     {
         // Validate the online request
         $online_request = request()->validate([
-            'student_name' => [
+            'customer_name' => [
                 'required',
                 'string',
                 'min:3',
                 'max:100',
                 new CustomerNameValidation
             ],
-            'email' => [
+            'customer_email' => [
                 "required",
                 "min:14",
                 "max:100",
                 "email",
                 new SotonEmail
             ],
-            'student_id' => [
+            'customer_id' => [
                 'required',
                 'digits_between:8,9',
                 new SotonID,
@@ -53,31 +54,68 @@ class OrderOnlineController extends Controller
                 'required',
                 'min:3',
                 'max:30',
-                new Alphanumeric
+                'alpha_dash',
+                new UseCase
+            ],
+            'claim_id' => [
+                'required',
+                'alpha_num',
+                'size:16'
+            ],
+            'claim_passcode' => [
+                'required',
+                'alpha_num',
+                'size:16'
             ]
         ]);
+
         // Store the online request in the database
-        $job = new Jobs;
+        $job = Jobs::create($online_request);
 
-        $job -> total_material_amount = NULL;
-        $job -> total_price = NULL;
-        $job -> total_duration = NULL;
-        $job -> paid = 'No';
-        $job -> payment_category = NULL;
-        $job -> cost_code = NULL;
-        $job -> use_case = $online_request('use_case');
-        $job -> customer_id = $online_request('student_id');
-        $job -> customer_name = $online_request('student_name');
-        $job -> customer_email = $online_request('email');
-        $job -> requested_online = 1;
+        // Add additional information
 
-        $job->save();
+        // Define payment category
+        $customer_id = $online_request['customer_id'];
 
-        // Show flashing message
-        session()->flash('message', 'Your job has been submitted. Our manager will contact you 
-        shortly via provided email');
-        session()->flash('alert-class', 'alert-success');
+        if (substr($customer_id, 0, 1) == '1') {
+            $payment_category = 'staff';
+        } elseif (substr($customer_id, 0, 1) == '2') {
+            $payment_category = 'postgraduate';
+        } elseif (substr($customer_id, 0, 1) == '3') {
+            $payment_category = 'masters';
+        } else {
+            $payment_category = 'undergraduate';
+        }
 
+        // Define a cost code
+        // check the module shortage exists
+        $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
+        if ($query !== null){
+            $cost_code = $query->value('cost_code');
+        } else {
+            // Otherwise, accept a given cost code
+            $cost_code = $online_request['use_case'];
+        }
+
+        // Updating database
+        $job -> update(array(
+            'paid'=> 'No',
+            'payment_category' => $payment_category,
+            'use_case' => strtoupper($online_request['use_case']),
+            'cost_code' => $cost_code,
+            'requested_online' => 1,
+            'status' => 'Waiting',
+            ));
+
+        // Show flash message
+//        session()->flash('message', 'Your job has been submitted. Our manager will contact you
+//        shortly via provided email');
+//        session()->flash('alert-class', 'alert-success');
+
+        // Notification of request acceptance
+        notify()->flash('Your order request has been accepted!', 'success', [
+            'text' => 'Please wait for our manager to contact you via provided email address',
+        ]);
         // Redirect to home directory
         return redirect()->home();
     }
