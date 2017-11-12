@@ -7,6 +7,7 @@ use App\Rules\SotonEmail;
 use App\Rules\SotonID;
 use App\Rules\SotonIdMinMax;
 use App\Rules\UseCase;
+use App\User;
 use Illuminate\Http\Request;
 use App\Rules\CustomerNameValidation;
 use App\JobsPrints;
@@ -14,6 +15,8 @@ use App\printers;
 use App\Jobs;
 use App\Prints;
 use App\cost_code;
+use App\Mail\onlineRequest;
+
 
 class OrderOnlineController extends Controller
 {
@@ -107,11 +110,13 @@ class OrderOnlineController extends Controller
             'status' => 'Waiting',
             ));
 
-        // Show flash message
-//        session()->flash('message', 'Your job has been submitted. Our manager will contact you
-//        shortly via provided email');
-//        session()->flash('alert-class', 'alert-success');
-
+        // Send an email to the online jobs manager
+//        $users = User::role('OnlineJobsManager')->get();
+//        foreach($users as $user){
+//            \Mail::to($user)->send(new onlineRequest($user,$job));
+//        }
+        $user = User::first();
+        \Mail::to($user)->send(new onlineRequest($user,$job));
         // Notification of request acceptance
         notify()->flash('Your order request has been accepted!', 'success', [
             'text' => 'Please wait for our manager to contact you via provided email address',
