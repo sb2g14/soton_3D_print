@@ -19,6 +19,12 @@
 3D printing workshop
 @endcomponent
 
+
+@component('mail::button', ['url' => 'https://dropoff.soton.ac.uk/pickup.php?claimID='.$claim_id.'&claimPasscode='.
+$claim_passcode.'&emailAddr='.explode("@",$email)[0].'%40soton.ac.uk'])
+Reply with a quote
+@endcomponent
+
 Thanks<br>
 {{ config('app.name') }}
 @endcomponent
