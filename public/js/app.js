@@ -76,9 +76,13 @@ module.exports = __webpack_require__(2);
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-    /* $(".bl-header").hover(function(){
-         $("#myModal").modal();
-     });*/
+    $(".btn-issue").click(function () {
+        $("#issueModal").modal();
+    });
+
+    $(".btn-announcement").click(function () {
+        $("#announcementModal").modal();
+    });
 
     /*SLIDER script*/
     $("#image-slider_home").owlCarousel({

@@ -195,7 +195,7 @@ body.is-fixed {
   font-size: 20px;
   font-size: 1.25rem;
   color: #A4AFB5;
-  padding: 5px 20px;
+  padding: 5px 10px;
   text-decoration: none;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
   display: block;
@@ -501,6 +501,23 @@ body.is-fixed {
 }
 .s-welcome {
   margin-top: 150px;
+  /* MODAL STYLES */
+  /* #myModal {
+        .list-group-item {
+            margin-bottom: 30px;
+            h4, h5 {
+                margin-bottom: 10px;
+            }
+            button {
+                margin-bottom: 10px;
+            }
+            .media-left {
+                img {
+                    width:30px;
+                }
+            }
+        }
+    } */
 }
 .s-welcome .container {
   margin-top: -150px;
@@ -553,6 +570,20 @@ body.is-fixed {
 }
 .s-welcome .list-group-item .media-left img {
   width: 30px;
+}
+.s-welcome .modal-header {
+  background: #002e3b;
+  color: #fff;
+}
+.s-welcome .modal-header .close {
+  color: #fff;
+  opacity: 1;
+}
+.s-welcome #addIssue,
+.s-welcome #addAnnouncement,
+.s-welcome #add_issue,
+.s-welcome #add_announcement {
+  margin-bottom: 30px;
 }
 .s-welcome .view-all {
   background: #5dbd9f;
@@ -817,9 +848,9 @@ footer .team {
   }
   .p-header .bl-menu > li {
     border: none;
-    /* margin-left: 15px; */
     display: inline-block;
     padding: 12px 0 0;
+    margin-left: 15px;
   }
   .p-header .bl-menu > li a {
     padding: 0;

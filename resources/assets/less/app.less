@@ -68,7 +68,7 @@ body {
             > span {
                 .font-size( (20/@fs-base) );
                 color: @light-grey;
-                padding: 5px 20px;
+                padding: 5px 10px;
                 text-decoration: none; 
                 text-shadow: 0 1px 1px rgba(0,0,0,.4);
 
@@ -515,6 +515,21 @@ body {
         }
     }
 
+    /* MODAL STYLES */
+
+    .modal-header {
+        background: @dark-blue;
+        color: #fff;  
+        .close {
+            color: #fff;
+            opacity: 1;
+        }  
+    }
+
+    #addIssue, #addAnnouncement, #add_issue, #add_announcement {
+        margin-bottom: 30px;
+    }
+
 
     .view-all {
        background: @turq; 
@@ -524,6 +539,23 @@ body {
         background: @dark-turq;
        }
     }
+
+    /* #myModal {
+        .list-group-item {
+            margin-bottom: 30px;
+            h4, h5 {
+                margin-bottom: 10px;
+            }
+            button {
+                margin-bottom: 10px;
+            }
+            .media-left {
+                img {
+                    width:30px;
+                }
+            }
+        }
+    } */
 }
 
 .s-map {

@@ -51,37 +51,11 @@
                         <div class="bl-header">
                             <div class="bl-logo logo-issue"></div>
                             <div>
-                                <h3>ISSUES</h3>
-                                {{--This is a button to add an issue:--}}
-                                @can('add_private_posts_and_announcements')
-                                <button id="add_issue" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addIssue">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                </button>
-                                @endcan
-                            </div>
-                            {{--Form to add issue--}}
-                            <div id="addIssue" class="card collapse text-left">
-                                <form method="POST" action="/posts">
-                                    {{ csrf_field() }}
-                                    <div class="form-group">
-                                        <label for="title">Issue Name</label><br>
-                                        <input id="issue" name="title" placeholder="Specify issue name" class="form-control">
-                                        <span id="issue_error" class="help-block"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="body">Message</label><br>
-                                        <textarea id="message" name="body" placeholder="Describe your issue" class="form-control"></textarea>
-                                        <span id="message_error" class="help-block"></span>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="critical" value="critical">Issue affects printer status</label>
-                                    </div>
-                                    <button id="report_issue" type="submit" class="btn btn-primary">Report Issue</button>
-                                </form>
+                                <button class="btn btn-lg btn-info btn-issue">ISSUES</button>
                             </div>
                         </div>
 
-                        {{--Here we show issues:--}}
+                        {{--Here we show last issue:--}}
                         @if(!empty($post_last))
                             <ul id="form" class=" lsn list-group">
                                 <li class="list-group-item">
@@ -135,58 +109,6 @@
                             </ul>
                         @endif
 
-                        <button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-issues">VIEW ALL</button>
-
-                        <div id="all-issues" class="card collapse">
-                            @foreach($posts as $post)
-                                <li class="list-group-item">
-                                    {{--Print title of a post--}}
-                                    <h4><b>{{ isset($post->printer)  ? 'Printer '.$post->printer->id.':' : '' }} {{ $post->title }}</b></h4>
-                                    {{--Print name of a user who created a post--}}
-                                    <h5 class="media-heading"> {{$post->user->name}}  <small><i>
-                                                {{--Print date and time when a post was created--}}
-                                                Posted on {{ $post->created_at->toDayDateTimeString() }}:</i></small></h5>
-                                    {{--Print the text of a post--}}
-                                    <p>{{ $post->body }}</p>
-                                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
-                                            Show comments
-                                    </button>
-                                    <div id="{{ $post->id}}" class="card collapse">
-                                        {{--Here we show comments to each issue:--}}
-                                        <ul class="lsn">
-                                            @foreach($post->comments as $comment)
-                                                <li>
-                                                    <div class="media">
-                                                        <div class="media-left">
-                                                            <img src="/Images/img_avatar3.png" class="media-object">
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>
-                                                            <p>{{ $comment->body }}</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                        {{--This is a form to add a comment--}}
-                                        @can('add_private_posts_and_announcements')
-                                        <div id="{{ $post->id }}" class="card">
-                                            <form method="POST" action="/posts/{{ $post->id }}/comments">
-                                                {{ csrf_field() }}
-                                                <div class="form-group">
-                                                    <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                    <span id="message_error" class="help-block"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <button id="comment" type="submit" class="btn btn-primary">Comment </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        @endcan
-                                    </div>
-                                </li>
-                            @endforeach
-                        </div>
                         @include('layouts.errors')
                     </div>
 
@@ -194,34 +116,7 @@
                         <div class="bl-header">
                             <div class="bl-logo logo-announcement"></div>
                             <div>
-                                <h3>ANNOUNCEMENTS</h3>
-                                {{--This is a button to create an announcement:--}}
-                                @can('add_private_posts_and_announcements')
-                                <button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                </button>
-                                @endcan
-                            </div>
-
-                            {{--Form to add announcement--}}
-                            <div id="addAnnouncement" class="card collapse text-left">
-                                <form method="POST" action="/announcements">
-                                    {{ csrf_field() }}
-                                    <div class="form-group">
-                                        <label for="message">New Announcement</label><br>
-                                        <textarea id="announcement" name="message" @if(Auth::user()->can('add_private_posts_and_announcements')) placeholder="Post will appear only for registered users unless you check 'Public announcement' " @else placeholder="Post will appear only for registered users" @endif class="form-control"></textarea>
-                                        <span id="announcement_error" class="help-block"></span>
-                                    </div>
-                                    @can('add_public_posts_and_announcements')
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="public" value="public">Public announcement</label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="email" value="email">Inform all by email</label>
-                                    </div>
-                                    @endcan
-                                    <button id="post" type="submit" class="btn btn-primary">Post</button>
-                                </form>
+                                <button class="btn btn-lg btn-info btn-announcement">ANNOUNCEMENTS</button>
                             </div>
                         </div>
 
@@ -256,21 +151,53 @@
                                 </div>
                             </li>
                         </ul>
-                        <button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>
 
+
+                        <!-- <div>
+                            <h3>ANNOUNCEMENTS</h3>
+                            {{--This is a button to create an announcement:--}}
+                            @can('add_private_posts_and_announcements')
+                            <button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            </button>
+                            @endcan
+                        </div>
+                        
+                            {{--Form to add announcement--}}
+                            <div id="addAnnouncement" class="card collapse text-left">
+                                <form method="POST" action="/announcements">
+                                    {{ csrf_field() }}
+                                    <div class="form-group">
+                                        <label for="message">New Announcement</label><br>
+                                        <textarea id="announcement" name="message" @if(Auth::user()->can('add_private_posts_and_announcements')) placeholder="Post will appear only for registered users unless you check 'Public announcement' " @else placeholder="Post will appear only for registered users" @endif class="form-control"></textarea>
+                                        <span id="announcement_error" class="help-block"></span>
+                                    </div>
+                                    @can('add_public_posts_and_announcements')
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" name="public" value="public">Public announcement</label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" name="email" value="email">Inform all by email</label>
+                                    </div>
+                                    @endcan
+                                    <button id="post" type="submit" class="btn btn-primary">Post</button>
+                                </form>
+                            </div>
+                        <button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>
+                        
                         <div id="all-announcements" class="card collapse">
                             @foreach($announcements as $announcement)
                                 <li class="list-group-item">
-                                    <!-- <div class="alert alert-info"> -->
+                                    <div class="alert alert-info">
                                     <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
                                     <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
                                                 {{--Print date and time when a post was created--}}
                                                 Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
                                     <h5> {{ $announcement->message }} </h5>
-                                    <!-- </div> -->
+                                    </div>
                                 </li>
                             @endforeach
-                        </div>
+                        </div> -->
                     </div>
                     <div class="col-sm-4 item">
                         <div class="bl-header">
@@ -281,14 +208,6 @@
                         </div>
                     </div>
                 </div>
-
-                
-
-
-
-
-
-
 
 
                 @else
@@ -388,22 +307,158 @@
         </div>
 
 
-        <!-- Modal -->
-        <div id="myModal" class="modal fade" role="dialog">
-          <div class="modal-dialog">
+        <!-- Modal ISSUES-->
+        <div id="issueModal" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg">
 
             <!-- Modal content-->
             <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
-              </div>
-              <div class="modal-body">
-                <p>Some text in the modal.</p>
-              </div>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title text-center">ISSUES</h3>
+                </div>
+                <div class="modal-body text-left">
+                    {{--This is a button to add an issue:--}}
+                    @can('add_private_posts_and_announcements')
+                        <button id="add_issue" type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#addIssue">Add new issue</button>
+                    @endcan
+                            
+                    {{--Form to add issue--}}
+                    <div id="addIssue" class="card collapse">
+                        <form method="POST" action="/posts">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="title">Issue Name</label><br>
+                                <input id="issue" name="title" placeholder="Specify issue name" class="form-control">
+                                <span id="issue_error" class="help-block"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="body">Message</label><br>
+                                <textarea id="message" name="body" rows="4" placeholder="Describe your issue" class="form-control"></textarea>
+                                <span id="message_error" class="help-block"></span>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="critical" value="critical">Issue affects printer status</label>
+                            </div>
+                            <button id="report_issue" type="submit" class="btn btn-primary">Report Issue</button>
+                        </form>
+                    </div>
+                                        
+                    <div id="all-issues"> 
+                        @foreach($posts as $post)
+                            <li class="list-group-item well">
+                                {{--Print title of a post--}}
+                                <h4><b>{{ isset($post->printer)  ? 'Printer '.$post->printer->id.':' : '' }} {{ $post->title }}</b></h4>
+                                {{--Print name of a user who created a post--}}
+                                <h5 class="media-heading"> {{$post->user->name}}  <small><i>
+                                            {{--Print date and time when a post was created--}}
+                                            Posted on {{ $post->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                {{--Print the text of a post--}}
+                                <p>{{ $post->body }}</p>
+                                <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
+                                        Show comments
+                                </button>
+                                <div id="{{ $post->id}}" class="card collapse">
+                                    {{--Here we show comments to each issue:--}}
+                                    <ul class="lsn">
+                                        @foreach($post->comments as $comment)
+                                            <li>
+                                                <div class="media">
+                                                    <div class="media-left">
+                                                        <img src="/Images/img_avatar3.png" class="media-object">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                                        <p>{{ $comment->body }}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                    {{--This is a form to add a comment--}}
+                                    @can('add_private_posts_and_announcements')
+                                    <div id="{{ $post->id }}" class="card">
+                                        <form method="POST" action="/posts/{{ $post->id }}/comments">
+                                            {{ csrf_field() }}
+                                            <div class="form-group">
+                                                <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                                <span id="message_error" class="help-block"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <button id="comment" type="submit" class="btn btn-primary">Comment </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    @endcan
+                                </div>
+                            </li>
+                        @endforeach
+                    </div>
+                </div>
+                        
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Modal ANNOUNCEMENTS-->
+        <div id="announcementModal" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">ANNOUNCEMENTS</h3>
+                </div>
+                <div class="modal-body text-left">
+                    {{--This is a button to create an announcement:--}}
+                    @can('add_private_posts_and_announcements')
+                    <button id="add_announcement" type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#addAnnouncement">Add new announcement</button>
+                    @endcan
+                    
+                    {{--Form to add announcement--}}
+                    <div id="addAnnouncement" class="card collapse text-left">
+                        <form method="POST" action="/announcements">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="message">New Announcement</label><br>
+                                <textarea id="announcement" name="message" rows="8" @if(Auth::user()->can('add_private_posts_and_announcements')) placeholder="Post will appear only for registered users unless you check 'Public announcement' " @else placeholder="Post will appear only for registered users" @endif class="form-control"></textarea>
+                                <span id="announcement_error" class="help-block"></span>
+                            </div>
+                            @can('add_public_posts_and_announcements')
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="public" value="public">Public announcement</label>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="email" value="email">Inform all by email</label>
+                            </div>
+                            @endcan
+                            <button id="post" type="submit" class="btn btn-primary">Post</button>
+                        </form>
+                    </div>
+
+                    <div id="all-announcements">
+                        @foreach($announcements as $announcement)
+                            <li class="list-group-item">
+                                <!-- <div class="alert alert-info"> -->
+                                <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
+                                <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
+                                            {{--Print date and time when a post was created--}}
+                                            Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                <h5> {{ $announcement->message }} </h5>
+                                <!-- </div> -->
+                            </li>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
 
           </div>
