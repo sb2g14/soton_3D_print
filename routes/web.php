@@ -166,8 +166,21 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     // Here we redirect to the view where all cost codes are shown
     Route::get('/costCodes/index','CostCodesController@index');
 
+    // Here we redirect to the view where a cost codes can be created
+    Route::get('/costCodes/create','CostCodesController@create');
+
+    // Post update cost code information
+    Route::post('/costCodes/create', 'CostCodesController@store');
+
     // Here we redirect to the view where all cost codes can be updated
     Route::get('/costCodes/update/{id}','CostCodesController@edit');
+
+    // Post update cost code information
+    Route::post('/costCodes/update/{id}', 'CostCodesController@update');
+
+    // Delete cost code
+    Route::get('/costCodes/delete/{id}', 'CostCodesController@destroy');
+
 
 });
 
@@ -201,12 +214,12 @@ Route::get('/gettingPaid', 'StaffController@gettingPaid');
 // Route to documents page
 Route::get('/documents', 'StaffController@documents');
 
-Route::get('/notify', function () {
-    notify()->flash('Welcome back!', 'success', [
-        'text' => 'It\'s really great to see you again',
-    ]);
-    return redirect() -> to('/aboutWorkshop');
-});
+// Route::get('/notify', function () {
+//    notify()->flash('Welcome back!', 'success', [
+//        'text' => 'It\'s really great to see you again',
+//    ]);
+//    return redirect() -> to('/aboutWorkshop');
+//});
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');

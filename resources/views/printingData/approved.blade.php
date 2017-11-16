@@ -46,7 +46,7 @@
                     @endphp
                     {{--Add number of hours job takes to the time when it was approved--}}
                     {{--Add number of minutes job takes--}}
-                    @if ($job->approved_at->addHour($h)->addMinutes($i)->gte(Carbon\Carbon::now('Europe/London')))
+                    @if (Carbon\Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i)->gte(Carbon\Carbon::now('Europe/London')))
                     <tr class="text-left">
                         <td data-th="ID">{{ $job->id }}</td>
                         <td data-th="Printer No">{{ $print->printers_id }}</td>
@@ -57,7 +57,7 @@
                         <td data-th="Material Amount">{{ $job->total_material_amount }} g</td>
                         <td data-th="Price">£{{ $job->total_price }}</td>
                         <td data-th="Created on">{{ $job->created_at->toDayDateTimeString() }}</td>
-                        <td data-th="Approved on">{{ $job->approved_at->toDayDateTimeString() }}</td>
+                        <td data-th="Approved on">{{ Carbon\Carbon::parse($job->approved_at)->toDayDateTimeString() }}</td>
                         <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
                         <td data-th="Project Name">{{ $job->use_case  }}</td>
                         <td><a href="/printingData/abort/{{$job->id}}" class="btn btn-danger">Job Failed</a><br><br>

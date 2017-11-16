@@ -10,7 +10,8 @@
 
                 <li class="item">
                     <span>
-                        Welcome {{Auth::user()->name}}!
+                        Welcome
+			{{--  <br>  {{Auth::user()->name}}! --}}
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         @isset(Auth::user()->staff)
