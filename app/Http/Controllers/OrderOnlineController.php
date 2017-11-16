@@ -111,10 +111,10 @@ class OrderOnlineController extends Controller
             ));
 
         // Send an email to the online jobs manager
-        $users = User::role('OnlineJobsManager')->get();
-        foreach($users as $user){
-            \Mail::to($user)->send(new onlineRequest($user,$job));
-        }
+//        $users = User::role('OnlineJobsManager')->get();
+//        foreach($users as $user){
+//            \Mail::to($user)->send(new onlineRequest($user,$job));
+//        }
 //        $user = User::first();
 //        \Mail::to($user)->send(new onlineRequest($user,$job));
 
