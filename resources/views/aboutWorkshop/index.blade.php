@@ -58,7 +58,7 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td class="col-left"><span class="glyphicon glyphicon-envelope"></span> A.R.Hamilton@soton.ac.uk</td>
+                        <td class="col-left"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:A.R.Hamilton@soton.ac.uk">A.R.Hamilton@soton.ac.uk</a></td>
                     </tr>
                 </table>
             </div>

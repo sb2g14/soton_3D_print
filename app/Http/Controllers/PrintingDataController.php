@@ -30,7 +30,7 @@ class PrintingDataController extends Controller
      */
     public function index()
     {
-        $jobs = Jobs::where('status','Waiting')->get();
+        $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 0)->get();
         return view('printingData.index', compact('jobs'));
     }
 
@@ -122,7 +122,7 @@ class PrintingDataController extends Controller
     {
 
         $this->validate(request(), [
-            'student_name' => 'required|string|min:3|max:100|regex:/[\w\-\'\s]+/',
+            'student_name' => 'required|string|min:3|max:100|regex:/^[a-z ,.\'-]+$/i',
             'email' => 'required|email|min:3|max:30|regex:/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/',
             'student_id' => 'required|numeric|min:8',
             'material_amount' => 'required|numeric|min:1|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
@@ -275,6 +275,8 @@ class PrintingDataController extends Controller
             'total_price' => $price,
             'job_approved_comment' => request('comments'),
             'job_approved_by' => Auth::user()->staff->id,
+            'job_finished_by' => Auth::user()->staff->id,
+            'approved_at' => Carbon::now('Europe/London'),
             'requested_online' => 0,
             'status' => 'Approved',
         ]);
@@ -285,6 +287,8 @@ class PrintingDataController extends Controller
             'material_amount' => $material_amount,
             'price' => $price,
             'status' => 'Approved',
+            'print_started_by' => Auth::user()->staff->id,
+            'print_finished_by' => Auth::user()->staff->id,
         ]);
 
         session()->flash('message', 'The job has been successfully approved!');
@@ -416,6 +420,7 @@ class PrintingDataController extends Controller
         $print_id = $job->prints->first()->id;
         $print = Prints::findOrFail($print_id);
         printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
+        $job->prints()->detach($print_id);
         $job->delete();
         $print->delete();
 

@@ -19,7 +19,7 @@
             $student_id = $data->customer_id;
             list($hours, $minutes, $s) = explode(':', $data->total_duration);
             $material_amount = $data->total_material_amount;
-            $use_case = $data->use_case;
+            $use_case = $data->cost_code;
         @endphp
     @else
         @php
@@ -146,7 +146,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-8 text-left">
-                        <button id="submit" type="submit" class="btn">Submit</button>
+                        <button id="submit" type="submit" class="btn btn-primary">Submit</button>
                         <a href="/" class="btn btn-danger">Home</a>
                         {{--<a href="{{  url('https://www.3dhubs.com/service/254134') }}" target="_blank" class="btn btn-info">Order online</a>--}}
                     </div>

@@ -50,7 +50,7 @@
                         {{--Print short description and a link--}}
                             <p>
                                 Requested by: <b>{{$job->customer_name}}</b><br>
-                                Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b>
+                                Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
                                 Job is printed on <br>
                                 @foreach($job->prints as $print)
                                     Printer number: <b>{{ $print->printers_id }}</b><br>

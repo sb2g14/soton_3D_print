@@ -23,7 +23,7 @@
             <p>
                 Any queries meanwhile, please contact the Workshop Coordinator
                 @foreach($coordinators as $coordinator)
-                    <a href="mailto:{{$coordinator->email}}">{{$coordinator->first_name}} {{$coordinator->lastname}}</a>
+                    <a href="mailto:{{$coordinator->email}}">{{$coordinator->first_name}} {{$coordinator->last_name}}</a>
                 @endforeach
             </p>
         </div>

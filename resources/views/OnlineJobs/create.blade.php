@@ -14,9 +14,9 @@
         @php
             $print = $data->prints->first();
             $printers_id = $print->printers_id;
-            $student_name = $data->customer_name;
-            $email = $data->customer_email;
-            $student_id = $data->customer_id;
+            $customer_name = $data->customer_name;
+            $customer_email = $data->customer_email;
+            $customer_id = $data->customer_id;
             list($hours, $minutes, $s) = explode(':', $data->total_duration);
             $material_amount = $data->total_material_amount;
             $use_case = $data->use_case;
@@ -24,9 +24,9 @@
     @else
         @php
             $printers_id = '';
-            $student_name = '';
-            $email = '';
-            $student_id = '';
+            $customer_name = '';
+            $customer_email = '';
+            $customer_id = '';
             $hours = '';
             $minutes = '';
             $material_amount = '';
@@ -38,62 +38,63 @@
     <div class="row vdivide">
         <div class="col-sm-6">
             <h1 class="text-center lead">ONLINE JOB REQUEST FORM</h1>
-            <form id="requestForm" class="form-horizontal" method="POST" action="/printingData">
+            <form id="requestForm" class="form-horizontal" method="POST" action="/onlineJobs">
                 {{ csrf_field() }}
 
                 {{--Customer Name field--}}
-                <div class="form-group{{ $errors->has('student_name') ? ' has-error' : '' }}">
-                    <label for="student_name" class="col-sm-4 control-label">Full Name</label>
+                <div class="form-group{{ $errors->has('customer_name') ? ' has-error' : '' }}">
+                    <label for="customer_name" class="col-sm-4 control-label">Full Name</label>
 
                     <div class="col-sm-8">
-                        <input id="student_name" data-help="" type="text"
-                               class="form-control" name="student_name" value="{{ old('student_name',
-                               isset($member)  ? $member->first_name.' '.$member->last_name : $student_name) }}"
+                        <input id="customer_name" data-help="" type="text"
+                               class="form-control" name="customer_name" value="{{ old('customer_name',
+                               isset($member)  ? $member->first_name.' '.$member->last_name : $customer_name) }}"
                                placeholder="Please input your First and Last name" required>
-                        @if ($errors->has('student_name'))
+
+                        @if ($errors->has('customer_name'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('student_name') }}</strong>
+                            <strong>{{ $errors->first('customer_name') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="student_name_error"></span>
+                        <span class="help-block" id="customer_name_error"></span>
                     </div>
                 </div>
 
                 {{--Customer email field--}}
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="col-md-4 control-label">Email</label>
+                <div class="form-group{{ $errors->has('customer_email') ? ' has-error' : '' }}">
+                    <label for="customer_email" class="col-md-4 control-label">Email</label>
 
                     <div class="col-md-6">
-                        <input id="email" data-help="email" type="email"
-                               class="form-control" name="email" value="{{ old('email',
-                               isset($member)  ? $member->email : $email) }}" placeholder="Please input soton email"
+                        <input id="customer_email" data-help="customer_email" type="customer_email"
+                               class="form-control" name="customer_email" value="{{ old('customer_email',
+                               isset($member)  ? $member->customer_email : $customer_email) }}" placeholder="Please input soton email"
                                required><br>
 
-                        @if ($errors->has('email'))
+                        @if ($errors->has('customer_email'))
                             <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('customer_email') }}</strong>
                                     </span>
                         @endif
-                        <span class="help-block" id="email_error"></span>
+                        <span class="help-block" id="customer_email_error"></span>
                     </div>
                 </div>
 
                 {{--Customer ID field--}}
-                <div class="form-group{{ $errors->has('student_id') ? ' has-error' : '' }}">
-                    <label for="student_id" class="col-sm-4 control-label">Student/Staff ID</label>
+                <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
+                    <label for="customer_id" class="col-sm-4 control-label">Student/Staff ID</label>
 
                     <div class="col-sm-8">
-                        <input id="student_id" data-help="student_id" type="text"
-                               class="form-control" name="student_id" value="{{ old('student_id',
-                               isset($member)  ? $member->student_id : $student_id) }}"
+                        <input id="customer_id" data-help="customer_id" type="text"
+                               class="form-control" name="customer_id" value="{{ old('customer_id',
+                               isset($member)  ? $member->customer_id : $customer_id) }}"
                                placeholder="Please input your university ID number" required>
 
-                        @if ($errors->has('student_id'))
+                        @if ($errors->has('customer_id'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('student_id') }}</strong>
+                            <strong>{{ $errors->first('customer_id') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="student_id_error"></span>
+                        <span class="help-block" id="customer_id_error"></span>
                     </div>
                 </div>
 
@@ -169,13 +170,13 @@
                 <p>If you are happy with the estimated figures please reply to the manager confirming your order.</p>
             </div>
 
-            <div class="hint text-left" data-hint="email">
+            <div class="hint text-left" data-hint="customer_email">
                 <h3 class="text-center lead">Please provide your university email address</h3>
                 <p>We need your University of Southampton email address in order to be able to communicate with you
                 concerning your job request. After finishing this form you will be contacted by the online jobs manager
                     with the estimated cost and duration of your print.</p>
             </div>
-            <div class="hint text-left" data-hint="student_id">
+            <div class="hint text-left" data-hint="customer_id">
                 <h3 class="text-center lead">How to find out my student/staff ID?</h3>
                 <p>Student ID is typically 9 digits long. Staff ID is typically 8 digits long. Do not forget to input
                     the whole ID number. It is schematically displayed in the picture below. </p>
@@ -227,5 +228,5 @@
 @endsection
 
 @section('scripts')
-<script src="/js/request_job_validation.js"></script>
+{{--<script src="/js/request_job_validation.js"></script>--}}
 @endsection

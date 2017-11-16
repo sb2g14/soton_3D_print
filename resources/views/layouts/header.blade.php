@@ -10,7 +10,8 @@
 
                 <li class="item">
                     <span>
-                        Welcome {{Auth::user()->name}}!
+                        Welcome
+			{{--  <br>  {{Auth::user()->name}}! --}}
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         @isset(Auth::user()->staff)
@@ -20,6 +21,16 @@
                     </ul>
                 </li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
+                @can('manage_cost_codes')
+                <li class="item">
+                    <span>
+                        Finance
+                        <span class="caret"></span></span>
+                    <ul class="dropdown-bl">
+                        <li><a class="dropdown-item" href="{{ url('/costCodes/index') }}">Cost codes</a></li>
+                    </ul>
+                </li>
+                @endcan
                 <li class="item">
                     <span>
                         Workshop
@@ -60,7 +71,7 @@
                 @endcan
                 <li class="item"><a class="no-dropdown" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
-            @else
+        @else
             <ul class="lsn bl-menu" id="my-menu">
                 <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request a job!</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
@@ -82,7 +93,7 @@
         @endif
         
         <div id="toggle-menu" for="hmt" class="hamburger hamburger--slider btn-menu">
-            <div class="hamburger-box""{{ route('auth.logout') }}">
+            <div class="hamburger-box"> "{{ route('auth.logout') }}">
                 <div class="hamburger-inner"></div>
             </div>
         </div>
