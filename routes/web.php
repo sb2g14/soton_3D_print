@@ -214,12 +214,12 @@ Route::get('/gettingPaid', 'StaffController@gettingPaid');
 // Route to documents page
 Route::get('/documents', 'StaffController@documents');
 
-Route::get('/notify', function () {
-    notify()->flash('Welcome back!', 'success', [
-        'text' => 'It\'s really great to see you again',
-    ]);
-    return redirect() -> to('/aboutWorkshop');
-});
+// Route::get('/notify', function () {
+//    notify()->flash('Welcome back!', 'success', [
+//        'text' => 'It\'s really great to see you again',
+//    ]);
+//    return redirect() -> to('/aboutWorkshop');
+//});
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
