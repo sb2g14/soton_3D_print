@@ -153,15 +153,15 @@
                         </ul>
 
 
-                        <!-- <div>
-                            <h3>ANNOUNCEMENTS</h3>
+                        {{--<!-- <div>--}}
+                            {{--<h3>ANNOUNCEMENTS</h3>--}}
                             {{--This is a button to create an announcement:--}}
-                            @can('add_private_posts_and_announcements')
-                            <button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                            </button>
-                            @endcan
-                        </div>
+                            {{--@can('add_private_posts_and_announcements')--}}
+                            {{--<button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">--}}
+                                {{--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>--}}
+                            {{--</button>--}}
+                            {{--@endcan--}}
+                        {{--</div>--}}
                         
                             {{--Form to add announcement--}}
                             <div id="addAnnouncement" class="card collapse text-left">
@@ -169,7 +169,13 @@
                                     {{ csrf_field() }}
                                     <div class="form-group">
                                         <label for="message">New Announcement</label><br>
-                                        <textarea id="announcement" name="message" @if(Auth::user()->can('add_private_posts_and_announcements')) placeholder="Post will appear only for registered users unless you check 'Public announcement' " @else placeholder="Post will appear only for registered users" @endif class="form-control"></textarea>
+                                        <textarea id="announcement" name="message"
+                                                  {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
+                                                    {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
+                                                  {{--@else --}}
+                                                    placeholder="Post will appear only for registered users"
+                                                  {{--@endif --}}
+                                                    class="form-control"></textarea>
                                         <span id="announcement_error" class="help-block"></span>
                                     </div>
                                     @can('add_public_posts_and_announcements')
@@ -183,7 +189,7 @@
                                     <button id="post" type="submit" class="btn btn-primary">Post</button>
                                 </form>
                             </div>
-                        <button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>
+                        {{--<button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>--}}
                         
                         <div id="all-announcements" class="card collapse">
                             @foreach($announcements as $announcement)
@@ -197,7 +203,7 @@
                                     </div>
                                 </li>
                             @endforeach
-                        </div> -->
+                        </div>
                     </div>
                     <div class="col-sm-4 item">
                         <div class="bl-header">
@@ -276,7 +282,7 @@
                                 </li>
                             @endif
 
-                            <button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>
+                            {{--<button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>--}}
 
                             <div id="all-announcements" class="card collapse">
 
@@ -426,7 +432,13 @@
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="message">New Announcement</label><br>
-                                <textarea id="announcement" name="message" rows="8" @if(Auth::user()->can('add_private_posts_and_announcements')) placeholder="Post will appear only for registered users unless you check 'Public announcement' " @else placeholder="Post will appear only for registered users" @endif class="form-control"></textarea>
+                                <textarea id="announcement" name="message" rows="8"
+                                          {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
+                                            {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
+                                          {{--@else --}}
+                                            placeholder="Post will appear only for registered users"
+                                          {{--@endif --}}
+                                            class="form-control"></textarea>
                                 <span id="announcement_error" class="help-block"></span>
                             </div>
                             @can('add_public_posts_and_announcements')
@@ -469,8 +481,9 @@
 @endsection
 @section('scripts')
     {{--Load validation scripts--}}
-<script src="/js/issue_validation.js"></script>
-<script src="/js/message_validation.js"></script>
+    <script src="/js/issue_validation.js"></script>
+    <script src="/js/message_validation.js"></script>
+
     {{--Load notification--}}
     @if (notify()->ready())
         <script>
