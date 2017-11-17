@@ -109,7 +109,6 @@
                             </ul>
                         @endif
 
-                        @include('layouts.errors')
                     </div>
 
                     <div class="col-sm-4 item">
@@ -135,15 +134,7 @@
                         <ul class="lsn list-group">
                             <li class="list-group-item">
                                 <div class="alert alert-info">
-                                    {{--<h4><b>Announcement 1</b></h4>--}}
-                                    {{--<h4 style="color: red"><b>Download the induction presentation <a href={{ asset('files/induction_presentation.ppt') }}>--}}
-                                                {{--here</a>.</b></h4>--}}
-                                    {{--<ul class="lsn">--}}
-                                    {{--<li><a href={{ asset('files/Demonstrating_procedure_April2017.docx') }}>Demonstrating procedure</a></li>--}}
-                                    {{--<li><a href={{ asset('files/FEE_Demonstrator_Consultancy_Policy_March4017.rtf') }}>Consultancy policy</a></li>--}}
-                                    {{--<li><a href={{ asset('files/Demonstrating_Claim_April_2016.doc') }}>Claim form</a></li>--}}
-                                    {{--<li><a href={{ asset('files/FORMS_DC1_AND_DC2_v2.doc') }}>Claim forms DC1 and DC2</a></li>--}}
-                                    {{--</ul><br>--}}
+
                                     <h4 style="color: red"><b>Please visit <a href="{{ url('http://3dprint.clients.soton.ac.uk/news') }}"
                                                                               target="_blank">NEWS</a> to check how to use this resource.</b></h4>
                                     <br>
@@ -152,45 +143,6 @@
                             </li>
                         </ul>
 
-
-                        {{--<!-- <div>--}}
-                            {{--<h3>ANNOUNCEMENTS</h3>--}}
-                            {{--This is a button to create an announcement:--}}
-                            {{--@can('add_private_posts_and_announcements')--}}
-                            {{--<button id="add_announcement" type="button" class="btn btn-info" data-toggle="collapse" data-target="#addAnnouncement">--}}
-                                {{--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>--}}
-                            {{--</button>--}}
-                            {{--@endcan--}}
-                        {{--</div>--}}
-                        
-                            {{--Form to add announcement--}}
-                            <div id="addAnnouncement" class="card collapse text-left">
-                                <form method="POST" action="/announcements">
-                                    {{ csrf_field() }}
-                                    <div class="form-group">
-                                        <label for="message">New Announcement</label><br>
-                                        <textarea id="announcement" name="message"
-                                                  {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
-                                                    {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
-                                                  {{--@else --}}
-                                                    placeholder="Post will appear only for registered users"
-                                                  {{--@endif --}}
-                                                    class="form-control"></textarea>
-                                        <span id="announcement_error" class="help-block"></span>
-                                    </div>
-                                    @can('add_public_posts_and_announcements')
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="public" value="public">Public announcement</label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="email" value="email">Inform all by email</label>
-                                    </div>
-                                    @endcan
-                                    <button id="post" type="submit" class="btn btn-primary">Post</button>
-                                </form>
-                            </div>
-                        {{--<button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>--}}
-                        
                         <div id="all-announcements" class="card collapse">
                             @foreach($announcements as $announcement)
                                 <li class="list-group-item">
@@ -335,12 +287,12 @@
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="title">Issue Name</label><br>
-                                <input id="issue" name="title" placeholder="Specify issue name" class="form-control">
+                                <input id="issue" name="title" placeholder="Specify issue name" class="form-control" required>
                                 <span id="issue_error" class="help-block"></span>
                             </div>
                             <div class="form-group">
                                 <label for="body">Message</label><br>
-                                <textarea id="message" name="body" rows="4" placeholder="Describe your issue" class="form-control"></textarea>
+                                <textarea id="message" name="body" rows="4" placeholder="Describe your issue" class="form-control" required></textarea>
                                 <span id="message_error" class="help-block"></span>
                             </div>
                             <div class="checkbox">
@@ -349,7 +301,7 @@
                             <button id="report_issue" type="submit" class="btn btn-primary">Report Issue</button>
                         </form>
                     </div>
-                                        
+
                     <div id="all-issues"> 
                         @foreach($posts as $post)
                             <li class="list-group-item well">

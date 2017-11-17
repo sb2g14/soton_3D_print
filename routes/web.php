@@ -26,14 +26,14 @@ Route::post('/posts','PostsController@store');
 // Here we redirect to the page where we store announcement data
 Route::post('/announcements','AnnouncementsController@store');
 
-//// Here we redirect to the page where we store public announcement data
-//Route::post('/publicAnnouncements','PublicAnnouncementsController@store');
-
 // Here we redirect to the controller that would store our comments
 Route::post('/posts/{post}/comments', 'CommentsController@store');
 
 // This route uses controller to redirect to the 'About Workshop' page
 Route::get('/aboutWorkshop','AboutWorkshopController@index');
+
+// This route uses controller to redirect to the 'Photolibrary' page
+Route::get('/photolibrary','PhotolibraryController@index');
 
 // Shows the list of workshop members
 Route::get('/members/index','StaffController@index');
@@ -200,7 +200,7 @@ Route::get('loan', 'LoanController@index');
 Route::get('/learn', 'LearnController@index');
 
 // Display a form for online orders
-Route::get('/orderOnline','OrderOnlineController@index');
+Route::get('/OnlineJobs/index','OrderOnlineController@index');
 
 // Routes to display online job request form
 Route::get('/OnlineJobs/create', 'OrderOnlineController@create');

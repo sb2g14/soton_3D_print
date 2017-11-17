@@ -23,7 +23,7 @@ class OrderOnlineController extends Controller
 {
     public function index()
     {
-        return view('orderOnline');
+        return view('OnlineJobs.index');
     }
 
     public function create()

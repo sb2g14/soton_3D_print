@@ -42,6 +42,8 @@
                         <li><a class="dropdown-item" href={{ url('/printingData/create') }}>Request a job</a></li>
                         <li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
+                        <li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Pending Jobs</a></li>
+                        <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
                     </ul>
                 </li>
                 <li class="item">
@@ -66,9 +68,15 @@
                         <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting paid</a></li>
                     </ul>
                 </li>
-                @can('jobs_manage')
-                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+
+
+                @can('receive_online_job_requests')
+                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
+                @elsecan('jobs_manage')
+                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 @endcan
+
+
                 <li class="item"><a class="no-dropdown" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         @else
