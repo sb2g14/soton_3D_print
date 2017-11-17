@@ -16,6 +16,7 @@ use App\Jobs;
 use App\Prints;
 use App\cost_code;
 use App\Mail\onlineRequest;
+use App\staff;
 
 
 class OrderOnlineController extends Controller
@@ -27,7 +28,8 @@ class OrderOnlineController extends Controller
 
     public function create()
     {
-        return view('OnlineJobs.create');
+        $it = staff::where('role', '=', 'IT')->orWhere('role', '=', 'IT Manager')->get();
+        return view('OnlineJobs.create', compact('it'));
     }
 
     public function store()
@@ -110,13 +112,10 @@ class OrderOnlineController extends Controller
             'status' => 'Waiting',
             ));
 
-        // Send an email to the online jobs manager
-//        $users = User::role('OnlineJobsManager')->get();
-//        foreach($users as $user){
-//            \Mail::to($user)->send(new onlineRequest($user,$job));
-//        }
-//        $user = User::first();
-//        \Mail::to($user)->send(new onlineRequest($user,$job));
+        // Send an email to the 3d print account
+        //$email = '3DPrintFEE@soton.ac.uk';
+        $user = User::find(2);
+        \Mail::to($user)->send(new onlineRequest($user,$job));
 
         // Notification of request acceptance
         notify()->flash('Your order request has been accepted!', 'success', [

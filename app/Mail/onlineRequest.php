@@ -32,7 +32,7 @@ class onlineRequest extends Mailable
      */
     public function build()
     {
-        return $this->subject('Request from '.$this->job->customer_name . ', ID ' .$this->job->customer_id)
+        return $this->subject('Online request from '.$this->job->customer_name . ', ID ' .$this->job->customer_id)
             ->markdown('emails.requestOnline')->with([
             'name' => $this->user->name,
             'email' => $this->user->email,

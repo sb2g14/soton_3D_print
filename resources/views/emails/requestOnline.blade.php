@@ -1,6 +1,6 @@
 @component('mail::message')
 
-    # Dear {{ $name }}
+    # Hi
 
     <h3>You have a new online request from {{$customer_name}}</h3>
 
