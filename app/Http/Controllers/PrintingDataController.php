@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\JobsPrints;
 use App\printers;
 use Illuminate\Http\Request;
-use App\printing_data;
 use App\Jobs;
 use App\Prints;
 use App\cost_code;
@@ -17,12 +16,6 @@ use Carbon\Carbon;
 
 class PrintingDataController extends Controller
 {
-//    public function __construct()
-//    {
-//
-//        $this->middleware('auth')->except(['create','store']);
-//
-//    }
     /**
      * Display a listing of the resource.
      *
@@ -217,9 +210,10 @@ class PrintingDataController extends Controller
 
         printers::where('id','=', Input::get('printers_id'))->update(array('in_use'=> 1));
 
-       // Show flashing message
-       session()->flash('message', 'Your job request has been successfully accepted! Please wait for a demonstrator to come and approve the job before start printing.');
-       session()->flash('alert-class', 'alert-success');
+        // Notification of request acceptance
+        notify()->flash('Your job request has been accepted!', 'success', [
+            'text' => 'Please ask a demonstrator to approve the job before you start the print.',
+        ]);
 
        // Redirect to home directory
        return redirect()->home();

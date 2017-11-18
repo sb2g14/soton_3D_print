@@ -188,10 +188,13 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
 
 // Group of routes available to online jobs manager only
 /////////////////////////////////////////////////////////////////////////////////////////////
-Route::group(['middleware' => ['role:OnlineJobsManager']], function () {
+Route::group(['middleware' => ['role:OnlineJobsManager|administrator']], function () {
 
-    // Display a form for online orders
+    // List pending online requests
     Route::get('/OnlineJobs/index', 'OrderOnlineController@index');
+
+    // Review each pending online request
+    Route::get('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@checkrequest');
 
 });
 
