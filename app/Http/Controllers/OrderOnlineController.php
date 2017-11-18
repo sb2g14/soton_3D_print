@@ -21,18 +21,14 @@ use App\staff;
 
 class OrderOnlineController extends Controller
 {
-    public function index()
-    {
-        $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 1)->get();
-        return view('OnlineJobs.index', compact('jobs'));
-    }
-
+    // Customer creates a new online job request
     public function create()
     {
         $it = staff::where('role', '=', 'IT')->orWhere('role', '=', 'IT Manager')->get();
         return view('OnlineJobs.create', compact('it'));
     }
 
+    // The online job request is validated, stored in a DB and the online job manager notified via email
     public function store()
     {
         // Validate the online request
@@ -97,17 +93,24 @@ class OrderOnlineController extends Controller
         // check the module shortage exists
         $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
         if ($query !== null){
+            // If shortage exists, then populate cost code and shortage with the DB data
             $cost_code = $query->value('cost_code');
-        } else {
-            // Otherwise, accept a given cost code
+            $use_case = strtoupper($online_request['use_case']);
+        } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
+            $query = cost_code::all()->where('cost_code','=',$online_request['use_case'])->first();
             $cost_code = $online_request['use_case'];
+            if ($query !== null){ // The cost code was found. Set a corresponding flag
+                $use_case = 'Cost Code - approved';
+            } else { // The cost code was not found. Set a corresponding flag
+                $use_case = 'Cost Code - unknown';
+            }
         }
 
         // Updating database
         $job -> update(array(
             'paid'=> 'No',
             'payment_category' => $payment_category,
-            'use_case' => strtoupper($online_request['use_case']),
+            'use_case' => $use_case,
             'cost_code' => $cost_code,
             'requested_online' => 1,
             'status' => 'Waiting',
@@ -124,5 +127,20 @@ class OrderOnlineController extends Controller
         ]);
         // Redirect to home directory
         return redirect()->home();
+    }
+
+    // Online job manager sees all the online job requests:
+    public function index()
+    {
+        $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 1)->get();
+        return view('OnlineJobs.index', compact('jobs'));
+    }
+
+    // Online job manager reviews each online job request and fills in all the required information. The requester
+    // gets notified about the review of the job.
+    public function checkrequest($id)
+    {
+        $job = Jobs::findOrFail($id);
+        return view('OnlineJobs.checkrequest', compact('job'));
     }
 }
