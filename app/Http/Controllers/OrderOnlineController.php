@@ -114,6 +114,7 @@ class OrderOnlineController extends Controller
 
         // Send an email to the 3d print account
         //$email = '3DPrintFEE@soton.ac.uk';
+        //$user = User::where('email','=','3DPrintFEE@soton.ac.uk')->first();
         $user = User::find(2);
         \Mail::to($user)->send(new onlineRequest($user,$job));
 

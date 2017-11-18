@@ -116,14 +116,14 @@ class RegisterController extends Controller
             \Mail::to($user)->send(new Welcome($user));
 
             // Snow a flashing message
-
-            session()->flash('message', 'Thank you for registering with 3D printing workshop!');
-            session()->flash('alert-class', 'alert-success');
+            notify()->flash('Thank you for registering with the 3D printing workshop!', 'success', [
+                'text' => 'You will receive the confirmation email shortly.',
+            ]);
         } else {
             event(new Registered($user = null));
-            session()->flash('message', 'Sorry, your email is not in the workshop staff list.
-                If you are current demonstrator please contact the lead demonstrator.');
-            session()->flash('alert-class', 'alert-danger');
+            notify()->flash('Sorry, your email is not in the workshop staff list.', 'error', [
+                'text' => 'If you are current demonstrator please contact the lead demonstrator.',
+            ]);
         }
 
         return $this->registered($request, $user)
