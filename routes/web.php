@@ -26,14 +26,14 @@ Route::post('/posts','PostsController@store');
 // Here we redirect to the page where we store announcement data
 Route::post('/announcements','AnnouncementsController@store');
 
-//// Here we redirect to the page where we store public announcement data
-//Route::post('/publicAnnouncements','PublicAnnouncementsController@store');
-
 // Here we redirect to the controller that would store our comments
 Route::post('/posts/{post}/comments', 'CommentsController@store');
 
 // This route uses controller to redirect to the 'About Workshop' page
 Route::get('/aboutWorkshop','AboutWorkshopController@index');
+
+// This route uses controller to redirect to the 'Photolibrary' page
+Route::get('/photolibrary','PhotolibraryController@index');
 
 // Shows the list of workshop members
 Route::get('/members/index','StaffController@index');
@@ -57,6 +57,7 @@ Route::get('/members/former/show','StaffController@former');
 Route::get('/printers/index','PrintersController@index');
 
 // Group of routes available only to roles administrator, Lead Demonstrator, Demonstrator
+/////////////////////////////////////////////////////////////////////////////////////////////
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
 
     // Redirect to the view where one can manage issues
@@ -100,7 +101,7 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 
     Route::get('/printingData/index','PrintingDataController@index');
 
-// Route to export jobs to CSV
+    // Route to export jobs to CSV
 
     Route::get('printingData/export',
         [
@@ -108,42 +109,43 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
             'uses' => 'PrintingDataController@printingDataExport'
         ]);
 
-// Show a list of approved jobs
+    // Show a list of approved jobs
 
     Route::get('/printingData/approved','PrintingDataController@approved');
 
-// Show a list of finished jobs
+    // Show a list of finished jobs
 
     Route::get('/printingData/finished','PrintingDataController@finished');
 
-// Show a blade to edit the job
+    // Show a blade to edit the job
     Route::get('/printingData/edit/{id}','PrintingDataController@edit');
 
-// Show a blade to save edit the job
+    // Show a blade to save edit the job
     Route::post('/printingData/edit/{id}','PrintingDataController@review');
 
-// Show each job requested in a separate blade
+    // Show each job requested in a separate blade
     Route::get('/printingData/show/{id}','PrintingDataController@show');
 
-// Update the requested record and approve/reject a job
+    // Update the requested record and approve/reject a job
     Route::post('/printingData/show/{id}','PrintingDataController@update');
 
-// Reporting that current job is unsuccessful
+    // Reporting that current job is unsuccessful
     Route::get('/printingData/abort/{id}','PrintingDataController@abort');
 
-// Reporting that current job is successful
+    // Reporting that current job is successful
     Route::get('/printingData/success/{id}','PrintingDataController@success');
 
-// Reject current job and delete it from the database
+    // Reject current job and delete it from the database
     Route::get('/printingData/delete/{id}','PrintingDataController@destroy');
 
-// Route to restart a failed job
+    // Route to restart a failed job
     Route::get('/printingData/restart/{id}','PrintingDataController@restart');
 
 });
 
-    // Group of routes available only to roles administrator, Lead Demonstrator
-    Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
+// Group of routes available only to roles administrator, Lead Demonstrator
+/////////////////////////////////////////////////////////////////////////////////////////////
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
 
     // Here we redirect users to the add new printer post page
     Route::get('/printers/create','PrintersController@create');
@@ -184,6 +186,18 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 
 });
 
+// Group of routes available to online jobs manager only
+/////////////////////////////////////////////////////////////////////////////////////////////
+Route::group(['middleware' => ['role:OnlineJobsManager|administrator']], function () {
+
+    // List pending online requests
+    Route::get('/OnlineJobs/index', 'OrderOnlineController@index');
+
+    // Review each pending online request
+    Route::get('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@checkrequest');
+
+});
+
 // Open a form to request a job
 Route::get('/printingData/create','PrintingDataController@create');
 
@@ -198,9 +212,6 @@ Route::get('loan', 'LoanController@index');
 
 // Redirection to a page with generic information and possibly some lessons
 Route::get('/learn', 'LearnController@index');
-
-// Display a form for online orders
-Route::get('/orderOnline','OrderOnlineController@index');
 
 // Routes to display online job request form
 Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
@@ -222,6 +233,7 @@ Route::get('/documents', 'StaffController@documents');
 //});
 
 // Authentication Routes...
+/////////////////////////////////////////////////////////////////////////////////////////////
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
 $this->post('login', 'Auth\LoginController@login')->name('auth.login');
 $this->post('logout', 'Auth\LoginController@logout')->name('auth.logout');
@@ -230,10 +242,12 @@ $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('au
 $this->post('register', 'Auth\RegisterController@register')->name('auth.register');
 
 // Change Password Routes...
+/////////////////////////////////////////////////////////////////////////////////////////////
 $this->get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');
 $this->patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
 
 // Password Reset Routes...
+/////////////////////////////////////////////////////////////////////////////////////////////
 $this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('auth.password.reset');
 $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('auth.password.reset');
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
