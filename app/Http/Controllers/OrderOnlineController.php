@@ -23,7 +23,8 @@ class OrderOnlineController extends Controller
 {
     public function index()
     {
-        return view('OnlineJobs.index');
+        $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 1)->get();
+        return view('OnlineJobs.index', compact('jobs'));
     }
 
     public function create()
