@@ -18,6 +18,8 @@
         <link href="/css/font-awesome.min.css" rel="stylesheet">
         <link href="/css/app.css" rel="stylesheet">
         <link href="/css/parsley.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css" rel="stylesheet">
+        <link href="/css/fluid-gallery.css" rel="stylesheet">
         {!! Html::style('/css/sweetalert.css') !!}
 
     </head>
