@@ -17,6 +17,7 @@ use App\Prints;
 use App\cost_code;
 use App\Mail\onlineRequest;
 use App\staff;
+use App\Rules\Text;
 
 
 class OrderOnlineController extends Controller
@@ -137,11 +138,59 @@ class OrderOnlineController extends Controller
         return view('OnlineJobs.index', compact('jobs'));
     }
 
-    // Online job manager reviews each online job request and fills in all the required information. The requester
-    // gets notified about the review of the job.
+    // Online job manager reviews each online job request and fills in all the required information.
     public function checkrequest($id)
     {
-        $job = Jobs::findOrFail($id);
+        $job = Jobs::findOrFail($id); // Find the job in DB by {$id}
         return view('OnlineJobs.checkrequest', compact('job'));
+    }
+
+    // The prints are being assigned to each job and the cost calculated and sent to a requester for approval
+    public function assignPrints($id)
+    {
+        // Validate and store the printing time and material amount specified to each print of a current {$id} job
+        $assigned_print = request()->validate([
+            'hours' => 'required',
+            'minutes' => 'required',
+            'material_amount' => 'required|numeric|min:1|max:10',
+            'comments' => new Text
+            ]);
+
+        // create a print from the specified details
+        $time = $assigned_print["hours"].':'.sprintf('%02d', $assigned_print["minutes"]); // Created printing time
+        // Create price
+        $price = round(3 * ($assigned_print["hours"] + $assigned_print["minutes"] / 60) +
+            5 * $assigned_print["material_amount"] / 100, 2);
+        // Create a print
+        $print = new Prints;
+        $print -> time = $time;
+        $print -> price = $price;
+        $print -> save();
+
+        // Update a print with the details entered by customer
+        $print -> update(array(
+            'purpose' => 'Use',
+            'material_amount' => $assigned_print["material_amount"],
+            'print_comment' => $assigned_print["comments"],
+            'status' => 'waiting'
+        ));
+
+        $job = Jobs::findOrFail($id); // Find the job in DB by {$id}
+
+        // Associate this print with the current job
+        $job->prints()->attach($print);
+
+        // Notify that the print was created
+        notify()->flash('The print has been assigned to this job!', 'success', [
+            'text' => 'You can either add more prints or accept this job and notify customer',
+        ]);
+
+        return redirect("/OnlineJobs/checkrequest/{$job->id}");
+    }
+
+    // The job is accepted and the customer is informed with the price.
+    public function acceptJob()
+    {
+        //
     }
 }
