@@ -51,7 +51,7 @@
                 <div class="row clearfix is-table-row">
                     <!-- Issues -->
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <div class="card card-issue">
+                        <div class="cardblock card-issue">
                             <div class="info-box box-issue">
                                 <div class="bl-logo logo-issue"></div>
                                 <div class="caption"><h3>ISSUES</h3></div>
@@ -81,7 +81,7 @@
                     <!-- #END# Issues -->
                     <!-- Announcements -->
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <div class="card card-announcement">
+                        <div class="cardblock card-announcement">
                             <div class="info-box box-announcement">
                                 <div class="bl-logo logo-announcement"></div>
                                 <div class="caption"><h3>ANNOUNCEMENTS</h3></div>
@@ -104,7 +104,7 @@
                     <!-- #END# Announcements -->
                     <!-- Statistics -->
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <div class="card">
+                        <div class="cardblock">
                             <div class="info-box box-stat">
                                 <div class="bl-logo logo-stat"></div>
                                 <div class="caption"><h3>STATISTICS</h3></div>
