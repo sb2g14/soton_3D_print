@@ -196,6 +196,9 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator']], functio
     // Review each pending online request
     Route::get('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@checkrequest');
 
+    // Assign prints to each online job request
+    Route::post('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@assignPrints');
+
 });
 
 // Open a form to request a job
