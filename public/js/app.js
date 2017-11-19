@@ -76,11 +76,11 @@ module.exports = __webpack_require__(2);
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-    $(".btn-issue").click(function () {
+    $(".card-issue").click(function () {
         $("#issueModal").modal();
     });
 
-    $(".btn-announcement").click(function () {
+    $(".card-announcement").click(function () {
         $("#announcementModal").modal();
     });
 
