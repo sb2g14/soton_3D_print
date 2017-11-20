@@ -54,7 +54,7 @@ class PrintersController extends Controller
        // dd(request()->all());
         $this -> validate(request(), [
             'id' => 'required|numeric',
-            'serial_no' => 'required|numeric',
+            'serial_no' => 'required',
             'printer_type' => 'required',
         ]);
         $printer_type = request('printer_type');
@@ -103,7 +103,7 @@ class PrintersController extends Controller
     public function update($id)
     {
         $this -> validate(request(), [
-            'serial_no' => 'required|numeric',
+            'serial_no' => 'required',
             'printer_type' => 'required'
         ]);
         $printer_type = request('printer_type');

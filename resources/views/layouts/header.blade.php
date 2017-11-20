@@ -37,7 +37,7 @@
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/orderOnline') }}">Order online</a></li>
+                        {{--<li><a class="dropdown-item" href="{{ url('/orderOnline') }}">Order online</a></li>--}}
                         <li><a class="dropdown-item" href="{{ url('/news') }}">News</a></li>
                         <li><a class="dropdown-item" href={{ url('/printingData/create') }}>Request a job</a></li>
                         <li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>
@@ -84,7 +84,7 @@
                 <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request a job!</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
-                <li class="item"><a class="no-dropdown" href="{{ url('/orderOnline') }}">Order online</a></li>
+                {{--<li class="item"><a class="no-dropdown" href="{{ url('/orderOnline') }}">Order online</a></li>--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/news') }}">News</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/learn') }}">Learn to 3D print</a></li>
