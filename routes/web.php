@@ -188,7 +188,7 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
 
 // Group of routes available to online jobs manager only
 /////////////////////////////////////////////////////////////////////////////////////////////
-Route::group(['middleware' => ['role:OnlineJobsManager|administrator']], function () {
+Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrator']], function () {
 
     // List pending online requests
     Route::get('/OnlineJobs/index', 'OrderOnlineController@index');

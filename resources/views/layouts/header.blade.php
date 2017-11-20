@@ -70,7 +70,7 @@
                 </li>
 
 
-                @can('receive_online_job_requests')
+                @can('receive_online_job_requests|jobs_manage')
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
                 @elsecan('jobs_manage')
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
