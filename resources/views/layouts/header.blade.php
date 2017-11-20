@@ -69,12 +69,12 @@
                     </ul>
                 </li>
 
-
-                @can('receive_online_job_requests|jobs_manage')
-                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
-                @elsecan('jobs_manage')
-                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
-                @endcan
+                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
+                {{--@can('receive_online_job_requests|jobs_manage')--}}
+                    {{--<li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>--}}
+                {{--@elsecan('jobs_manage')--}}
+                    {{--<li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>--}}
+                {{--@endcan--}}
 
 
                 <li class="item"><a class="no-dropdown" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
