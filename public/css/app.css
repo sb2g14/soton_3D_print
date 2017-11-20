@@ -500,7 +500,7 @@ body.is-fixed {
   margin-bottom: 30px;
 }
 .s-welcome {
-  margin-top: 150px;
+  margin-top: 60px;
   /* MODAL STYLES */
   /* #myModal {
         .list-group-item {
@@ -544,6 +544,7 @@ body.is-fixed {
   width: 50px;
   height: 50px;
   display: inline-block;
+  float: left;
   margin-bottom: 20px;
 }
 .s-welcome .bl-logo.logo-issue {
@@ -557,6 +558,48 @@ body.is-fixed {
 .s-welcome .bl-logo.logo-stat {
   background: url('/Images/icons/bar-chart.svg') 50% 50% no-repeat;
   background-size: cover;
+}
+.s-welcome .cardblock {
+  background: #fff;
+  min-height: 50px;
+  position: relative;
+  margin-bottom: 30px;
+}
+.s-welcome .cardblock:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+}
+.s-welcome .cardblock .info-box {
+  color: #fff;
+  padding: 20px 20px 0;
+  position: relative;
+  overflow: hidden;
+}
+.s-welcome .cardblock .info-box.box-issue {
+  background-color: #D81B60;
+}
+.s-welcome .cardblock .info-box.box-announcement {
+  background-color: #0097A7;
+}
+.s-welcome .cardblock .info-box.box-stat {
+  background-color: #00796B;
+}
+.s-welcome .cardblock .info-box .caption {
+  display: inline-block;
+  padding: 12px;
+}
+.s-welcome .cardblock .body {
+  padding: 20px;
+  height: 335px;
+}
+.s-welcome .cardblock .body.bg-pink {
+  background-color: #E91E63;
+}
+.s-welcome .cardblock .body.bg-cyan {
+  background-color: #00BCD4;
+}
+.s-welcome .cardblock .body.bg-teal {
+  background-color: #009688;
 }
 .s-welcome .list-group-item {
   margin-bottom: 30px;

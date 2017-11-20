@@ -452,7 +452,7 @@ body {
 
 //content styles for home page
 .s-welcome {
-    margin-top: 150px;
+    margin-top: 60px;
 
     .container {
         margin-top: -150px;
@@ -482,19 +482,63 @@ body {
         width: 50px;
         height: 50px;
         display: inline-block;
+        float: left;
         margin-bottom: 20px;
-              
+                       
         &.logo-issue {
             background:  url('/Images/icons/issue.svg') 50% 50% no-repeat; 
-            background-size: cover;
+            background-size: cover; 
         }
         &.logo-announcement {
             background:  url('/Images/icons/announcement.svg') 50% 50% no-repeat; 
-            background-size: cover;
+            background-size: cover; 
         }
         &.logo-stat {
             background:  url('/Images/icons/bar-chart.svg') 50% 50% no-repeat; 
-            background-size: cover;
+            background-size: cover; 
+        }
+    }
+
+    .cardblock {
+        background: #fff;
+        min-height: 50px;
+        position: relative;
+        margin-bottom: 30px;
+        &:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            cursor: pointer;
+        }
+        .info-box {
+            color: #fff;
+            padding: 20px 20px 0;
+            position: relative;
+            overflow: hidden;
+            &.box-issue {
+                background-color: #D81B60;   
+            }
+            &.box-announcement {
+                background-color: #0097A7;
+            }
+            &.box-stat {
+                background-color: #00796B;
+            }
+            .caption {
+                display: inline-block;
+                padding: 12px;
+            }
+        }
+        .body {
+            padding: 20px;
+            height: 335px;
+            &.bg-pink {
+                background-color: #E91E63;
+            }
+            &.bg-cyan {
+                background-color: #00BCD4;
+            }
+            &.bg-teal {
+                background-color: #009688;
+            }
         }
     }
 

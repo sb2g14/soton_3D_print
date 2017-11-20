@@ -43,10 +43,82 @@
     @endif
     {{--Main content--}}
     <div class="s-welcome">
-        <div class="container" style="position: relative; top: -130px">
-            
+        {{-- style="position: relative; top: -130px">--}}
+
+        <div class="container"> 
+                      
             @if (Auth::check())  {{--Check whether user is logged in--}}
-                <div class="row is-table-row">
+                <div class="row clearfix is-table-row">
+                    <!-- Issues -->
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="cardblock card-issue">
+                            <div class="info-box box-issue">
+                                <div class="bl-logo logo-issue"></div>
+                                <div class="caption"><h3>ISSUES</h3></div>
+                            </div>
+                            <div class="body bg-pink">
+                                
+                                {{--Here we show last issue:--}}
+                                @if(!empty($post_last))
+                                    <ul id="form" class=" lsn list-group">
+                                        <li class="list-group-item">
+                                            <div class="alert">
+                                                {{--Print title of a post--}}
+                                                 <h4><b> {{ isset($post_last->printer)  ? 'Printer '.$post_last->printer->id.':' : '' }} {{ $post_last->title }}</b></h4>
+                                                {{--Print name of a user who created a post--}}
+                                                <h5 class="media-heading"> {{$post_last->user->name}}  <small><i>
+                                                            {{--Print date and time when a post was created--}}
+                                                            Posted on {{ $post_last->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                                {{--Print the text of a post--}}
+                                                {{ $post_last->body }}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <!-- #END# Issues -->
+                    <!-- Announcements -->
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="cardblock card-announcement">
+                            <div class="info-box box-announcement">
+                                <div class="bl-logo logo-announcement"></div>
+                                <div class="caption"><h3>ANNOUNCEMENTS</h3></div>
+                            </div>
+                            <div class="body bg-cyan">
+                                <ul class="lsn list-group">
+                                    <li class="list-group-item">
+                                        <div class="alert">
+                                            <h4><b>Announcement {{  $announcement_last->id + 1 }} </b></h4>
+                                            <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
+                                                        {{--Print date and time when a post was created--}}
+                                                        Posted on {{ $announcement_last->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                            <h5> {{ $announcement_last->message }} </h5>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- #END# Announcements -->
+                    <!-- Statistics -->
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="cardblock">
+                            <div class="info-box box-stat">
+                                <div class="bl-logo logo-stat"></div>
+                                <div class="caption"><h3>STATISTICS</h3></div>
+                            </div>
+                            <div class="body bg-teal">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- #END# Statistics -->
+                </div>
+
+
+                <!-- <div class="row is-table-row">
                     <div class="col-sm-4 item">
                         <div class="bl-header">
                             <div class="bl-logo logo-issue"></div>
@@ -165,7 +237,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
 
                 @else

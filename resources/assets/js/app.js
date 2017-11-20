@@ -1,9 +1,9 @@
 $(document).ready(function() {
-    $(".btn-issue").click(function(){
+    $(".card-issue").click(function(){
         $("#issueModal").modal();
     });
 
-    $(".btn-announcement").click(function(){
+    $(".card-announcement").click(function(){
         $("#announcementModal").modal();
     });
 
