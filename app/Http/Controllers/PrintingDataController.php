@@ -118,7 +118,7 @@ class PrintingDataController extends Controller
             'student_name' => 'required|string|min:3|max:100|regex:/^[a-z ,.\'-]+$/i',
             'email' => 'required|email|min:3|max:30|regex:/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/',
             'student_id' => 'required|numeric|min:8',
-            'material_amount' => 'required|numeric|min:1|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
+            'material_amount' => 'required|numeric|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
             'use_case' => 'required|min:3'
         ]);
         if (Auth::check()) {
@@ -365,12 +365,9 @@ class PrintingDataController extends Controller
     $print_id = $job->prints->first()->id;
     $print = Prints::findOrFail($print_id);
     $now = Carbon::now('Europe/London');
-    //$time = time() - strtotime($data->updated_at);
-    //$hours = date('H', $time);
-    //$minutes = date('i', $time);
-    $hours = $now->diffInHours($job->created_at);
-    $minutes = $now->diffInMinutes($job->created_at) - $hours*60;
-    $new_time = $hours.':'.sprintf('%02d', $minutes);
+//    $hours = $now->diffInHours($job->created_at);
+//    $minutes = $now->diffInMinutes($job->created_at) - $hours*60;
+//    $new_time = $hours.':'.sprintf('%02d', $minutes);
     $new_price = 0;
 
 //    Condition to reduce price only for 3Dhubs manager
@@ -380,11 +377,11 @@ class PrintingDataController extends Controller
 //        $new_price = round(3 * ($hours + $minutes / 60), 2);
 //    }
     $job->update(['status'=>'Failed',
-        'total_duration' => $new_time,
+//        'total_duration' => $new_time,
         'total_price' => $new_price
         ]);
     $print->update([
-        'time' => $new_time,
+//        'time' => $new_time,
         'price' => $new_price,
         'status' => 'Failed',
     ]);

@@ -52,7 +52,7 @@ $(function () {
             $("#serial").focus();
             $("#serial").addClass("parsley-error");
             error_serial = true;
-        } else if(!serial.val().match(/^[A-Z-a-z-0-9]+$/)){
+        } else if(!serial.val().match(/^[A-Z a-z-0-9]+$/)){
             $("#serial_error").html("Only numbers are allowed");
             $("#serial_error").show();
             $("#serial").focus();
@@ -73,7 +73,7 @@ $(function () {
         var other = $("#other");
 
         if(!other.val().match(/^[a-z A-Z0-9.,!]+$/)){
-            $("#other_error").html("Not permitted characters are inputed");
+            $("#other_error").html("Not permitted characters are inputted");
             $("#other_error").show();
             $("#other").focus();
             $("#other").addClass("parsley-error");

@@ -34,15 +34,15 @@ class PostsController extends Controller
             $printer_busy->changePrinterStatus($printers_busy);
         }
 
-        $posts =  posts::orderBy('created_at', 'desc')->skip(1)->take(20)->get();
+        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
         $posts -> toArray($posts);
         $post_last = posts::orderBy('created_at','desc')->first();
-        $announcements =  Announcement::orderBy('created_at', 'desc')->skip(1)->take(20)->get();
+        $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
         $announcements -> toArray($announcements);
         $announcement_last = Announcement::orderBy('created_at','desc')->first();
 
         $public_announcement_last = PublicAnnouncements::orderBy('id','desc')->first();
-        $public_announcements =  PublicAnnouncements::orderBy('id', 'desc')->skip(1)->take(20)->get();
+        $public_announcements =  PublicAnnouncements::orderBy('id', 'desc')->take(20)->get();
         return view('welcome.index', compact('posts','post_last','announcements','announcement_last','public_announcements','public_announcement_last'));
     }
 
