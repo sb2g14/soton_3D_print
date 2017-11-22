@@ -18,7 +18,7 @@ $(function () {
             $("#message_last_error").show();
             $("#message_last").addClass("parsley-error");
             error_message = true;
-        } else if(!message.val().match(/^[a-z A-Z0-9.,]+$/)){
+        } else if(!message.val().match(/^[a-z A-Z0-9.,?!']+$/)){
             $("#message_last_error").html("Only alphanumeric characters are allowed");
             $("#message_last_error").show();
             $("#message_last").addClass("parsley-error");
