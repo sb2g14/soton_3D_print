@@ -486,15 +486,15 @@ body {
         margin-bottom: 20px;
                        
         &.logo-issue {
-            background:  url('/Images/icons/issue.svg') 50% 50% no-repeat; 
+            background:  url('/Images/icons/ic_issue.svg') 50% 50% no-repeat; 
             background-size: cover; 
         }
         &.logo-announcement {
-            background:  url('/Images/icons/announcement.svg') 50% 50% no-repeat; 
+            background:  url('/Images/icons/ic_announcement.svg') 50% 50% no-repeat; 
             background-size: cover; 
         }
         &.logo-stat {
-            background:  url('/Images/icons/bar-chart.svg') 50% 50% no-repeat; 
+            background:  url('/Images/icons/ic_chart.svg') 50% 50% no-repeat; 
             background-size: cover; 
         }
     }
@@ -514,13 +514,13 @@ body {
             position: relative;
             overflow: hidden;
             &.box-issue {
-                background-color: #D81B60;   
+                background-color: #880E4F;   
             }
             &.box-announcement {
-                background-color: #0097A7;
+                background-color: #006064; 
             }
             &.box-stat {
-                background-color: #00796B;
+                background-color: #004D40;
             }
             .caption {
                 display: inline-block;
@@ -531,13 +531,25 @@ body {
             padding: 20px;
             height: 335px;
             &.bg-pink {
-                background-color: #E91E63;
+                background-color: #F8BBD0;
+                &:hover {
+                   background-color: #880E4F; 
+                   color: #fff;
+                }
             }
             &.bg-cyan {
-                background-color: #00BCD4;
+                background-color: #B2EBF2;
+                &:hover {
+                   background-color: #006064; 
+                   color: #fff;
+                }
             }
             &.bg-teal {
-                background-color: #009688;
+                background-color: #B2DFDB;
+                &:hover {
+                   background-color: #004D40; 
+                   color: #fff;
+                }
             }
         }
     }
@@ -545,12 +557,17 @@ body {
     
 
     .list-group-item {
+        background-color: transparent;
+        border: none;
         margin-bottom: 30px;
         h4, h5 {
             margin-bottom: 10px;
         }
         button {
             margin-bottom: 10px;
+        }
+        ol {
+            margin-left: 30px;
         }
         .media-left {
             img {
@@ -777,7 +794,6 @@ footer {
             width: 100%;
         }
         .is-table-row [class*="col-"] {
-            background: white;
             float: none;
             display: table-cell;
             vertical-align: top;

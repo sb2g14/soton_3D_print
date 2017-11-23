@@ -7,6 +7,12 @@ $(document).ready(function() {
         $("#announcementModal").modal();
     });
 
+    $(".card-rules").click(function(){
+        $("#rulesModal").modal();
+    });
+
+    
+
     /*SLIDER script*/
     $("#image-slider_home").owlCarousel({
         loop: true,

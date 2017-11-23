@@ -117,136 +117,77 @@
                     <!-- #END# Statistics -->
                 </div>
 
-
-                <!-- <div class="row is-table-row">
-                    <div class="col-sm-4 item">
-                        <div class="bl-header">
-                            <div class="bl-logo logo-issue"></div>
-                            <div>
-                                <button class="btn btn-lg btn-info btn-issue">ISSUES</button>
-                            </div>
-                        </div>
-
-                        {{--Here we show last issue:--}}
-                        @if(!empty($post_last))
-                            <ul id="form" class=" lsn list-group">
-                                <li class="list-group-item">
-                                    <div class="alert alert-warning">
-                                        {{--Print title of a post--}}
-                                         <h4><b> {{ isset($post_last->printer)  ? 'Printer '.$post_last->printer->id.':' : '' }} {{ $post_last->title }}</b></h4>
-                                        {{--Print name of a user who created a post--}}
-                                        <h5 class="media-heading"> {{$post_last->user->name}}  <small><i>
-                                                    {{--Print date and time when a post was created--}}
-                                                    Posted on {{ $post_last->created_at->toDayDateTimeString() }}:</i></small></h5>
-                                        {{--Print the text of a post--}}
-                                        {{ $post_last->body }}
-                                    </div>
-
-                                    {{--Here we show comments to each issue:--}}
-                                    <button id="show_comments" type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ $post_last->id }}">
-                                            Show comments
-                                    </button>
-                                    <div id="{{ $post_last->id}}" class="card collapse">
-                                        <ul class="lsn">
-                                            @foreach($post_last->comments as $comment)
-                                                <li>
-                                                    <div class="media">
-                                                        <div class="media-left">
-                                                            <img src="/Images/img_avatar3.png" class="media-object">
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>
-                                                            <p>{{ $comment->body }}</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                        @can('add_private_posts_and_announcements')
-                                        <div id="{{ $post_last->id }}" class="card">
-                                            <form method="POST" action="/posts/{{ $post_last->id }}/comments">
-                                                {{ csrf_field() }}
-                                                <div class="form-group">
-                                                    <textarea id="comment_last" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                    <span id="comment_last_error" class="help-block"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <button id="comment_last" type="submit" class="btn btn-primary">Comment</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        @endcan
-                                    </div>
-                                </li>
-                            </ul>
-                        @endif
-
-                    </div>
-
-                    <div class="col-sm-4 item">
-                        <div class="bl-header">
-                            <div class="bl-logo logo-announcement"></div>
-                            <div>
-                                <button class="btn btn-lg btn-info btn-announcement">ANNOUNCEMENTS</button>
-                            </div>
-                        </div>
-
-
-                        <ul class="lsn list-group">
-                            <li class="list-group-item">
-                                <div class="alert alert-info">
-                                    <h4><b>Announcement {{  $announcement_last->id + 1 }} </b></h4>
-                                    <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
-                                                {{--Print date and time when a post was created--}}
-                                                Posted on {{ $announcement_last->created_at->toDayDateTimeString() }}:</i></small></h5>
-                                    <h5> {{ $announcement_last->message }} </h5>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="lsn list-group">
-                            <li class="list-group-item">
-                                <div class="alert alert-info">
-
-                                    <h4 style="color: red"><b>Please visit <a href="{{ url('http://3dprint.clients.soton.ac.uk/news') }}"
-                                                                              target="_blank">NEWS</a> to check how to use this resource.</b></h4>
-                                    <br>
-                                    <h1>Development team.</h1>
-                                </div>
-                            </li>
-                        </ul>
-
-                        <div id="all-announcements" class="card collapse">
-                            @foreach($announcements as $announcement)
-                                <li class="list-group-item">
-                                    <div class="alert alert-info">
-                                    <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
-                                    <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
-                                                {{--Print date and time when a post was created--}}
-                                                Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
-                                    <h5> {{ $announcement->message }} </h5>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="col-sm-4 item">
-                        <div class="bl-header">
-                            <div class="bl-logo logo-stat"></div>
-                            <div>
-                                <h3>STATISTICS</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
-
                 @else
-                <div class="row is-table-row">
+                <div class="row clearfix is-table-row">
+                    <!-- RULES -->
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="cardblock card-rules">
+                            <div class="info-box box-issue">
+                                <div class="bl-logo logo-issue"></div>
+                                <div class="caption"><h3>WORKSHOP RULES</h3></div>
+                            </div>
+                            <div class="body bg-pink">
+                                
+                                <ul id="form" class=" lsn list-group">
+                                    <li class="list-group-item">
+                                        <p>
+                                            <ol>
+                                                <li>Export your file to .stl format and bring it with you to the workshop</li>
+                                                <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOUSELF to the cupboards!</b></li>
+                                                <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
+                                                <li>Request a job...</li>
+                                            </ol>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- #END# Rules -->
+                    <!-- Announcements -->
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="cardblock card-announcement">
+                            <div class="info-box box-announcement">
+                                <div class="bl-logo logo-announcement"></div>
+                                <div class="caption"><h3>ANNOUNCEMENTS</h3></div>
+                            </div>
+                            <div class="body bg-cyan">
+                                <ul class="lsn list-group">
+                                    <li class="list-group-item">
+                                        <div class="alert">
+                                            <h4><b>Announcement {{  $announcement_last->id + 1 }} </b></h4>
+                                            <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
+                                                        {{--Print date and time when a post was created--}}
+                                                        Posted on {{ $announcement_last->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                            <h5> {{ $announcement_last->message }} </h5>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- #END# Announcements -->
+                    <!-- Statistics -->
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="cardblock">
+                            <div class="info-box box-stat">
+                                <div class="bl-logo logo-stat"></div>
+                                <div class="caption"><h3>STATISTICS</h3></div>
+                            </div>
+                            <div class="body bg-teal">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- #END# Statistics -->
+                </div>
+
+                <!-- <div class="row"> 
                     <div class="col-sm-4 item">
                         <div class="bl-header">
                             <div class="bl-logo logo-issue"></div>
                             <div>
-                                <h3>RULES FOR USING THE 3D PRINTERS</h3>
+                                <h3>WORKSHOP RULES</h3>
                             </div>
                         </div>
                         <p>
@@ -312,13 +253,13 @@
 
                                 @foreach($public_announcements as $announcement)
                                     <li class="list-group-item">
-                                        <!-- <div class="alert alert-info"> -->
+                                        
                                         <h4><b>Announcement {{ $announcement->id }}</b></h4>
                                         <h5 class="media-heading"> @if($announcement->user_id != 0)  {{$announcement->user->name}} @else Anonym @endif <small><i>
                                                     {{--Print date and time when a post was created--}}
                                                     Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
                                         <h5> {{ $announcement->message }} </h5>
-                                        <!-- </div> -->
+                                        
                                     </li>
                                 @endforeach
                             </div>
@@ -332,7 +273,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             @endif
         </div>
 
@@ -436,68 +377,116 @@
 
         <!-- Modal ANNOUNCEMENTS-->
         <div id="announcementModal" class="modal fade" role="dialog">
-          <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-lg">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h3 class="modal-title">ANNOUNCEMENTS</h3>
-                </div>
-                <div class="modal-body text-left">
-                    {{--This is a button to create an announcement:--}}
-                    @can('add_private_posts_and_announcements')
-                    <button id="add_announcement" type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#addAnnouncement">Add new announcement</button>
-                    @endcan
-                    
-                    {{--Form to add announcement--}}
-                    <div id="addAnnouncement" class="card collapse text-left">
-                        <form method="POST" action="/announcements">
-                            {{ csrf_field() }}
-                            <div class="form-group">
-                                <label for="message">New Announcement</label><br>
-                                <textarea id="announcement" name="message" rows="8"
-                                          {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
-                                            {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
-                                          {{--@else --}}
-                                            placeholder="Post will appear only for registered users"
-                                          {{--@endif --}}
-                                            class="form-control"></textarea>
-                                <span id="announcement_error" class="help-block"></span>
-                            </div>
-                            @can('add_public_posts_and_announcements')
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="public" value="public">Public announcement</label>
-                            </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="email" value="email">Inform all by email</label>
-                            </div>
-                            @endcan
-                            <button id="post" type="submit" class="btn btn-primary">Post</button>
-                        </form>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title">ANNOUNCEMENTS</h3>
+                    </div>
+                    <div class="modal-body text-left">
+                        {{--This is a button to create an announcement:--}}
+                        @can('add_private_posts_and_announcements')
+                        <button id="add_announcement" type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#addAnnouncement">Add new announcement</button>
+                        @endcan
+                        
+                        {{--Form to add announcement--}}
+                        <div id="addAnnouncement" class="card collapse text-left">
+                            <form method="POST" action="/announcements">
+                                {{ csrf_field() }}
+                                <div class="form-group">
+                                    <label for="message">New Announcement</label><br>
+                                    <textarea id="announcement" name="message" rows="8"
+                                              {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
+                                                {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
+                                              {{--@else --}}
+                                                placeholder="Post will appear only for registered users"
+                                              {{--@endif --}}
+                                                class="form-control"></textarea>
+                                    <span id="announcement_error" class="help-block"></span>
+                                </div>
+                                @can('add_public_posts_and_announcements')
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="public" value="public">Public announcement</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="email" value="email">Inform all by email</label>
+                                </div>
+                                @endcan
+                                <button id="post" type="submit" class="btn btn-primary">Post</button>
+                            </form>
+                        </div>
+
+                        <div id="all-announcements">
+                            @foreach($announcements as $announcement)
+                                <li class="list-group-item">
+                                    <!-- <div class="alert alert-info"> -->
+                                    <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
+                                    <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
+                                                {{--Print date and time when a post was created--}}
+                                                Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                    <h5> {{ $announcement->message }} </h5>
+                                    <!-- </div> -->
+                                </li>
+                            @endforeach
+                        </div>
                     </div>
 
-                    <div id="all-announcements">
-                        @foreach($announcements as $announcement)
-                            <li class="list-group-item">
-                                <!-- <div class="alert alert-info"> -->
-                                <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
-                                <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
-                                            {{--Print date and time when a post was created--}}
-                                            Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
-                                <h5> {{ $announcement->message }} </h5>
-                                <!-- </div> -->
-                            </li>
-                        @endforeach
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
+        </div>
 
-          </div>
+        <!-- Modal WORKSHOP RULES-->
+        <div id="rulesModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title">WORKSHOP RULES</h3>
+                    </div>
+                    <div class="modal-body text-left">
+                        <p>
+                            <ol>
+                                <li>Export your file to .stl format and bring it with you to the workshop</li>
+                                <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOUSELF to the cupboards!</b></li>
+                                <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
+                                <li>Request a job
+                                    <ol type="a">
+                                        <li>Access the workshop website <a href="https://3dprint.clients.soton.ac.uk/">https://3dprint.clients.soton.ac.uk/</a></li>
+                                        <li>Select <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">Request a job in the workshop!</a></q></li>
+                                        <li>Fill in all required details</li>
+                                        <li>Click submit</li>
+                                    </ol>
+                                </li>
+                                <li>Ask a demonstrator to come to you to approve the print</li>
+                                <li>Press the print button to start the print <b>after your print has been approved</b></li>
+                                <li>Wait for at least 10 layers to see if there are any errors. Most errors will happen at this point</li>
+                                <li type="disc" style="list-style-type:disc">If there is an error:
+                                    <ol type="a">
+                                        <li>Stop the print</li>
+                                        <li>Tell a demonstrator to mark the print as failed so you don't get charged</li>
+                                        <li>Set up the print again. Ask a demonstrator for advice on how to avoid this error</li>
+                                        <li>Go through the same <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">Request a job in the workshop!</a></q> procedure.</li>
+                                    </ol>
+                                </li>
+                                <li type="disc" style="list-style-type:disc">If you need to leave the workshop during your print, leave your contact details on a piece of paper with your expected return time next to your printer</li>
+                                <li value="8">Once your print is finished, tell a demonstrator to mark the print as finished</li>
+                                <li>Remove the print from the platform</li>
+                                <li>Once finished, return all printing materials to the cupboards</li>
+                            </ol>
+                        </p>   
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
