@@ -103,6 +103,11 @@
                                         <div class="col-md-12">
                                             <label for="comments">Add comments to be seen by a customer (optional):</label><br>
                                             <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                            @if ($errors->has('comments'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('comments') }}</strong>
+                                                </span>
+                                            @endif
                                             <span class="help-block" id="message_error"></span>
                                         </div>
                                     </div>

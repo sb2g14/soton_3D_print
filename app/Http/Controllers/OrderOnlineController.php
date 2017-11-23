@@ -152,7 +152,7 @@ class OrderOnlineController extends Controller
         $assigned_print = request()->validate([
             'hours' => 'required',
             'minutes' => 'required',
-            'material_amount' => 'required|numeric|min:1|max:10',
+            'material_amount' => 'required|numeric|min:0.1|max:9999',
             'comments' => new Text
             ]);
 
