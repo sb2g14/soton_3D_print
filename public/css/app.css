@@ -548,15 +548,15 @@ body.is-fixed {
   margin-bottom: 20px;
 }
 .s-welcome .bl-logo.logo-issue {
-  background: url('/Images/icons/issue.svg') 50% 50% no-repeat;
+  background: url('/Images/icons/ic_issue.svg') 50% 50% no-repeat;
   background-size: cover;
 }
 .s-welcome .bl-logo.logo-announcement {
-  background: url('/Images/icons/announcement.svg') 50% 50% no-repeat;
+  background: url('/Images/icons/ic_announcement.svg') 50% 50% no-repeat;
   background-size: cover;
 }
 .s-welcome .bl-logo.logo-stat {
-  background: url('/Images/icons/bar-chart.svg') 50% 50% no-repeat;
+  background: url('/Images/icons/ic_chart.svg') 50% 50% no-repeat;
   background-size: cover;
 }
 .s-welcome .cardblock {
@@ -576,13 +576,13 @@ body.is-fixed {
   overflow: hidden;
 }
 .s-welcome .cardblock .info-box.box-issue {
-  background-color: #D81B60;
+  background-color: #880E4F;
 }
 .s-welcome .cardblock .info-box.box-announcement {
-  background-color: #0097A7;
+  background-color: #006064;
 }
 .s-welcome .cardblock .info-box.box-stat {
-  background-color: #00796B;
+  background-color: #004D40;
 }
 .s-welcome .cardblock .info-box .caption {
   display: inline-block;
@@ -593,15 +593,29 @@ body.is-fixed {
   height: 335px;
 }
 .s-welcome .cardblock .body.bg-pink {
-  background-color: #E91E63;
+  background-color: #F8BBD0;
+}
+.s-welcome .cardblock .body.bg-pink:hover {
+  background-color: #880E4F;
+  color: #fff;
 }
 .s-welcome .cardblock .body.bg-cyan {
-  background-color: #00BCD4;
+  background-color: #B2EBF2;
+}
+.s-welcome .cardblock .body.bg-cyan:hover {
+  background-color: #006064;
+  color: #fff;
 }
 .s-welcome .cardblock .body.bg-teal {
-  background-color: #009688;
+  background-color: #B2DFDB;
+}
+.s-welcome .cardblock .body.bg-teal:hover {
+  background-color: #004D40;
+  color: #fff;
 }
 .s-welcome .list-group-item {
+  background-color: transparent;
+  border: none;
   margin-bottom: 30px;
 }
 .s-welcome .list-group-item h4,
@@ -610,6 +624,9 @@ body.is-fixed {
 }
 .s-welcome .list-group-item button {
   margin-bottom: 10px;
+}
+.s-welcome .list-group-item ol {
+  margin-left: 30px;
 }
 .s-welcome .list-group-item .media-left img {
   width: 30px;
@@ -773,7 +790,6 @@ footer .team {
     width: 100%;
   }
   .s-welcome .is-table-row [class*="col-"] {
-    background: white;
     float: none;
     display: table-cell;
     vertical-align: top;
