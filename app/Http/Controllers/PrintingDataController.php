@@ -23,6 +23,11 @@ class PrintingDataController extends Controller
      */
     public function index()
     {
+        // Check if all current jobs are finished
+        $printers_busy = Printers::where('in_use','=', 1)->get();
+        foreach ($printers_busy as $printer_busy) {
+            $printer_busy->changePrinterStatus($printers_busy);
+        }
         $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 0)->get();
         return view('printingData.index', compact('jobs'));
     }
@@ -65,12 +70,22 @@ class PrintingDataController extends Controller
 
     public function approved()
     {
+        // Check if all current jobs are finished
+        $printers_busy = Printers::where('in_use','=', 1)->get();
+        foreach ($printers_busy as $printer_busy) {
+            $printer_busy->changePrinterStatus($printers_busy);
+        }
         $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->get();
         return view('printingData.approved', compact('approved_jobs'));
     }
 
     public function finished()
     {
+        // Check if all current jobs are finished
+        $printers_busy = Printers::where('in_use','=', 1)->get();
+        foreach ($printers_busy as $printer_busy) {
+            $printer_busy->changePrinterStatus($printers_busy);
+        }
         $finished_jobs = Jobs::where('created_at', '>=', Carbon::now()->subMonth())->orderBy('created_at', 'desc')->where('status','!=', 'Waiting')->get();
 
         return view('printingData.finished', compact('finished_jobs'));
@@ -269,7 +284,6 @@ class PrintingDataController extends Controller
             'total_price' => $price,
             'job_approved_comment' => request('comments'),
             'job_approved_by' => Auth::user()->staff->id,
-            'job_finished_by' => Auth::user()->staff->id,
             'approved_at' => Carbon::now('Europe/London'),
             'requested_online' => 0,
             'status' => 'Approved',
@@ -341,12 +355,14 @@ class PrintingDataController extends Controller
             'total_material_amount' => $material_amount,
             'total_price' => $price,
             'status'=> request('successful'),
+            'job_finished_by' => Auth::user()->staff->id
         ]);
         $print->update([
             'time' => $time,
             'material_amount' => $material_amount,
             'price' => $price,
             'status' => request('successful'),
+            'print_finished_by' => Auth::user()->staff->id
         ]);
 
         session()->flash('message', 'The job has been revised!');
@@ -364,7 +380,7 @@ class PrintingDataController extends Controller
     $job = Jobs::findOrFail($id);
     $print_id = $job->prints->first()->id;
     $print = Prints::findOrFail($print_id);
-    $now = Carbon::now('Europe/London');
+//    $now = Carbon::now('Europe/London');
 //    $hours = $now->diffInHours($job->created_at);
 //    $minutes = $now->diffInMinutes($job->created_at) - $hours*60;
 //    $new_time = $hours.':'.sprintf('%02d', $minutes);
@@ -378,12 +394,14 @@ class PrintingDataController extends Controller
 //    }
     $job->update(['status'=>'Failed',
 //        'total_duration' => $new_time,
-        'total_price' => $new_price
+        'total_price' => $new_price,
+        'job_finished_by' => Auth::user()->staff->id
         ]);
     $print->update([
 //        'time' => $new_time,
         'price' => $new_price,
         'status' => 'Failed',
+        'print_finished_by' => Auth::user()->staff->id
     ]);
 
 
@@ -400,6 +418,8 @@ class PrintingDataController extends Controller
         $print_id = $job->prints->first()->id;
         $print = Prints::findOrFail($print_id);
         printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
+        $job->update(array('job_finished_by' => Auth::user()->staff->id));
+        $print->update(array('print_finished_by' => Auth::user()->staff->id));
 
         session()->flash('message', 'The job is successful');
 
