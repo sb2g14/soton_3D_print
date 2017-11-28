@@ -33,10 +33,14 @@ class printers extends Model
     }
     public function changePrinterStatus()
     {
-            $job = $this->prints->last();
-            list($h, $i, $s) = explode(':', $job->time);
-            if (Carbon::now('Europe/London')->gte($job->updated_at->addHour($h)->addMinutes($i))) {
-                $this->update(array('in_use' => 0));
+            $print = $this->prints->last();
+            $job = $print->jobs->last();
+            list($h, $i, $s) = explode(':', $print->time);
+            if (Carbon::now('Europe/London')->gte(Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i))) {
+                //$this->update(array('in_use' => 0));
+                if($job->requested_online == 0){
+                    $job->update(array('status' => 'Success', 'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
+                }
             }
     }
 }

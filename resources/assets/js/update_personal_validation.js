@@ -151,7 +151,7 @@ $(function () {
         $("#last_name_error").hide();
         $("#email_error").hide();
         $("#phone_error").hide();
-        $("#firs_name").removeClass("parsley-success");
+        $("#first_name").removeClass("parsley-success");
         $("#last_name").removeClass("parsley-success");
         $("#email").removeClass("parsley-success");
         $("#phone").removeClass("parsley-success");
