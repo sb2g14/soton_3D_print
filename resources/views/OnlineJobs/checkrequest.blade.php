@@ -49,7 +49,7 @@
                     Total price: <b>value</b>
                 </p>
                 <div>
-                    <button class="btn btn-lg btn-info btn-issue" data-toggle="modal" data-target="#addPrintModal">Add a print to this job</button>
+                    <button class="btn btn-lg btn-info btn-issue" data-toggle="modal" data-target="#addPrintModal">Add a print preview</button>
                 </div>
                 <!-- Modal assign prints-->
                 <div id="addPrintModal" class="modal fade" role="dialog">
@@ -159,7 +159,7 @@
             });
         </script>
     @endif
-    <script src="/js/approve_job_validation.js"></script>
+    <script src="/js/print_preview_validation.js"></script>
 @endsection
 
 
