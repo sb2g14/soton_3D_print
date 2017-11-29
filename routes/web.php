@@ -202,6 +202,12 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Job rejected by online jobs manager
     Route::get('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
 
+    // Route to approve Job
+    Route::get('/OnlineJobs/approveRequest/{id}', 'OrderOnlineController@approveRequest');
+
+    // Job approved by online jobs manager
+    Route::get('/OnlineJobs/approved', 'OrderOnlineController@approved');
+
 
 
 });

@@ -10,14 +10,14 @@ use App\Rules\UseCase;
 use App\User;
 use Illuminate\Http\Request;
 use App\Rules\CustomerNameValidation;
-use App\JobsPrints;
-use App\printers;
 use App\Jobs;
 use App\Prints;
 use App\cost_code;
 use App\Mail\onlineRequest;
+use App\Mail\jobConfirmation;
 use App\staff;
-use App\Rules\Text;
+use Carbon\Carbon;
+use Auth;
 
 
 class OrderOnlineController extends Controller
@@ -187,11 +187,41 @@ class OrderOnlineController extends Controller
 
         return redirect("/OnlineJobs/checkrequest/{$job->id}");
     }
+    public function approved()
+    {
+        $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 1)->get();
+
+        return view('OnlineJobs.approved', compact('approved_jobs'));
+    }
 
     // The job is accepted and the customer is informed about the price.
-    public function acceptJob()
+    public function approveRequest($id)
     {
-        //
+        $job = Jobs::findOrFail($id);
+
+        $job->update(array(
+            'status' => 'Approved',
+            'approved_at' => Carbon::now('Europe/London'),
+            'job_approved_by' => Auth::user()->staff->id,
+            'total_material_amount' => $job->prints->sum('material_amount'),
+            'total_price' => $job->prints->sum('price'),
+            )
+        );
+
+//        // Send an email to the customer with the total job parameters and require acceptance
+//        $email = $job->customer_email;
+//
+//        \Mail::send('emails.jobConfirmation', [], function($message) use ($email)
+//        {
+//            $message->to($email)->subject('This is test e-mail');
+//        });
+//        var_dump( \Mail:: failures());
+
+        // Notify the manager about successfully accepted job
+        notify()->flash('The job has been approved', 'success', [
+            'text' => 'Please send an email notification to the customer with the job quote',
+        ]);
+        return redirect('OnlineJobs/approved');
     }
 
     // The job has been rejected by Online Jobs Manager
