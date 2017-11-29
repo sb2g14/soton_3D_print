@@ -152,7 +152,7 @@
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Add print preview</button>
                 <a href="/OnlineJobs/index" class="btn btn-lg btn-info">Save Changes</a>
                 {{--<a href="/OnlineJobs/confirmDeleteJob/{{$job->id}}" class="btn btn-lg btn-danger">Reject job</a>--}}
-                <a href="mailto:?subject={{ $job->customer_name }} {{ $job->use_case }}&body=Hi" class="btn btn-lg btn-danger">Reject job</a>
+                <a href="/OnlineJobs/delete/{{$job->id}}" target="_blank" onclick="window.open('mailto:?subject={{ $job->customer_name }} {{ $job->use_case }}&body=Hi'); window.open('/OnlineJobs/delete/{{$job->id}}')" class="btn btn-lg btn-danger">Reject job</a>
                 <a href="/OnlineJobs/approvedRequests" class="btn btn-lg btn-primary">Approve job</a>
             </div>
         </div>
