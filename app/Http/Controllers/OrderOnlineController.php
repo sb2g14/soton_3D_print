@@ -153,7 +153,7 @@ class OrderOnlineController extends Controller
             'hours' => 'required',
             'minutes' => 'required',
             'material_amount' => 'required|numeric|min:0.1|max:9999',
-            'comments' => new Text
+            'comments' => 'max:255'
             ]);
 
         // create a print from the specified details
@@ -188,9 +188,35 @@ class OrderOnlineController extends Controller
         return redirect("/OnlineJobs/checkrequest/{$job->id}");
     }
 
-    // The job is accepted and the customer is informed with the price.
+    // The job is accepted and the customer is informed about the price.
     public function acceptJob()
     {
         //
+    }
+
+    // The job is rejected and the notification email sent to the customer
+//    public function confirmDeleteJob($job)
+//    {
+//        return view("/OnlineJobs/confrimDeleteJob/{$job->id}");
+//    }
+
+    // The job has been rejected by Online Jobs Manager
+    public function rejectJobManager($id)
+    {
+        $job = Jobs::findOrFail($id);
+//        $prints = $job->prints;
+//        foreach($prints as $print)
+//            printers::where('id','=', $print->id)->update(array('in_use'=> 0));
+//            $job->prints()->detach($print);
+//            $print->delete();
+//        endforeach
+        $job->delete();
+
+        // Notify that the job was rejected
+        notify()->flash('The job has been rejected', 'success', [
+            'text' => 'Please explain why the job has been rejected via email',
+        ]);
+
+        return redirect('OnlineJobs/index');
     }
 }

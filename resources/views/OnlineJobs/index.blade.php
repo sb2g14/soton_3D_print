@@ -1,17 +1,6 @@
 @extends('layouts.layout')
 
 @section('content')
-    {{--Load notification of an approved job--}}
-    @if (notify()->ready())
-        <script>
-            swal({
-                title: "{!! notify()->message() !!}",
-                text: "{!! notify()->option('text') !!}",
-                type: "{{ notify()->type() }}",
-                showConfirmButton: true
-            });
-        </script>
-    @endif
 
     {{--@if ($flash=session('message'))--}}
     {{--<div id="flash_message" class="alert alert-success" role="alert" style="position: relative; top: -10px">--}}
@@ -23,10 +12,10 @@
     <div class="container text-center m-b-md">
         {{--<div class="title">Pending Jobs</div>--}}
         <ul class="nav nav-pills nav-justified">
-            <li class="active"><a href="#">Pending Requests</a></li>
-            <li><a href="/printingData/approved">Pending Jobs</a></li>
-            <li><a href="/printingData/approved">Assign Prints</a></li>
-            <li><a href="/printingData/finished">Completed Jobs/Prints</a></li>
+            <li class="active"><a href="#">Requests</a></li>
+            <li><a href="/printingData/approved">Approved Jobs</a></li>
+            <li><a href="/printingData/approved">Prints</a></li>
+            <li><a href="/printingData/finished">Completed Jobs</a></li>
         </ul>
     </div>
     
@@ -39,8 +28,9 @@
                         <li class="text-left well">
                         {{--Print short description and a link--}}
                             <p>
+                                Job ID: <b>{{$job->id}}</b><br>
                                 Requested by: <b>{{$job->customer_name}}</b><br>
-                                Requester id: <b>{{$job->customer_id}}</b><br>
+                                {{--Requester id: <b>{{$job->customer_id}}</b>--}}
                                 Project/Cost Code: <b>{{ $job->use_case}}</b><br>
                                 Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
                             </p>
@@ -51,4 +41,18 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    {{--Load notification of an approved job--}}
+    @if (notify()->ready())
+        <script>
+            swal({
+                title: "{!! notify()->message() !!}",
+                text: "{!! notify()->option('text') !!}",
+                type: "{{ notify()->type() }}",
+                showConfirmButton: true
+            });
+        </script>
+    @endif
 @endsection

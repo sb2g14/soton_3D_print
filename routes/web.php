@@ -199,6 +199,14 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Assign prints to each online job request
     Route::post('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@assignPrints');
 
+    // Redirect to a blade with job delete option
+    Route::get('/OnlineJobs/confirmDeleteJob/{id}','OrderOnlineController@confirmDeleteJob');
+
+    // Job rejected by online jobs manager
+    Route::get('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
+
+
+
 });
 
 // Open a form to request a job
