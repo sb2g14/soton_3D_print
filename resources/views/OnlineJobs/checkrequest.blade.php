@@ -41,17 +41,7 @@
 
             {{--Assign prints to a requested job--}}
             <div class="col-sm-6 text-left">
-<<<<<<< HEAD
-=======
-                <h3>Total job stats</h3>
-                <p>Total job duration: <b>value</b> <br>
-                    Total material amount: <b>value</b> <br>
-                    Total price: <b>value</b>
-                </p>
-                <div>
-                    <button class="btn btn-lg btn-info btn-issue" data-toggle="modal" data-target="#addPrintModal">Add a print preview</button>
-                </div>
->>>>>>> 4a0b16508f2c119dd67dc474cdc97b97225188b2
+
                 <!-- Modal assign prints-->
                 <div id="addPrintModal" class="modal fade" role="dialog">
                     <div class="modal-dialog modal-lg">
@@ -152,7 +142,11 @@
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Add print preview</button>
                 <a href="/OnlineJobs/index" class="btn btn-lg btn-info">Save Changes</a>
                 {{--<a href="/OnlineJobs/confirmDeleteJob/{{$job->id}}" class="btn btn-lg btn-danger">Reject job</a>--}}
-                <a href="/OnlineJobs/delete/{{$job->id}}" target="_blank" onclick="window.open('mailto:?subject={{ $job->customer_name }} {{ $job->use_case }}&body=Hi'); window.open('/OnlineJobs/delete/{{$job->id}}')" class="btn btn-lg btn-danger">Reject job</a>
+                <a href="/OnlineJobs/delete/{{$job->id}}')" class="btn btn-lg btn-danger">Reject job</a>
+
+                <a href="mailto:{{ $job->customer_email }}?subject={{ $job->customer_name }}%20Job%20rejected
+                        &body=Dear%20{{ $job->customer_name }},%0D%0A%0D%0AI am writing to notify that your online job request to the 3D printing workshop was rejected.%0D%0A%0D%0A
+                        The reason for the rejection is ...%0D%0A%0A%0A%0D%0ASincirely,%0D%0A%0D%0A3D Printing Workshop Online Job Requests Manager" class="btn btn-lg btn-danger">Notify user about job reject</a>
                 <a href="/OnlineJobs/approvedRequests" class="btn btn-lg btn-primary">Approve job</a>
             </div>
         </div>

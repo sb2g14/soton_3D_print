@@ -194,22 +194,15 @@ class OrderOnlineController extends Controller
         //
     }
 
-    // The job is rejected and the notification email sent to the customer
-//    public function confirmDeleteJob($job)
-//    {
-//        return view("/OnlineJobs/confrimDeleteJob/{$job->id}");
-//    }
-
     // The job has been rejected by Online Jobs Manager
     public function rejectJobManager($id)
     {
         $job = Jobs::findOrFail($id);
-//        $prints = $job->prints;
-//        foreach($prints as $print)
-//            printers::where('id','=', $print->id)->update(array('in_use'=> 0));
-//            $job->prints()->detach($print);
-//            $print->delete();
-//        endforeach
+        $prints = $job->prints;
+        foreach($prints as $print) {
+            $job->prints()->detach($print->id);
+            $print->delete();
+        }
         $job->delete();
 
         // Notify that the job was rejected
