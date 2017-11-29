@@ -41,6 +41,17 @@
 
             {{--Assign prints to a requested job--}}
             <div class="col-sm-6 text-left">
+<<<<<<< HEAD
+=======
+                <h3>Total job stats</h3>
+                <p>Total job duration: <b>value</b> <br>
+                    Total material amount: <b>value</b> <br>
+                    Total price: <b>value</b>
+                </p>
+                <div>
+                    <button class="btn btn-lg btn-info btn-issue" data-toggle="modal" data-target="#addPrintModal">Add a print preview</button>
+                </div>
+>>>>>>> 4a0b16508f2c119dd67dc474cdc97b97225188b2
                 <!-- Modal assign prints-->
                 <div id="addPrintModal" class="modal fade" role="dialog">
                     <div class="modal-dialog modal-lg">
@@ -159,7 +170,7 @@
             });
         </script>
     @endif
-    <script src="/js/approve_job_validation.js"></script>
+    <script src="/js/print_preview_validation.js"></script>
 @endsection
 
 
