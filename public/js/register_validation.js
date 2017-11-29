@@ -82,12 +82,14 @@ $(function () {
     $("#password_error").hide();
     $("#password_confirm_error").hide();
     $("#student_id_error").hide();
+    $("#phone_error").hide();
 
     var error_name = true;
     var error_password_confirm = true;
     var error_email = true;
     var error_password = true;
     var error_id = true;
+    var error_phone = true;
 
     $("#name").keyup(function () {
         check_name();
@@ -104,6 +106,9 @@ $(function () {
     $("#student_id").keyup(function () {
         check_student_id();
     });
+    $("#phone").keyup(function () {
+        check_phone();
+    });
     $("#name").focusout(function () {
         check_name();
     });
@@ -118,6 +123,9 @@ $(function () {
     });
     $("#student_id").focusout(function () {
         check_student_id();
+    });
+    $("#phone").focusout(function () {
+        check_phone();
     });
 
     function check_name() {
@@ -134,7 +142,7 @@ $(function () {
             $("#name").removeClass("parsley-error");
             $("#name").addClass("parsley-success");
             error_name = false;
-        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false) {
+        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false && error_phone === false) {
             $("#register-button").addClass("btn-success");
         } else {
             $("#register-button").removeClass("btn-success");
@@ -172,7 +180,47 @@ $(function () {
             $("#student_id").removeClass("parsley-error");
             $("#student_id").addClass("parsley-success");
             error_id = false;
-        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false) {
+        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false && error_phone === false) {
+            $("#register-button").addClass("btn-success");
+            $("#register-button").trigger("cssClassChanged");
+            $("#register-button").prop('disabled', false);
+        } else {
+            $("#register-button").removeClass("btn-success");
+        }
+    }
+    function check_student_id() {
+        var id = $("#student_id");
+
+        if (id.val().length < 1) {
+            $("#student_id_error").html("Id cannot be empty");
+            $("#student_id_error").show();
+            $("#student_id").focus();
+            $("#student_id").addClass("parsley-error");
+            error_id = true;
+        } else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
+            $("#student_id_error").html("Id of a member of staff must be 8 digits long");
+            $("#student_id_error").show();
+            $("#student_id").focus();
+            $("#student_id").addClass("parsley-error");
+            error_id = true;
+        } else if (id.val()[0].match(/^[2345]/) && id.val().length !== 9) {
+            $("#student_id_error").html("The id of students must be 9 digits long");
+            $("#student_id_error").show();
+            $("#student_id").focus();
+            $("#student_id").addClass("parsley-error");
+            error_id = true;
+        } else if (!id.val().match()) {
+            $("#student_id_error").html("Only digits are allowed");
+            $("#student_id_error").show();
+            $("#student_id").addClass("parsley-error");
+            $("#student_id").focus();
+            error_id = true;
+        } else {
+            $("#student_id_error").hide();
+            $("#student_id").removeClass("parsley-error");
+            $("#student_id").addClass("parsley-success");
+            error_id = false;
+        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false && error_phone === false) {
             $("#register-button").addClass("btn-success");
             $("#register-button").trigger("cssClassChanged");
             $("#register-button").prop('disabled', false);
@@ -200,7 +248,7 @@ $(function () {
             $("#email").removeClass("parsley-error");
             $("#email").addClass("parsley-success");
             error_email = false;
-        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false) {
+        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false && error_phone === false) {
             $("#register-button").addClass("btn-success");
         } else {
             $("#register-button").removeClass("btn-success");
@@ -226,7 +274,7 @@ $(function () {
             $("#password").removeClass("parsley-error");
             $("#password").addClass("parsley-success");
             error_password = false;
-        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false) {
+        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false && error_phone === false) {
             $("#register-button").addClass("btn-success");
         } else {
             $("#register-button").removeClass("btn-success");
@@ -239,7 +287,6 @@ $(function () {
         if (password !== confirmPassword) {
             $("#password-confirm_error").html("Passwords do not match");
             $("#password-confirm_error").show();
-            $("#password-confirm").focus();
             $("#password-confirm").addClass("parsley-error");
             error_password_confirm = true;
         } else {
@@ -247,8 +294,36 @@ $(function () {
             $("#password-confirm").removeClass("parsley-error");
             $("#password-confirm").addClass("parsley-success");
             error_password_confirm = false;
-        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false) {
+        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false && error_phone === false) {
             $("#register-button").addClass("btn-success");
+        } else {
+            $("#register-button").removeClass("btn-success");
+        }
+    }
+    function check_phone() {
+        var phone = $("#phone");
+
+        if (phone.val().length !== 11) {
+            $("#phone_error").html("Phone number should contain 11 digits");
+            $("#phone_error").show();
+            $("#phone").focus();
+            $("#phone").addClass("parsley-error");
+            error_phone = true;
+        } else if (!phone.val().match(/^\d+$/)) {
+            $("#phone_error").html("Phone number should contain digits only");
+            $("#phone_error").show();
+            $("#phone").focus();
+            $("#phone").addClass("parsley-error");
+            error_phone = true;
+        } else {
+            $("#phone_error").hide();
+            $("#phone").removeClass("parsley-error");
+            $("#phone").addClass("parsley-success");
+            error_id = false;
+        }if (error_name === false && error_password_confirm === false && error_password === false && error_email === false && error_id === false && error_phone === false) {
+            $("#register-button").addClass("btn-success");
+            $("#register-button").trigger("cssClassChanged");
+            $("#register-button").prop('disabled', false);
         } else {
             $("#register-button").removeClass("btn-success");
         }
@@ -260,11 +335,13 @@ $(function () {
         $("#password_error").hide();
         $("#password_confirm_error").hide();
         $("#student_id_error").hide();
+        $("#phone_error").hide();
         $("#email").removeClass("parsley-success");
         $("#password").removeClass("parsley-success");
         $("#name").removeClass("parsley-success");
         $("#password-confirm").removeClass("parsley-success");
         $("#student_id").removeClass("parsley-success");
+        $("#phone").removeClass("parsley-success");
         $("#register-button").removeClass("btn-success");
     });
 });

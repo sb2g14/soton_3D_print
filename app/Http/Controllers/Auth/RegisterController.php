@@ -55,7 +55,8 @@ class RegisterController extends Controller
             'name' => 'required|string|max:100|regex:/^[a-z-A-Z- ]{3,20}$/',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|max:16|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,16}$/|confirmed',
-            'student_id' => 'required|numeric',
+            'student_id' => 'required|numeric|min:8',
+            'phone' => 'required|numeric|digits:11'
         ]);
     }
 
@@ -88,7 +89,7 @@ class RegisterController extends Controller
 
             // Update staff database
             $staff_id = array_search($email,$emails);
-            staff::where('id','=',$staff_id)->update(array('user_id'=> $user->id, 'student_id' => request('student_id')));
+            staff::where('id','=',$staff_id)->update(array('user_id'=> $user->id, 'student_id' => request('student_id'), 'phone' => request('phone')));
 
             $member = staff::find($staff_id);
             if($member->role == 'Lead Demonstrator') {
