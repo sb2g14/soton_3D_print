@@ -28,6 +28,6 @@ class jobConfirmation extends Mailable
      */
     public function build()
     {
-        return $this->markdown('view.jobConfirmation');
+        return $this->markdown('emails.jobConfirmation');
     }
 }

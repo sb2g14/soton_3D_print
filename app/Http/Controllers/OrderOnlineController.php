@@ -199,10 +199,19 @@ class OrderOnlineController extends Controller
     {
         $job = Jobs::findOrFail($id);
 
+        $total_minutes = 0;
+        foreach ($job->prints as $print){
+            list($h, $i, $s) = explode(':', $print->time);
+            $minutes = $h*60 + $i;
+            $total_minutes = $total_minutes + $minutes;
+        }
+        $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
+
         $job->update(array(
             'status' => 'Approved',
             'approved_at' => Carbon::now('Europe/London'),
             'job_approved_by' => Auth::user()->staff->id,
+            'total_duration' => $total_time,
             'total_material_amount' => $job->prints->sum('material_amount'),
             'total_price' => $job->prints->sum('price'),
             )

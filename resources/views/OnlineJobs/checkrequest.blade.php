@@ -130,9 +130,16 @@
                 </ul>
                 <h3>Total job stats</h3>
                 {{-- Calculate total print time --}}
-                {{--@php--}}
-                {{--@endphp--}}
-                {{--<p>Total job duration: <b></b> <br>--}}
+                @php
+                    $total_minutes = 0;
+                    foreach ($job->prints as $print){
+                    list($h, $i, $s) = explode(':', $print->time);
+                    $minutes = $h*60 + $i;
+                    $total_minutes = $total_minutes + $minutes;
+                    }
+                    $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
+                @endphp
+                <p>Total job duration: <b>{{ $total_time }}</b> <br>
                 Total material amount: <b>{{ $job->prints->sum('material_amount') }}g</b> <br>
                 Total price: <b>£{{ $job->prints->sum('price') }}</b>
                 </p>
