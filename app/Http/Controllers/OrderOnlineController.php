@@ -22,6 +22,29 @@ use Auth;
 
 class OrderOnlineController extends Controller
 {
+    // Online job manager sees all the online job requests:
+    public function index()
+    {
+        $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 1)->get();
+        return view('OnlineJobs.index', compact('jobs'));
+    }
+
+    // Display jobs approved by Jobs Manager
+    public function approved()
+    {
+        $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 1)->get();
+
+        return view('OnlineJobs.approved', compact('approved_jobs'));
+    }
+
+    // Display jobs approved by Jobs Manager
+    public function pending()
+    {
+        $pending_jobs = Jobs::orderBy('created_at', 'desc')->where('status','In Progress')->where('requested_online', 1)->get();
+
+        return view('OnlineJobs.pending', compact('pending_jobs'));
+    }
+
     // Customer creates a new online job request
     public function create()
     {
@@ -131,13 +154,6 @@ class OrderOnlineController extends Controller
         return redirect()->home();
     }
 
-    // Online job manager sees all the online job requests:
-    public function index()
-    {
-        $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 1)->get();
-        return view('OnlineJobs.index', compact('jobs'));
-    }
-
     // Online job manager reviews each online job request and fills in all the required information.
     public function checkrequest($id)
     {
@@ -186,12 +202,6 @@ class OrderOnlineController extends Controller
         ]);
 
         return redirect("/OnlineJobs/checkrequest/{$job->id}");
-    }
-    public function approved()
-    {
-        $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 1)->get();
-
-        return view('OnlineJobs.approved', compact('approved_jobs'));
     }
 
     // The job is accepted and the customer is informed about the price.
@@ -250,5 +260,28 @@ class OrderOnlineController extends Controller
         ]);
 
         return redirect('OnlineJobs/index');
+    }
+
+    // Return view which displays info about approved job
+    public function manageApproved($id)
+    {
+        $job = Jobs::findOrFail($id);
+        return view('OnlineJobs.manageApproved', compact('job'));
+    }
+
+    // Job is approved by customer
+    public function customerApproved($id)
+    {
+        $job = Jobs::findOrFail($id);
+
+        $job->update(array(
+            'status' => 'In Progress'
+            )
+        );
+        // Notify that the job was rejected
+        notify()->flash('The job has been approved by customer', 'success', [
+            'text' => 'Now you can start adding prints',
+        ]);
+        return redirect('OnlineJobs/pending');
     }
 }

@@ -183,7 +183,6 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
     // Delete cost code
     Route::get('/costCodes/delete/{id}', 'CostCodesController@destroy');
 
-
 });
 
 // Group of routes available to online jobs manager only
@@ -200,7 +199,7 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     Route::post('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@assignPrints');
 
     // Job rejected by online jobs manager
-//    Route::get('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
+    Route::get('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
 
     // Route to approve Job
     Route::get('/OnlineJobs/approveRequest/{id}', 'OrderOnlineController@approveRequest');
@@ -208,8 +207,15 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Job approved by online jobs manager
     Route::get('/OnlineJobs/approved', 'OrderOnlineController@approved');
 
-    // Email notification about a rejected jobs gets send to the customer
-    Route::get('/OnlineJobs/delete/{id}', 'EmailController@sendReject');
+    // View approved job info
+    Route::get('/OnlineJobs/manageApproved/{id}', 'OrderOnlineController@manageApproved');
+
+    // Job has been approved by customer
+    Route::get('/OnlineJobs/customerApproved/{id}', 'OrderOnlineController@customerApproved');
+
+    // Return pending jobs
+    Route::get('/OnlineJobs/pending', 'OrderOnlineController@pending');
+
 
 
 });
