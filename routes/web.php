@@ -196,10 +196,10 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     Route::get('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@checkrequest');
 
     // Assign prints to each online job request
-    Route::post('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@assignPrints');
+    Route::post('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@assignPrintPreview');
 
     // Job rejected by online jobs manager
-    Route::get('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
+    Route::post('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
 
     // Route to approve Job
     Route::get('/OnlineJobs/approveRequest/{id}', 'OrderOnlineController@approveRequest');

@@ -115,6 +115,81 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal assign prints-->
+                <div id="addPrintModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title text-center">Specify the print details below</h3>
+                            </div>
+                            {{--Modal body--}}
+                            <div class="modal-body text-left">
+
+                                {{--Form to specify material amount and duration of each print--}}
+                                <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/checkrequest/{{ $job->id }}">
+                                    {{ csrf_field() }}
+                                    <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
+                                        {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
+                                        <div class="col-md-2">
+                                            {!! Form::select('hours', range(0,59),old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
+                                            @if ($errors->has('hours'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('hours') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-2">
+                                            {!! Form::select('minutes', range(0,59),old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
+                                            @if ($errors->has('minutes'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('minutes') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
+                                        <label for="material_amount" class="col-md-4 control-label">Estimated material amount (grams):</label>
+                                        <div class="col-md-6">
+                                            <input type="text" id="material_amount" name="material_amount" value="{{old('material_amount')}}" class="form-control">
+                                            @if ($errors->has('material_amount'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('material_amount') }}</strong>
+                                                </span>
+                                            @endif
+                                            <span class="help-block" id="material_amount_error"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group text-left">
+                                        <div class="col-md-12">
+                                            <label for="comments">Add comments to be seen by a customer (optional):</label><br>
+                                            <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                            @if ($errors->has('comments'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('comments') }}</strong>
+                                                </span>
+                                            @endif
+                                            <span class="help-block" id="message_error"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 text-left">
+                                        <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <ul class="list-group lsn">
                     {{--List assigned prints--}}
                     @foreach($job->prints as $print)
@@ -148,12 +223,51 @@
             <div class="col-sm-12 text-center">
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Add print preview</button>
                 <a href="/OnlineJobs/index" class="btn btn-lg btn-info">Save Changes</a>
-                <a id="double_action" href="/OnlineJobs/delete/{{$job->id}}')" class="btn btn-lg btn-danger">Reject job</a>
-
-                {{--<a href="mailto:{{ $job->customer_email }}?subject={{ $job->customer_name }}%20Job%20rejected--}}
-                        {{--&body=Dear%20{{ $job->customer_name }},%0D%0A%0D%0AI am writing to notify that your online job request to the 3D printing workshop was rejected.%0D%0A%0D%0A--}}
-                        {{--The reason for the rejection is ...%0D%0A%0A%0A%0D%0ASincerely,%0D%0A%0D%0A3D Printing Workshop Online Job Requests Manager" class="btn btn-lg btn-danger">Notify user about job reject</a>--}}
+                <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Reject a job</button>
+                {{--<a id="double_action" href="/OnlineJobs/delete/{{$job->id}}')" class="btn btn-lg btn-danger">Reject job</a>--}}
                 <a href="/OnlineJobs/approveRequest/{{ $job->id }}" class="btn btn-lg btn-primary">Approve job</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal add comment to a rejected job-->
+    <div id="jobReject" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title text-center">Please explain why this job was rejected</h3>
+                </div>
+                {{--Modal body--}}
+                <div class="modal-body text-left">
+
+                    {{--Form to add a coment to a rejected job--}}
+                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/delete/{{ $job->id }}">
+                        {{ csrf_field() }}
+
+                        <div class="form-group text-left">
+                            <div class="col-md-12">
+                                <label for="comments">Add comments for the customer:</label><br>
+                                <textarea rows="4" id="message" name="comment" placeholder="Please explain why the job was rejected" class="form-control"></textarea>
+                                @if ($errors->has('comments'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('comments') }}</strong>
+                                    </span>
+                                @endif
+                                <span class="help-block" id="message_error"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 text-left">
+                            <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -170,15 +284,6 @@
             });
         </script>
     @endif
-    {{--<script>--}}
-        {{--//Send an email action for a button--}}
-        {{--$('#double_action').click(function () {--}}
-            {{--window.open('mailto:{{$job->customer_email}}?subject={{ $job->customer_name }}%20Job%20rejected\\n\'+\n' +--}}
-                {{--'                        \'&body=Dear%20{{ $job->customer_name }},%0D%0A%0D%0AI am writing to notify that your online job request to the 3D printing workshop was rejected.%0D%0A%0D%0A\\n\'+\n' +--}}
-                {{--'                        \'The reason for the rejection is ...%0D%0A%0A%0A%0D%0ASincerely,%0D%0A%0D%0A3D Printing Workshop Online Job Requests Manager');--}}
-        {{--});--}}
-    {{--</script>--}}
-
     <script src="/js/print_preview_validation.js"></script>
 @endsection
 
