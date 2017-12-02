@@ -13,8 +13,8 @@
         {{--<div class="title">Pending Jobs</div>--}}
         <ul class="nav nav-pills nav-justified">
             <li><a href="/OnlineJobs/index">Requests</a></li>
-            <li class="active"><a href="#">Approved Jobs</a></li>
-            <li><a href="/printingData/approved">Pending Jobs</a></li>
+            <li><a href=/OnlineJobs/approved>Approved Jobs</a></li>
+            <li class="active"><a href="#">Pending Jobs</a></li>
             <li><a href="/printingData/approved">Prints</a></li>
             <li><a href="/printingData/finished">Completed Jobs</a></li>
         </ul>
@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <ul class="list-group lsn">
-                    @foreach($approved_jobs as $job)
+                    @foreach($pending_jobs as $job)
                         <li class="text-left well">
                         {{--Print short description and a link--}}
                             <p>

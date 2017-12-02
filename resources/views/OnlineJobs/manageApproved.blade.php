@@ -67,7 +67,7 @@
         {{--Job control buttons--}}
         <a href="/OnlineJobs/approved" class="btn btn-lg btn-info">Save Changes</a>
         <a href="/OnlineJobs/delete/{{$job->id}}" class="btn btn-lg btn-danger">Customer Rejected</a>
-        <a href="/OnlineJobs/customerAccepted/{{ $job->id }}" class="btn btn-lg btn-primary">Customer Accepted</a>
+        <a href="/OnlineJobs/customerAccepted/{{ $job->id }}" class="btn btn-lg btn-success">Customer Accepted</a>
     </div>
 @endsection
 

@@ -75,7 +75,7 @@ class PrintingDataController extends Controller
         foreach ($printers_busy as $printer_busy) {
             $printer_busy->changePrinterStatus($printers_busy);
         }
-        $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->get();
+        $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 0)->get();
         return view('printingData.approved', compact('approved_jobs'));
     }
 
@@ -86,7 +86,7 @@ class PrintingDataController extends Controller
         foreach ($printers_busy as $printer_busy) {
             $printer_busy->changePrinterStatus($printers_busy);
         }
-        $finished_jobs = Jobs::where('created_at', '>=', Carbon::now()->subMonth())->orderBy('created_at', 'desc')->where('status','!=', 'Waiting')->get();
+        $finished_jobs = Jobs::where('created_at', '>=', Carbon::now()->subMonth())->orderBy('created_at', 'desc')->where('status','!=', 'Waiting')->where('requested_online', 0)->get();
 
         return view('printingData.finished', compact('finished_jobs'));
     }
