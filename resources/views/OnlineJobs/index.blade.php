@@ -14,6 +14,7 @@
         <ul class="nav nav-pills nav-justified">
             <li class="active"><a href="#">Requests</a></li>
             <li><a href="/OnlineJobs/approved">Approved Jobs</a></li>
+            <li><a href="/printingData/approved">Pending Jobs</a></li>
             <li><a href="/printingData/approved">Prints</a></li>
             <li><a href="/printingData/finished">Completed Jobs</a></li>
         </ul>
