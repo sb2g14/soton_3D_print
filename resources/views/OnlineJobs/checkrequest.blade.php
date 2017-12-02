@@ -148,9 +148,7 @@
             <div class="col-sm-12 text-center">
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Add print preview</button>
                 <a href="/OnlineJobs/index" class="btn btn-lg btn-info">Save Changes</a>
-                <a href="/OnlineJobs/delete/{{$job->id}}')" class="btn btn-lg btn-danger" onclick="window.open('mailto:{{ $job->customer_email }}?subject={{ $job->customer_name }}%20Job%20rejected\n'+
-                        '&body=Dear%20{{ $job->customer_name }},%0D%0A%0D%0AI am writing to notify that your online job request to the 3D printing workshop was rejected.%0D%0A%0D%0A\n'+
-                        'The reason for the rejection is ...%0D%0A%0A%0A%0D%0ASincerely,%0D%0A%0D%0A3D Printing Workshop Online Job Requests Manager')">Reject job</a>
+                <a id="double_action" href="/OnlineJobs/delete/{{$job->id}}')" class="btn btn-lg btn-danger">Reject job</a>
 
                 {{--<a href="mailto:{{ $job->customer_email }}?subject={{ $job->customer_name }}%20Job%20rejected--}}
                         {{--&body=Dear%20{{ $job->customer_name }},%0D%0A%0D%0AI am writing to notify that your online job request to the 3D printing workshop was rejected.%0D%0A%0D%0A--}}
@@ -172,6 +170,15 @@
             });
         </script>
     @endif
+    {{--<script>--}}
+        {{--//Send an email action for a button--}}
+        {{--$('#double_action').click(function () {--}}
+            {{--window.open('mailto:{{$job->customer_email}}?subject={{ $job->customer_name }}%20Job%20rejected\\n\'+\n' +--}}
+                {{--'                        \'&body=Dear%20{{ $job->customer_name }},%0D%0A%0D%0AI am writing to notify that your online job request to the 3D printing workshop was rejected.%0D%0A%0D%0A\\n\'+\n' +--}}
+                {{--'                        \'The reason for the rejection is ...%0D%0A%0A%0A%0D%0ASincerely,%0D%0A%0D%0A3D Printing Workshop Online Job Requests Manager');--}}
+        {{--});--}}
+    {{--</script>--}}
+
     <script src="/js/print_preview_validation.js"></script>
 @endsection
 

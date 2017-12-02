@@ -200,7 +200,7 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     Route::post('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@assignPrints');
 
     // Job rejected by online jobs manager
-    Route::get('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
+//    Route::get('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
 
     // Route to approve Job
     Route::get('/OnlineJobs/approveRequest/{id}', 'OrderOnlineController@approveRequest');
@@ -208,6 +208,8 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Job approved by online jobs manager
     Route::get('/OnlineJobs/approved', 'OrderOnlineController@approved');
 
+    // Email notification about a rejected jobs gets send to the customer
+    Route::get('/OnlineJobs/delete/{id}', 'EmailController@sendReject');
 
 
 });

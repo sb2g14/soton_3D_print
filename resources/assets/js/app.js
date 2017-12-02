@@ -11,7 +11,6 @@ $(document).ready(function() {
         $("#rulesModal").modal();
     });
 
-    
 
     /*SLIDER script*/
     $("#image-slider_home").owlCarousel({
