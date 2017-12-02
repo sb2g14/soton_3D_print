@@ -14,14 +14,18 @@ use App\Jobs;
 use App\Prints;
 use App\cost_code;
 use App\Mail\onlineRequest;
-use App\Mail\jobConfirmation;
+use App\Mail\jobAccept;
 use App\staff;
 use Carbon\Carbon;
 use Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\jobReject;
 
 
 class OrderOnlineController extends Controller
 {
+    //// MANAGE KEY WORKFLOW BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
     // Online job manager sees all the online job requests:
     public function index()
     {
@@ -37,7 +41,7 @@ class OrderOnlineController extends Controller
         return view('OnlineJobs.approved', compact('approved_jobs'));
     }
 
-    // Display jobs approved by Jobs Manager
+    // Display jobs approved by customer
     public function pending()
     {
         $pending_jobs = Jobs::orderBy('created_at', 'desc')->where('status','In Progress')->where('requested_online', 1)->get();
@@ -45,6 +49,20 @@ class OrderOnlineController extends Controller
         return view('OnlineJobs.pending', compact('pending_jobs'));
     }
 
+    // Display and manage a list of assigned prints
+    public function prints()
+    {
+       //
+    }
+
+    // Display and menage completed jobs
+    public function completedJobs()
+    {
+        //
+    }
+
+    //// WORKFLOW LOGIC GOES HERE ////
+    //---------------------------------------------------------------------------------------------------------------//
     // Customer creates a new online job request
     public function create()
     {
@@ -97,8 +115,6 @@ class OrderOnlineController extends Controller
 
         // Store the online request in the database
         $job = Jobs::create($online_request);
-
-        // Add additional information
 
         // Define payment category
         $customer_id = $online_request['customer_id'];
@@ -161,11 +177,13 @@ class OrderOnlineController extends Controller
         return view('OnlineJobs.checkrequest', compact('job'));
     }
 
-    // The prints are being assigned to each job and the cost calculated and sent to a requester for approval
-    public function assignPrints($id)
+    // The print previews are being assigned to each job in order to calculate job parameters and send for a
+    // confirmation by the customer
+    //---------------------------------------------------------------------------------------------------------------//
+    public function assignPrintPreview($id)
     {
-        // Validate and store the printing time and material amount specified to each print of a current {$id} job
-        $assigned_print = request()->validate([
+        // Validate and store the printing time and material amount specified to each print preview of a current job
+        $assigned_print_preview = request()->validate([
             'hours' => 'required',
             'minutes' => 'required',
             'material_amount' => 'required|numeric|min:0.1|max:9999',
@@ -173,30 +191,31 @@ class OrderOnlineController extends Controller
             ]);
 
         // create a print from the specified details
-        $time = $assigned_print["hours"].':'.sprintf('%02d', $assigned_print["minutes"]); // Created printing time
+        $time = $assigned_print_preview["hours"].':'.sprintf('%02d', $assigned_print_preview["minutes"]); // Created printing time
         // Create price
-        $price = round(3 * ($assigned_print["hours"] + $assigned_print["minutes"] / 60) +
-            5 * $assigned_print["material_amount"] / 100, 2);
-        // Create a print
+        $price = round(3 * ($assigned_print_preview["hours"] + $assigned_print_preview["minutes"] / 60) +
+            5 * $assigned_print_preview["material_amount"] / 100, 2);
+
+        // Store print preview in the Database
         $print = new Prints;
         $print -> time = $time;
         $print -> price = $price;
         $print -> save();
 
-        // Update a print with the details entered by customer
+        // Update a print preview with the details entered by a customer
         $print -> update(array(
             'purpose' => 'Use',
-            'material_amount' => $assigned_print["material_amount"],
-            'print_comment' => $assigned_print["comments"],
+            'material_amount' => $assigned_print_preview["material_amount"],
+            'print_comment' => $assigned_print_preview["comments"],
             'status' => 'waiting'
         ));
 
         $job = Jobs::findOrFail($id); // Find the job in DB by {$id}
 
-        // Associate this print with the current job
+        // Associate the print preview with the job
         $job->prints()->attach($print);
 
-        // Notify that the print was created
+        // Notify that the print preview was created
         notify()->flash('The print has been assigned to this job!', 'success', [
             'text' => 'You can either add more prints or accept this job and notify customer',
         ]);
@@ -204,19 +223,25 @@ class OrderOnlineController extends Controller
         return redirect("/OnlineJobs/checkrequest/{$job->id}");
     }
 
-    // The job is accepted and the customer is informed about the price.
+    // Defining the logic for job management
+    //---------------------------------------------------------------------------------------------------------------//
+    // The job is accepted and the customer is informed about the price via email.
     public function approveRequest($id)
     {
+        // Find a job by id
         $job = Jobs::findOrFail($id);
 
-        $total_minutes = 0;
+        // Calculation of the total time of the job by summing up all print previews
+        $total_minutes = 0; // We transform hours to minutes and sum them up for each print preview
         foreach ($job->prints as $print){
             list($h, $i, $s) = explode(':', $print->time);
             $minutes = $h*60 + $i;
             $total_minutes = $total_minutes + $minutes;
         }
+        // Coming back to hours and minutes
         $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
 
+        // Store the calculated total parameters in the job
         $job->update(array(
             'status' => 'Approved',
             'approved_at' => Carbon::now('Europe/London'),
@@ -227,14 +252,8 @@ class OrderOnlineController extends Controller
             )
         );
 
-//        // Send an email to the customer with the total job parameters and require acceptance
-//        $email = $job->customer_email;
-//
-//        \Mail::send('emails.jobConfirmation', [], function($message) use ($email)
-//        {
-//            $message->to($email)->subject('This is test e-mail');
-//        });
-//        var_dump( \Mail:: failures());
+        // Send an email to customer
+        Mail::to($job->customer_email)->queue(new jobAccept($job));
 
         // Notify the manager about successfully accepted job
         notify()->flash('The job has been approved', 'success', [
@@ -243,16 +262,26 @@ class OrderOnlineController extends Controller
         return redirect('OnlineJobs/approved');
     }
 
-    // The job has been rejected by Online Jobs Manager
+    // The job is rejected and customer is notified via email.
     public function rejectJobManager($id)
     {
+        // Extract online manager comment and validate it
+        $reject_message = request()->validate([
+            'comment' => 'required|min:10|max:255']);
+
+        // Find a job by id
         $job = Jobs::findOrFail($id);
+        // Locate associated print previews
         $prints = $job->prints;
         foreach($prints as $print) {
-            $job->prints()->detach($print->id);
-            $print->delete();
+            $job->prints()->detach($print->id); //Break connection with job
+            $print->delete(); // Delete print previews
         }
-        $job->delete();
+
+        // Send an email to customer
+        Mail::to($job->customer_email)->queue(new jobReject($job, $reject_message['comment']));
+
+        $job->delete(); // Delete job
 
         // Notify that the job was rejected
         notify()->flash('The job has been rejected', 'success', [
@@ -261,6 +290,9 @@ class OrderOnlineController extends Controller
 
         return redirect('OnlineJobs/index');
     }
+
+    //// Logic for managing jobs approved by manager ////
+    //---------------------------------------------------------------------------------------------------------------//
 
     // Return view which displays info about approved job
     public function manageApproved($id)
