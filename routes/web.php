@@ -213,6 +213,9 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Job has been approved by customer
     Route::get('/OnlineJobs/customerApproved/{id}', 'OrderOnlineController@customerApproved');
 
+    // Job has been rejected by customer
+    Route::get('/OnlineJobs/customerReject/{id}', 'OrderOnlineController@customerReject');
+
     // Return pending jobs
     Route::get('/OnlineJobs/pending', 'OrderOnlineController@pending');
 
@@ -221,6 +224,15 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 
     // Return completed
     Route::get('/OnlineJobs/completed', 'OrderOnlineController@completed');
+
+    // Route to manage pending jobs
+    Route::get('/OnlineJobs/managePendingJob/{id}', 'OrderOnlineController@managePendingJob');
+
+    // Route to assign print to currently managed job
+    Route::post('/OnlineJobs/managePendingJob/{id}', 'OrderOnlineController@assignPrint');
+
+    // Route for job failed
+    Route::post('/OnlineJobs/jobFailed/{id}', 'OrderOnlineController@jobFailed');
 
 
 });

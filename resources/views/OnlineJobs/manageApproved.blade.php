@@ -41,19 +41,6 @@
 
             {{--Assign prints to a requested job--}}
             <div class="col-sm-6 text-left">
-                {{--<ul class="list-group lsn">--}}
-                    {{--List assigned prints--}}
-                    {{--@foreach($job->prints as $print)--}}
-                        {{--<li class="text-left well-sm">--}}
-                            {{--<p>--}}
-                                {{--Preview: <b>{{ $print->id }}</b>--}}
-                                {{--Time: <b>{{ $print->time }}</b>--}}
-                                {{--Material amount: <b>{{$print->material_amount}}g</b>--}}
-                                {{--Price: <b>£{{$print->price}}</b>--}}
-                            {{--</p>--}}
-                        {{--</li>--}}
-                    {{--@endforeach--}}
-                {{--</ul>--}}
                 <h3>Total job stats</h3>
                 {{-- Calculate total print time --}}
                 <p>Total job duration: <b>{{ $job->total_duration }}</b> <br>
