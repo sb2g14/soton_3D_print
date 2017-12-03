@@ -37,8 +37,8 @@ class printers extends Model
             $job = $print->jobs->last();
             list($h, $i, $s) = explode(':', $print->time);
             if (Carbon::now('Europe/London')->gte(Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i))) {
-                //$this->update(array('in_use' => 0));
                 if($job->requested_online == 0){
+                    $this->update(array('in_use' => 0));
                     $job->update(array('status' => 'Success', 'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
                 }
             }

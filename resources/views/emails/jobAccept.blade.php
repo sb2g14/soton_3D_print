@@ -19,7 +19,7 @@ Dear {{$customer_name}},
 <div class="alert alert-info text-left">
     <p>
         Duration: <b>{{ $total_duration }}</b><br>
-        Price: £<b>{{$total_price}}</b><br>
+        Price: <b>£{{$total_price}}</b><br>
     </p>
 </div>
 
