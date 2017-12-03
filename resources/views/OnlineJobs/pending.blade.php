@@ -1,13 +1,6 @@
 @extends('layouts.layout')
 
 @section('content')
-
-    {{--@if ($flash=session('message'))--}}
-    {{--<div id="flash_message" class="alert alert-success" role="alert" style="position: relative; top: -10px">--}}
-        {{--{{ $flash }}--}}
-    {{--</div>--}}
-    {{--@endif--}}
-
    
     <div class="container text-center m-b-md">
         {{--<div class="title">Pending Jobs</div>--}}
@@ -21,30 +14,34 @@
     </div>
     
     <div class="container">
-
-        <div class="row">
-            <div class="col-xs-12">
-                <ul class="list-group lsn">
-                    @foreach($pending_jobs as $job)
-                        <li class="text-left well">
-                        {{--Print short description and a link--}}
-                            <p>
-                                Job ID: <b>{{$job->id}}</b><br>
-                                Requested by: <b>{{$job->customer_name}}</b><br>
-                                {{--Requester id: <b>{{$job->customer_id}}</b>--}}
-                                Project/Cost Code: <b>{{ $job->use_case}}</b><br>
-                                Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
-                                Approved on: <b>{{ Carbon\Carbon::parse($job->approved_at)->toDayDateTimeString() }}</b><br>
-                                Estimated cost: <b>£{{ $job->total_price }}</b><br>
-                            </p>
-                            <a href="/OnlineJobs/manageApproved/{{$job->id}}" class="btn btn-info">Manage</a>
-                            <a href="/OnlineJobs/customerApproved/{{$job->id}}" class="btn btn-success">Customer Accepted</a>
-                            <a href="/OnlineJobs/delete/{{$job->id}}" class="btn btn-danger">Customer Rejected</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
+        <table class="table table-sm table-hover table-responsive">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Project</th>
+                <th>Requested on</th>
+                <th>Accepted</th>
+                <th>Job controls</th>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach($pending_jobs as $job)
+                    <tr class="text-center">
+                        <td>{{ $job->id }}</td>
+                        <td data-th="Name">{{$job->customer_name}}</td>
+                        <td data-th="Project name">{{$job->use_case}}</td>
+                        <td data-th="Requested on">{{ $job->created_at->toDateTimeString() }}</td>
+                        <td data-th="Accepted on">{{ Carbon\Carbon::parse($job->approved_at)->diffForHumans() }}</td>
+                        <td>
+                            <a href="/OnlineJobs/managePendingJob/{{$job->id}}" class="btn btn-info">Review Job</a>
+                            <a href="/OnlineJobs/assignPrint/{{$job->id}}" class="btn btn-warning">Assign new Print</a>
+                            <a href="/OnlineJobs/configuredJob/{{$job->id}}" class="btn btn-success">Job Configured</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 @endsection
 

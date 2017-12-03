@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\jobReject;
+use App\printers;
 
 
 class OrderOnlineController extends Controller
@@ -47,18 +48,6 @@ class OrderOnlineController extends Controller
         $pending_jobs = Jobs::orderBy('created_at', 'desc')->where('status','In Progress')->where('requested_online', 1)->get();
 
         return view('OnlineJobs.pending', compact('pending_jobs'));
-    }
-
-    // Display and manage a list of assigned prints
-    public function prints()
-    {
-       //
-    }
-
-    // Display and menage completed jobs
-    public function completedJobs()
-    {
-        //
     }
 
     //// WORKFLOW LOGIC GOES HERE ////
@@ -308,12 +297,106 @@ class OrderOnlineController extends Controller
 
         $job->update(array(
             'status' => 'In Progress'
-            )
-        );
+            ));
+
+        // Locate associated print previews
+        $prints = $job->prints;
+        foreach($prints as $print)
+        {
+            $job->prints()->detach($print->id); //Break connection with job
+            $print->delete(); // Delete print previews
+        }
+
         // Notify that the job was rejected
         notify()->flash('The job has been approved by customer', 'success', [
             'text' => 'Now you can start adding prints',
         ]);
         return redirect('OnlineJobs/pending');
+    }
+    // Job is rejected by customer
+    public function customerReject($id)
+    {
+        $job = Jobs::findOrFail($id);
+        // Locate associated print previews
+        $prints = $job->prints;
+        foreach($prints as $print)
+        {
+            $job->prints()->detach($print->id); //Break connection with job
+            $print->delete(); // Delete print previews
+        }
+        $job->delete(); // Delete job
+
+        // Notify that the job was deleted
+        notify()->flash('The job request was rejected', 'success', [
+            'text' => 'The job and all assigned print previews were deleted from the database',
+        ]);
+
+        return redirect("/OnlineJobs/index");
+    }
+    //// Logic for managing jobs approved both by manager and by customer ////
+    //---------------------------------------------------------------------------------------------------------------//
+    // Manage approved jobs
+    public function managePendingJob($id)
+    {
+        // Pass the job to the blade
+        $job = Jobs::findOrFail($id);
+        // Pass all the available printers to the blade
+        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
+        // Pass all the jobs that can be used to assign prints
+        $jobs_in_progress = Jobs::orderBy('created_at','desc')->where('status','In Progress')->where('requested_online', 1)->pluck('id','id')->all();
+
+        return view('OnlineJobs.managePendingJob', compact('job','available_printers','jobs_in_progress'));
+    }
+    // Assign prints to the currently managed job
+    public function assignPrint($id)
+    {
+        // Extract assigned print
+        $assigned_print = request()->validate([
+            'printers_id' => 'required',
+            'hours' => 'required',
+            'minutes' => 'required',
+            'material_amount' => 'required|numeric|min:0.1|max:9999',
+            'multipleselect' => 'required',
+            'comments' => 'max:255'
+        ]);
+
+        // create a print from the specified details
+        $time = $assigned_print["hours"].':'.sprintf('%02d', $assigned_print["minutes"]); // Created printing time
+        // Create price
+        $price = round(3 * ($assigned_print["hours"] + $assigned_print["minutes"] / 60) +
+            5 * $assigned_print["material_amount"] / 100, 2);
+
+        // Create print in the Database
+        $print = Prints::create([
+            'time' => $time,
+            'price' => $price,
+            'status' => 'In Progress',
+            'purpose' => 'Use',
+            'material_amount' => $assigned_print["material_amount"],
+            'print_comment' => $assigned_print["comments"],
+            'print_started_by' => Auth::user()->staff->id
+        ]);
+
+        // Attach multiple jobs to a single print
+        foreach($assigned_print["multipleselect"] as $job_id)
+        {
+            $job = Jobs::findOrFail($job_id); // Find the job in DB by {$job_id}
+
+            // Associate the print with the job
+            $job->prints()->attach($print);
+        }
+
+        // Notify that the print preview was created
+        notify()->flash('The print has been assigned to the selected jobs!', 'success', [
+            'text' => 'You may proceed to print overview and actual printing',
+        ]);
+
+        return redirect("/OnlineJobs/managePendingJob/{$job->id}");
+    }
+
+    // Actions to be taken when the job failed
+    public function jobFailed($id)
+    {
+        return view('OnlineJobs.managePendingJob');
     }
 }
