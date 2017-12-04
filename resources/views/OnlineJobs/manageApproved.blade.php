@@ -49,12 +49,13 @@
                 </p>
             </div>
             <hr>
-            Approved on {{ \Carbon\Carbon::parse($job->approved_at)->toDayDateTimeString() }} by {{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}
+            Approved on {{ \Carbon\Carbon::parse($job->approved_at)->toDayDateTimeString() }} by {{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}<br>
+            Waiting for Customer to accept
         </div>
         {{--Job control buttons--}}
         <a href="/OnlineJobs/approved" class="btn btn-lg btn-info">Save Changes</a>
-        <a href="/OnlineJobs/delete/{{$job->id}}" class="btn btn-lg btn-danger">Customer Rejected</a>
-        <a href="/OnlineJobs/customerAccepted/{{ $job->id }}" class="btn btn-lg btn-success">Customer Accepted</a>
+        <a href="/OnlineJobs/customerReject/{{ $job->id }}" class="btn btn-lg btn-danger">Customer Rejected</a>
+        <a href="/OnlineJobs/customerApproved/{{ $job->id }}" class="btn btn-lg btn-success">Customer Accepted</a>
     </div>
 @endsection
 
