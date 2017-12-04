@@ -245,18 +245,18 @@
                     <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/delete/{{ $job->id }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group text-left">
-                            <div class="col-md-12">
-                                <label for="comments">Add comments for the customer:</label><br>
-                                <textarea rows="4" id="message" name="comment" placeholder="Please explain why the job was rejected" class="form-control"></textarea>
-                                @if ($errors->has('comments'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('comments') }}</strong>
-                                    </span>
-                                @endif
-                                <span class="help-block" id="message_error"></span>
-                            </div>
-                        </div>
+                        {{--<div class="form-group text-left">--}}
+                            {{--<div class="col-md-12">--}}
+                                {{--<label for="comments">Add comments for the customer:</label><br>--}}
+                                {{--<textarea rows="4" id="message" name="comment" placeholder="Please explain why the job was rejected" class="form-control"></textarea>--}}
+                                {{--@if ($errors->has('comments'))--}}
+                                    {{--<span class="help-block">--}}
+                                        {{--<strong>{{ $errors->first('comments') }}</strong>--}}
+                                    {{--</span>--}}
+                                {{--@endif--}}
+                                {{--<span class="help-block" id="message_error"></span>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
                         <div class="col-sm-12 text-left">
                             <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>

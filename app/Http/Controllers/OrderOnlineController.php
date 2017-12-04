@@ -18,6 +18,7 @@ use App\Mail\jobAccept;
 use App\staff;
 use Carbon\Carbon;
 use Auth;
+use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\jobReject;
 use App\printers;
@@ -48,6 +49,23 @@ class OrderOnlineController extends Controller
         $pending_jobs = Jobs::orderBy('created_at', 'desc')->where('status','In Progress')->where('requested_online', 1)->get();
 
         return view('OnlineJobs.pending', compact('pending_jobs'));
+    }
+
+    // Display and manage a list of assigned prints
+    public function prints()
+    {
+       $prints= Prints::orderBy('created_at','desc')->where('status','In Progress')->get();
+       $jobs_in_progress = Jobs::orderBy('created_at','desc')->where('status','In Progress')->where('requested_online', 1)->get();
+
+       return view('OnlineJobs.prints',compact('prints','jobs_in_progress'));
+    }
+
+    // Display and menage completed jobs
+    public function completed()
+    {
+        $completed_jobs = Jobs::orderBy('created_at','desc')->where('requested_online', 1)->where('status','!=','Waiting')->where('status','!=','Approved')->where('status','!=','In Progress')->get();
+
+        return view('OnlineJobs.completed',compact('completed_jobs'));
     }
 
     //// WORKFLOW LOGIC GOES HERE ////
@@ -391,7 +409,7 @@ class OrderOnlineController extends Controller
             'text' => 'You may proceed to print overview and actual printing',
         ]);
 
-        return redirect("/OnlineJobs/managePendingJob/{$job->id}");
+        return redirect("/OnlineJobs/managePendingJob/{$id}");
     }
 
     // Actions to be taken when the job failed

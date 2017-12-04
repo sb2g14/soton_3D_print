@@ -219,6 +219,12 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Return pending jobs
     Route::get('/OnlineJobs/pending', 'OrderOnlineController@pending');
 
+    // Return prints in progress
+    Route::get('/OnlineJobs/prints', 'OrderOnlineController@prints');
+
+    // Return completed
+    Route::get('/OnlineJobs/completed', 'OrderOnlineController@completed');
+
     // Route to manage pending jobs
     Route::get('/OnlineJobs/managePendingJob/{id}', 'OrderOnlineController@managePendingJob');
 
@@ -227,7 +233,6 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 
     // Route for job failed
     Route::post('/OnlineJobs/jobFailed/{id}', 'OrderOnlineController@jobFailed');
-
 
 
 });

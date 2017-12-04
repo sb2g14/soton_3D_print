@@ -2,15 +2,17 @@
 
 @section('content')
 
-<div class="container text-center m-b-md">
-    <ul class="nav nav-pills nav-justified">
-        <li><a href="/OnlineJobs/index">Requests</a></li>
-        <li class="active"><a href="#">Approved Jobs</a></li>
-        <li><a href="/OnlineJobs/pending">Pending Jobs</a></li>
-        <li><a href="/printingData/approved">Prints</a></li>
-        <li><a href="/printingData/finished">Completed Jobs</a></li>
-    </ul>
-</div>
+   
+    <div class="container text-center m-b-md">
+        {{--<div class="title">Pending Jobs</div>--}}
+        <ul class="nav nav-pills nav-justified">
+            <li><a href="/OnlineJobs/index">Requests</a></li>
+            <li class="active"><a href="#">Approved Jobs</a></li>
+            <li><a href="/OnlineJobs/pending">Pending Jobs</a></li>
+            <li><a href="/OnlineJobs/prints">Prints</a></li>
+            <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
+        </ul>
+    </div>
 
 <div class="container">
 

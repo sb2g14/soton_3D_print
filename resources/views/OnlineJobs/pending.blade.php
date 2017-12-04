@@ -8,8 +8,8 @@
             <li><a href="/OnlineJobs/index">Requests</a></li>
             <li><a href=/OnlineJobs/approved>Approved Jobs</a></li>
             <li class="active"><a href="#">Pending Jobs</a></li>
-            <li><a href="/printingData/approved">Prints</a></li>
-            <li><a href="/printingData/finished">Completed Jobs</a></li>
+            <li><a href="/OnlineJobs/prints">Prints</a></li>
+            <li><a href="/Online Jobs/completed">Completed Jobs</a></li>
         </ul>
     </div>
     
