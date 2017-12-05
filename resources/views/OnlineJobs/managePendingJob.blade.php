@@ -180,7 +180,7 @@
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Assign Prints</button>
                 <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Save Changes</a>
                 <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed</button>
-                <a href="/OnlineJobs/approveRequest/{{ $job->id }}" class="btn btn-lg btn-success">Mark job as finished</a>
+                <a href="/OnlineJobs/approveRequest/{{ $job->id }}" class="btn btn-lg btn-success">Job Completed</a>
             </div>
         </div>
     </div>
