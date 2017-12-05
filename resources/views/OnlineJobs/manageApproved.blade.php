@@ -47,14 +47,19 @@
                 Total material amount: <b>{{ $job->total_material_amount }}g</b> <br>
                 Total price: <b>£{{ $job->total_price }}</b>
                 </p>
+                <p>
+                    Approved on {{ \Carbon\Carbon::parse($job->approved_at)->toDayDateTimeString() }} by {{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}
+                </p>
             </div>
-            <hr>
-            Approved on {{ \Carbon\Carbon::parse($job->approved_at)->toDayDateTimeString() }} by {{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}
         </div>
         {{--Job control buttons--}}
-        <a href="/OnlineJobs/approved" class="btn btn-lg btn-info">Save Changes</a>
-        <a href="/OnlineJobs/delete/{{$job->id}}" class="btn btn-lg btn-danger">Customer Rejected</a>
-        <a href="/OnlineJobs/customerAccepted/{{ $job->id }}" class="btn btn-lg btn-success">Customer Accepted</a>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="/OnlineJobs/approved" class="btn btn-lg btn-info">Save Changes</a>
+                <a href="/OnlineJobs/delete/{{$job->id}}" class="btn btn-lg btn-danger">Customer Rejected</a>
+                <a href="/OnlineJobs/customerAccepted/{{ $job->id }}" class="btn btn-lg btn-success">Customer Accepted</a>
+            </div>
+        </div>
     </div>
 @endsection
 
