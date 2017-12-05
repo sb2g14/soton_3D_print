@@ -530,29 +530,49 @@ body {
         .body {
             padding: 20px;
             height: 335px;
+            color: #fff;
             &.bg-pink {
-                background-color: #F8BBD0;
-                &:hover {
-                   background-color: #880E4F; 
-                   color: #fff;
-                }
+                background-color: #C2185B;// #F8BBD0;
+                // &:hover {
+                // background-color: #880E4F; 
+                // color: #fff;
+                // }
             }
             &.bg-cyan {
-                background-color: #B2EBF2;
-                &:hover {
-                   background-color: #006064; 
-                   color: #fff;
-                }
+                background-color: #0097A7;//#B2EBF2;
+                // &:hover {
+                //    background-color: #006064; 
+                //    color: #fff;
+                // }
             }
             &.bg-teal {
-                background-color: #B2DFDB;
-                &:hover {
-                   background-color: #004D40; 
-                   color: #fff;
-                }
+                background-color: #00796B;//#B2DFDB;
+                // &:hover {
+                //    background-color: #004D40; 
+                //    color: #fff;
+                // }
             }
         }
     }
+
+    .cardblock.hover-expand-effect:after {
+        background-color: rgba(0, 0, 0, 0.05);
+        content: ".";
+        position: absolute;
+        left: 0;
+        top: 90px;
+        width: 100%;
+        height: 0;
+        color: transparent;
+        -moz-transition: all 0.95s;
+        -o-transition: all 0.95s;
+        -webkit-transition: all 0.95s;
+        transition: all 0.95s;
+    }
+    .cardblock.hover-expand-effect:hover:after {
+        height: 80%
+    }
+    
 
     
 
@@ -576,22 +596,6 @@ body {
         }
     }
 
-    /* MODAL STYLES */
-
-    .modal-header {
-        background: @dark-blue;
-        color: #fff;  
-        .close {
-            color: #fff;
-            opacity: 1;
-        }  
-    }
-
-    #addIssue, #addAnnouncement, #add_issue, #add_announcement {
-        margin-bottom: 30px;
-    }
-
-
     .view-all {
        background: @turq; 
        margin-bottom: 30px;
@@ -600,23 +604,6 @@ body {
         background: @dark-turq;
        }
     }
-
-    /* #myModal {
-        .list-group-item {
-            margin-bottom: 30px;
-            h4, h5 {
-                margin-bottom: 10px;
-            }
-            button {
-                margin-bottom: 10px;
-            }
-            .media-left {
-                img {
-                    width:30px;
-                }
-            }
-        }
-    } */
 }
 
 .s-map {
@@ -628,7 +615,6 @@ body {
 }
 
 // content styles for tables, making them look good on phones and tablets
-
 
 .table {
     min-width: 300px; // adjust to your needs
@@ -700,9 +686,14 @@ body {
     }
 } // s-request-form
 
-
-
-
+//custom styles for background on hover in nav and table-hover
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #ddd;
+}
+.table-hover>tbody>tr:focus, .table-hover>tbody>tr:hover {
+    background-color: #ddd;
+}
 
 .contacts {
     .col-left {
@@ -750,6 +741,21 @@ body {
             background-color: #FFCDD2;
         }
     }
+}
+
+/* MODAL STYLES */
+
+.modal-header {
+    background: @dark-blue;
+    color: #fff;  
+    .close {
+        color: #fff;
+        opacity: 1;
+    }  
+}
+
+#addIssue, #addAnnouncement, #add_issue, #add_announcement, #addPrintModal {
+    margin-bottom: 30px;
 }
 
 footer {

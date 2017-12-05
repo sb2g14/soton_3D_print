@@ -194,7 +194,7 @@ class OrderOnlineController extends Controller
             'hours' => 'required',
             'minutes' => 'required',
             'material_amount' => 'required|numeric|min:0.1|max:9999',
-            'comments' => 'max:255'
+//            'comments' => 'max:255'
             ]);
 
         // create a print from the specified details
@@ -213,7 +213,7 @@ class OrderOnlineController extends Controller
         $print -> update(array(
             'purpose' => 'Use',
             'material_amount' => $assigned_print_preview["material_amount"],
-            'print_comment' => $assigned_print_preview["comments"],
+//            'print_comment' => $assigned_print_preview["comments"],
             'status' => 'waiting'
         ));
 

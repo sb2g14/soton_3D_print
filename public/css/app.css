@@ -501,23 +501,6 @@ body.is-fixed {
 }
 .s-welcome {
   margin-top: 60px;
-  /* MODAL STYLES */
-  /* #myModal {
-        .list-group-item {
-            margin-bottom: 30px;
-            h4, h5 {
-                margin-bottom: 10px;
-            }
-            button {
-                margin-bottom: 10px;
-            }
-            .media-left {
-                img {
-                    width:30px;
-                }
-            }
-        }
-    } */
 }
 .s-welcome .container {
   margin-top: -150px;
@@ -591,27 +574,30 @@ body.is-fixed {
 .s-welcome .cardblock .body {
   padding: 20px;
   height: 335px;
+  color: #fff;
 }
 .s-welcome .cardblock .body.bg-pink {
-  background-color: #F8BBD0;
-}
-.s-welcome .cardblock .body.bg-pink:hover {
-  background-color: #880E4F;
-  color: #fff;
+  background-color: #C2185B;
 }
 .s-welcome .cardblock .body.bg-cyan {
-  background-color: #B2EBF2;
-}
-.s-welcome .cardblock .body.bg-cyan:hover {
-  background-color: #006064;
-  color: #fff;
+  background-color: #0097A7;
 }
 .s-welcome .cardblock .body.bg-teal {
-  background-color: #B2DFDB;
+  background-color: #00796B;
 }
-.s-welcome .cardblock .body.bg-teal:hover {
-  background-color: #004D40;
-  color: #fff;
+.s-welcome .cardblock.hover-expand-effect:after {
+  background-color: rgba(0, 0, 0, 0.05);
+  content: ".";
+  position: absolute;
+  left: 0;
+  top: 90px;
+  width: 100%;
+  height: 0;
+  color: transparent;
+  transition: all 0.95s;
+}
+.s-welcome .cardblock.hover-expand-effect:hover:after {
+  height: 80%;
 }
 .s-welcome .list-group-item {
   background-color: transparent;
@@ -630,20 +616,6 @@ body.is-fixed {
 }
 .s-welcome .list-group-item .media-left img {
   width: 30px;
-}
-.s-welcome .modal-header {
-  background: #002e3b;
-  color: #fff;
-}
-.s-welcome .modal-header .close {
-  color: #fff;
-  opacity: 1;
-}
-.s-welcome #addIssue,
-.s-welcome #addAnnouncement,
-.s-welcome #add_issue,
-.s-welcome #add_announcement {
-  margin-bottom: 30px;
 }
 .s-welcome .view-all {
   background: #5dbd9f;
@@ -715,6 +687,15 @@ body.is-fixed {
 .s-request-form .instructions .hint.is-active {
   display: block;
 }
+.nav > li > a:focus,
+.nav > li > a:hover {
+  text-decoration: none;
+  background-color: #ddd;
+}
+.table-hover > tbody > tr:focus,
+.table-hover > tbody > tr:hover {
+  background-color: #ddd;
+}
 .contacts .col-left {
   padding-left: 15px;
 }
@@ -753,6 +734,22 @@ body.is-fixed {
 }
 .demonstrator .coordinator:hover {
   background-color: #FFCDD2;
+}
+/* MODAL STYLES */
+.modal-header {
+  background: #002e3b;
+  color: #fff;
+}
+.modal-header .close {
+  color: #fff;
+  opacity: 1;
+}
+#addIssue,
+#addAnnouncement,
+#add_issue,
+#add_announcement,
+#addPrintModal {
+  margin-bottom: 30px;
 }
 footer {
   font-weight: 100;
