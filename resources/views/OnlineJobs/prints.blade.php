@@ -37,20 +37,18 @@
                         @php list($h, $i, $s) = explode(':', $print->time);
                         $time_finish = $print->created_at->addHour($h)->addMinutes($i);
                         @endphp
-                         @if ($time_finish->gte(Carbon\Carbon::now('Europe/London')))
                         <tr class="text-left">
                             <td data-th="ID">{{ $print->id }}</td>
                             <td data-th="Printer No">{{ $print->printers_id }}</td>
                             <td data-th="Printed by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                             <td data-th="Job IDs">@foreach($print->jobs as $job) {{ $job->id }} @endforeach</td>
                             <td data-th="Started on">{{ $print->created_at->toDateTimeString() }}</td>
-                            <td data-th="Time Remain">{{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60) }}</td>
+                            <td data-th="Time Remain">@if ($time_finish->gte(Carbon\Carbon::now('Europe/London'))) {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60) }} @else  completed @endif </td>
                             <td data-th="Manage">
                                 <a href="#" class="btn btn-success">Print successful</a>
                                 <a href="#" class="btn btn-danger">Print failed</a>
                             </td>
                         </tr>
-                        @endif
                     @endforeach
             <hr>
                 {{--@foreach($jobs_in_progress as $job)--}}

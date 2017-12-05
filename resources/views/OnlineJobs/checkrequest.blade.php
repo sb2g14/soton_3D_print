@@ -60,7 +60,7 @@
                                     <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                                         {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
                                         <div class="col-md-2">
-                                            {!! Form::select('hours', range(0,59),old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
+                                            {!! Form::select('hours', array('' => 'Hours') + range(0,59),  old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
                                             @if ($errors->has('hours'))
                                                 <span class="help-block">
                                                     <strong>{{ $errors->first('hours') }}</strong>
@@ -68,7 +68,7 @@
                                             @endif
                                         </div>
                                         <div class="col-md-2">
-                                            {!! Form::select('minutes', range(0,59),old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
+                                            {!! Form::select('minutes', array('' => 'Minutes') + range(0,59), old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
                                             @if ($errors->has('minutes'))
                                                 <span class="help-block">
                                                     <strong>{{ $errors->first('minutes') }}</strong>
@@ -90,92 +90,18 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group text-left">
-                                        <div class="col-md-12">
-                                            <label for="comments">Add comments to be seen by a customer (optional):</label><br>
-                                            <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
-                                            @if ($errors->has('comments'))
-                                                <span class="help-block">
-                                                    <strong>{{ $errors->first('comments') }}</strong>
-                                                </span>
-                                            @endif
-                                            <span class="help-block" id="message_error"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-12 text-left">
-                                        <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal assign prints-->
-                <div id="addPrintModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-lg">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h3 class="modal-title text-center">Specify the print details below</h3>
-                            </div>
-                            {{--Modal body--}}
-                            <div class="modal-body text-left">
-
-                                {{--Form to specify material amount and duration of each print--}}
-                                <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/checkrequest/{{ $job->id }}">
-                                    {{ csrf_field() }}
-                                    <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
-                                        {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
-                                        <div class="col-md-2">
-                                            {!! Form::select('hours', range(0,59),old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
-                                            @if ($errors->has('hours'))
-                                                <span class="help-block">
-                                                    <strong>{{ $errors->first('hours') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                        <div class="col-md-2">
-                                            {!! Form::select('minutes', range(0,59),old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
-                                            @if ($errors->has('minutes'))
-                                                <span class="help-block">
-                                                    <strong>{{ $errors->first('minutes') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
-                                        <label for="material_amount" class="col-md-4 control-label">Estimated material amount (grams):</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="material_amount" name="material_amount" value="{{old('material_amount')}}" class="form-control">
-                                            @if ($errors->has('material_amount'))
-                                                <span class="help-block">
-                                                    <strong>{{ $errors->first('material_amount') }}</strong>
-                                                </span>
-                                            @endif
-                                            <span class="help-block" id="material_amount_error"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group text-left">
-                                        <div class="col-md-12">
-                                            <label for="comments">Add comments to be seen by a customer (optional):</label><br>
-                                            <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
-                                            @if ($errors->has('comments'))
-                                                <span class="help-block">
-                                                    <strong>{{ $errors->first('comments') }}</strong>
-                                                </span>
-                                            @endif
-                                            <span class="help-block" id="message_error"></span>
-                                        </div>
-                                    </div>
+                                    {{--<div class="form-group text-left">--}}
+                                        {{--<div class="col-md-12">--}}
+                                            {{--<label for="comments">Add comments to be seen by a customer (optional):</label><br>--}}
+                                            {{--<textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>--}}
+                                            {{--@if ($errors->has('comments'))--}}
+                                                {{--<span class="help-block">--}}
+                                                    {{--<strong>{{ $errors->first('comments') }}</strong>--}}
+                                                {{--</span>--}}
+                                            {{--@endif--}}
+                                            {{--<span class="help-block" id="message_error"></span>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
 
                                     <div class="col-sm-12 text-left">
                                         <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
@@ -218,11 +144,21 @@
                 Total material amount: <b>{{ $job->prints->sum('material_amount') }}g</b> <br>
                 Total price: <b>£{{ $job->prints->sum('price') }}</b>
                 </p>
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> There were some problems with your input. Please return to fix them.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
             {{--Job control buttons--}}
             <div class="col-sm-12 text-center">
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Add print preview</button>
-                <a href="/OnlineJobs/index" class="btn btn-lg btn-info">Save Changes</a>
+                <a href="/OnlineJobs/index" class="btn btn-lg btn-info">Back</a>
                 <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Reject a job</button>
                 <a href="/OnlineJobs/approveRequest/{{ $job->id }}" class="btn btn-lg btn-success">Approve job</a>
             </div>
@@ -245,18 +181,18 @@
                     <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/delete/{{ $job->id }}">
                         {{ csrf_field() }}
 
-                        {{--<div class="form-group text-left">--}}
-                            {{--<div class="col-md-12">--}}
-                                {{--<label for="comments">Add comments for the customer:</label><br>--}}
-                                {{--<textarea rows="4" id="message" name="comment" placeholder="Please explain why the job was rejected" class="form-control"></textarea>--}}
-                                {{--@if ($errors->has('comments'))--}}
-                                    {{--<span class="help-block">--}}
-                                        {{--<strong>{{ $errors->first('comments') }}</strong>--}}
-                                    {{--</span>--}}
-                                {{--@endif--}}
-                                {{--<span class="help-block" id="message_error"></span>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
+                        <div class="form-group text-left">
+                            <div class="col-md-12">
+                                <label for="comments">Add comments for the customer:</label><br>
+                                <textarea rows="4" id="message" name="comment" placeholder="Please explain why the job was rejected" class="form-control"></textarea>
+                                @if ($errors->has('comments'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('comments') }}</strong>
+                                    </span>
+                                @endif
+                                <span class="help-block" id="message_error"></span>
+                            </div>
+                        </div>
 
                         <div class="col-sm-12 text-left">
                             <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>

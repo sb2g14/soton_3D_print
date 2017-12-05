@@ -53,7 +53,7 @@
             Waiting for Customer to accept
         </div>
         {{--Job control buttons--}}
-        <a href="/OnlineJobs/approved" class="btn btn-lg btn-info">Save Changes</a>
+        <a href="/OnlineJobs/approved" class="btn btn-lg btn-info">Back</a>
         <a href="/OnlineJobs/customerReject/{{ $job->id }}" class="btn btn-lg btn-danger">Customer Rejected</a>
         <a href="/OnlineJobs/customerApproved/{{ $job->id }}" class="btn btn-lg btn-success">Customer Accepted</a>
     </div>

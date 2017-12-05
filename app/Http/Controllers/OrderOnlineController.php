@@ -248,6 +248,13 @@ class OrderOnlineController extends Controller
         // Coming back to hours and minutes
         $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
 
+        // Remove print previews from the database
+        $prints = $job->prints;
+        foreach($prints as $print) {
+            $job->prints()->detach($print->id); //Break connection with job
+            $print->delete(); // Delete print previews
+        }
+
         // Store the calculated total parameters in the job
         $job->update(array(
             'status' => 'Approved',

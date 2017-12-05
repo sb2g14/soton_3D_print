@@ -77,7 +77,7 @@
                                     <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                                         {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
                                         <div class="col-md-4">
-                                            {!! Form::select('hours', range(0,59),old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
+                                            {!! Form::select('hours', array('' => 'Hours') + range(0,59),old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
                                             @if ($errors->has('hours'))
                                                 <span class="help-block">
                                                     <strong>{{ $errors->first('hours') }}</strong>
@@ -85,7 +85,7 @@
                                             @endif
                                         </div>
                                         <div class="col-md-4">
-                                            {!! Form::select('minutes', range(0,59),old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
+                                            {!! Form::select('minutes', array('' => 'Minutes') + range(0,59),old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
                                             @if ($errors->has('minutes'))
                                                 <span class="help-block">
                                                     <strong>{{ $errors->first('minutes') }}</strong>
@@ -174,11 +174,21 @@
                     Total material amount: <b>{{ $job->prints->sum('material_amount') }}g</b> <br>
                     Total price: <b>£{{ $job->prints->sum('price') }}</b>
                 </p>
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> There were some problems with your input. Please return to fix them.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
             {{--Job control buttons--}}
             <div class="col-sm-12 text-center">
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Assign Prints</button>
-                <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Save Changes</a>
+                <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Back</a>
                 <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed</button>
                 <a href="/OnlineJobs/approveRequest/{{ $job->id }}" class="btn btn-lg btn-success">Job Completed</a>
             </div>
