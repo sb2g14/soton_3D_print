@@ -150,12 +150,16 @@
 
                     {{--List assigned prints--}}
                     @foreach($job->prints as $print)
+                    @php list($h, $i, $s) = explode(':', $print->time);
+                        $time_finish = $print->created_at->addHour($h)->addMinutes($i);
+                    @endphp
                         <div class="alert alert-warning">
                             <p>
-                                Assigned print: <b>{{ $print->id }}</b>
-                                Time: <b>{{ $print->time }}</b>
+                                Print: <b>{{ $print->id }}</b> on Printer <b> {{ $print->printers_id }} </b> started <b> {{ $print->created_at->diffForHumans() }}</b> by <b>{{ $print->staff_started->first_name }} {{ $print->staff_started->last_name }}</b>
                                 Material amount: <b>{{$print->material_amount}}g</b>
-                                Price: <b>£{{$print->price}}</b>
+                                Total Time: <b>{{ $print->time }}</b>
+                                Time Remain: <b>@if (Carbon\Carbon::now('Europe/London')->gte($time_finish) || $print->status == 'Success' || $print->status == 'Failed')  completed  @else {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60)}} @endif</b>
+                                Status: <b> {{ $print->status }} </b>
                             </p>
                         </div>
                     @endforeach

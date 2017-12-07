@@ -393,6 +393,7 @@ class OrderOnlineController extends Controller
 
         // Create print in the Database
         $print = Prints::create([
+            'printers_id' => $assigned_print["printers_id"],
             'time' => $time,
             'price' => $price,
             'status' => 'In Progress',
@@ -423,5 +424,41 @@ class OrderOnlineController extends Controller
     public function jobFailed($id)
     {
         return view('OnlineJobs.managePendingJob');
+    }
+
+    // Action to report print as successful
+
+    public function printSuccessful($id)
+    {
+        $print = Prints::findOrFail($id);
+        $print->update(array(
+            'print_finished_by' => Auth::user()->staff->id,
+            'status' => 'Success'
+        ));
+
+        // Notify that the print preview was created
+        notify()->flash('The print has been marked as successful!', 'success', [
+            'text' => 'Please click Job Completed when all prints are finished.',
+        ]);
+
+        return redirect("/OnlineJobs/prints");
+    }
+
+    // Action to report print as successful
+
+    public function printFailed($id)
+    {
+        $print = Prints::findOrFail($id);
+        $print->update(array(
+            'print_finished_by' => Auth::user()->staff->id,
+            'status' => 'Failed'
+        ));
+
+        // Notify that the print preview was created
+        notify()->flash('The print has been marked as failed', 'success', [
+            'text' => 'Please restart the print and click Job Completed when all prints are finished.',
+        ]);
+
+        return redirect("/OnlineJobs/prints");
     }
 }

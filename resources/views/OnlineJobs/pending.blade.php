@@ -36,6 +36,9 @@
                         <td>
                             <a href="/OnlineJobs/managePendingJob/{{$job->id}}" class="btn btn-info">Review Job</a>
                             {{--<a href="/OnlineJobs/assignPrint/{{$job->id}}" class="btn btn-warning">Assign new Print</a>--}}
+                            @if(is_null(array_search('In Progress', (array) $job->prints)))
+                            <a href="#" class="btn btn-success" disabled>Job Completed</a>
+                            @endif
                             <a href="/OnlineJobs/completedJob/{{$job->id}}" class="btn btn-success">Job Completed</a>
                         </td>
                     </tr>
