@@ -224,8 +224,8 @@ class OrderOnlineController extends Controller
         $job->prints()->attach($print);
 
         // Notify that the print preview was created
-        notify()->flash('The print has been assigned to this job!', 'success', [
-            'text' => 'You can either add more prints or accept this job and notify customer',
+        notify()->flash('The print-preview has been added to this job!', 'success', [
+            'text' => 'You can either add more print-previews or accept this job and notify customer',
         ]);
 
         return redirect("/OnlineJobs/checkrequest/{$job->id}");
