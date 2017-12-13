@@ -273,6 +273,10 @@ Route::get('/gettingPaid', 'StaffController@gettingPaid');
 // Route to documents page
 Route::get('/documents', 'StaffController@documents');
 
+// Route to FAQ
+
+Route::get('/faq','FAQController@index');
+
 // Route::get('/notify', function () {
 //    notify()->flash('Welcome back!', 'success', [
 //        'text' => 'It\'s really great to see you again',

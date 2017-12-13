@@ -172,7 +172,11 @@
             <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Add print preview</button>
             <a href="/OnlineJobs/index" class="btn btn-lg btn-info">Back</a>
             <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Reject a job</button>
+            @if($job->prints->isEmpty())
+                <a href="#" class="btn btn-lg btn-success" disabled>Approve job</a>
+            @else
             <a href="/OnlineJobs/approveRequest/{{ $job->id }}" class="btn btn-lg btn-success">Approve job</a>
+            @endif
         </div>
     </div>
 
