@@ -196,7 +196,7 @@
                 <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed</button>
 
                 @if($query_in_progress == null & $query_success !== null)
-                    <a href="/OnlineJobs/completedJob/{{$job->id}}" class="btn btn-lg btn-success">Job Completed</a>
+                    <a href="/OnlineJobs/jobSuccess/{{$job->id}}" class="btn btn-lg btn-success">Job Completed</a>
                 @else
                     <a href="#" class="btn btn-lg btn-success" disabled>Job Completed</a>
                 @endif

@@ -192,7 +192,7 @@
                 <p>We currently receive files uploaded via university drop-off service that can be accessed via the
                 button below.</p>
                 <p>On the drop-off website you need to <b>Login</b>, click <b>Drop-off</b> add
-                    <b>Andrew Everitt, aje2g15@soton.ac.uk</b> as your recepient and upload your files. </p>
+                    <b>Online Manager, 3dprint.soton@gmail.com</b> as your recipient and upload your files. </p>
                 <div>
                     <img class="align" src="/Images/icons/drop_off_manual.svg">
                 </div>

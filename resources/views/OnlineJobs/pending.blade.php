@@ -34,7 +34,7 @@
                         <td data-th="Requested on">{{ $job->created_at->toDateTimeString() }}</td>
                         <td data-th="Accepted on">{{ Carbon\Carbon::parse($job->approved_at)->diffForHumans() }}</td>
                         <td>
-                            <a href="/OnlineJobs/jobSuccess/{{$job->id}}" class="btn btn-info">Review Job</a>
+                            <a href="/OnlineJobs/managePendingJob/{{$job->id}}" class="btn btn-info">Review Job</a>
                         </td>
                     </tr>
                 @endforeach

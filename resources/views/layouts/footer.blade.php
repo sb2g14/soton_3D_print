@@ -17,6 +17,9 @@
                         <div class="col-xs-2">
                             <a href="https://www.youtube.com/channel/UCYrrokbBniAgVg_On7BSD3A" target="_blank"><i class="fa fa-youtube"></i></a>
                         </div>
+                        <div class="col-xs-2">
+                            <a href={{ url('/faq') }} target="_blank">FAQ</a>
+                        </div>
                         <div class="col-xs-3"></div>
                     </div>
                 </div>
