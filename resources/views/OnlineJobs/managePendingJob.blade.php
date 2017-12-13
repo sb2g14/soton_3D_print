@@ -163,21 +163,21 @@
                             </p>
                         </div>
                     @endforeach
-                <h3>Total job stats</h3>
+                {{--<h3>Total job stats</h3>--}}
                 {{-- Calculate total print time --}}
-                @php
-                    $total_minutes = 0;
-                    foreach ($job->prints as $print){
-                    list($h, $i, $s) = explode(':', $print->time);
-                    $minutes = $h*60 + $i;
-                    $total_minutes = $total_minutes + $minutes;
-                    }
-                    $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
-                @endphp
-                <p>Total job duration: <b>{{ $total_time }}</b> <br>
-                    Total material amount: <b>{{ $job->prints->sum('material_amount') }}g</b> <br>
-                    Total price: <b>£{{ $job->prints->sum('price') }}</b>
-                </p>
+                {{--@php--}}
+                    {{--$total_minutes = 0;--}}
+                    {{--foreach ($job->prints as $print){--}}
+                    {{--list($h, $i, $s) = explode(':', $print->time);--}}
+                    {{--$minutes = $h*60 + $i;--}}
+                    {{--$total_minutes = $total_minutes + $minutes;--}}
+                    {{--}--}}
+                    {{--$total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);--}}
+                {{--@endphp--}}
+                {{--<p>Total job duration: <b>{{ $total_time }}</b> <br>--}}
+                    {{--Total material amount: <b>{{ $job->prints->sum('material_amount') }}g</b> <br>--}}
+                    {{--Total price: <b>£{{ $job->prints->sum('price') }}</b>--}}
+                {{--</p>--}}
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         <strong>Whoops!</strong> There were some problems with your input. Please return to fix them.<br><br>
@@ -194,10 +194,10 @@
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Assign Prints</button>
                 <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Back</a>
                 <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed</button>
-                @if($query !== null)
-                    <a href="#" class="btn btn-lg btn-success" disabled>Job Completed</a>
-                @else
+                @if($query_in_progress == null & $query_success !== null)
                     <a href="/OnlineJobs/completedJob/{{$job->id}}" class="btn btn-lg btn-success">Job Completed</a>
+                @else
+                    <a href="#" class="btn btn-lg btn-success" disabled>Job Completed</a>
                 @endif
             </div>
         </div>

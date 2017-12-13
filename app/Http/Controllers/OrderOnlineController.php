@@ -366,12 +366,13 @@ class OrderOnlineController extends Controller
         // Pass the job to the blade
         $job = Jobs::findOrFail($id);
         // Pass all the available printers to the blade
-        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
+        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
         // Pass the jobs In Progress to the view
-        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->get();
+        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->pluck('id','id');
         // Pass all the prints associated with the job
-       $query = $job->prints->where('status','=','In Progress')->first();
-        return view('OnlineJobs.managePendingJob', compact('job','available_printers','jobs_in_progress','query'));
+       $query_in_progress = $job->prints->where('status','=','In Progress')->first();
+       $query_success = $job->prints->where('status','=','Success')->first();
+        return view('OnlineJobs.managePendingJob', compact('job','available_printers','jobs_in_progress','query_in_progress','query_success'));
     }
     // Assign prints to the currently managed job
     public function assignPrint($id)
@@ -413,6 +414,8 @@ class OrderOnlineController extends Controller
             $job->prints()->attach($print);
         }
 
+        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 1));
+
         // Notify that the print preview was created
         notify()->flash('The print has been assigned to the selected jobs!', 'success', [
             'text' => 'You may proceed to print overview and actual printing',
@@ -437,6 +440,8 @@ class OrderOnlineController extends Controller
             'status' => 'Success'
         ));
 
+        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
+
         // Notify that the print preview was created
         notify()->flash('The print has been marked as successful!', 'success', [
             'text' => 'Please click Job Completed when all prints are finished.',
@@ -454,6 +459,8 @@ class OrderOnlineController extends Controller
             'print_finished_by' => Auth::user()->staff->id,
             'status' => 'Failed'
         ));
+
+        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
 
         // Notify that the print preview was created
         notify()->flash('The print has been marked as failed', 'success', [
