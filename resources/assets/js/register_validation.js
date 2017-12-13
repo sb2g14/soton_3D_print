@@ -58,7 +58,6 @@ $(function () {
         if (!name.val().match(/^[a-z-A-Z- ]{3,100}$/)){
             $("#name_error").html("Only letters and hyphens(-) are allowed. Maximum name length is 100 characters");
             $("#name_error").show();
-            $("#name").focus();
             $("#name").addClass("parsley-error");
             error_name = true;
         } else {
@@ -80,26 +79,22 @@ $(function () {
         if (id.val().length < 1) {
             $("#student_id_error").html("Id cannot be empty");
             $("#student_id_error").show();
-            $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
         } else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
             $("#student_id_error").html("Id of a member of staff must be 8 digits long");
             $("#student_id_error").show();
-            $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
         } else if (id.val()[0].match(/^[2345]/) && id.val().length !== 9) {
             $("#student_id_error").html("The id of students must be 9 digits long");
             $("#student_id_error").show();
-            $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
         } else if (!id.val().match(/*/^[0-9]+$/*/)) {
             $("#student_id_error").html("Only digits are allowed");
             $("#student_id_error").show();
             $("#student_id").addClass("parsley-error");
-            $("#student_id").focus();
             error_id = true;
         } else {
             $("#student_id_error").hide();
@@ -122,26 +117,22 @@ $(function () {
         if (id.val().length < 1) {
             $("#student_id_error").html("Id cannot be empty");
             $("#student_id_error").show();
-            $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
         } else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
             $("#student_id_error").html("Id of a member of staff must be 8 digits long");
             $("#student_id_error").show();
-            $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
         } else if (id.val()[0].match(/^[2345]/) && id.val().length !== 9) {
             $("#student_id_error").html("The id of students must be 9 digits long");
             $("#student_id_error").show();
-            $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
         } else if (!id.val().match(/*/^[0-9]+$/*/)) {
             $("#student_id_error").html("Only digits are allowed");
             $("#student_id_error").show();
             $("#student_id").addClass("parsley-error");
-            $("#student_id").focus();
             error_id = true;
         } else {
             $("#student_id_error").hide();
@@ -164,13 +155,11 @@ $(function () {
         if(email.val().length < 11 || email.val().length > 30){
             $("#email_error").html("Email is too short or too long");
             $("#email_error").show();
-            $("#email").focus();
             $("#email").addClass("parsley-error");
             error_email = true;
         } else if(!email.val().match(/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/)){
             $("#email_error").html("Only @soton.ac.uk emails are allowed");
             $("#email_error").show();
-            $("#email").focus();
             $("#email").addClass("parsley-error");
             error_email = true;
         } else {
@@ -193,14 +182,12 @@ $(function () {
             $("#password_error").html("The password must be 6 to 16 character long and contain at least one upper " +
                 "case letter, one lower case letter, and one digit");
             $("#password_error").show();
-            $("#password").focus();
             $("#password").addClass("parsley-error");
             error_password = true;
         } else if(!password.val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,16}$/)){
             $("#password_error").html("The password must be 6 to 16 character long and contain at least one upper " +
                 "case letter, one lower case letter, and one digit");
             $("#password_error").show();
-            $("#password").focus();
             $("#password").addClass("parsley-error");
             error_password = true;
         } else {
@@ -244,13 +231,11 @@ $(function () {
         if (phone.val().length !== 11) {
             $("#phone_error").html("Phone number should contain 11 digits");
             $("#phone_error").show();
-            $("#phone").focus();
             $("#phone").addClass("parsley-error");
             error_phone = true;
         } else if (!phone.val().match(/^\d+$/)) {
             $("#phone_error").html("Phone number should contain digits only");
             $("#phone_error").show();
-            $("#phone").focus();
             $("#phone").addClass("parsley-error");
             error_phone = true;
         } else {
