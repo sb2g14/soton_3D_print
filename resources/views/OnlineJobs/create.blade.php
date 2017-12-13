@@ -122,6 +122,23 @@
                     </div>
                 </div>
 
+                {{--Job title--}}
+                <div class="form-group{{ $errors->has('job_title') ? ' has-error' : '' }}">
+                    <label for="job_title" class="col-sm-4 control-label">Job title</label>
+
+                    <div class="col-sm-8">
+                        <input id="job_title" data-help="job_title" type="text" class="form-control"
+                               name="job_title" value="{{ old('job_title') }}" placeholder="Provide a meaningful name for your request" required>
+
+                        @if ($errors->has('job_title'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('job_title') }}</strong>
+                        </span>
+                        @endif
+                        <span class="help-block" id="job_title_error"></span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-8 text-right">
                         <button id="submit" type="submit" class="btn btn-primary">Submit</button>

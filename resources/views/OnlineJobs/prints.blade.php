@@ -17,9 +17,9 @@
     </ul>
 </div>
 
-    <div class="title m-b-md">
+    <h3>
         Prints Running
-    </div>
+    </h3>
 
     <div class="container">
         <table class="table">
@@ -58,24 +58,26 @@
         </table>
     </div>
     <hr>
-            <div class="title m-b-md">
-                Completed Prints of Pending Jobs
-            </div>
-            <div class="container">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Printer No</th>
-                        <th>Job IDs</th>
-                        <th>Started by</th>
-                        <th>Started on</th>
-                        <th>Finished by</th>
-                        <th>Status</th>
-                        <th>Manage</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+
+    <h3>
+        Completed Prints of Pending Jobs
+    </h3>
+
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Printer No</th>
+                <th>Job IDs</th>
+                <th>Started by</th>
+                <th>Started on</th>
+                <th>Finished by</th>
+                <th>Status</th>
+                <th>Manage</th>
+            </tr>
+            </thead>
+            <tbody>
                 @foreach($jobs_in_progress as $job)
                     @foreach($job->prints as $print)
                         @if($print->status == 'Success' || $print->status == 'Failed')

@@ -194,11 +194,13 @@
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Assign Prints</button>
                 <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Back</a>
                 <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed</button>
+
                 @if($query_in_progress == null & $query_success !== null)
                     <a href="/OnlineJobs/completedJob/{{$job->id}}" class="btn btn-lg btn-success">Job Completed</a>
                 @else
                     <a href="#" class="btn btn-lg btn-success" disabled>Job Completed</a>
                 @endif
+
             </div>
         </div>
     </div>

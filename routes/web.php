@@ -234,6 +234,9 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Route for job failed
     Route::post('/OnlineJobs/jobFailed/{id}', 'OrderOnlineController@jobFailed');
 
+    // Route for job success
+    Route::get('/OnlineJobs/JobSuccess/{id}', 'OrderOnlineController@jobSuccess');
+
     // Route to report print as successful
     Route::get('/OnlineJobs/printSuccessful/{id}', 'OrderOnlineController@printSuccessful');
 

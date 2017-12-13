@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\jobSuccess;
 use App\Rules\Alphanumeric;
 use App\Rules\SotonEmail;
 use App\Rules\SotonID;
@@ -21,6 +22,7 @@ use Auth;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\jobReject;
+use App\Mail\jobFailed;
 use App\printers;
 
 
@@ -164,10 +166,9 @@ class OrderOnlineController extends Controller
             ));
 
         // Send an email to the 3d print account
-        //$email = '3DPrintFEE@soton.ac.uk';
-        //$user = User::where('email','=','3DPrintFEE@soton.ac.uk')->first();
-        $user = User::find(2);
-        \Mail::to($user)->send(new onlineRequest($user,$job));
+        $email = '3dprint.soton@gmail.com';
+//        $user = User::find(2);
+        \Mail::to($email)->queue(new onlineRequest($job));
 
         // Notification of request acceptance
         notify()->flash('Your order request has been accepted!', 'success', [
@@ -427,7 +428,48 @@ class OrderOnlineController extends Controller
     // Actions to be taken when the job failed
     public function jobFailed($id)
     {
-        return view('OnlineJobs.managePendingJob');
+        // Extract job failed comment
+        $failed_message = request()->validate([
+            'comment' => 'required|max:255'
+        ]);
+
+        $job = Jobs::findOrFail($id);
+
+        // Send an email to the customer
+        Mail::to($job->customer_email)->queue(new jobFailed($job, $failed_message['comment']));
+
+        // Change the job flag to 'Failed'
+        $job->update(array(
+            'status' => 'Failed'
+        ));
+
+        // Notify that the job failed flag was raised and the email sent to customer
+        notify()->flash('The job status has been changed to Failed', 'success', [
+            'text' => 'An email with the notification has been sent to the customer',
+        ]);
+
+        return redirect("/OnlineJobs/pending");
+    }
+
+    // Action to be taken when the job is successful
+    public function jobSuccess($id)
+    {
+        $job = Jobs::findOrFail($id);
+
+        // Send an email notification to the customer
+        Mail::to($job->customer_email)->queue(new jobSuccess($job));
+
+        // Change the job flag to 'Success'
+        $job->update(array(
+            'status' => 'Success'
+        ));
+
+        // Notify that the job success flag was raised and the email sent to customer
+        notify()->flash('The job status has been changed to Success', 'success', [
+            'text' => 'An email with the notification has been sent to the customer',
+        ]);
+
+        return redirect("/OnlineJobs/pending");
     }
 
     // Action to report print as successful
