@@ -3,7 +3,7 @@
 Dear {{$customer_name}},
 
 <h3>The online job you have requested in the 3D printing workshop on {{ $created_at->toDayDateTimeString() }} has
-    been <b style="color: red">approved</b> by Online Jobs Manager.</h3>
+    been <b style="color: green">approved</b> by Online Jobs Manager.</h3>
 
 <p>The details of your request were as follows:</p>
 <div class="alert alert-info text-left">
