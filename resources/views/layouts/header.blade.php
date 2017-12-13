@@ -8,6 +8,7 @@
        @if (Auth::check())
             <ul class="lsn bl-menu" id="my-menu">
 
+                <li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>
                 <li class="item">
                     <span>
                         Welcome
@@ -81,6 +82,7 @@
             </ul>
         @else
             <ul class="lsn bl-menu" id="my-menu">
+                <li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>
                 <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request a job!</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>

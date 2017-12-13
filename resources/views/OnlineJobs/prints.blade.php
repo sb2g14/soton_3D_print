@@ -71,6 +71,7 @@
                         <th>Started by</th>
                         <th>Started on</th>
                         <th>Finished by</th>
+                        <th>Status</th>
                         <th>Manage</th>
                     </tr>
                     </thead>
@@ -85,6 +86,7 @@
                                 <td data-th="Started by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                                 <td data-th="Started on">{{ $print->created_at->toDateTimeString() }}</td>
                                 <td data-th="Finished by">{{$print->staff_finished->first_name}} {{$print->staff_finished->last_name}}</td>
+                                <td data-th="Status">{{ $print->status }}</td>
                                 <td data-th="Manage">
                                     {{--<a href="/OnlineJobs/printSuccessful/{{ $print->id }}" class="btn btn-success">Print successful</a>--}}
                                     {{--<a href="/OnlineJobs/printFailed/{{ $print->id }}" class="btn btn-danger">Print failed</a>--}}

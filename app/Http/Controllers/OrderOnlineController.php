@@ -367,10 +367,11 @@ class OrderOnlineController extends Controller
         $job = Jobs::findOrFail($id);
         // Pass all the available printers to the blade
         $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
-        // Pass all the jobs that can be used to assign prints
-        $jobs_in_progress = Jobs::orderBy('created_at','desc')->where('status','In Progress')->where('requested_online', 1)->pluck('id','id')->all();
-
-        return view('OnlineJobs.managePendingJob', compact('job','available_printers','jobs_in_progress'));
+        // Pass the jobs In Progress to the view
+        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->get();
+        // Pass all the prints associated with the job
+       $query = $job->prints->where('status','=','In Progress')->first();
+        return view('OnlineJobs.managePendingJob', compact('job','available_printers','jobs_in_progress','query'));
     }
     // Assign prints to the currently managed job
     public function assignPrint($id)
