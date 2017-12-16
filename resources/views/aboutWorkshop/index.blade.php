@@ -54,12 +54,22 @@
                         @endforeach
                     <tr>
                         <td>Faculty contact:</td>
-                        <td class="col-left">Andrew Hamilton, 7/4045/M7</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="col-left"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:A.R.Hamilton@soton.ac.uk">A.R.Hamilton@soton.ac.uk</a></td>
-                    </tr>
+                        {{--<td class="col-left">Andrew Hamilton, 7/4045/M7</td>--}}
+                    {{--</tr>--}}
+                    {{--<tr>--}}
+                        {{--<td></td>--}}
+                        {{--<td class="col-left"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:A.R.Hamilton@soton.ac.uk">A.R.Hamilton@soton.ac.uk</a></td>--}}
+                    {{--</tr>--}}
+                    @foreach($coordinators as $coordinator)
+                        <tr>
+                            <td></td>
+                            <td class="col-left">{{ $coordinator->first_name }} {{ $coordinator->last_name }}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{$coordinator->email}}">{{  $coordinator->email }}</a></td>
+                        </tr>
+                    @endforeach
                 </table>
             </div>
         </div>

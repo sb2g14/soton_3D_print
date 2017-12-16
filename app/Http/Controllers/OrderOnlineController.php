@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\jobSuccess;
 use App\Rules\Alphanumeric;
 use App\Rules\SotonEmail;
 use App\Rules\SotonID;
@@ -21,6 +22,7 @@ use Auth;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\jobReject;
+use App\Mail\jobFailed;
 use App\printers;
 
 
@@ -164,10 +166,9 @@ class OrderOnlineController extends Controller
             ));
 
         // Send an email to the 3d print account
-        //$email = '3DPrintFEE@soton.ac.uk';
-        //$user = User::where('email','=','3DPrintFEE@soton.ac.uk')->first();
-        $user = User::find(2);
-        \Mail::to($user)->send(new onlineRequest($user,$job));
+        $email = '3dprint.soton@gmail.com';
+//        $user = User::find(2);
+        \Mail::to($email)->queue(new onlineRequest($job));
 
         // Notification of request acceptance
         notify()->flash('Your order request has been accepted!', 'success', [
@@ -223,8 +224,8 @@ class OrderOnlineController extends Controller
         $job->prints()->attach($print);
 
         // Notify that the print preview was created
-        notify()->flash('The print has been assigned to this job!', 'success', [
-            'text' => 'You can either add more prints or accept this job and notify customer',
+        notify()->flash('The print-preview has been added to this job!', 'success', [
+            'text' => 'You can either add more print-previews or accept this job and notify customer',
         ]);
 
         return redirect("/OnlineJobs/checkrequest/{$job->id}");
@@ -366,11 +367,13 @@ class OrderOnlineController extends Controller
         // Pass the job to the blade
         $job = Jobs::findOrFail($id);
         // Pass all the available printers to the blade
-        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
-        // Pass all the jobs that can be used to assign prints
-        $jobs_in_progress = Jobs::orderBy('created_at','desc')->where('status','In Progress')->where('requested_online', 1)->pluck('id','id')->all();
-
-        return view('OnlineJobs.managePendingJob', compact('job','available_printers','jobs_in_progress'));
+        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
+        // Pass the jobs In Progress to the view
+        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->pluck('id','id');
+        // Pass all the prints associated with the job
+       $query_in_progress = $job->prints->where('status','=','In Progress')->first();
+       $query_success = $job->prints->where('status','=','Success')->first();
+        return view('OnlineJobs.managePendingJob', compact('job','available_printers','jobs_in_progress','query_in_progress','query_success'));
     }
     // Assign prints to the currently managed job
     public function assignPrint($id)
@@ -393,6 +396,7 @@ class OrderOnlineController extends Controller
 
         // Create print in the Database
         $print = Prints::create([
+            'printers_id' => $assigned_print["printers_id"],
             'time' => $time,
             'price' => $price,
             'status' => 'In Progress',
@@ -411,6 +415,8 @@ class OrderOnlineController extends Controller
             $job->prints()->attach($print);
         }
 
+        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 1));
+
         // Notify that the print preview was created
         notify()->flash('The print has been assigned to the selected jobs!', 'success', [
             'text' => 'You may proceed to print overview and actual printing',
@@ -422,6 +428,87 @@ class OrderOnlineController extends Controller
     // Actions to be taken when the job failed
     public function jobFailed($id)
     {
-        return view('OnlineJobs.managePendingJob');
+        // Extract job failed comment
+        $failed_message = request()->validate([
+            'comment' => 'required|max:255'
+        ]);
+
+        $job = Jobs::findOrFail($id);
+
+        // Send an email to the customer
+        Mail::to($job->customer_email)->queue(new jobFailed($job, $failed_message['comment']));
+
+        // Change the job flag to 'Failed'
+        $job->update(array(
+            'status' => 'Failed'
+        ));
+
+        // Notify that the job failed flag was raised and the email sent to customer
+        notify()->flash('The job status has been changed to Failed', 'success', [
+            'text' => 'An email with the notification has been sent to the customer',
+        ]);
+
+        return redirect("/OnlineJobs/pending");
+    }
+
+    // Action to be taken when the job is successful
+    public function jobSuccess($id)
+    {
+        $job = Jobs::findOrFail($id);
+
+        // Send an email notification to the customer
+        Mail::to($job->customer_email)->queue(new jobSuccess($job));
+
+        // Change the job flag to 'Success'
+        $job->update(array(
+            'status' => 'Success'
+        ));
+
+        // Notify that the job success flag was raised and the email sent to customer
+        notify()->flash('The job status has been changed to Success', 'success', [
+            'text' => 'An email with the notification has been sent to the customer',
+        ]);
+
+        return redirect("/OnlineJobs/pending");
+    }
+
+    // Action to report print as successful
+
+    public function printSuccessful($id)
+    {
+        $print = Prints::findOrFail($id);
+        $print->update(array(
+            'print_finished_by' => Auth::user()->staff->id,
+            'status' => 'Success'
+        ));
+
+        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
+
+        // Notify that the print preview was created
+        notify()->flash('The print has been marked as successful!', 'success', [
+            'text' => 'Please click Job Completed when all prints are finished.',
+        ]);
+
+        return redirect("/OnlineJobs/prints");
+    }
+
+    // Action to report print as successful
+
+    public function printFailed($id)
+    {
+        $print = Prints::findOrFail($id);
+        $print->update(array(
+            'print_finished_by' => Auth::user()->staff->id,
+            'status' => 'Failed'
+        ));
+
+        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
+
+        // Notify that the print preview was created
+        notify()->flash('The print has been marked as failed', 'success', [
+            'text' => 'Please restart the print and click Job Completed when all prints are finished.',
+        ]);
+
+        return redirect("/OnlineJobs/prints");
     }
 }

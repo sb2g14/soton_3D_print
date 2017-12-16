@@ -68,7 +68,7 @@
                                                 {{--Print name of a user who created a post--}}
                                                 <h5 class="media-heading"> {{$post_last->user->name}}  <small><i>
                                                             {{--Print date and time when a post was created--}}
-                                                            Posted on {{ $post_last->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                                            Posted {{ $post_last->created_at->diffForHumans() }}:</i></small></h5>
                                                 {{--Print the text of a post--}}
                                                 {{ $post_last->body }}
                                             </div>
@@ -93,7 +93,7 @@
                                             <h4><b>Announcement {{  $announcement_last->id + 1 }} </b></h4>
                                             <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
-                                                        Posted on {{ $announcement_last->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                                        Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
                                             <h5> {{ $announcement_last->message }} </h5>
                                         </div>
                                     </li>
@@ -158,7 +158,7 @@
                                             <h4><b>Announcement {{  $announcement_last->id + 1 }} </b></h4>
                                             <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
-                                                        Posted on {{ $announcement_last->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                                        Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
                                             <h5> {{ $announcement_last->message }} </h5>
                                         </div>
                                     </li>
@@ -323,7 +323,7 @@
                                 {{--Print name of a user who created a post--}}
                                 <h5 class="media-heading"> {{$post->user->name}}  <small><i>
                                             {{--Print date and time when a post was created--}}
-                                            Posted on {{ $post->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                            Posted {{ $post->created_at->diffForHumans() }}:</i></small></h5>
                                 {{--Print the text of a post--}}
                                 <p>{{ $post->body }}</p>
                                 <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
@@ -339,7 +339,7 @@
                                                         <img src="/Images/img_avatar3.png" class="media-object">
                                                     </div>
                                                     <div class="media-body">
-                                                        <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted on {{ $comment->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                                        <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted {{ $comment->created_at->diffForHumans() }}:</i></small></h5>
                                                         <p>{{ $comment->body }}</p>
                                                     </div>
                                                 </div>
@@ -425,7 +425,7 @@
                                     <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
                                     <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
                                                 {{--Print date and time when a post was created--}}
-                                                Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
+                                                Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
                                     <h5> {{ $announcement->message }} </h5>
                                     <!-- </div> -->
                                 </li>
@@ -453,7 +453,7 @@
                         <p>
                             <ol>
                                 <li>Export your file to .stl format and bring it with you to the workshop</li>
-                                <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOUSELF to the cupboards!</b></li>
+                                <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOURSELF to the cupboards!</b></li>
                                 <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
                                 <li>Request a job
                                     <ol type="a">

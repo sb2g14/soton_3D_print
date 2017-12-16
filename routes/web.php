@@ -234,6 +234,15 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Route for job failed
     Route::post('/OnlineJobs/jobFailed/{id}', 'OrderOnlineController@jobFailed');
 
+    // Route for job success
+    Route::get('/OnlineJobs/jobSuccess/{id}', 'OrderOnlineController@jobSuccess');
+
+    // Route to report print as successful
+    Route::get('/OnlineJobs/printSuccessful/{id}', 'OrderOnlineController@printSuccessful');
+
+    // Route to report print as failed
+    Route::get('/OnlineJobs/printFailed/{id}', 'OrderOnlineController@printFailed');
+
 
 });
 
@@ -263,6 +272,10 @@ Route::get('/gettingPaid', 'StaffController@gettingPaid');
 
 // Route to documents page
 Route::get('/documents', 'StaffController@documents');
+
+// Route to FAQ
+
+Route::get('/faq','FAQController@index');
 
 // Route::get('/notify', function () {
 //    notify()->flash('Welcome back!', 'success', [

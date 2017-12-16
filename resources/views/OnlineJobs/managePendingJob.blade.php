@@ -150,30 +150,34 @@
 
                     {{--List assigned prints--}}
                     @foreach($job->prints as $print)
+                    @php list($h, $i, $s) = explode(':', $print->time);
+                        $time_finish = $print->created_at->addHour($h)->addMinutes($i);
+                    @endphp
                         <div class="alert alert-warning">
                             <p>
-                                Assigned print: <b>{{ $print->id }}</b>
-                                Time: <b>{{ $print->time }}</b>
+                                Print: <b>{{ $print->id }}</b> on Printer <b> {{ $print->printers_id }} </b> started <b> {{ $print->created_at->diffForHumans() }}</b> by <b>{{ $print->staff_started->first_name }} {{ $print->staff_started->last_name }}</b>
                                 Material amount: <b>{{$print->material_amount}}g</b>
-                                Price: <b>£{{$print->price}}</b>
+                                Total Time: <b>{{ $print->time }}</b>
+                                Time Remain: <b>@if (Carbon\Carbon::now('Europe/London')->gte($time_finish) || $print->status == 'Success' || $print->status == 'Failed')  completed  @else {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60)}} @endif</b>
+                                Status: <b> {{ $print->status }} </b>
                             </p>
                         </div>
                     @endforeach
-                <h3>Total job stats</h3>
+                {{--<h3>Total job stats</h3>--}}
                 {{-- Calculate total print time --}}
-                @php
-                    $total_minutes = 0;
-                    foreach ($job->prints as $print){
-                    list($h, $i, $s) = explode(':', $print->time);
-                    $minutes = $h*60 + $i;
-                    $total_minutes = $total_minutes + $minutes;
-                    }
-                    $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
-                @endphp
-                <p>Total job duration: <b>{{ $total_time }}</b> <br>
-                    Total material amount: <b>{{ $job->prints->sum('material_amount') }}g</b> <br>
-                    Total price: <b>£{{ $job->prints->sum('price') }}</b>
-                </p>
+                {{--@php--}}
+                    {{--$total_minutes = 0;--}}
+                    {{--foreach ($job->prints as $print){--}}
+                    {{--list($h, $i, $s) = explode(':', $print->time);--}}
+                    {{--$minutes = $h*60 + $i;--}}
+                    {{--$total_minutes = $total_minutes + $minutes;--}}
+                    {{--}--}}
+                    {{--$total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);--}}
+                {{--@endphp--}}
+                {{--<p>Total job duration: <b>{{ $total_time }}</b> <br>--}}
+                    {{--Total material amount: <b>{{ $job->prints->sum('material_amount') }}g</b> <br>--}}
+                    {{--Total price: <b>£{{ $job->prints->sum('price') }}</b>--}}
+                {{--</p>--}}
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         <strong>Whoops!</strong> There were some problems with your input. Please return to fix them.<br><br>
@@ -190,7 +194,13 @@
                 <button class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Assign Prints</button>
                 <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Back</a>
                 <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed</button>
-                <a href="/OnlineJobs/approveRequest/{{ $job->id }}" class="btn btn-lg btn-success">Job Completed</a>
+
+                @if($query_in_progress == null & $query_success !== null)
+                    <a href="/OnlineJobs/jobSuccess/{{$job->id}}" class="btn btn-lg btn-success">Job Completed</a>
+                @else
+                    <a href="#" class="btn btn-lg btn-success" disabled>Job Completed</a>
+                @endif
+
             </div>
         </div>
     </div>

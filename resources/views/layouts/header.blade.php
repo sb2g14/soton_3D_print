@@ -8,18 +8,7 @@
        @if (Auth::check())
             <ul class="lsn bl-menu" id="my-menu">
 
-                <li class="item">
-                    <span>
-                        Welcome
-			{{--  <br>  {{Auth::user()->name}}! --}}
-                        <span class="caret"></span></span>
-                    <ul class="dropdown-bl">
-                        @isset(Auth::user()->staff)
-                        <li><a href="/members/{{Auth::user()->staff->id}}">View record</a></li>
-                        @endisset
-                        <li><a class="dropdown-item" href="{{ url('/roles') }}">Manage account</a></li>
-                    </ul>
-                </li>
+                {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
                 @can('manage_cost_codes')
                 <li class="item">
@@ -70,18 +59,29 @@
                 </li>
 
                 <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
-                {{--@can('receive_online_job_requests|jobs_manage')--}}
-                    {{--<li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>--}}
-                {{--@elsecan('jobs_manage')--}}
-                    {{--<li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>--}}
-                {{--@endcan--}}
-
-
-                <li class="item"><a class="no-dropdown" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                @can('receive_online_job_requests|jobs_manage')
+                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
+                @elsecan('jobs_manage')
+                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+                @endcan
+                <li class="item">
+                    <span>
+                         {{Auth::user()->name}}
+                        <span class="caret"></span></span>
+                    <ul class="dropdown-bl">
+                        @isset(Auth::user()->staff)
+                            <li><a href="/members/{{Auth::user()->staff->id}}">View record</a></li>
+                        @endisset
+                        <li><a class="dropdown-item" href="{{ url('/roles') }}">Manage account</a></li>
+                        <li><a class="dropdown-item" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                </li>
             </ul>
         @else
             <ul class="lsn bl-menu" id="my-menu">
-                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request a job!</a></li>
+                {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
+                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
+                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/OnlineJobs/create') }}">Request online job!</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
                 {{--<li class="item"><a class="no-dropdown" href="{{ url('/orderOnline') }}">Order online</a></li>--}}

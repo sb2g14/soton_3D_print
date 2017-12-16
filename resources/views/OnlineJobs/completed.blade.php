@@ -24,7 +24,7 @@
     </div> -->
 
     <div class="container">
-        <table class="table">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -35,7 +35,7 @@
                     {{--<th>Material Amount</th>--}}
                     <th>Price</th>
                     <th>Created</th>
-                    <th>Approved</th>
+                    <th>Finished</th>
                     <th>Approved by</th>
                     <th>Project Name</th>
                     <th>Status</th>
@@ -59,7 +59,13 @@
                         <td data-th="Approved on">{{ Carbon\Carbon::parse($job->approved_at)->toDateTimeString() }}</td>
                         <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
                         <td data-th="Project Name">{{ $job->use_case  }}</td>
-                        <td data-th="Status">{{ $job->status }}</td>
+                        @if ($job->status === 'Success')
+                            <td data-th="Status" class="success">{{ $job->status }}</td>
+                        @elseif ($job->status === 'Failed')
+                            <td data-th="Status" class="danger">{{ $job->status }}</td>
+                        @else
+                            <td data-th="Status" class="info">{{ $job->status }}</td>
+                        @endif
                         <td data-th="Edit">
                             {{--@hasanyrole('LeadDemonstrator|administrator|OnlineJobsManager')--}}
                             {{--<a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a>--}}

@@ -35,8 +35,6 @@
                         <td data-th="Accepted on">{{ Carbon\Carbon::parse($job->approved_at)->diffForHumans() }}</td>
                         <td data-th="Job controls">
                             <a href="/OnlineJobs/managePendingJob/{{$job->id}}" class="btn btn-info">Review Job</a>
-                            {{--<a href="/OnlineJobs/assignPrint/{{$job->id}}" class="btn btn-warning">Assign new Print</a>--}}
-                            <a href="/OnlineJobs/completedJob/{{$job->id}}" class="btn btn-success">Job Completed</a>
                         </td>
                     </tr>
                 @endforeach

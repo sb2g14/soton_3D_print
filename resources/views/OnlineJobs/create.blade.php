@@ -122,6 +122,23 @@
                     </div>
                 </div>
 
+                {{--Job title--}}
+                <div class="form-group{{ $errors->has('job_title') ? ' has-error' : '' }}">
+                    <label for="job_title" class="col-sm-4 control-label">Job title</label>
+
+                    <div class="col-sm-8">
+                        <input id="job_title" data-help="job_title" type="text" class="form-control"
+                               name="job_title" value="{{ old('job_title') }}" placeholder="Provide a meaningful name for your request" required>
+
+                        @if ($errors->has('job_title'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('job_title') }}</strong>
+                        </span>
+                        @endif
+                        <span class="help-block" id="job_title_error"></span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-8 text-right">
                         <button id="submit" type="submit" class="btn btn-primary">Submit</button>
@@ -175,7 +192,7 @@
                 <p>We currently receive files uploaded via university drop-off service that can be accessed via the
                 button below.</p>
                 <p>On the drop-off website you need to <b>Login</b>, click <b>Drop-off</b> add
-                    <b>Andrew Everitt, aje2g15@soton.ac.uk</b> as your recepient and upload your files. </p>
+                    <b>Online Manager, 3dprint.soton@gmail.com</b> as your recipient and upload your files. </p>
                 <div>
                     <img class="align" src="/Images/icons/drop_off_manual.svg">
                 </div>
