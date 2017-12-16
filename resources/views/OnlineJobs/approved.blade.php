@@ -16,7 +16,34 @@
 
 <div class="container">
 
-    <div class="row">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Job ID</th>
+                <th>Requested by</th>
+                <th>Project/Cost Code</th>
+                <th>Estimated cost</th>
+                <th>Job controls</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($approved_jobs as $job)
+                <tr class="text-left">
+                    <td data-th="Job ID">{{$job->id}}</td>
+                    <td data-th="Requested by">{{$job->customer_name}}</td>
+                    <td data-th="Project/Cost Code">{{ $job->use_case}}</td>
+                    <td data-th="Estimated cost">£{{ $job->total_price }}</td>
+                    <td data-th="Job controls"  title="Job controls" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="Depending on customer reply you can either start assigning prints by clicking on Customer Approved button or cancel the job by clicking on Customer Reject button. To check the job details please click on Manage button." data-container:"table">
+                        <a href="/OnlineJobs/manageApproved/{{$job->id}}" class="btn btn-info">Manage</a>
+                        <a href="/OnlineJobs/customerApproved/{{$job->id}}" class="btn btn-success">Customer Approved</a>
+                        <a href="/OnlineJobs/customerReject/{{$job->id}}" class="btn btn-danger">Customer Rejected</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <!-- <div class="row">
         <div class="col-xs-12">
             <ul class="list-group lsn">
                 @foreach($approved_jobs as $job)
@@ -40,7 +67,7 @@
                 @endforeach
             </ul>
         </div>
-    </div>
+    </div> -->
 </div>
 @endsection
 

@@ -648,7 +648,7 @@ body.is-fixed {
   margin-top: 4.5em;
 }
 .table td:before {
-  content: attr(data-th) ": ";
+  content: attr(data-th) " ";
   font-weight: bold;
   width: 10.5em;
   display: inline-block;

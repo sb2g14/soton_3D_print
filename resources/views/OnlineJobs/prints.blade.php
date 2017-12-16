@@ -18,7 +18,7 @@
 </div>
 
     <div class="container">
-        <table class="table">
+        <table class="table table-sm table-hover table-responsive">
             <thead>
                 <tr>
                     <th>ID</th>

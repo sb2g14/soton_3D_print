@@ -88,6 +88,8 @@ $(document).ready(function () {
         $("#rulesModal").modal();
     });
 
+    $('[data-toggle="popover"]').popover();
+
     /*SLIDER script*/
     $("#image-slider_home").owlCarousel({
         loop: true,
