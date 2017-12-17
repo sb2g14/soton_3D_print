@@ -1,9 +1,9 @@
 @extends('layouts.layout')
 
 @section('content')
-    <div class="title m-b-md">
-        Manage Approved Job
-    </div>
+    {{--<div class="title m-b-md">--}}
+        {{--Manage Approved Job--}}
+    {{--</div>--}}
 
     <div class="container well">
         <div class="row vdivide">

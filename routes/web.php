@@ -195,8 +195,11 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Review each pending online request
     Route::get('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@checkrequest');
 
-    // Assign prints to each online job request
+    // Assign print preview to each online job request
     Route::post('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@assignPrintPreview');
+
+    // Delete print preview from the job request
+    Route::get('/OnlineJobs/DeletePrintPreview/{id}', 'OrderOnlineController@deletePrintPreview');
 
     // Job rejected by online jobs manager
     Route::post('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
@@ -230,6 +233,9 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 
     // Route to assign print to currently managed job
     Route::post('/OnlineJobs/managePendingJob/{id}', 'OrderOnlineController@assignPrint');
+
+    // Route to cancel assigned prints leaving no trace in the DB
+    Route::get('/OnlineJobs/DeletePrint/{id}', 'OrderOnlineController@deletePrint');
 
     // Route for job failed
     Route::post('/OnlineJobs/jobFailed/{id}', 'OrderOnlineController@jobFailed');

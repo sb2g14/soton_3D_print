@@ -13,7 +13,6 @@ $(document).ready(function() {
 
     $('[data-toggle="popover"]').popover(); 
 
-
     /*SLIDER script*/
     $("#image-slider_home").owlCarousel({
         loop: true,

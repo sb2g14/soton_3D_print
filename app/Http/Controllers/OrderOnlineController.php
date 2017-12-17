@@ -195,7 +195,6 @@ class OrderOnlineController extends Controller
             'hours' => 'required',
             'minutes' => 'required',
             'material_amount' => 'required|numeric|min:0.1|max:9999',
-//            'comments' => 'max:255'
             ]);
 
         // create a print from the specified details
@@ -214,7 +213,6 @@ class OrderOnlineController extends Controller
         $print -> update(array(
             'purpose' => 'Use',
             'material_amount' => $assigned_print_preview["material_amount"],
-//            'print_comment' => $assigned_print_preview["comments"],
             'status' => 'waiting'
         ));
 
@@ -229,6 +227,21 @@ class OrderOnlineController extends Controller
         ]);
 
         return redirect("/OnlineJobs/checkrequest/{$job->id}");
+    }
+    // The print-previews can be deleted from the job request
+    public function deletePrintPreview($id)
+    {
+        $print = Prints::findOrFail($id);
+        $job = $print->jobs->first();
+        // Remove print preview from the database
+        $job->prints()->detach($print->id); //Break connection with job
+        $print->delete(); // Delete print preview
+
+        // Notify the manager about deleted print-preview
+        notify()->flash('The print-preview has been deleted', 'success', [
+            'text' => 'You can create new print-previews',
+        ]);
+        return redirect("OnlineJobs/checkrequest/{$job->id}");
     }
 
     // Defining the logic for job management
@@ -417,12 +430,31 @@ class OrderOnlineController extends Controller
 
         printers::where('id','=', $print->printer->id)->update(array('in_use'=> 1));
 
-        // Notify that the print preview was created
+        // Notify that the print was created
         notify()->flash('The print has been assigned to the selected jobs!', 'success', [
             'text' => 'You may proceed to print overview and actual printing',
         ]);
 
         return redirect("/OnlineJobs/managePendingJob/{$id}");
+    }
+
+    // Delete the print from the DB if it was created by mistake
+    public function deletePrint($id)
+    {
+        $print = Prints::findOrFail($id);
+        $jobs = $print->jobs;
+        // Remove print from the database
+        foreach($jobs as $job)
+        {
+            $job->prints()->detach($print->id); //Break connection with job
+        }
+        $print->delete();
+
+        // Notify the manager about deleted print-preview
+        notify()->flash('The print has been deleted', 'success', [
+            'text' => 'You can create new prints',
+        ]);
+        return redirect("OnlineJobs/managePendingJob/{$job->id}");
     }
 
     // Actions to be taken when the job failed
