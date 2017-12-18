@@ -37,7 +37,7 @@
                         <td data-th="Job ID">{{$job->id}}</td>
                         <td data-th="Requested by">{{$job->customer_name}}</td>
                         <td data-th="Project/Cost Code">{{ $job->use_case}}</td>
-                        <td data-th="Requested on">{{ $job->created_at->toDayDateTimeString() }}</td>
+                        <td data-th="Requested on">{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</td>
                         <td><a href="/OnlineJobs/checkrequest/{{$job->id}}" class="btn btn-info">Manage</a></td>
                     </tr>
                 @endforeach

@@ -55,8 +55,8 @@
                         {{--<td data-th="Time">{{ date("H:i", strtotime($job->total_duration)) }}</td>--}}
                         {{--<td data-th="Material Amount">{{ $job->total_material_amount }} g</td>--}}
                         <td data-th="Price">£{{ $job->total_price }}</td>
-                        <td data-th="Created on">{{ $job->created_at->toDateTimeString() }}</td>
-                        <td data-th="Approved on">{{ Carbon\Carbon::parse($job->approved_at)->toDateTimeString() }}</td>
+                        <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</td>
+                        <td data-th="Approved on">{{ Carbon\Carbon::parse($job->approved_at)->formatLocalized('%d %b, %H:%m') }}</td>
                         <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
                         <td data-th="Project Name">{{ $job->use_case  }}</td>
                         @if ($job->status === 'Success')
