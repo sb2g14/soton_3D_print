@@ -119,6 +119,12 @@ class OrderOnlineController extends Controller
                 'required',
                 'alpha_num',
                 'size:16'
+            ],
+            'job_title' => [
+                'required',
+                'string',
+                'min:3',
+                'max:30'
             ]
         ]);
 
@@ -306,10 +312,11 @@ class OrderOnlineController extends Controller
             $print->delete(); // Delete print previews
         }
 
-        // Send an email to customer
-        Mail::to($job->customer_email)->queue(new jobReject($job, $reject_message['comment']));
-
         $job->delete(); // Delete job
+
+        // Send an email to customer
+
+        Mail::to($job->customer_email)->queue(new jobReject($job, $reject_message['comment']));
 
         // Notify that the job was rejected
         notify()->flash('The job has been rejected', 'success', [
@@ -470,13 +477,13 @@ class OrderOnlineController extends Controller
 
         $job = Jobs::findOrFail($id);
 
-        // Send an email to the customer
-        Mail::to($job->customer_email)->queue(new jobFailed($job, $failed_message['comment']));
-
         // Change the job flag to 'Failed'
         $job->update(array(
             'status' => 'Failed'
         ));
+
+        // Send an email to the customer
+        Mail::to($job->customer_email)->queue(new jobFailed($job, $failed_message['comment']));
 
         // Notify that the job failed flag was raised and the email sent to customer
         notify()->flash('The job status has been changed to Failed', 'success', [
@@ -491,13 +498,13 @@ class OrderOnlineController extends Controller
     {
         $job = Jobs::findOrFail($id);
 
-        // Send an email notification to the customer
-        Mail::to($job->customer_email)->queue(new jobSuccess($job));
-
         // Change the job flag to 'Success'
         $job->update(array(
             'status' => 'Success'
         ));
+
+        // Send an email notification to the customer
+        Mail::to($job->customer_email)->queue(new jobSuccess($job));
 
         // Notify that the job success flag was raised and the email sent to customer
         notify()->flash('The job status has been changed to Success', 'success', [

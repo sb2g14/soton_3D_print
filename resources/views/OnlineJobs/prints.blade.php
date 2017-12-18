@@ -90,7 +90,7 @@
                                 <td data-th="Finished by">{{$print->staff_finished->first_name}} {{$print->staff_finished->last_name}}</td>
                                 @if ($print->status === 'Success')
                                     <td data-th="Status" class="success">{{ $print->status }}</td>
-                                @elseif ($ptint->status === 'Failed')
+                                @elseif ($print->status === 'Failed')
                                     <td data-th="Status" class="danger">{{ $print->status }}</td>
                                 @else
                                     <td data-th="Status" class="info">{{ $print->status }}</td>
