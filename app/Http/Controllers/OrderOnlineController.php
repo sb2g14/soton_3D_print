@@ -450,6 +450,9 @@ class OrderOnlineController extends Controller
         }
         $print->delete();
 
+        // Change the printer status to not in use
+        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
+
         // Notify the manager about deleted print-preview
         notify()->flash('The print has been deleted', 'success', [
             'text' => 'You can create new prints',
@@ -514,6 +517,7 @@ class OrderOnlineController extends Controller
             'status' => 'Success'
         ));
 
+        // Change the printer status to not in use
         printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
 
         // Notify that the print preview was created
@@ -534,6 +538,7 @@ class OrderOnlineController extends Controller
             'status' => 'Failed'
         ));
 
+        // Change the printer status to not in use
         printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
 
         // Notify that the print preview was created
