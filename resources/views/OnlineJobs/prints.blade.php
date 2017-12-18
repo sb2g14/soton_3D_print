@@ -78,8 +78,8 @@
             </tr>
             </thead>
             <tbody>
-                @foreach($jobs_in_progress as $job)
-                    @foreach($job->prints as $print)
+                @foreach($prints_of_jobs_in_progress as $print)
+                    {{--@foreach($job->prints as $print)--}}
                         @if($print->status == 'Success' || $print->status == 'Failed')
                             <tr class="text-left">
                                 <td data-th="ID">{{ $print->id }}</td>
@@ -100,7 +100,7 @@
                             </tr>
                         @endif
                     @endforeach
-                @endforeach
+                {{--@endforeach--}}
             </tbody>
         </table>
     </div>

@@ -48,7 +48,7 @@
                     @endphp
                         <div class="alert alert-warning">
                             <a type="button" class="close" style="color: red" data-dismiss="modal"
-                               data-placement="top" data-toggle="popover" data-trigger="hover" data-content="Delete this print"
+                               data-placement="top" data-toggle="popover" data-trigger="hover" data-content="Delete this print only if the print has not started!"
                                href="/OnlineJobs/DeletePrint/{{$print->id}}">&times;</a>
                             <p>
                                 Print: <b>{{ $print->id }}</b> on Printer <b> {{ $print->printers_id }} </b> started <b> {{ $print->created_at->diffForHumans() }}</b> by <b>{{ $print->staff_started->first_name }} {{ $print->staff_started->last_name }}</b>
@@ -57,10 +57,12 @@
                                 Time Remain: <b>@if (Carbon\Carbon::now('Europe/London')->gte($time_finish) || $print->status == 'Success' || $print->status == 'Failed')  completed  @else {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60)}} @endif</b>
                                 Status: <b> {{ $print->status }} </b>
                             </p>
-                            <div class="text-right">
-                                <a href="/OnlineJobs/printSuccessful/{{ $print->id }}" class="btn btn-success">Print Successful</a>
-                                <a href="/OnlineJobs/printFailed/{{ $print->id }}" class="btn btn-danger">Print Failed</a>
-                            </div>
+                            @if(($print->status !== 'Success') || ($print->status !== 'Failed'))
+                                <div class="text-right">
+                                    <a href="/OnlineJobs/printSuccessful/{{ $print->id }}" class="btn btn-success">Print Successful</a>
+                                    <a href="/OnlineJobs/printFailed/{{ $print->id }}" class="btn btn-danger">Print Failed</a>
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 @if (count($errors) > 0)

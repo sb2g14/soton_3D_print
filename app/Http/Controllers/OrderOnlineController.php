@@ -56,10 +56,18 @@ class OrderOnlineController extends Controller
     // Display and manage a list of assigned prints
     public function prints()
     {
-       $prints= Prints::orderBy('created_at','desc')->where('status','In Progress')->get();
-       $jobs_in_progress = Jobs::orderBy('created_at','desc')->where('status','In Progress')->where('requested_online', 1)->get();
+       $prints = Prints::orderBy('created_at','desc')->where('status','In Progress')->get();
 
-       return view('OnlineJobs.prints',compact('prints','jobs_in_progress'));
+       $prints_of_jobs_in_progress = Prints::orderBy('prints.created_at','desc')
+           ->crossJoin('jobs_prints', 'prints.id', '=', 'jobs_prints.prints_id')
+           ->crossJoin('jobs', 'jobs_prints.jobs_id', '=', 'jobs.id')
+           ->where('jobs.requested_online', 1)
+           ->where('jobs.status','In Progress')
+           ->distinct()
+           ->select('prints.*')
+           ->get();
+
+       return view('OnlineJobs.prints',compact('prints','jobs_in_progress','prints_of_jobs_in_progress'));
     }
 
     // Display and menage completed jobs
@@ -448,6 +456,11 @@ class OrderOnlineController extends Controller
     // Delete the print from the DB if it was created by mistake
     public function deletePrint($id)
     {
+        // Notify the manager about deleted print-preview
+        notify()->flash('Are you sure you want to delete this print?', 'warning', [
+            'text' => 'You can create new prints',
+        ]);
+
         $print = Prints::findOrFail($id);
         $jobs = $print->jobs;
         // Remove print from the database
@@ -460,10 +473,7 @@ class OrderOnlineController extends Controller
         // Change the printer status to not in use
         printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
 
-        // Notify the manager about deleted print-preview
-        notify()->flash('The print has been deleted', 'success', [
-            'text' => 'You can create new prints',
-        ]);
+
         return redirect("OnlineJobs/managePendingJob/{$job->id}");
     }
 
@@ -515,7 +525,6 @@ class OrderOnlineController extends Controller
     }
 
     // Action to report print as successful
-
     public function printSuccessful($id)
     {
         $print = Prints::findOrFail($id);
@@ -536,7 +545,6 @@ class OrderOnlineController extends Controller
     }
 
     // Action to report print as successful
-
     public function printFailed($id)
     {
         $print = Prints::findOrFail($id);

@@ -21,7 +21,7 @@
                 <th>Name</th>
                 <th>Project</th>
                 <th>Requested on</th>
-                <th>Accepted</th>
+                <th>Last updated</th>
                 <th>Job controls</th>
             </tr>
             </thead>
@@ -32,7 +32,7 @@
                         <td data-th="Name">{{$job->customer_name}}</td>
                         <td data-th="Project name">{{$job->use_case}}</td>
                         <td data-th="Requested on">{{ $job->created_at->toDateTimeString() }}</td>
-                        <td data-th="Accepted on">{{ Carbon\Carbon::parse($job->approved_at)->diffForHumans() }}</td>
+                        <td data-th="Accepted on">{{ Carbon\Carbon::parse($job->updated_at)->diffForHumans() }}</td>
                         <td data-th="Job controls">
                             <a href="/OnlineJobs/managePendingJob/{{$job->id}}" class="btn btn-info">Review Job</a>
                         </td>
