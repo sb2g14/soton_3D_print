@@ -58,12 +58,15 @@
                     </ul>
                 </li>
 
-                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
-                @can('receive_online_job_requests|jobs_manage')
+                {{--Online workflow and demonstrator workflow available to online jobs manager--}}
+                @can('manage_online_jobs')
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
-                @elsecan('jobs_manage')
+                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+                {{--Only demonstrator workflow available to demonstrators and others without online jobs permissions--}}
+                @else
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 @endcan
+
                 <li class="item">
                     <span>
                          {{Auth::user()->name}}

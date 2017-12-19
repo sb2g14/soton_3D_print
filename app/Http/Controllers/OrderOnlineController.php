@@ -8,6 +8,7 @@ use App\Rules\SotonEmail;
 use App\Rules\SotonID;
 use App\Rules\SotonIdMinMax;
 use App\Rules\UseCase;
+use App\Rules\Printer;
 use App\User;
 use Illuminate\Http\Request;
 use App\Rules\CustomerNameValidation;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\jobReject;
 use App\Mail\jobFailed;
 use App\printers;
+use Alert;
 
 
 class OrderOnlineController extends Controller
@@ -408,12 +410,13 @@ class OrderOnlineController extends Controller
     {
         // Extract assigned print
         $assigned_print = request()->validate([
-            'printers_id' => 'required',
-            'hours' => 'required',
-            'minutes' => 'required',
+            'printers_id' => 'required|numeric',
+            'hours' => 'required|numeric',
+            'minutes' => 'required|numeric',
             'material_amount' => 'required|numeric|min:0.1|max:9999',
             'multipleselect' => 'required',
-            'comments' => 'max:255'
+            'comments' => 'max:255',
+            new Printer()
         ]);
 
         // create a print from the specified details
@@ -456,9 +459,7 @@ class OrderOnlineController extends Controller
     // Delete the print from the DB if it was created by mistake
     public function deletePrint($id)
     {
-        // Notify the manager about deleted print-preview
-        notify()->flash('Are you sure you want to delete this print?', 'warning', [
-            'text' => 'You can create new prints',
+        $assigned_print = request()->validate([
         ]);
 
         $print = Prints::findOrFail($id);
@@ -472,7 +473,6 @@ class OrderOnlineController extends Controller
 
         // Change the printer status to not in use
         printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
-
 
         return redirect("OnlineJobs/managePendingJob/{$job->id}");
     }
