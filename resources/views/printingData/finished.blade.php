@@ -56,7 +56,12 @@
                         <td data-th="Price">£{{ $job->total_price }}</td>
                         <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</td>
                         <td data-th="Updated last">{{ Carbon\Carbon::parse($job->updated_at)->formatLocalized('%d %b, %H:%m') }}</td>
-                        <td data-th="Completed by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
+                        @if ($job->staff_finished === null)
+                            <td data-th="Completed by"></td>
+                        @else
+                            <td data-th="Completed by">{{ $job->staff_finished->first_name }} {{ $job->staff_finished->last_name }}</td>
+                        @endif
+
                         @if ($job->status === 'Success')
                             <td data-th="Status" class="success">{{ $job->status }}</td>
                         @elseif ($job->status === 'Failed')
