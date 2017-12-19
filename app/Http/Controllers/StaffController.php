@@ -49,14 +49,14 @@ class StaffController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email',
-            'phone' => 'required|numeric|digits:11'
+//            'phone' => 'required|numeric|digits:11'
         ]);
         $role = Input::get('role');
         $member = new staff;
         $member -> first_name = request('first_name');
         $member -> last_name = request('last_name');
         $member -> email = request('email');
-        $member -> phone = request('phone');
+//        $member -> phone = request('phone');
         $member -> role = $role;
 
         // Submit the data to the database

@@ -8,18 +8,7 @@
        @if (Auth::check())
             <ul class="lsn bl-menu" id="my-menu">
 
-                <li class="item">
-                    <span>
-                        Welcome
-			{{--  <br>  {{Auth::user()->name}}! --}}
-                        <span class="caret"></span></span>
-                    <ul class="dropdown-bl">
-                        @isset(Auth::user()->staff)
-                        <li><a href="/members/{{Auth::user()->staff->id}}">View record</a></li>
-                        @endisset
-                        <li><a class="dropdown-item" href="{{ url('/roles') }}">Manage account</a></li>
-                    </ul>
-                </li>
+                {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
                 @can('manage_cost_codes')
                 <li class="item">
@@ -37,11 +26,13 @@
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/orderOnline') }}">Order online</a></li>
+                        {{--<li><a class="dropdown-item" href="{{ url('/orderOnline') }}">Order online</a></li>--}}
                         <li><a class="dropdown-item" href="{{ url('/news') }}">News</a></li>
                         <li><a class="dropdown-item" href={{ url('/printingData/create') }}>Request a job</a></li>
                         <li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
+                        <li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Pending Jobs</a></li>
+                        <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
                     </ul>
                 </li>
                 <li class="item">
@@ -66,17 +57,37 @@
                         <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting paid</a></li>
                     </ul>
                 </li>
-                @can('jobs_manage')
-                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+
+                {{--Online workflow and demonstrator workflow available to online jobs manager--}}
+                @can('manage_online_jobs')
+                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
+                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+                {{--Only demonstrator workflow available to demonstrators and others without online jobs permissions--}}
+                @else
+                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 @endcan
-                <li class="item"><a class="no-dropdown" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
+                <li class="item">
+                    <span>
+                         {{Auth::user()->name}}
+                        <span class="caret"></span></span>
+                    <ul class="dropdown-bl">
+                        @isset(Auth::user()->staff)
+                            <li><a href="/members/{{Auth::user()->staff->id}}">View record</a></li>
+                        @endisset
+                        <li><a class="dropdown-item" href="{{ url('/roles') }}">Manage account</a></li>
+                        <li><a class="dropdown-item" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                </li>
             </ul>
         @else
             <ul class="lsn bl-menu" id="my-menu">
-                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request a job!</a></li>
+                {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
+                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
+                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/OnlineJobs/create') }}">Request online job!</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
-                <li class="item"><a class="no-dropdown" href="{{ url('/orderOnline') }}">Order online</a></li>
+                {{--<li class="item"><a class="no-dropdown" href="{{ url('/orderOnline') }}">Order online</a></li>--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/news') }}">News</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>
                 <li class="item"><a class="no-dropdown" href="{{ url('/learn') }}">Learn to 3D print</a></li>

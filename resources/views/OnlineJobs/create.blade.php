@@ -9,31 +9,6 @@
         </div>
     @endif
 
- {{--Defining variables for restart a job prefil of forms--}}
-    @if(isset($data))
-        @php
-            $print = $data->prints->first();
-            $printers_id = $print->printers_id;
-            $customer_name = $data->customer_name;
-            $customer_email = $data->customer_email;
-            $customer_id = $data->customer_id;
-            list($hours, $minutes, $s) = explode(':', $data->total_duration);
-            $material_amount = $data->total_material_amount;
-            $use_case = $data->use_case;
-        @endphp
-    @else
-        @php
-            $printers_id = '';
-            $customer_name = '';
-            $customer_email = '';
-            $customer_id = '';
-            $hours = '';
-            $minutes = '';
-            $material_amount = '';
-            $use_case = '';
-        @endphp
-    @endif
-
 <div class="container well s-request-form">
     <div class="row vdivide">
         <div class="col-sm-6">
@@ -47,8 +22,7 @@
 
                     <div class="col-sm-8">
                         <input id="customer_name" data-help="" type="text"
-                               class="form-control" name="customer_name" value="{{ old('customer_name',
-                               isset($member)  ? $member->first_name.' '.$member->last_name : $customer_name) }}"
+                               class="form-control" name="customer_name" value="{{ old('customer_name') }}"
                                placeholder="Please input your First and Last name" required>
 
                         @if ($errors->has('customer_name'))
@@ -66,8 +40,7 @@
 
                     <div class="col-md-6">
                         <input id="customer_email" data-help="customer_email" type="customer_email"
-                               class="form-control" name="customer_email" value="{{ old('customer_email',
-                               isset($member)  ? $member->customer_email : $customer_email) }}" placeholder="Please input soton email"
+                               class="form-control" name="customer_email" value="{{ old('customer_email') }}" placeholder="Please input soton email"
                                required><br>
 
                         @if ($errors->has('customer_email'))
@@ -85,8 +58,7 @@
 
                     <div class="col-sm-8">
                         <input id="customer_id" data-help="customer_id" type="text"
-                               class="form-control" name="customer_id" value="{{ old('customer_id',
-                               isset($member)  ? $member->customer_id : $customer_id) }}"
+                               class="form-control" name="customer_id" value="{{ old('customer_id') }}"
                                placeholder="Please input your university ID number" required>
 
                         @if ($errors->has('customer_id'))
@@ -104,7 +76,7 @@
 
                     <div class="col-sm-8">
                         <input id="use_case" data-help="use_case" type="text" class="form-control"
-                               name="use_case" value="{{ old('use_case', isset($member)  ? "Demonstrator" : $use_case) }}"
+                               name="use_case" value="{{ old('use_case') }}"
                                placeholder="A 9 digit cost code or module name" required>
 
                         @if ($errors->has('use_case'))
@@ -122,7 +94,7 @@
 
                     <div class="col-sm-8">
                         <input id="claim_id" data-help="claim_id" type="text" class="form-control"
-                               name="claim_id" value="" placeholder="Claim ID" required>
+                               name="claim_id" value="{{ old('claim_id') }}" placeholder="Claim ID" required>
 
                         @if ($errors->has('claim_id'))
                             <span class="help-block">
@@ -139,7 +111,7 @@
 
                     <div class="col-sm-8">
                         <input id="claim_passcode" data-help="claim_passcode" type="text" class="form-control"
-                               name="claim_passcode" value="" placeholder="Claim Passcode" required>
+                               name="claim_passcode" value="{{ old('claim_passcode') }}" placeholder="Claim Passcode" required>
 
                         @if ($errors->has('claim_passcode'))
                             <span class="help-block">
@@ -150,9 +122,26 @@
                     </div>
                 </div>
 
+                {{--Job title--}}
+                <div class="form-group{{ $errors->has('job_title') ? ' has-error' : '' }}">
+                    <label for="job_title" class="col-sm-4 control-label">Job title</label>
+
+                    <div class="col-sm-8">
+                        <input id="job_title" data-help="job_title" type="text" class="form-control"
+                               name="job_title" value="{{ old('job_title') }}" placeholder="Provide a meaningful name for your request" required>
+
+                        @if ($errors->has('job_title'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('job_title') }}</strong>
+                        </span>
+                        @endif
+                        <span class="help-block" id="job_title_error"></span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-8 text-right">
-                        <button id="submit" type="submit" class="btn">Submit</button>
+                        <button id="submit" type="submit" class="btn btn-primary">Submit</button>
                         <a href="/" class="btn btn-danger">Go back</a>
                     </div>
                 </div>
@@ -191,8 +180,11 @@
                     system will recognise most of the standard modules that are registered with the workshop.</p>
                 <p>If you are a PhD student, postdoc or an academic, please input the Cost Code that will be charged for
                     the current print. If in doubt or if you have any questions, please contact the demonstrator.</p>
-                <p>If your abbreviation or cost code was not recognised, please contact Andrew Everitt via email
-                <a href="mailto:aje2g15@soton.ac.uk?Subject=Online job request issue" target="_top">aje2g15@soton.ac.uk</a> <br></p>
+                <p>If your abbreviation or cost code was not recognised, please contact any of our IT members via email
+                    @foreach($it as $member)
+                    <a href="mailto:{{ $member->email }}?Subject=Online job request issue" target="_top">{{ $member->first_name }} {{ $member->last_name }}</a>
+                    @endforeach
+                    .<br></p>
             </div>
             <div class="hint text-left" data-hint="claim_id">
                 <h3 class="text-center lead">Drop-off claim id</h3>
@@ -200,7 +192,7 @@
                 <p>We currently receive files uploaded via university drop-off service that can be accessed via the
                 button below.</p>
                 <p>On the drop-off website you need to <b>Login</b>, click <b>Drop-off</b> add
-                    <b>Andrew Everitt, aje2g15@soton.ac.uk</b> as your recepient and upload your files. </p>
+                    <b>Online Manager, 3dprint.soton@gmail.com</b> as your recipient and upload your files. </p>
                 <div>
                     <img class="align" src="/Images/icons/drop_off_manual.svg">
                 </div>
@@ -228,5 +220,5 @@
 @endsection
 
 @section('scripts')
-{{--<script src="/js/request_job_validation.js"></script>--}}
+<script src="/js/request_job_validation.js"></script>
 @endsection

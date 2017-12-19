@@ -1,6 +1,13 @@
 @extends('layouts.layout')
 @section('content')
     <div class="title m-b-md">
+        <h1>Demonstrators Rota</h1>
+    </div>
+    <div class="container well text-left">
+        <iframe width="456" height="230" frameborder="0" scrolling="no" src="https://sotonac.sharepoint.com/teams/3DPrintingWorkshop/_layouts/15/WopiFrame.aspx?sourcedoc={c6b68a8a-05b8-4047-9916-c89b9587647f}&action=embedview&wdAllowInteractivity=False&Item='CurrentRota'!A1%3AC10&wdHideGridlines=True&wdInConfigurator=True" style="display: block; margin-left: auto; margin-right: auto"></iframe>
+        <center>You need to sign in to view the current rota.</center>
+    </div>
+    <div class="title m-b-md">
         <h1>Demonstrator Workflow</h1>
     </div>
     <div class="container well text-left">

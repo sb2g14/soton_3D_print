@@ -13,11 +13,11 @@
                 <form method="post" action="/printers">
                     {{--Generate security key --}}
                     {{ csrf_field() }}
-                    <label for="body">Printer number: </label> <br>
-                    <input type="text" name="id" class="form-control" id="number" /><br>
+                    <label for="id">Printer number: </label> <br>
+                    <input type="text" name="id" class="form-control" id="number" value="{{old('id')}}" /><br>
                     <td><span class="help-block" id="number_error"></span> </td>
-                    <label for="body">Serial number: </label> <br>
-                    <input type="text" name="serial_no" class="form-control" id="serial"/><br>
+                    <label for="serial_no">Serial number: </label> <br>
+                    <input type="text" name="serial_no" class="form-control" id="serial" value="{{old('serial_no')}}"/><br>
                     <td><span class="help-block" id="serial_error"></span> </td>
                     <label for="body">Printer type: </label> <br>
 
@@ -31,13 +31,15 @@
                             <input type="radio" name="printer_type" <?php if (isset($printer_type)
                                 && $printer_type=="UP BOX") echo "checked";?> value="UP BOX">UP BOX <br>
                             <input type="radio" name="printer_type" <?php if (isset($printer_type)
+                                && $printer_type=="Malyan M200") echo "checked";?> value="Malyan M200">Malyan M200 <br>
+                            <input type="radio" name="printer_type" <?php if (isset($printer_type)
                                 && $printer_type=="Other") echo "checked";?> value="Other">Other <br>
                             <input type="text" name="other_printer_type" class="form-control" id="other" placeholder="Please input if other"/><br>
                             <td><span class="help-block" id="other_error"></span> </td>
                         </div> <!-- Class radio -->
                     </div> <!-- /form-group -->
                     @include('layouts.errors')
-                    <button type="submit" id="submit" class="btn btn-lg">Register new 3D printer</button>
+                    <button type="submit" id="submit" class="btn btn-lg btn-primary">Register new 3D printer</button>
                     
                 </form>
             </div>

@@ -26,7 +26,7 @@ $(function () {
             $("#issue_error").show();
             $("#issue").addClass("parsley-error");
             error_issue = true;
-        } else if(!issue.val().match(/^[a-z A-Z0-9.,!?]+$/)){
+        } else if(!issue.val().match(/^[a-z A-Z0-9.,!?']+$/)){
             $("#issue_error").html("Only alphanumeric characters are allowed");
             $("#issue_error").show();
             $("#issue").addClass("parsley-error");
@@ -50,11 +50,11 @@ $(function () {
             $("#message_error").show();
             $("#message").addClass("parsley-error");
             error_message = true;
-        } else if(!message.val().match(/^[a-z A-Z0-9.,!?]+$/)){
-            $("#message_error").html("Only alphanumeric characters are allowed");
-            $("#message_error").show();
-            $("#message").addClass("parsley-error");
-            error_message = true;
+        // } else if(!message.val().match(/^[a-z A-Z0-9-.,!?']+$/)){
+        //     $("#message_error").html("Only alphanumeric characters are allowed");
+        //     $("#message_error").show();
+        //     $("#message").addClass("parsley-error");
+        //     error_message = true;
         } else {
             $("#message_error").hide();
             $("#message").removeClass("parsley-error");

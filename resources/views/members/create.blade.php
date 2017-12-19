@@ -22,12 +22,12 @@
                         {{--<input type="text" name="student_id" class="form-control"/><br>--}}
                     <label for="email">Email: </label> <br>
                         <input type="email" name="email" class="form-control"/><br>
-                    <label for="phone">Phone: </label><br>
-                        <input type="text" name="phone" class="form-control"/><br>
+                    {{--<label for="phone">Phone: </label><br>--}}
+                        {{--<input type="text" name="phone" class="form-control"/><br>--}}
                     <div class="field-inner">
                         <div class="form-group">
                             {!! Form::label('role', 'Role' )  !!}
-                            {!! Form::select('role',['Demonstrator'=>'Demonstrator', 'Lead Demonstrator'=>'Lead Demonstrator', '3D Hub Manager'=> '3D Hub Manager', 'PR Manager'=> 'PR Manager', 'Technical Manager' => 'Technical Manager', 'IT Manager' => 'IT Manager','IT'=>'IT', 'Coordinator'=> 'Coordinator', 'Co-Coordinator' => 'Co-Coordinator', 'Technician'=>'Technician','New Demonstrator'=>'New Demonstrator' ], 'Demonstrator', ['class' => 'form-control' ]) !!}
+                            {!! Form::select('role',['Demonstrator'=>'Demonstrator', 'Lead Demonstrator'=>'Lead Demonstrator', '3D Hub Manager'=> '3D Hub Manager', 'PR Manager'=> 'PR Manager', 'Technical Manager' => 'Technical Manager', 'IT Manager' => 'IT Manager','IT'=>'IT', 'Coordinator'=> 'Coordinator', 'Co-Coordinator' => 'Co-Coordinator', 'Technician'=>'Technician','New Demonstrator'=>'New Demonstrator' ], 'New Demonstrator', ['class' => 'form-control' ]) !!}
                         </div>
                     </div> <!-- /form-group -->
                     <!--This button submits the update action-->

@@ -124,13 +124,13 @@ $(function () {
     function check_serial() {
         var serial = $("#serial");
 
-        if (serial.val().length < 1 || serial.val().length > 10) {
+        if (serial.val().length < 1 || serial.val().length > 20) {
             $("#serial_error").html("The serial number must be between 1 and 10 digits long");
             $("#serial_error").show();
             $("#serial").focus();
             $("#serial").addClass("parsley-error");
             error_serial = true;
-        } else if (!serial.val().match(/^[0-9]+$/)) {
+        } else if (!serial.val().match(/^[A-Z a-z-0-9]+$/)) {
             $("#serial_error").html("Only numbers are allowed");
             $("#serial_error").show();
             $("#serial").focus();
@@ -151,7 +151,7 @@ $(function () {
         var other = $("#other");
 
         if (!other.val().match(/^[a-z A-Z0-9.,!]+$/)) {
-            $("#other_error").html("Not permitted characters are inputed");
+            $("#other_error").html("Not permitted characters are inputted");
             $("#other_error").show();
             $("#other").focus();
             $("#other").addClass("parsley-error");

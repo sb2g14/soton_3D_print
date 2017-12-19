@@ -76,9 +76,19 @@ module.exports = __webpack_require__(2);
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-    /* $(".bl-header").hover(function(){
-         $("#myModal").modal();
-     });*/
+    $(".card-issue").click(function () {
+        $("#issueModal").modal();
+    });
+
+    $(".card-announcement").click(function () {
+        $("#announcementModal").modal();
+    });
+
+    $(".card-rules").click(function () {
+        $("#rulesModal").modal();
+    });
+
+    $('[data-toggle="popover"]').popover();
 
     /*SLIDER script*/
     $("#image-slider_home").owlCarousel({
@@ -146,6 +156,30 @@ $(document).ready(function () {
 
     $("#map_canvas1").mouseleave(function () {
         $('#map_canvas1').addClass('scrolloff'); // set the pointer events to none when mouse leaves the map area
+    });
+
+    // Ask for confirmation before deleting a print
+    $('#deletePrint').click(function (event) {
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "Deleting a print will erase all the data associated with it. Use it only if the print is created by mistake. " + "If the print failed use button Print Failed.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Yes, I am sure. Delete it!',
+            cancelButtonText: "No, go back.",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $('#deletePrint').unbind('click');
+                document.getElementById('deletePrint').click();
+            } else {
+                swal("Cancelled", "The print survived :)", "error");
+                event.preventDefault();
+            }
+        });
     });
 
     //Show hints on focus

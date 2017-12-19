@@ -68,7 +68,7 @@ body {
             > span {
                 .font-size( (20/@fs-base) );
                 color: @light-grey;
-                padding: 5px 20px;
+                padding: 5px 10px;
                 text-decoration: none; 
                 text-shadow: 0 1px 1px rgba(0,0,0,.4);
 
@@ -452,7 +452,7 @@ body {
 
 //content styles for home page
 .s-welcome {
-    margin-top: 150px;
+    margin-top: 60px;
 
     .container {
         margin-top: -150px;
@@ -482,25 +482,103 @@ body {
         width: 50px;
         height: 50px;
         display: inline-block;
+        float: left;
         margin-bottom: 20px;
-              
+                       
         &.logo-issue {
-            background:  url('/Images/icons/issue.svg') 50% 50% no-repeat; 
-            background-size: cover;
+            background:  url('/Images/icons/ic_issue.svg') 50% 50% no-repeat; 
+            background-size: cover; 
         }
         &.logo-announcement {
-            background:  url('/Images/icons/announcement.svg') 50% 50% no-repeat; 
-            background-size: cover;
+            background:  url('/Images/icons/ic_announcement.svg') 50% 50% no-repeat; 
+            background-size: cover; 
         }
         &.logo-stat {
-            background:  url('/Images/icons/bar-chart.svg') 50% 50% no-repeat; 
-            background-size: cover;
+            background:  url('/Images/icons/ic_chart.svg') 50% 50% no-repeat; 
+            background-size: cover; 
         }
     }
+
+    .cardblock {
+        background: #fff;
+        min-height: 50px;
+        position: relative;
+        margin-bottom: 30px;
+        &:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            cursor: pointer;
+        }
+        .info-box {
+            color: #fff;
+            padding: 20px 20px 0;
+            position: relative;
+            overflow: hidden;
+            &.box-issue {
+                background-color: #880E4F;   
+            }
+            &.box-announcement {
+                background-color: #006064; 
+            }
+            &.box-stat {
+                background-color: #004D40;
+            }
+            .caption {
+                display: inline-block;
+                padding: 12px;
+            }
+        }
+        .body {
+            padding: 20px;
+            height: 335px;
+            color: #fff;
+            &.bg-pink {
+                background-color: #C2185B;// #F8BBD0;
+                // &:hover {
+                // background-color: #880E4F; 
+                // color: #fff;
+                // }
+            }
+            &.bg-cyan {
+                background-color: #0097A7;//#B2EBF2;
+                // &:hover {
+                //    background-color: #006064; 
+                //    color: #fff;
+                // }
+            }
+            &.bg-teal {
+                background-color: #00796B;//#B2DFDB;
+                // &:hover {
+                //    background-color: #004D40; 
+                //    color: #fff;
+                // }
+            }
+        }
+    }
+
+    .cardblock.hover-expand-effect:after {
+        background-color: rgba(0, 0, 0, 0.05);
+        content: ".";
+        position: absolute;
+        left: 0;
+        top: 90px;
+        width: 100%;
+        height: 0;
+        color: transparent;
+        -moz-transition: all 0.95s;
+        -o-transition: all 0.95s;
+        -webkit-transition: all 0.95s;
+        transition: all 0.95s;
+    }
+    .cardblock.hover-expand-effect:hover:after {
+        height: 80%
+    }
+    
 
     
 
     .list-group-item {
+        background-color: transparent;
+        border: none;
         margin-bottom: 30px;
         h4, h5 {
             margin-bottom: 10px;
@@ -508,13 +586,15 @@ body {
         button {
             margin-bottom: 10px;
         }
+        ol {
+            margin-left: 30px;
+        }
         .media-left {
             img {
                 width:30px;
             }
         }
     }
-
 
     .view-all {
        background: @turq; 
@@ -536,7 +616,6 @@ body {
 
 // content styles for tables, making them look good on phones and tablets
 
-
 .table {
     min-width: 300px; // adjust to your needs
   
@@ -555,7 +634,7 @@ body {
         }  
  */
         &:before {
-          content: attr(data-th)": "; 
+          content: attr(data-th)" "; 
           font-weight: bold;
 
           // optional stuff to make it look nicer
@@ -607,9 +686,14 @@ body {
     }
 } // s-request-form
 
-
-
-
+//custom styles for background on hover in nav and table-hover
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #ddd;
+}
+.table-hover>tbody>tr:focus, .table-hover>tbody>tr:hover {
+    background-color: #ddd;
+}
 
 .contacts {
     .col-left {
@@ -659,6 +743,21 @@ body {
     }
 }
 
+/* MODAL STYLES */
+
+.modal-header {
+    background: @dark-blue;
+    color: #fff;  
+    .close {
+        color: #fff;
+        opacity: 1;
+    }  
+}
+
+#addIssue, #addAnnouncement, #add_issue, #add_announcement, #addPrintModal {
+    margin-bottom: 30px;
+}
+
 footer {
     font-weight: 100;
     .font-size( (14/@fs-base) );
@@ -701,7 +800,6 @@ footer {
             width: 100%;
         }
         .is-table-row [class*="col-"] {
-            background: white;
             float: none;
             display: table-cell;
             vertical-align: top;

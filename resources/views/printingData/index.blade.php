@@ -1,12 +1,6 @@
 @extends('layouts.layout')
 
 @section('content')
-    @if ($flash=session('message'))
-    <div id="flash_message" class="alert alert-success" role="alert" style="position: relative; top: -10px">
-        {{ $flash }}
-    </div>
-    @endif
-
    
     <div class="container text-center m-b-md">
         {{--<div class="title">Pending Jobs</div>--}}
@@ -50,7 +44,7 @@
                         {{--Print short description and a link--}}
                             <p>
                                 Requested by: <b>{{$job->customer_name}}</b><br>
-                                Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
+                                Requested on: <b>{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</b><br>
                                 Job is printed on <br>
                                 @foreach($job->prints as $print)
                                     Printer number: <b>{{ $print->printers_id }}</b><br>
@@ -64,3 +58,20 @@
         </div>
     </div>
 @endsection
+
+@section('scripts')
+    <script src="/js/approve_job_validation.js"></script>
+    @if (notify()->ready())
+        <script>
+            swal({
+                title: "{!! notify()->message() !!}",
+                text: "{!! notify()->option('text') !!}",
+                type: "{{ notify()->type() }}",
+                showConfirmButton: true
+            });
+        </script>
+    @endif
+@endsection
+
+
+

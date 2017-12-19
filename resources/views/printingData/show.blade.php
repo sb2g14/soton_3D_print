@@ -135,7 +135,7 @@
                         </div>
 
                         <div class="col-sm-12 text-left">
-                                <button id="submit" type="submit" class="btn btn-lg btn-primary">Accept</button>
+                                <button id="submit" type="submit" class="btn btn-lg btn-success">Accept</button>
                                 <a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>
                                 <a href="/printingData/index" class="btn btn-lg btn-info">Back</a>
                         </div>
@@ -148,6 +148,16 @@
 
 @section('scripts')
     <script src="/js/approve_job_validation.js"></script>
+    @if (notify()->ready())
+        <script>
+            swal({
+                title: "{!! notify()->message() !!}",
+                text: "{!! notify()->option('text') !!}",
+                type: "{{ notify()->type() }}",
+                showConfirmButton: true
+            });
+        </script>
+    @endif
 @endsection
 
 
