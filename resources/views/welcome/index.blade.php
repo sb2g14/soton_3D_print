@@ -90,7 +90,6 @@
                                 <ul class="lsn list-group">
                                     <li class="list-group-item">
                                         <div class="alert">
-                                            <h4><b>Announcement {{  $announcement_last->id + 1 }} </b></h4>
                                             <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
@@ -155,11 +154,10 @@
                                 <ul class="lsn list-group">
                                     <li class="list-group-item">
                                         <div class="alert">
-                                            <h4><b>Announcement {{  $announcement_last->id + 1 }} </b></h4>
-                                            <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
+                                            <h5 class="media-heading"> {{ $public_announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
-                                                        Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
-                                            <h5> {{ $announcement_last->message }} </h5>
+                                                        Posted {{ $public_announcement_last->created_at->diffForHumans() }}:</i></small></h5>
+                                            <h5> {{ $public_announcement_last->message }} </h5>
                                         </div>
                                     </li>
                                 </ul>
@@ -181,99 +179,6 @@
                     </div>
                     <!-- #END# Statistics -->
                 </div>
-
-                <!-- <div class="row"> 
-                    <div class="col-sm-4 item">
-                        <div class="bl-header">
-                            <div class="bl-logo logo-issue"></div>
-                            <div>
-                                <h3>WORKSHOP RULES</h3>
-                            </div>
-                        </div>
-                        <p>
-                        <ol>
-                            <li>Export your file to .stl format and bring it with you to the workshop</li>
-                            <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOUSELF to the cupboards!</b></li>
-                            <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
-                            <li>Request a job
-                                <ol type="a">
-                                    <li>Access the workshop website <a href="https://3dprint.clients.soton.ac.uk/">https://3dprint.clients.soton.ac.uk/</a></li>
-                                    <li>Select <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">Request a job in the workshop!</a></q></li>
-                                    <li>Fill in all required details</li>
-                                    <li>Click submit</li>
-                                </ol>
-                            </li>
-                            <li>Ask a demonstrator to come to you to approve the print</li>
-                            <li>Press the print button to start the print <b>after your print has been approved</b></li>
-                            <li>Wait for at least 10 layers to see if there are any errors. Most errors will happen at this point</li>
-                            <li type="disc" style="list-style-type:disc">If there is an error:
-                                <ol type="a">
-                                    <li>Stop the print</li>
-                                    <li>Tell a demonstrator to mark the print as failed so you don't get charged</li>
-                                    <li>Set up the print again. Ask a demonstrator for advice on how to avoid this error</li>
-                                    <li>Go through the same <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">Request a job in the workshop!</a></q> procedure.</li>
-                                </ol>
-                            </li>
-                            <li type="disc" style="list-style-type:disc">If you need to leave the workshop during your print, leave your contact details on a piece of paper with your expected return time next to your printer</li>
-                            <li value="8">Once your print is finished, tell a demonstrator to mark the print as finished</li>
-                            <li>Remove the print from the platform</li>
-                            <li>Once finished, return all printing materials to the cupboards</li>
-                        </ol>
-                        </p>
-                    </div>
-                    <div class="col-sm-4 item">
-                        <div class="bl-header">
-                            <div class="bl-logo logo-announcement"></div>
-                            <div>
-                                <h3>ANNOUNCEMENTS</h3>
-                            </div>
-                        </div>
-
-                        <ul class=" lsn list-group">
-                            @if(!empty($public_announcement_last))
-                                <li class="list-group-item">
-                                    <div class="alert alert-info">
-                                        <h4><b>Announcement {{ $public_announcement_last->id }}</b></h4>
-                                        <h5 class="media-heading"> 
-                                            @if($public_announcement_last->user_id != 0)  
-                                            {{$public_announcement_last->user->name}} 
-                                            @else Anonym 
-                                            @endif
-                                                {{--Print date and time when a post was created--}}
-                                            <small><i>Posted on {{ $public_announcement_last->created_at->toDayDateTimeString() }}:</i></small>
-                                        </h5>
-                                        <h5> {{ $public_announcement_last->message }} </h5>
-                                    </div>
-                                </li>
-                            @endif
-
-                            {{--<button type="button" class="btn btn-lg view-all" data-toggle="collapse" data-target="#all-announcements">VIEW ALL</button>--}}
-
-                            <div id="all-announcements" class="card collapse">
-
-                                @foreach($public_announcements as $announcement)
-                                    <li class="list-group-item">
-                                        
-                                        <h4><b>Announcement {{ $announcement->id }}</b></h4>
-                                        <h5 class="media-heading"> @if($announcement->user_id != 0)  {{$announcement->user->name}} @else Anonym @endif <small><i>
-                                                    {{--Print date and time when a post was created--}}
-                                                    Posted on {{ $announcement->created_at->toDayDateTimeString() }}:</i></small></h5>
-                                        <h5> {{ $announcement->message }} </h5>
-                                        
-                                    </li>
-                                @endforeach
-                            </div>
-                        </ul>
-                    </div>
-                    <div class="col-sm-4 item">
-                        <div class="bl-header">
-                            <div class="bl-logo logo-stat"></div>
-                            <div>
-                                <h3>STATISTICS</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             @endif
         </div>
 
@@ -419,17 +324,29 @@
                         </div>
 
                         <div id="all-announcements">
-                            @foreach($announcements as $announcement)
-                                <li class="list-group-item">
-                                    <!-- <div class="alert alert-info"> -->
-                                    <h4><b>Announcement {{ $announcement->id + 1 }}</b></h4>
-                                    <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
-                                                {{--Print date and time when a post was created--}}
-                                                Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
-                                    <h5> {{ $announcement->message }} </h5>
-                                    <!-- </div> -->
-                                </li>
-                            @endforeach
+                            @if(Auth::check())
+                                @foreach($announcements as $announcement)
+                                    <li class="list-group-item">
+                                        <!-- <div class="alert alert-info"> -->
+                                        <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
+                                                    {{--Print date and time when a post was created--}}
+                                                    Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
+                                        <h5> {{ $announcement->message }} </h5>
+                                        <!-- </div> -->
+                                    </li>
+                                @endforeach
+                            @else
+                                @foreach($public_announcements as $announcement)
+                                    <li class="list-group-item">
+                                        <!-- <div class="alert alert-info"> -->
+                                        <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
+                                                    {{--Print date and time when a post was created--}}
+                                                    Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
+                                        <h5> {{ $announcement->message }} </h5>
+                                        <!-- </div> -->
+                                    </li>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
 
