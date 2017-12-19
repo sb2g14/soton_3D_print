@@ -8,6 +8,7 @@ use App\Rules\SotonEmail;
 use App\Rules\SotonID;
 use App\Rules\SotonIdMinMax;
 use App\Rules\UseCase;
+use App\Rules\Printer;
 use App\User;
 use Illuminate\Http\Request;
 use App\Rules\CustomerNameValidation;
@@ -409,12 +410,13 @@ class OrderOnlineController extends Controller
     {
         // Extract assigned print
         $assigned_print = request()->validate([
-            'printers_id' => 'required',
-            'hours' => 'required',
-            'minutes' => 'required',
+            'printers_id' => 'required|numeric',
+            'hours' => 'required|numeric',
+            'minutes' => 'required|numeric',
             'material_amount' => 'required|numeric|min:0.1|max:9999',
             'multipleselect' => 'required',
-            'comments' => 'max:255'
+            'comments' => 'max:255',
+            new Printer()
         ]);
 
         // create a print from the specified details
