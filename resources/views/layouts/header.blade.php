@@ -62,7 +62,7 @@
                 @can('manage_online_jobs')
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
-                {{--Only demonstrator workflow available to demonstrators and others without online jobs permissions--}}
+                {{--Ø--}}
                 @else
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 @endcan
