@@ -21,7 +21,7 @@
 
 <p>If you need further assistance, please visit the workshop or contact the Online Jobs Manager via replying to this email</p>
 
-@component('mail::button', ['url' => 'https://soton3dprint.clients.soton.ac.uk'])
+@component('mail::button', ['url' => 'https://3dprint.clients.soton.ac.uk'])
     Go to the website
 @endcomponent
 

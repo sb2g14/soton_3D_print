@@ -35,7 +35,7 @@
                     </p>
                     <a class="btn btn-danger" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
                                                  {{$job->claim_id}}&claimPasscode={{$job->claim_passcode}}
-                            &emailAddr=3DPrintFEE%40soton.ac.uk">Download .stl files</a>
+                            &emailAddr=3dprint.soton%40gmail.com">Download .stl files</a>
                 </div>
             </div>
 

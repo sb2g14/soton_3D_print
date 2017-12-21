@@ -17,7 +17,7 @@
 
 <p>Please come to the workshop to collect your parts.</p>
 
-@component('mail::button', ['url' => 'https://soton3dprint.clients.soton.ac.uk'])
+@component('mail::button', ['url' => 'https://3dprint.clients.soton.ac.uk'])
     Go to the website
 @endcomponent
 

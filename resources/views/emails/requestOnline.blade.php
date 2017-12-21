@@ -17,11 +17,11 @@
 
 
 @component('mail::button', ['url' => 'https://dropoff.soton.ac.uk/pickup.php?claimID='.$claim_id.'&claimPasscode='.
-    $claim_passcode.'&emailAddr=3DPrintFEE%40soton.ac.uk'])
+    $claim_passcode.'&emailAddr=3dprint.soton%40gmail.com'])
     Download .stl files
 @endcomponent
 
-@component('mail::button', ['url' => 'https://soton3dprint.clients.soton.ac.uk'])
+@component('mail::button', ['url' => 'https://3dprint.clients.soton.ac.uk'])
     Go to the website
 @endcomponent
 
