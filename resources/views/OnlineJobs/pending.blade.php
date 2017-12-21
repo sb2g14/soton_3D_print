@@ -16,14 +16,14 @@
     <div class="container">
         <table class="table table-sm table-hover table-responsive">
             <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Project</th>
-                <th>Requested on</th>
-                <th>Last updated</th>
-                <th>Job controls</th>
-            </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Project</th>
+                    <th>Requested on</th>
+                    <th>Last updated</th>
+                    <th>Job controls</th>
+                </tr>
             </thead>
             <tbody>
                 @foreach($pending_jobs as $job)

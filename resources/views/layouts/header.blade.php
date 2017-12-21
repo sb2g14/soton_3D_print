@@ -71,7 +71,7 @@
                     <span>
                          {{Auth::user()->name}}
                         <span class="caret"></span></span>
-                    <ul class="dropdown-bl">
+                    <ul class="dropdown-bl dropdown-role">
                         @isset(Auth::user()->staff)
                             <li><a href="/members/{{Auth::user()->staff->id}}">View record</a></li>
                         @endisset

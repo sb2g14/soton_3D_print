@@ -80,6 +80,7 @@
                     </div>
                 @endif
             </div>
+        </div>
 
             {{--Job control buttons--}}
             <div class="col-sm-12 text-center">
@@ -105,9 +106,7 @@
                        data-content="You cannot mark this job as completed because you still have some unfinished prints."
                        disabled>Job Completed</a>
                 @endif
-
             </div>
-        </div>
     </div>
 
     <!-- Modal assign prints-->
@@ -129,22 +128,20 @@
                         {{--Select a printer--}}
                         <div class="form-group {{ $errors->has('printers_id') ? ' has-error' : '' }}">
                             {{--This is a Printer Number dropdown--}}
-                            <div class="col-lg-4">
-                                {!! Form::label('printers_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
-                                <div class="col-md-6">
-                                    {!! Form::select('printers_id', array('' => 'Select Available Printer') + $available_printers,  old('printers_id'), ['class' => 'form-control','required', 'data-help' => 'printers_id', 'id' => 'printers_id']) !!}
-                                    @if ($errors->has('printers_id'))
-                                        <span class="help-block">
-                                                        <strong>{{ $errors->first('printers_id') }}</strong>
-                                                    </span>
-                                    @endif
-                                </div>
+                            {!! Form::label('printers_id', 'Printer Number', ['class' => 'col-sm-4 control-label'] )  !!}
+                            <div class="col-sm-4">
+                                {!! Form::select('printers_id', array('' => 'Select Available Printer') + $available_printers,  old('printers_id'), ['class' => 'form-control','required', 'data-help' => 'printers_id', 'id' => 'printers_id']) !!}
+                                @if ($errors->has('printers_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('printers_id') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
                         <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
-                            {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
-                            <div class="col-md-4">
+                            {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-sm-4 control-label'] )  !!}
+                            <div class="col-sm-2">
                                 {!! Form::select('hours', array('' => 'Hours') + range(0,59),old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
                                 @if ($errors->has('hours'))
                                     <span class="help-block">
@@ -152,7 +149,7 @@
                                                 </span>
                                 @endif
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-sm-2">
                                 {!! Form::select('minutes', array('' => 'Minutes') + range(0,59),old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
                                 @if ($errors->has('minutes'))
                                     <span class="help-block">
@@ -163,22 +160,22 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
-                            <label for="material_amount" class="col-md-4 control-label">Estimated material amount (grams):</label>
-                            <div class="col-lg-2">
+                            <label for="material_amount" class="col-sm-4 control-label">Estimated material amount (grams):</label>
+                            <div class="col-sm-4">
                                 <input type="text" id="material_amount" name="material_amount" value="{{old('material_amount')}}" class="form-control">
-                                @if ($errors->has('material_amount'))
-                                    <span class="help-block">
-                                                    <strong>{{ $errors->first('material_amount') }}</strong>
-                                                </span>
-                                @endif
-                                <span class="help-block" id="material_amount_error"></span>
                             </div>
+                            @if ($errors->has('material_amount'))
+                                <div class="col-sm-4 help-block">
+                                    <strong>{{ $errors->first('material_amount') }}</strong>
+                                </div>
+                            @endif
+                            <span class="help-block" id="material_amount_error"></span>
                         </div>
 
                         <!-- Select Multiple Jobs to be assigned to the print -->
                         <div class="form-group">
-                            {!! Form::label('multipleselect[]', 'Select one or many pending jobs', ['class' => 'col-lg-2 control-label'] )  !!}
-                            <div class="col-lg-10">
+                            {!! Form::label('multipleselect[]', 'Select one or many pending jobs', ['class' => 'col-sm-4 control-label'] )  !!}
+                            <div class="col-sm-4">
                                 {!!  Form::select('multipleselect[]', $jobs_in_progress, $selected = $job->id, ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'jobs_id']) !!}
                                 @if ($errors->has('multipleselect'))
                                     <span class="help-block">
@@ -190,7 +187,7 @@
                         </div>
 
                         <div class="form-group text-left">
-                            <div class="col-md-12">
+                            <div class="col-sm-12">
                                 <label for="comments">Add comments to the print:</label><br>
                                 <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
                                 @if ($errors->has('comments'))
@@ -202,9 +199,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-12 text-left">
-                            <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
-                        </div>
+                        <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
                     </form>
                 </div>
 
@@ -232,7 +227,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-group text-left">
-                            <div class="col-md-12">
+                            <div class="col-sm-12">
                                 <label for="comments">Add comments for the customer:</label><br>
                                 <textarea rows="4" id="message" name="comment" placeholder="Please explain why the job has failed" class="form-control"></textarea>
                                 @if ($errors->has('comments'))
@@ -244,9 +239,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-12 text-left">
-                            <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
-                        </div>
+                        <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
                     </form>
                 </div>
 
