@@ -22,7 +22,7 @@
 <p>Please, contact our online request manager by replying to this email and find out what needs to be done to
 successfully resubmit the request.</p>
 
-@component('mail::button', ['url' => 'https://soton3dprint.clients.soton.ac.uk'])
+@component('mail::button', ['url' => 'https://3dprint.clients.soton.ac.uk'])
     Go to the website
 @endcomponent
 

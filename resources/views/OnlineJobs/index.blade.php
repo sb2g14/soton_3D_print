@@ -44,25 +44,25 @@
             </tbody>
         </table>
 
-        <!-- <div class="row">
-            <div class="col-xs-12">
-                <ul class="list-group lsn">
-                    @foreach($jobs as $job)
-                        <li class="text-left well">
+        {{--<!-- <div class="row">--}}
+            {{--<div class="col-xs-12">--}}
+                {{--<ul class="list-group lsn">--}}
+                    {{--@foreach($jobs as $job)--}}
+                        {{--<li class="text-left well">--}}
                         {{--Print short description and a link--}}
-                            <p>
-                                Job ID: <b>{{$job->id}}</b><br>
-                                Requested by: <b>{{$job->customer_name}}</b><br>
+                            {{--<p>--}}
+                                {{--Job ID: <b>{{$job->id}}</b><br>--}}
+                                {{--Requested by: <b>{{$job->customer_name}}</b><br>--}}
                                 {{--Requester id: <b>{{$job->customer_id}}</b>--}}
-                                Project/Cost Code: <b>{{ $job->use_case}}</b><br>
-                                Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
-                            </p>
-                            <a href="/OnlineJobs/checkrequest/{{$job->id}}" class="btn btn-info">Manage</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div> -->
+                                {{--Project/Cost Code: <b>{{ $job->use_case}}</b><br>--}}
+                                {{--Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>--}}
+                            {{--</p>--}}
+                            {{--<a href="/OnlineJobs/checkrequest/{{$job->id}}" class="btn btn-info">Manage</a>--}}
+                        {{--</li>--}}
+                    {{--@endforeach--}}
+                {{--</ul>--}}
+            {{--</div>--}}
+        {{--</div> -->--}}
     </div>
 @endsection
 
