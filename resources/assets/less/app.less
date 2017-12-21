@@ -528,8 +528,11 @@ body {
         }
         .body {
             padding: 20px;
-            height: 335px;
+            min-height: 390px;
             color: #fff;
+            small {
+                color: #fff;
+            }
             &.bg-pink {
                 background-color: #C2185B;// #F8BBD0;
                 // &:hover {
@@ -790,13 +793,11 @@ footer {
     }
 } 
 
-@media  screen and (min-width: 650px ) {
+@media  screen and (min-width: 500px ) {
     
     .s-welcome {
         .is-table-row {
             display: table;
-            margin-top: 30px;
-            width: 100%;
         }
         .is-table-row [class*="col-"] {
             float: none;
