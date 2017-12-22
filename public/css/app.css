@@ -573,7 +573,10 @@ body.is-fixed {
 }
 .s-welcome .cardblock .body {
   padding: 20px;
-  height: 335px;
+  min-height: 390px;
+  color: #fff;
+}
+.s-welcome .cardblock .body small {
   color: #fff;
 }
 .s-welcome .cardblock .body.bg-pink {
@@ -780,11 +783,9 @@ footer .team {
     height: 500px;
   }
 }
-@media screen and (min-width: 650px) {
+@media screen and (min-width: 500px) {
   .s-welcome .is-table-row {
     display: table;
-    margin-top: 30px;
-    width: 100%;
   }
   .s-welcome .is-table-row [class*="col-"] {
     float: none;
