@@ -13,9 +13,10 @@ use App\Mail\Welcome;
 
 class AnnouncementsController extends Controller
 {
+    // This controller manges private announcements
     public function __construct()
     {
-
+        // The functions in this controller available only for authenticated users
         $this->middleware('auth');
 
     }
@@ -26,6 +27,7 @@ class AnnouncementsController extends Controller
      */
     public function index()
     {
+        //
     }
 
     /**
@@ -52,12 +54,12 @@ class AnnouncementsController extends Controller
             'message' => 'required'
         ]);
 
+        // Create the announcement and associate it with the user
         $announcement = new announcement;
         $announcement->message = request('message');
         $announcement->user_id = Auth::user()->id;
 
         // Submit the data to the database
-
         $announcement->save();
 
         // Duplicate post to public announcements if 'public' checked
@@ -67,12 +69,11 @@ class AnnouncementsController extends Controller
             $public_announcement->user_id = Auth::user()->id;
 
             // Submit the data to the database
-
             $public_announcement->save();
         }
 
         if (Input::get('email', false)) {
-
+            // Send the notification to users if the appropriate checkbox is checked
             $users = User::all();
             foreach ($users as $user) {
                 \Mail::to($user)->send(new AnnouncementNew($user,$announcement));
