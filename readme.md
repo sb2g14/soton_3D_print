@@ -1,5 +1,14 @@
 ## 3dprint.clients.soton.ac.uk web site 
 
+## Database updates
+### Linux/MacOS
+- Dump lates database with mysql dump 
+```mysqldump -u root -p[root_password] [database_name] > dumpfilename.sql```
+- Feed the dump file into the working database
+```mysqldump -u root -p[root_password] [database_name] < dumpfilename.sql```
+### Windows
+Do the same but you may encounter issues with ">" and "<". Look for supstitutions online. Possibly "-e"
+
 
 ## Version 1.4
 <h3>Functionality updates</h3>
