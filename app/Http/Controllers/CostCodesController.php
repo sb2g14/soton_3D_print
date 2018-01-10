@@ -8,12 +8,15 @@ use App\cost_code;
 
 class CostCodesController extends Controller
 {
+    // This controller is created to manage all pages connected with the cost codes
     public function __construct()
     {
+        // This controller manages comments to posts (issues)
         $this->middleware('auth');
     }
     public function index()
     {
+        // Request all cost codes from the database
         $cost_codes = cost_code::all();
         return view('costCodes.index',compact('cost_codes'));
     }
@@ -23,28 +26,35 @@ class CostCodesController extends Controller
     }
     public function store()
     {
+        // Validate input cost code
         $cost_code_request = request()->validate([
+            // Shortage min 3, max 13, alpha-numeric characters, as well as dashes and underscores
             'shortage' => [
                 'min:3',
                 'max:13',
                 'alpha_dash'
             ],
+            // Cost code numeric with 11 digits
             'cost_code' => [
                 'digits:9'
             ],
+            // Name of the member od staff who approves
             'aproving_member_of_staff' => [
                 'min:3',
                 'max:100',
                 new CustomerNameValidation
             ],
+            // Expiry date
             'expires' => [
                 'date_format:Y-m-d'
             ],
+            // Name of the budget holder
             'holder' => [
                 'min:3',
                 'max:100',
                 new CustomerNameValidation
             ],
+            // Message with description
             'description' => [
                 'min:3',
                 'max:255',

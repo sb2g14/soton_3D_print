@@ -8,9 +8,10 @@ use Auth;
 
 class CommentsController extends Controller
 {
+    // This controller manages comments to posts (issues)
     public function __construct()
     {
-
+        // The functions in this controller available only for authenticated users
         $this->middleware('auth');
 
     }

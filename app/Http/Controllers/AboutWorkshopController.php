@@ -7,6 +7,7 @@ use App\staff;
 
 class AboutWorkshopController extends Controller
 {
+    // This is controller to manage AboutWorkshop page
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +15,9 @@ class AboutWorkshopController extends Controller
      */
     public function index()
     {
+        // Find all the records in the staff database with role 'Coordinator'
         $coordinators = staff::where('role','=', 'Coordinator')->get();
+        // Find all the records in the staff database with role 'Lead Demonstrator'
         $lead_demonstrators = staff::where('role','=', 'Lead Demonstrator')->get();
         return view('aboutWorkshop.index',compact('coordinators','lead_demonstrators'));
     }

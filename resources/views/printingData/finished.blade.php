@@ -35,6 +35,7 @@
                     {{--@hasanyrole('LeadDemonstrator|administrator|OnlineJobsManager')--}}
                     <th>Edit</th>
                     {{--@endhasanyrole--}}
+                    <th>Restart</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,11 +78,11 @@
                                historic events!">Manage Job</a>
                             {{--@endhasanyrole--}}
                         </td>
-                        {{--<td data-th="Restart">--}}
-                            {{--@if($job->status == 'Failed')--}}
-                            {{--<a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a>--}}
-                            {{--@endif--}}
-                        {{--</td>--}}
+                        <td data-th="Restart">
+                            @if($job->status == 'Failed')
+                            <a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a>
+                            @endif
+                        </td>
                     </tr>
                     @endif
                 @endforeach
