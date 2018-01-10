@@ -6,6 +6,7 @@ use App\staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
+use App\Mail\Invitation;
 
 class StaffController extends Controller
 {
@@ -48,7 +49,7 @@ class StaffController extends Controller
         $this -> validate(request(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:staff',
 //            'phone' => 'required|numeric|digits:11'
         ]);
         $role = Input::get('role');
@@ -76,6 +77,9 @@ class StaffController extends Controller
                 $member->user->assignRole('Demonstrator');
             }
         }
+        // Send an email to the customer
+        \Mail::to($member->email)->queue(new Invitation($member->first_name));
+
         session()->flash('message', 'The record has been successfully added to the database!');
 
         return redirect('/members/index');
