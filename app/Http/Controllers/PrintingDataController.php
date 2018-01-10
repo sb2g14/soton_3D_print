@@ -441,17 +441,17 @@ class PrintingDataController extends Controller
 
         return redirect('printingData/index');
     }
-//    public function restart($id)
-//    {
-//        $data = Jobs::findOrFail($id);
-//
-//        if (Auth::user()->hasRole('OnlineJobsManager')) {
-//            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
-//        } else {
-//            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
-//        }
-//
-//
-//        return view('printingData.create',compact('available_printers','data'));
-//    }
+    public function restart($id)
+    {
+        $data = Jobs::findOrFail($id);
+
+        if (Auth::user()->hasRole('OnlineJobsManager')) {
+            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
+        } else {
+            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
+        }
+
+
+        return view('printingData.create',compact('available_printers','data'));
+    }
 }
