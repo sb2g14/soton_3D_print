@@ -206,6 +206,7 @@ class PrintingDataController extends Controller
          $job -> customer_name = request('student_name');
          $job -> customer_email = request('email');
          $job -> requested_online = 0;
+         $job -> status = 'Waiting';
 
          $job->save();
 
