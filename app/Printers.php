@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use phpDocumentor\Reflection\Types\Null_;
 
 class printers extends Model
 {
@@ -31,6 +32,12 @@ class printers extends Model
         return $this->hasMany(posts::class);
 
     }
+    public function fault_data()
+    {
+
+        return $this->hasMany(FaultData::class);
+
+    }
     public function changePrinterStatus()
     {
             $print = $this->prints->last();
@@ -42,5 +49,26 @@ class printers extends Model
                     $job->update(array('status' => 'Success', 'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
                 }
             }
+    }
+    public function calculateTotalTime($parameter)
+    {
+        $total_minutes = 0;
+        foreach ($parameter as $print){
+            if($print->time){
+                list($h, $i, $s) = explode(':', $print->time);
+                $minutes = $h*60 + $i;
+                $total_minutes = $total_minutes + $minutes;
+            }
+        }
+        $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
+        return $total_time;
+    }
+    public function calculateTotalTimeSuccess()
+    {
+        return $this->calculateTotalTime($this->prints->where('status','Success')->where('purpose','Use'));
+    }
+    public function calculateTotalTimeOnLoan()
+    {
+        return $this->calculateTotalTime($this->prints->where('purpose','Loan'));
     }
 }

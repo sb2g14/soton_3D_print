@@ -128,8 +128,9 @@ class IssuesController extends Controller
     public function show($id)
     {
         $issues =  FaultData::orderBy('id', 'desc')->where('printers_id', $id)->get();
+        $printer = Printers::where('id', $id)->first();
 
-        return view('issues.show', compact('issues', 'id'));
+        return view('issues.show', compact('issues', 'id','printer'));
     }
 
     /**

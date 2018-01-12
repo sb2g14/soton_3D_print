@@ -13,7 +13,79 @@
     @endif
 
     <div class="title m-b-md">
-        Performance history of Printer {{ $id }}
+        Summary of Printer {{ $printer->id }}
+    </div>
+    <div class="container">
+    <div class="alert alert-warning">
+        <div class="row vdivide">
+            <div class="col-sm-3 text-left">
+                <p>Printer type: <b>{{$printer->printer_type}}</b></p>
+                <p>Printer serial number: <b>{{$printer->serial_no}}</b></p>
+                <p>Date added: <b>{{$printer->created_at}}</b></p>
+                @if($printer->status === 'Signed out')
+                    <p>Date signed out: <b>{{$printer->updated_at->toDayDateTimeString()}}</b></p>
+                @else
+                    <p>Last updated: <b>{{$printer->updated_at->toDayDateTimeString()}}</b></p>
+                @endif
+                <p>Total number of prints: <b>{{$printer->prints->count()}}</b></p>
+                <p>Of that are successful: <b>{{$printer->prints->where('status','Success')->count()}}</b></p>
+            </div>
+            <div class="col-sm-3 text-left">
+                <p>Printer use statistics</p>
+                <p>In use time: <b>{{$printer->calculateTotalTimeSuccess()}}</b></p>
+                <p>On loan time: <b>{{$printer->calculateTotalTimeOnLoan()}}</b></p>
+                <p>Time broken: </p>
+                <p>Time idle: </p>
+                <p>Printer reliability: <b>{{round($printer->prints->where('status','Success')->count()/$printer->prints->count()*100,2)}}%</b></p>
+                <p>Printer availability: idle time/total time</p>
+            </div>
+            <div class="col-sm-3 text-left">
+                <p>Printer status: <b>{{$printer->printer_status}}</b></p>
+                <p>Last updated by:
+                    @php
+                        $lastPrint=$printer->prints()->orderBy('updated_at', 'desc')->first();
+                        $lastIssue=$printer->fault_data()->orderBy('updated_at','desc')->first();
+                        $lastIssueUpdate = \App\FaultData::orderBy('fault_updates.updated_at','desc')
+                        ->crossJoin('fault_updates', 'fault_datas.id', '=', 'fault_updates.fault_data_id')
+                        ->where('fault_datas.printers_id', $printer->id)
+                        ->select('fault_updates.*')
+                        ->first();
+
+                        $nullDate = \Carbon\Carbon::create(1990, 1, 1, 0);
+                        if(!$lastPrint)
+                        {
+                            $lastPrint = ['updated_at'=>$nullDate, 'print_finished_by'=>64];
+                        } else {
+                            $lastPrint = $lastPrint->toArray();
+                        }
+                        if(!$lastIssue)
+                        {
+                            $lastIssue = ['updated_at'=>$nullDate, 'user_name_resolved_issue'=>'System',
+                            'user_name_created_issue'=>'System'];
+                        } else {
+                            $lastIssue = $lastIssue->toArray();
+                        }
+                        if(!$lastIssueUpdate)
+                        {
+                            $lastIssueUpdate = ['updated_at'=>$nullDate, 'users_id'=>64];
+                        } else {
+                            $lastIssueUpdate = $lastIssueUpdate->toArray();
+                        }
+                        // Compare maximums of pairs of timestamps
+                        $tstmp1 = new \Carbon\Carbon($lastPrint['updated_at']);
+                        $tstmp2 = new \Carbon\Carbon($lastIssue['updated_at']);
+                        $tstmp3 = new \Carbon\Carbon($lastIssueUpdate['updated_at']);
+                        $max=$tstmp1->max($tstmp2)->max($tstmp3);
+                    @endphp
+                    {{$max}}
+                </p>
+            </div>
+            <div class="col-sm-3 text-left">
+                <p>Days out of Order</p>
+                <p style="color:red;"><b></b></p>
+            </div>
+        </div>
+    </div>
     </div>
 
 <ul>

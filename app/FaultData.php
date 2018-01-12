@@ -14,4 +14,9 @@ class FaultData extends Model
         return $this->hasMany(FaultUpdates::class);
 
     }
+
+    public function Printers()
+    {
+        return $this->belongsTo(Printers::class);
+    }
 }
