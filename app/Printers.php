@@ -60,8 +60,7 @@ class printers extends Model
                 $total_minutes = $total_minutes + $minutes;
             }
         }
-        $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
-        return $total_time;
+        return $total_minutes;
     }
     public function calculateTotalTimeSuccess()
     {
@@ -70,5 +69,19 @@ class printers extends Model
     public function calculateTotalTimeOnLoan()
     {
         return $this->calculateTotalTime($this->prints->where('purpose','Loan'));
+    }
+    public function calculateTotalTimeBroken()
+    {
+        $total_minutes = 0;
+        foreach ($this->fault_data as $issue) {
+            if ($issue->resolved === 0) {
+                $minutes = Carbon::now('Europe/London')->diffInMinutes($issue->created_at);
+                $total_minutes = $total_minutes + $minutes;
+            } else {
+                $minutes = Carbon::parse($issue->resolved_at)->diffInMinutes($issue->created_at);
+                $total_minutes = $total_minutes + $minutes;
+            }
+        }
+        return $total_minutes;
     }
 }

@@ -12,7 +12,7 @@ use App\comments;
 use Auth;
 use Excel;
 use Carbon\Carbon;
-
+use Charts;
 class IssuesController extends Controller
 {
     /**
@@ -129,8 +129,19 @@ class IssuesController extends Controller
     {
         $issues =  FaultData::orderBy('id', 'desc')->where('printers_id', $id)->get();
         $printer = Printers::where('id', $id)->first();
+        $success = round($printer->calculateTotalTimeSuccess()/(24*60));
+        $loan = round($printer->calculateTotalTimeOnLoan()/(24*60));
+        $broken = round($printer->calculateTotalTimeBroken()/(24*60));
+        $total_time = \Carbon\Carbon::now('Europe/London')->diffInMinutes($printer->created_at);
+        $idle = round(($total_time - $printer->calculateTotalTimeBroken())/(24*60))*0.27;
+        $chart = Charts::create('pie', 'highcharts')
+            ->title('Printer usage')
+            ->labels(['Successful Jobs', 'Loan', 'Broken or Missing', 'Idle'])
+            ->values([$success,$loan,$broken,$idle])
+            ->dimensions(1000,500)
+            ->responsive(false);
 
-        return view('issues.show', compact('issues', 'id','printer'));
+        return view('issues.show', compact('issues', 'id','printer','chart'));
     }
 
     /**

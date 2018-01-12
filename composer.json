@@ -8,6 +8,7 @@
         "php": ">=5.6.4",
         "codecourse/notify": "^1.1",
         "coderjp/notify": "^0.0.4",
+        "consoletvs/charts": "^5.4",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.3",
