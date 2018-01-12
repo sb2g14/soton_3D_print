@@ -16,7 +16,7 @@
         Summary of Printer {{ $printer->id }}
     </div>
     <div class="container">
-    <div class="alert alert-warning">
+    <div class="well">
         <div class="row vdivide">
             <div class="col-sm-3 text-left">
                 <p>Printer type: <b>{{$printer->printer_type}}</b></p>
