@@ -104,7 +104,7 @@
             </div>
             <div class="col-sm-3 text-left">
                 <p>Days out of Order</p>
-                <p style="color:red;"><b></b></p>
+                <a href="/printers/index" class="btn btn-lg btn-info">See all printers</a>
             </div>
         </div>
     </div>
@@ -112,8 +112,8 @@
 
 <ul class="container">
     @php
-        $printdata = $printer->prints()->select('created_at AS StartDate', 'updated_at AS EndDate','purpose AS Type','status AS Description');
-        $issuedata = $printer->fault_data()->select('created_at AS StartDate', 'resolved_at AS EndDate', 'printer_status AS Type', 'body AS Description');
+        $printdata = $printer->prints()->select('created_at AS StartDate', 'updated_at AS EndDate','purpose AS Type','status AS Description', 'id as EntryID');
+        $issuedata = $printer->fault_data()->select('created_at AS StartDate', 'resolved_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'id as EntryID');
         $historydata = $printdata->unionAll($issuedata)->orderBy('StartDate', 'DESC')->get();
     @endphp
     @php
@@ -133,7 +133,11 @@
                             @php
                                 //print last entry
                                 $outStartDate = new \Carbon\Carbon($lastEntry->StartDate);
-                                $outEndDate = new \Carbon\Carbon($lastEntry->EndDate);
+                                if(!$lastEntry->EndDate){
+                                    $outEndDate = null;
+                                } else {
+                                    $outEndDate = new \Carbon\Carbon($lastEntry->EndDate);
+                                }
                                 $outDescription = $lastEntry->Description;
                                 $outType = $lastEntry->Type;
                                 $outClass = '';
@@ -159,7 +163,22 @@
                             @endphp
                             <li>
                                 <div class="{{$outClass}}">
-                                    {{$outStartDate->format('d/m/Y')}}-{{$outEndDate->format('d/m/Y')}} {{$outType}}: {{$outDescription}}
+                                    {{$outStartDate->format('d/m/Y')}} -
+                                    @if($outEndDate)
+                                        {{$outEndDate->format('d/m/Y')}}
+                                    @else
+                                        Now
+                                    @endif
+                                        {{$outType}}: {{$outDescription}}
+                                    @if($outType === 'Broken' || $outType === 'Missing')
+                                        @can('issues_manage')
+                                            <div class="col-sm-4">
+                                                @if(!$outEndDate)
+                                                    <a href="/issues/update/{{$lastEntry->EntryID}}" class="btn btn-info">View/Update or Resolve</a>
+                                                @endif
+                                            </div>
+                                        @endcan
+                                    @endif
                                 </div>
                             </li>
 
@@ -223,7 +242,7 @@
                             {{--<p>{{ isset($issue->Date)  ? $issue->Date : $issue->created_at->toDayDateTimeString()}}</p>--}}
                         {{--</div>--}}
                         {{--<div class="col-sm-3 text-left">--}}
-                            {{--<p>Printer Status</p>    --}}
+                            {{--<p>Printer Status</p>--}}
                             {{--<p style="color:red;"><b>{{$issue->printer_status}}</b></p>--}}
                         {{--</div>--}}
                         {{--<div class="col-sm-3 text-left">--}}
@@ -254,10 +273,10 @@
                         {{--<h3>ISSUE LOG:</h3>--}}
                     {{--</div>--}}
 
-                    {{--<ul> --}}
+                    {{--<ul>--}}
 
                         {{--@foreach($issue->FaultUpdates as $update)--}}
-                    {{----}}
+
                             {{--<div class="alert alert-info">--}}
                                 {{--<div class="row">--}}
                                     {{--<div class="col-sm-12 text-left"><h3><b>Issue update</b></h3></div>--}}
@@ -272,7 +291,7 @@
                                         {{--<p>{{ $update->created_at->toDayDateTimeString() }}</p>--}}
                                     {{--</div>--}}
                                     {{--<div class="col-sm-4 text-left">--}}
-                                        {{--<p>Printer Status</p>    --}}
+                                        {{--<p>Printer Status</p>--}}
                                         {{--<p style="color:red;"><b>{{$update->printer_status}}</b></p>--}}
                                     {{--</div>--}}
                                 {{--</div>--}}
@@ -289,7 +308,7 @@
                 {{--@endif--}}
 
                 {{--@if($issue->resolved == 1)--}}
-                    {{----}}
+
 
                     {{--<div class="alert alert-success">--}}
                         {{--<div class="row">--}}
@@ -305,7 +324,7 @@
                                 {{--<p>{{ isset($issue->Repair_Date) ? $issue->Repair_Date : $issue->updated_at->toDayDateTimeString() }}</p>--}}
                             {{--</div>--}}
                             {{--<div class="col-sm-4 text-left">--}}
-                                {{--<p>Printer Status</p>    --}}
+                                {{--<p>Printer Status</p>--}}
                                 {{--<p><b>Available</b></p>--}}
                             {{--</div>--}}
                         {{--</div>--}}
@@ -320,7 +339,7 @@
                 {{--@endif--}}
             {{--</div>--}}
         {{--</li>--}}
-    {{--@endforeach    --}}
+    {{--@endforeach--}}
 </ul>
 @include('layouts.errors')
 @endsection
