@@ -109,7 +109,10 @@
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
                             <div class="body bg-teal">
-                                
+                                <h3>The number of prints in the last 12 months</h3>
+                                @for($i=0; $i<24; $i++)
+                                       {{$count_months[$i]->toFormattedDateString()}}: {{$count_prints[$i]}} prints<br/>
+                                @endfor
                             </div>
                         </div>
                     </div>
