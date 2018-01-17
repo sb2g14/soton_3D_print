@@ -98,13 +98,18 @@
                 <p>Last used by:
                     @php
                         $lastPrint=$printer->prints()->orderBy('updated_at', 'desc')->first();
-                        $lastJob=$lastPrint->jobs()->first();
-                        if($lastJob->requested_online == 0){
-                            $lastUser = $lastJob->customer_name;
-                            $lastUserEmail = $lastJob->customer_email;
+                        if($lastPrint){
+                            $lastJob=$lastPrint->jobs()->first();
+                            if($lastJob->requested_online == 0){
+                                $lastUser = $lastJob->customer_name;
+                                $lastUserEmail = $lastJob->customer_email;
+                            } else {
+                                $lastUser = $lastPrint->staff_started->first_name.' '.$lastPrint->staff_started->last_name;
+                                $lastUserEmail = $lastPrint->staff_started->email;
+                            }
                         } else {
-                            $lastUser = $lastPrint->staff_started->first_name.' '.$lastPrint->staff_started->last_name;
-                            $lastUserEmail = $lastPrint->staff_started->email;
+                            $lastUser = "--";
+                            $lastUserEmail = "";
                         }
                     @endphp
                     <a href="mailto:{{$lastUserEmail}}">{{$lastUser}}</a>
