@@ -23,9 +23,10 @@
                                 <input type="radio" name="printer_type" @if (isset($printer->printer_type)
                                     && $printer->printer_type==$type->printer_type) {{"checked"}} @endif value="{{$type->printer_type}}">{{$type->printer_type}}<br>
                             @endforeach
-                            <input type="radio" name="printer_type" <?php if (isset($printer_type)
+                            <input type="radio" name="printer_type" id="other" <?php if (isset($printer_type)
                                 && $printer->printer_type=="Other") echo "checked";?> value="Other">Other <br>
-                            <input type="text" name="other_printer_type" class="form-control" placeholder="Please input if other"/><br>
+                            <input type="text" name="other_printer_type" id="other_printer_type" class="form-control" placeholder="Please input if other"/><br>
+                                <span class="help-block" id="other_printer_type_error"></span>
                         </div> <!-- Class radio -->
                     </div> <!-- /form-group -->
                     @hasrole('administrator')
@@ -53,4 +54,8 @@
             <div class="col-sm-3"></div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script src="/js/printer_validation.js"></script>
 @endsection
