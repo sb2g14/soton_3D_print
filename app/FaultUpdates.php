@@ -10,5 +10,9 @@ class FaultUpdates extends Model
     public function FaultData() {
         return $this->belongsTo(FaultData::class);
     }
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class,'users_id');
+    }
 
 }
