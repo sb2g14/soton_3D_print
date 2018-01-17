@@ -94,12 +94,12 @@
                     @endphp
                     <a href="mailto:{{$lastUserEmail}}">{{$lastUser}}</a>
                 </p>
+                {{--Display last printer issue if any--}}
                 <p>@if($printer->status !== 'Broken' && $printer->status !== 'Missing' && $printer->status !== 'Signed out')
-                        Previous issue:
+                        The printer is working. No issues registered.
                     @else
-                       Current issue:
+                        Current issue: {{$printer->fault_data()->orderBy('updated_at','desc')->first()->body}}
                     @endif
-                        {{$printer->fault_data()->orderBy('updated_at','desc')->first()->body}}
                 </p>
             </div>
             <div class="col-sm-3 text-left">
