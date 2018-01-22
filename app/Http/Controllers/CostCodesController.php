@@ -86,7 +86,7 @@ class CostCodesController extends Controller
             'cost_code' => [
                 'digits:9'
             ],
-            'aproving_member_of staff' => [
+            'aproving_member_of_staff' => [
                 'min:3',
                 'max:100',
                 new CustomerNameValidation

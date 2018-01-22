@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\posts;
 use App\printers;
+use App\Prints;
 use App\Announcement;
 use App\PublicAnnouncements;
 use Illuminate\Http\Request;
@@ -43,7 +44,30 @@ class PostsController extends Controller
 
         $public_announcement_last = PublicAnnouncements::orderBy('id','desc')->first();
         $public_announcements =  PublicAnnouncements::orderBy('id', 'desc')->take(20)->get();
-        return view('welcome.index', compact('posts','post_last','announcements','announcement_last','public_announcements','public_announcement_last'));
+
+        // Call the prints model to extract statistical data
+        $count_prints = [];
+        $count_months = [];
+        // Count the number of prints since the beginning of the current month
+        $time = new \Carbon\Carbon;
+        $t1str = $time->toDateTimeString();
+        $t2str = $time->format('Y-m')."-01 00:00:00";
+        $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
+            ->where('created_at', '<', $t1str)->count();
+        $count_prints[] = $prints;
+        $count_months[] = new \Carbon\Carbon($t2str);
+        // Count the number of prints for the last year
+        for($i=0; $i<23; $i++){
+            $t1str = $time->format('Y-m')."-01 00:00:00";
+            $time = $time->subMonth();
+            $t2str = $time->format('Y-m')."-01 00:00:00";
+            $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
+                ->where('created_at', '<', $t1str)->count();
+            $count_prints[] = $prints;
+            $count_months[] = new \Carbon\Carbon($t2str);
+        }
+        return view('welcome.index', compact('posts','post_last','announcements','announcement_last',
+            'public_announcements','public_announcement_last','count_prints','count_months'));
     }
 
     /**

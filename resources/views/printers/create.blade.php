@@ -24,14 +24,10 @@
                     <!-- Radio list for the printer type -->
                     <div class="form-group text-left">
                         <div class="radio">
-                            <input type="radio" name="printer_type" <?php if (isset($printer_type)
-                                && $printer_type=="UP!") echo "checked";?> value="UP!">UP! <br>
-                            <input type="radio" name="printer_type" <?php if (isset($printer_type)
-                                && $printer_type=="UP Plus 2") echo "checked";?> value="UP Plus 2">UP Plus 2 <br>
-                            <input type="radio" name="printer_type" <?php if (isset($printer_type)
-                                && $printer_type=="UP BOX") echo "checked";?> value="UP BOX">UP BOX <br>
-                            <input type="radio" name="printer_type" <?php if (isset($printer_type)
-                                && $printer_type=="Malyan M200") echo "checked";?> value="Malyan M200">Malyan M200 <br>
+                            @foreach($printer_types as $type)
+                                <input type="radio" name="printer_type" @if (isset($printer_type)
+                                    && $printer_type==$type->printer_type) {{"checked"}} @endif value="{{$type->printer_type}}">{{$type->printer_type}}<br>
+                            @endforeach
                             <input type="radio" name="printer_type" <?php if (isset($printer_type)
                                 && $printer_type=="Other") echo "checked";?> value="Other">Other <br>
                             <input type="text" name="other_printer_type" class="form-control" id="other" placeholder="Please input if other"/><br>
@@ -50,3 +46,4 @@
 @section('scripts')
     <script src="/js/new_printer_validation.js"></script>
 @endsection
+
