@@ -138,8 +138,8 @@ class IssuesController extends Controller
             ->title('Printer usage')
             ->labels(['Successful Jobs', 'Loan', 'Broken or Missing', 'Idle'])
             ->values([$success,$loan,$broken,$idle])
-            ->dimensions(200,100)
-            ->responsive(false);
+            ->dimensions(400,200)
+            ->responsive(true);
 
         return view('issues.show', compact('issues', 'id','printer','chart'));
     }
