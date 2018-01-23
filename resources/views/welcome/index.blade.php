@@ -236,21 +236,21 @@
                                 </button>
                                 <div id="{{ $post->id}}" class="card collapse">
                                     {{--Here we show comments to each issue:--}}
-                                    <ul class="lsn">
-                                        @foreach($post->comments as $comment)
-                                            <li>
-                                                <div class="media">
-                                                    <div class="media-left">
-                                                        <img src="/Images/img_avatar3.png" class="media-object">
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted {{ $comment->created_at->diffForHumans() }}:</i></small></h5>
-                                                        <p>{{ $comment->body }}</p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                                    {{--<ul class="lsn">--}}
+                                        {{--@foreach($post->comments as $comment)--}}
+                                            {{--<li>--}}
+                                                {{--<div class="media">--}}
+                                                    {{--<div class="media-left">--}}
+                                                        {{--<img src="/Images/img_avatar3.png" class="media-object">--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="media-body">--}}
+                                                        {{--<h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted {{ $comment->created_at->diffForHumans() }}:</i></small></h5>--}}
+                                                        {{--<p>{{ $comment->body }}</p>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</li>--}}
+                                        {{--@endforeach--}}
+                                    {{--</ul>--}}
                                     {{--This is a form to add a comment--}}
                                     @can('add_private_posts_and_announcements')
                                     <div id="{{ $post->id }}" class="card">

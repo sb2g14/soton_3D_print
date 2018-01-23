@@ -13,12 +13,12 @@
                 {{--Print title of an issue--}}
                 <h3 class="text-center">{{ isset($issue->title) ? $issue->title : 'Issue with printer '.$issue->printers_id }}</h3><br>
                 {{--Print name of a user who created an issue--}}
-                <h5 class="media-heading"> {{$issue->users_name_created_issue}}<small><i>
+                <h5 class="media-heading"> {{ $issue->issue_created->first_name }} {{ $issue->issue_created->last_name }}<small><i>
                 {{--Print date and time when an issue was created--}}
-                Created on {{ isset($issue->Date) ? $issue->Date : $issue->created_at->toDayDateTimeString() }}</i></small></h5><br>
+                Created on {{ $issue->created_at->toDayDateTimeString() }}</i></small></h5><br>
                 <p>Printer Number: <b>{{$issue->printers_id}}</b><br>
                     Printer Status: <b>{{$issue->printer_status}}</b><br>
-                    Days out of order: <b>{{isset($issue->Date) ? $issue->days_out_of_order : \Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at) }}</b><br>
+                    Days out of order: <b>{{ \Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at) }}</b><br>
                     {{--Print the text of a post--}}
                     Description: <b>{{ $issue->body }}</b>
                 </p>
@@ -30,9 +30,8 @@
                     {{--Here we show updates to each issue:--}}
                     @foreach($issue->FaultUpdates as $update)
                         <li class="list-group-item">
-                            <h5 class="media-heading">Update: {{$issue->users_name_created_issue}}<small><i>
                             {{--Print date and time when an issue was updated--}}
-                            Updated on {{ $update->created_at->toDayDateTimeString() }}:</i></small></h5><br>
+                            <small><i>{{ $update->staff->first_name }} {{ $update->staff->last_name }} updated on {{ $update->created_at->toDayDateTimeString() }}:</i></small></h5><br>
                             <p>Printer Status: <b>{{$update->printer_status}}</b><br>
                                 Description: <b>{{ $update->body }}</b>
                             </p>
