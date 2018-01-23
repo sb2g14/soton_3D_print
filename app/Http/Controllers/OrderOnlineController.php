@@ -187,7 +187,7 @@ class OrderOnlineController extends Controller
         \Mail::to($email)->queue(new onlineRequest($job));
 
         // Notification of request acceptance
-        notify()->flash('Your order request has been accepted!', 'success', [
+        notify()->flash('Your order request is now being considered!', 'success', [
             'text' => 'Please wait for our manager to contact you via provided email address',
         ]);
         // Redirect to home directory

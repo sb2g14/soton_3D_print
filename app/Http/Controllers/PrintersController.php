@@ -40,7 +40,8 @@ class PrintersController extends Controller
      */
     public function create()
     {
-        return view('printers.create');
+        $printer_types = Printers::select('printer_type')->groupBy('printer_type')->get();
+        return view('printers.create', compact('printer_types'));
     }
 
     /**
@@ -90,7 +91,8 @@ class PrintersController extends Controller
     public function edit($id)
     {
         $printer = Printers::find($id);
-        return view('printers.edit',compact('printer'));
+        $printer_types = Printers::select('printer_type')->groupBy('printer_type')->get();
+        return view('printers.edit',compact('printer','printer_types'));
     }
 
     /**
