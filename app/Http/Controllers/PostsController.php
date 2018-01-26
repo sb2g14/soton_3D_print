@@ -45,14 +45,7 @@ class PostsController extends Controller
         $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id');
         $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
 
-
-
         $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
-        $announcements -> toArray($announcements);
-        $announcement_last = Announcement::orderBy('created_at','desc')->first();
-
-        $public_announcement_last = PublicAnnouncements::orderBy('id','desc')->first();
-        $public_announcements =  PublicAnnouncements::orderBy('id', 'desc')->take(20)->get();
 
         // Call the prints model to extract statistical data
         $count_prints = [];
@@ -75,8 +68,7 @@ class PostsController extends Controller
             $count_prints[] = $prints;
             $count_months[] = new \Carbon\Carbon($t2str);
         }
-        return view('welcome.index', compact('issues','announcements','announcement_last',
-            'public_announcements','public_announcement_last','count_prints','count_months'));
+        return view('welcome.index', compact('issues','announcements', 'count_prints','count_months'));
     }
 
     /**

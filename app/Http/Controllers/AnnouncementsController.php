@@ -58,19 +58,15 @@ class AnnouncementsController extends Controller
         $announcement = new announcement;
         $announcement->message = request('message');
         $announcement->user_id = Auth::user()->id;
-
-        // Submit the data to the database
-        $announcement->save();
+        $announcement->public = 0;
 
         // Duplicate post to public announcements if 'public' checked
         if (Input::get('public', false)) {
-            $public_announcement = new PublicAnnouncements;
-            $public_announcement->message = request('message');
-            $public_announcement->user_id = Auth::user()->id;
-
-            // Submit the data to the database
-            $public_announcement->save();
+            $announcement->public = 1;
         }
+
+        // Submit the data to the database
+        $announcement->save();
 
         if (Input::get('email', false)) {
             // Send the notification to users if the appropriate checkbox is checked

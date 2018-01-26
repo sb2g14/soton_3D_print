@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Input;
 use App\Printers;
 use App\FaultData;
 use App\posts;
-use App\comments;
 use Auth;
 use Excel;
 use Carbon\Carbon;
@@ -183,11 +182,6 @@ class IssuesController extends Controller
             'body' => request('body')
         ]);
 
-        $update = new comments;
-        $update -> body = request('body');
-        $update -> user_id = Auth::user()->id;
-        $update -> posts_id = $issue_id;
-        $update->save();
 
         session()->flash('message', 'The issue has been updated!');
         session()->flash('alert-class', 'alert-success');
@@ -262,11 +256,6 @@ class IssuesController extends Controller
         $printer = printers::findOrFail($issue->printers_id);
         $printer->update(['printer_status'=>'Available']);
 
-        $update = new comments;
-        $update -> body = request('body');
-        $update -> user_id = Auth::user()->id;
-        $update -> posts_id = $id;
-        $update->save();
 
         session()->flash('message', 'The issue has been resolved!');
         session()->flash('alert-class', 'alert-success');

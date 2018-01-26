@@ -94,6 +94,9 @@
                                 <ul class="lsn list-group">
                                     <li class="list-group-item">
                                         <div class="alert">
+                                            @php
+                                                $announcement_last = $announcements->first();
+                                            @endphp
                                             <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
@@ -161,6 +164,9 @@
                                 <ul class="lsn list-group">
                                     <li class="list-group-item">
                                         <div class="alert">
+                                            @php
+                                            $public_announcement_last = $announcements->where('public', 1)->first();
+                                            @endphp
                                             <h5 class="media-heading"> {{ $public_announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $public_announcement_last->created_at->diffForHumans() }}:</i></small></h5>
@@ -261,7 +267,10 @@
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> {{$comment->staff->first_name}} <small>
                                                                 <i>Posted {{ $comment->created_at->diffForHumans() }}:</i></small></h5>
-                                                        <p>{{ $comment->body }}</p>
+                                                        <p>
+                                                            <h5 style="color: red"> {{ isset($comment->printer_status) ? 'Printer Status: '.$comment->printer_status : ''}} </h5>
+                                                            {{ $comment->body }}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -331,7 +340,7 @@
                                               {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
                                                 {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
                                               {{--@else --}}
-                                                placeholder="Post will appear only for registered users"
+                                                placeholder="Post will appear only for registered users unless you check 'Public announcement"
                                               {{--@endif --}}
                                                 class="form-control"></textarea>
                                     <span id="announcement_error" class="help-block"></span>
@@ -351,7 +360,7 @@
                         <div id="all-announcements">
                             @if(Auth::check())
                                 @foreach($announcements as $announcement)
-                                    <li class="list-group-item">
+                                    <li class="list-group-item well @if($announcement->public === 0) alert alert-info @else alert alert-warning @endif ">
                                         <!-- <div class="alert alert-info"> -->
                                         <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
                                                     {{--Print date and time when a post was created--}}
@@ -361,11 +370,14 @@
                                     </li>
                                 @endforeach
                             @else
+                                @php
+                                $public_announcements = $announcements->where('public', 1);
+                                @endphp
                                 @foreach($public_announcements as $announcement)
                                     <li class="list-group-item">
                                         <!-- <div class="alert alert-info"> -->
                                         <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
-                                                    {{--Print date and time when a post was created--}}
+                                                    Print date and time when a post was created
                                                     Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
                                         <h5> {{ $announcement->message }} </h5>
                                         <!-- </div> -->
