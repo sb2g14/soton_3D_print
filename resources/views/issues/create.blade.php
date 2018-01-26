@@ -37,7 +37,7 @@
             <!-- Submit button-->
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4">
-                    {!! Form::submit('Submit', ['class' => 'btn', 'id' => 'submit'] ) !!}
+                    {!! Form::submit('Submit', ['class' => 'btn btn-primary', 'id' => 'submit'] ) !!}
                     {{--Go back button--}}
                     <a href="/issues/select" class="btn btn-danger">Go back</a>
                 </div>
