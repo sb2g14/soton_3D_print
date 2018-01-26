@@ -10,6 +10,7 @@ use App\PublicAnnouncements;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Input;
+use App\FaultData;
 
 class PostsController extends Controller
 {
@@ -35,9 +36,17 @@ class PostsController extends Controller
             $printer_busy->changePrinterStatus($printers_busy);
         }
 
-        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
-        $posts -> toArray($posts);
-        $post_last = posts::orderBy('created_at','desc')->first();
+//        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
+//        $posts -> toArray($posts);
+//        $post_last = posts::orderBy('created_at','desc')->first();
+        // Getting post and fault data and combining it
+        $faults = FaultData::select('id', 'title', 'body', 'created_at', 'staff_id_created_issue as staff_id', 'printers_id')
+        ->where('resolved', 0);
+        $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id');
+        $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
+
+
+
         $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
         $announcements -> toArray($announcements);
         $announcement_last = Announcement::orderBy('created_at','desc')->first();
@@ -66,7 +75,7 @@ class PostsController extends Controller
             $count_prints[] = $prints;
             $count_months[] = new \Carbon\Carbon($t2str);
         }
-        return view('welcome.index', compact('posts','post_last','announcements','announcement_last',
+        return view('welcome.index', compact('issues','announcements','announcement_last',
             'public_announcements','public_announcement_last','count_prints','count_months'));
     }
 
@@ -109,7 +118,7 @@ class PostsController extends Controller
         $post = new posts;
         $post -> title = request('title');
         $post -> body = request('body');
-        $post -> user_id = Auth::user()->id;
+        $post -> staff_id = Auth::user()->staff->id;
 
         // Submit the data to the database
 

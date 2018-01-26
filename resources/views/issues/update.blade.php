@@ -42,8 +42,9 @@
             @endif
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#update">Update</button>
             <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#resolve">Resolve</button>
-            <a href="/issues/index" class="btn btn-danger">Go back</a>
-                    
+            <a id="buttons" href="/issues/index" class="btn btn-danger">Go back</a>
+
+
             <div id="update" class="card collapse">
                 {!! Form::open(['url' => '/issues/update', 'method' => 'POST', 'class' => 'text-left']) !!}
                     {!! Form::hidden('id',$issue -> id) !!}
