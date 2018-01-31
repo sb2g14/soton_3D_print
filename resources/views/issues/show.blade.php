@@ -51,7 +51,7 @@
                 
                     <p>Printer status: <b>{{$printer->printer_status}}</b></p>
                         @php
-                            $lastPrint=$printer->prints()->orderBy('updated_at', 'desc')->first();
+                            $lastPrint=$printer->prints()->orderBy('updated_at', 'desc')->where('status','!=', 'Waiting')->first();
                             $lastIssue=$printer->fault_data()->where('resolved',1)->orderBy('resolved_at','desc')->first();
                             $lastIssueUpdate = \App\FaultData::orderBy('fault_updates.updated_at','desc')
                             ->crossJoin('fault_updates', 'fault_datas.id', '=', 'fault_updates.fault_data_id')
@@ -111,11 +111,12 @@
                         <a href="mailto:{{$lastUserEmail}}">{{$lastUser}}</a>
                     </p>
                     <p>@if($printer->status !== 'Broken' && $printer->status !== 'Missing' && $printer->status !== 'Signed out')
-                            Previous issue:
+                            There are no issues with this printer.
                         @else
                            Current issue:
-                        @endif
                             <b>{{$printer->fault_data()->orderBy('updated_at','desc')->first()->body}}</b>
+                        @endif
+
                     </p>
                     <!-- <p>Days out of Order</p> -->
                     <a href="/printers/index" class="btn btn-lg btn-info">Back to all printers</a>
@@ -126,6 +127,15 @@
                       
 
 <ul class="lsn container">
+    {{-- Printer signed out--}}
+    @if($printer->printer_status === 'Signed out')
+    <li>
+        <div class="well">
+            {{$printer->updated_at->format('d/m/Y')}}:
+            Printer signed out from the workshop
+        </div>
+    </li>
+    @endif
     @php
         $printdata = $printer->prints()->select('created_at AS StartDate', 'updated_at AS EndDate','purpose AS Type','status AS Description', 'id as EntryID');
         $issuedata = $printer->fault_data()->select('created_at AS StartDate', 'resolved_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'id as EntryID');
@@ -255,7 +265,13 @@
             </div>
         </li>
     @endif
-
+    {{-- Printer created--}}
+    <li>
+        <div class="well">
+            {{$printer->created_at->format('d/m/Y')}}:
+            Printer registered with the workshop
+        </div>
+    </li>
     {{--@foreach($issues as $issue)
 
         <li>

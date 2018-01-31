@@ -125,16 +125,20 @@ class IssuesController extends Controller
      */
     public function show($id)
     {
-        $issues =  FaultData::orderBy('id', 'desc')->where('printers_id', $id)->get();
+        $issues = FaultData::orderBy('id', 'desc')->where('printers_id', $id)->get();
         $printer = Printers::where('id', $id)->first();
-        $success = round($printer->calculateTotalTimeSuccess()/(24*60));
-        $loan = round($printer->calculateTotalTimeOnLoan()/(24*60));
-        $broken = round($printer->calculateTotalTimeBroken()/(24*60));
-        $total_time = Carbon::now('Europe/London')->diffInMinutes($printer->created_at);
-        $idle = round(($total_time - $printer->calculateTotalTimeBroken())/(24*60))*0.27;
+        $success = round($printer->calculateTotalTimeSuccess() / (24 * 60));
+        $loan = round($printer->calculateTotalTimeOnLoan() / (24 * 60));
+        $broken = round($printer->calculateTotalTimeBroken() / (24 * 60));
+        if ($printer->printer_status === 'Signed out') {
+            $total_time = $printer->updated_at->diffInMinutes($printer->created_at);
+        } else {
+            $total_time = Carbon::now('Europe/London')->diffInMinutes($printer->created_at);
+        }
+        $idle = round(($total_time - $printer->calculateTotalTimeBroken())/(24*60));
         $chart = Charts::create('pie', 'highcharts')
             ->title('Printer usage')
-            ->labels(['Successful Jobs', 'Loan', 'Broken or Missing', 'Idle'])
+            ->labels(['Days Printing', 'Days on Loan', 'Days Broken or Missing', 'Days Idle'])
             ->values([$success,$loan,$broken,$idle])
             ->dimensions(400,200)
             ->responsive(true);

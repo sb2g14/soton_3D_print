@@ -60,6 +60,9 @@ Route::get('/printers/index','PrintersController@index');
 /////////////////////////////////////////////////////////////////////////////////////////////
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
 
+    // Resolve issues in posts
+    Route::get('/posts/resolve/{id}', 'PostsController@resolve');
+
     // Redirect to the view where one can manage issues
 
     Route::get('/issues/index','IssuesController@index');

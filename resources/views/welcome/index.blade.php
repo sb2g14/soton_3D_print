@@ -232,7 +232,7 @@
                             <button id="report_issue" type="submit" class="btn btn-primary">Report Issue</button>
                         </form>
                     </div>
-
+                    @if(Auth::check())
                     <div id="all-issues">
                         @foreach($issues as $post)
                             <li class="list-group-item well {{isset($post->printers_id) ? 'alert alert-info' : 'alert alert-warning'}}">
@@ -245,6 +245,9 @@
                                 Posted {{ $post->created_at->diffForHumans() }}:</i></small></h5>
                                 {{--Print the text of a post--}}
                                 <p>{{ $post->body }}</p>
+                                @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\Staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
+                                    <a href="/posts/resolve/{{$post->id}}" class="btn btn-primary">Resolve{{ $post->resolved }}</a>
+                                @endif
                                 <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
                                         Show comments
                                 </button>
@@ -356,6 +359,7 @@
                                 <button id="post" type="submit" class="btn btn-primary">Post</button>
                             </form>
                         </div>
+                        @endif
 
                         <div id="all-announcements">
                             @if(Auth::check())

@@ -42,7 +42,7 @@ class PostsController extends Controller
         // Getting post and fault data and combining it
         $faults = FaultData::select('id', 'title', 'body', 'created_at', 'staff_id_created_issue as staff_id', 'printers_id')
         ->where('resolved', 0);
-        $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id');
+        $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id')->where('resolved', 0);
         $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
 
         $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
@@ -111,6 +111,7 @@ class PostsController extends Controller
         $post -> title = request('title');
         $post -> body = request('body');
         $post -> staff_id = Auth::user()->staff->id;
+        $post -> resolved = 0;
 
         // Submit the data to the database
 
@@ -161,10 +162,10 @@ class PostsController extends Controller
      * @param  \App\welcome  $welcome
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, posts $posts)
-    {
-        //
-    }
+//    public function update(Request $request, posts $posts)
+//    {
+//        //
+//    }
 
     /**
      * Remove the specified resource from storage.
@@ -175,5 +176,17 @@ class PostsController extends Controller
     public function destroy(posts $posts)
     {
         //
+    }
+    public function resolve($id)
+    {
+        //$post = Posts::findOrFail($id);
+        //dd($post->title);
+        //$post->update(['resolved' => 1]);
+        Posts::where('id', $id)->update(['resolved' => 1]);
+
+        notify()->flash('The issue is resolved', 'success', [
+            'text' => "The issue is marked as resolved and won't appear on the homepage anymore",
+        ]);
+        return redirect('/');
     }
 }

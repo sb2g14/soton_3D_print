@@ -133,8 +133,8 @@ class OrderOnlineController extends Controller
             'job_title' => [
                 'required',
                 'string',
-                'min:3',
-                'max:30'
+                'min:8',
+                'max:64'
             ]
         ]);
 
@@ -179,6 +179,7 @@ class OrderOnlineController extends Controller
             'cost_code' => $cost_code,
             'requested_online' => 1,
             'status' => 'Waiting',
+            'job_title' => $online_request['job_title']
             ));
 
         // Send an email to the 3d print account
