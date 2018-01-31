@@ -129,10 +129,10 @@
 <ul class="lsn container">
     {{-- Printer signed out--}}
     @if($printer->printer_status === 'Signed out')
-    <li>
-        <div class="well">
-            {{$printer->updated_at->format('d/m/Y')}}:
-            Printer signed out from the workshop
+    <li class="item">
+        <div class="row well">
+            <div class="col-sm-4 text-left">{{$printer->updated_at->format('d/m/Y')}}:</div>
+            <div class="col-sm-4 text-justify">Printer signed out from the workshop</div>
         </div>
     </li>
     @endif
@@ -188,7 +188,7 @@
                 @endphp
                 <li class="item">
                     <div class=" row {{$outClass}}">
-                        <div class="col-sm-4"> 
+                        <div class="col-sm-4 text-left"> 
                             {{$outStartDate->format('d/m/Y')}} -
                             @if($outEndDate)
                                 {{$outEndDate->format('d/m/Y')}}
@@ -245,15 +245,17 @@
                     $outClass = 'alert alert-danger';
             }
         @endphp
-        <li>
-            <div class="{{$outClass}}">
-                {{$outStartDate->format('d/m/Y')}} -
-                @if($outEndDate)
-                    {{$outEndDate->format('d/m/Y')}}
-                @else
-                    Now
-                @endif
-                {{$outType}}: {{$outDescription}}
+        <li class="item">
+            <div class=" row {{$outClass}}">
+                 <div class="col-sm-4 text-left"> 
+                    {{$outStartDate->format('d/m/Y')}} -
+                    @if($outEndDate)
+                        {{$outEndDate->format('d/m/Y')}}
+                    @else
+                        Now
+                    @endif
+                </div>
+                <div class="col-sm-4 text-justify">{{$outType}}: {{$outDescription}}</div>
                 @if($outType === 'Broken' || $outType === 'Missing')
                     @can('issues_manage')
                         <div class="col-sm-4">
@@ -267,10 +269,10 @@
         </li>
     @endif
     {{-- Printer created--}}
-    <li>
-        <div class="well">
-            {{$printer->created_at->format('d/m/Y')}}:
-            Printer registered with the workshop
+    <li class="item">
+        <div class="row well">
+            <div class="col-sm-4 text-left">{{$printer->created_at->format('d/m/Y')}}:</div>
+            <div class="col-sm-4 text-justify">Printer registered with the workshop</div>
         </div>
     </li>
     {{--@foreach($issues as $issue)
