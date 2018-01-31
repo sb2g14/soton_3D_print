@@ -176,15 +176,17 @@
 
                     $entryCounter = 1;
                 @endphp
-                <li>
-                    <div class="{{$outClass}}">
-                        {{$outStartDate->format('d/m/Y')}} -
-                        @if($outEndDate)
-                            {{$outEndDate->format('d/m/Y')}}
-                        @else
-                            Now
-                        @endif
-                            {{$outType}}: {{$outDescription}}
+                <li class="item">
+                    <div class=" row {{$outClass}}">
+                        <div class="col-sm-4"> 
+                            {{$outStartDate->format('d/m/Y')}} -
+                            @if($outEndDate)
+                                {{$outEndDate->format('d/m/Y')}}
+                            @else
+                                Now
+                            @endif
+                        </div>
+                        <div class="col-sm-4 text-justify">{{$outType}}: {{$outDescription}}</div> 
                         @if($outType === 'Broken' || $outType === 'Missing')
                             @can('issues_manage')
                                 <div class="col-sm-4">
@@ -204,7 +206,6 @@
             @php
                 $lastEntry = $entry;
             @endphp
-
         @endif
     @endforeach
 

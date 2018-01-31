@@ -542,9 +542,16 @@ body.is-fixed {
   background: url('/Images/icons/ic_chart.svg') 50% 50% no-repeat;
   background-size: cover;
 }
+.s-welcome .row-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
 .s-welcome .cardblock {
   background: #fff;
-  min-height: 50px;
+  height: 95%;
   position: relative;
   margin-bottom: 30px;
 }
@@ -573,7 +580,7 @@ body.is-fixed {
 }
 .s-welcome .cardblock .body {
   padding: 20px;
-  min-height: 390px;
+  height: 89%;
   color: #fff;
 }
 .s-welcome .cardblock .body small {
@@ -600,7 +607,7 @@ body.is-fixed {
   transition: all 0.95s;
 }
 .s-welcome .cardblock.hover-expand-effect:hover:after {
-  height: 80%;
+  height: 90%;
 }
 .s-welcome .list-group-item {
   background-color: transparent;
