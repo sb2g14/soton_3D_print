@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Input;
 use App\Printers;
 use App\FaultData;
 use App\posts;
-use App\comments;
 use Auth;
 use Excel;
 use Carbon\Carbon;
@@ -32,44 +31,44 @@ class IssuesController extends Controller
 
         return view('issues.index', compact('issues','excel'));
     }
-    public function printersIssuesExport()
-    {
-
-        // Get all issues
-
-        $issues = FaultData::select('printers_id','serial_number','created_at','users_name_created_issue','printer_status','body','updated_at','users_name_resolved_issue','message_resolved','days_out_of_order')->get();
-
-        // Initialize the array which will be passed into the Excel
-        // generator.
-        $issuesArray = [];
-
-        // Define the Excel spreadsheet headers
-        $issuesArray[] = ['Printer ID', 'Printer SN','Date','Demonstrator Sign','Printer Status','Issue','Repair Date','Repair Demonstrator Sign','Comment','Days Out of Order'];
-
-        // Convert each member of the returned collection into an array,
-        // and append it to the payments array.
-        foreach ($issues as $issue) {
-            if(empty($issue->users_name_resolved_issue)){
-                $issue->updated_at = null;
-            }
-            $issuesArray[] = $issue->toArray();
-        }
-
-        // Generate and return the spreadsheet
-        Excel::create('FaultData', function($excel) use ($issuesArray) {
-
-            // Set the spreadsheet title, creator, and description
-            $excel->setTitle('3D_printers_issues');
-            $excel->setCreator(Auth::user()->name)->setCompany('3D printing workshop');
-            $excel->setDescription('Excel file used as a backup for information about 3D printers faults in the 3D printing workshop at University of Southampton');
-
-            // Build the spreadsheet, passing in the payments array
-            $excel->sheet('sheet1', function($sheet) use ($issuesArray) {
-                $sheet->fromArray($issuesArray, null, 'A1', false, false);
-            });
-
-        })->download('xlsx');
-    }
+//    public function printersIssuesExport()
+//    {
+//
+//        // Get all issues
+//
+//        $issues = FaultData::select('printers_id','serial_number','created_at','users_name_created_issue','printer_status','body','updated_at','users_name_resolved_issue','message_resolved','days_out_of_order')->get();
+//
+//        // Initialize the array which will be passed into the Excel
+//        // generator.
+//        $issuesArray = [];
+//
+//        // Define the Excel spreadsheet headers
+//        $issuesArray[] = ['Printer ID', 'Printer SN','Date','Demonstrator Sign','Printer Status','Issue','Repair Date','Repair Demonstrator Sign','Comment','Days Out of Order'];
+//
+//        // Convert each member of the returned collection into an array,
+//        // and append it to the payments array.
+//        foreach ($issues as $issue) {
+//            if(empty($issue->users_name_resolved_issue)){
+//                $issue->updated_at = null;
+//            }
+//            $issuesArray[] = $issue->toArray();
+//        }
+//
+//        // Generate and return the spreadsheet
+//        Excel::create('FaultData', function($excel) use ($issuesArray) {
+//
+//            // Set the spreadsheet title, creator, and description
+//            $excel->setTitle('3D_printers_issues');
+//            $excel->setCreator(Auth::user()->name)->setCompany('3D printing workshop');
+//            $excel->setDescription('Excel file used as a backup for information about 3D printers faults in the 3D printing workshop at University of Southampton');
+//
+//            // Build the spreadsheet, passing in the payments array
+//            $excel->sheet('sheet1', function($sheet) use ($issuesArray) {
+//                $sheet->fromArray($issuesArray, null, 'A1', false, false);
+//            });
+//
+//        })->download('xlsx');
+//    }
     /**
      * Show the form for creating a new resource.
      *
@@ -88,8 +87,7 @@ class IssuesController extends Controller
             FaultData::create([
                 'printers_id' => $id,
                 'serial_number' => $printer->serial_no,
-                'users_id_created_issue' => Auth::user()->id,
-                'users_name_created_issue' => Auth::user()->name,
+                'staff_id_created_issue' => Auth::user()->staff->id,
                 'printer_status' => Input::get('select'),
                 'title' => request('title'),
                 'body' => request('body')
@@ -127,16 +125,20 @@ class IssuesController extends Controller
      */
     public function show($id)
     {
-        $issues =  FaultData::orderBy('id', 'desc')->where('printers_id', $id)->get();
+        $issues = FaultData::orderBy('id', 'desc')->where('printers_id', $id)->get();
         $printer = Printers::where('id', $id)->first();
-        $success = round($printer->calculateTotalTimeSuccess()/(24*60));
-        $loan = round($printer->calculateTotalTimeOnLoan()/(24*60));
-        $broken = round($printer->calculateTotalTimeBroken()/(24*60));
-        $total_time = \Carbon\Carbon::now('Europe/London')->diffInMinutes($printer->created_at);
-        $idle = round(($total_time - $printer->calculateTotalTimeBroken())/(24*60))*0.27;
+        $success = round($printer->calculateTotalTimeSuccess() / (24 * 60));
+        $loan = round($printer->calculateTotalTimeOnLoan() / (24 * 60));
+        $broken = round($printer->calculateTotalTimeBroken() / (24 * 60));
+        if ($printer->printer_status === 'Signed out') {
+            $total_time = $printer->updated_at->diffInMinutes($printer->created_at);
+        } else {
+            $total_time = Carbon::now('Europe/London')->diffInMinutes($printer->created_at);
+        }
+        $idle = round(($total_time - $printer->calculateTotalTimeBroken())/(24*60));
         $chart = Charts::create('pie', 'highcharts')
             ->title('Printer usage')
-            ->labels(['Successful Jobs', 'Loan', 'Broken or Missing', 'Idle'])
+            ->labels(['Days Printing', 'Days on Loan', 'Days Broken or Missing', 'Days Idle'])
             ->values([$success,$loan,$broken,$idle])
             ->dimensions(400,200)
             ->responsive(true);
@@ -177,19 +179,13 @@ class IssuesController extends Controller
         $printer = Printers::findOrFail($issue->printers_id);
         $printer->update(['printer_status' => Input::get('select')]);
         FaultUpdates::create([
-            'users_id' => Auth::user()->id,
-            'users_name' => Auth::user()->name,
+            'staff_id' => Auth::user()->staff->id,
+            'users_name' => Auth::user()->staff->first_name.' '.Auth::user()->staff->last_name,
             'fault_data_id' => $issue_id,
             'printer_status' => Input::get('select'),
-            'days_out_of_order'=> Carbon::now('Europe/London')->diffInDays($issue->created_at),
             'body' => request('body')
         ]);
 
-        $update = new comments;
-        $update -> body = request('body');
-        $update -> user_id = Auth::user()->id;
-        $update -> posts_id = $issue_id;
-        $update->save();
 
         session()->flash('message', 'The issue has been updated!');
         session()->flash('alert-class', 'alert-success');
@@ -256,20 +252,14 @@ class IssuesController extends Controller
 
         $id = request('id');
         $issue = FaultData::findOrFail($id);
-        $issue->update(['users_id_resolved_issue'=>Auth::user()->id,
-            'users_name_resolved_issue' => Auth::user()->name,
-            'printer_status' => 'Available',
-            'days_out_of_order' => Carbon::now('Europe/London')->diffInDays($issue->created_at),
+        $issue->update(['staff_id_resolved_issue'=>Auth::user()->staff->id,
+            'resolved_at'=> Carbon::now('Europe/London'),
+            //'printer_status' => 'Available',
             'message_resolved' => request('body'),
             'resolved' => 1]);
         $printer = printers::findOrFail($issue->printers_id);
         $printer->update(['printer_status'=>'Available']);
 
-        $update = new comments;
-        $update -> body = request('body');
-        $update -> user_id = Auth::user()->id;
-        $update -> posts_id = $id;
-        $update->save();
 
         session()->flash('message', 'The issue has been resolved!');
         session()->flash('alert-class', 'alert-success');

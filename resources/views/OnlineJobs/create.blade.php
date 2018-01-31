@@ -88,6 +88,23 @@
                     </div>
                 </div>
 
+                {{--Budget Holder--}}
+                <div class="form-group{{ $errors->has('budget_holder') ? ' has-error' : '' }}">
+                    <label for="budget_holder" class="col-sm-4 control-label">Budget Holder</label>
+
+                    <div class="col-sm-8">
+                        <input id="budget_holder" data-help="budget_holder" type="text" class="form-control"
+                               name="budget_holder" value="{{ old('budget_holder') }}" placeholder="Provide the name of the budget holder of the cost code" required>
+
+                        @if ($errors->has('budget_holder'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('budget_holder') }}</strong>
+                        </span>
+                        @endif
+                        <span class="help-block" id="budget_holder_error"></span>
+                    </div>
+                </div>
+
                 {{--Dropoff cliam id--}}
                 <div class="form-group{{ $errors->has('claim_id') ? ' has-error' : '' }}">
                     <label for="claim_id" class="col-sm-4 control-label">Drop-off file id</label>

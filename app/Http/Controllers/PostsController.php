@@ -10,6 +10,7 @@ use App\PublicAnnouncements;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Input;
+use App\FaultData;
 
 class PostsController extends Controller
 {
@@ -35,15 +36,16 @@ class PostsController extends Controller
             $printer_busy->changePrinterStatus($printers_busy);
         }
 
-        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
-        $posts -> toArray($posts);
-        $post_last = posts::orderBy('created_at','desc')->first();
-        $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
-        $announcements -> toArray($announcements);
-        $announcement_last = Announcement::orderBy('created_at','desc')->first();
+//        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
+//        $posts -> toArray($posts);
+//        $post_last = posts::orderBy('created_at','desc')->first();
+        // Getting post and fault data and combining it
+        $faults = FaultData::select('id', 'title', 'body', 'created_at', 'staff_id_created_issue as staff_id', 'printers_id')
+        ->where('resolved', 0);
+        $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id')->where('resolved', 0);
+        $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
 
-        $public_announcement_last = PublicAnnouncements::orderBy('id','desc')->first();
-        $public_announcements =  PublicAnnouncements::orderBy('id', 'desc')->take(20)->get();
+        $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
 
         // Call the prints model to extract statistical data
         $count_prints = [];
@@ -66,8 +68,7 @@ class PostsController extends Controller
             $count_prints[] = $prints;
             $count_months[] = new \Carbon\Carbon($t2str);
         }
-        return view('welcome.index', compact('posts','post_last','announcements','announcement_last',
-            'public_announcements','public_announcement_last','count_prints','count_months'));
+        return view('welcome.index', compact('issues','announcements', 'count_prints','count_months'));
     }
 
     /**
@@ -109,7 +110,8 @@ class PostsController extends Controller
         $post = new posts;
         $post -> title = request('title');
         $post -> body = request('body');
-        $post -> user_id = Auth::user()->id;
+        $post -> staff_id = Auth::user()->staff->id;
+        $post -> resolved = 0;
 
         // Submit the data to the database
 
@@ -160,10 +162,10 @@ class PostsController extends Controller
      * @param  \App\welcome  $welcome
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, posts $posts)
-    {
-        //
-    }
+//    public function update(Request $request, posts $posts)
+//    {
+//        //
+//    }
 
     /**
      * Remove the specified resource from storage.
@@ -174,5 +176,17 @@ class PostsController extends Controller
     public function destroy(posts $posts)
     {
         //
+    }
+    public function resolve($id)
+    {
+        //$post = Posts::findOrFail($id);
+        //dd($post->title);
+        //$post->update(['resolved' => 1]);
+        Posts::where('id', $id)->update(['resolved' => 1]);
+
+        notify()->flash('The issue is resolved', 'success', [
+            'text' => "The issue is marked as resolved and won't appear on the homepage anymore",
+        ]);
+        return redirect('/');
     }
 }

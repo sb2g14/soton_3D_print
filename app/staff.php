@@ -31,6 +31,6 @@ class staff extends BaseModel
     }
     public function updates()
     {
-        return $this->hasMany(FaultUpdates::class, 'users_id');
+        return $this->hasMany(FaultUpdates::class, 'staff_id');
     }
 }
