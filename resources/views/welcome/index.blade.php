@@ -48,9 +48,9 @@
         <div class="container"> 
                       
             @if (Auth::check())  {{--Check whether user is logged in--}}
-                <div class="row clearfix is-table-row">
+                <div class="row row-flex">
                     <!-- Issues -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4">
                         <div class="cardblock card-issue hover-expand-effect">
                             <div class="info-box box-issue">
                                 <div class="bl-logo logo-issue"></div>
@@ -84,7 +84,7 @@
                     </div>
                     <!-- #END# Issues -->
                     <!-- Announcements -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4">
                         <div class="cardblock card-announcement hover-expand-effect">
                             <div class="info-box box-announcement">
                                 <div class="bl-logo logo-announcement"></div>
@@ -109,7 +109,7 @@
                     </div>
                     <!-- #END# Announcements -->
                     <!-- Statistics -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4">
                         <div class="cardblock hover-expand-effect">
                             <div class="info-box box-stat">
                                 <div class="bl-logo logo-stat"></div>
@@ -127,9 +127,9 @@
                 </div>
 
                 @else
-                <div class="row clearfix is-table-row">
+                <div class="row row-flex">
                     <!-- RULES -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4 ">
                         <div class="cardblock card-rules hover-expand-effect">
                             <div class="info-box box-issue">
                                 <div class="bl-logo logo-issue"></div>
@@ -154,7 +154,7 @@
                     </div>
                     <!-- #END# Rules -->
                     <!-- Announcements -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4">
                         <div class="cardblock card-announcement hover-expand-effect">
                             <div class="info-box box-announcement">
                                 <div class="bl-logo logo-announcement"></div>
@@ -179,7 +179,7 @@
                     </div>
                     <!-- #END# Announcements -->
                     <!-- Statistics -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4">
                         <div class="cardblock hover-expand-effect">
                             <div class="info-box box-stat">
                                 <div class="bl-logo logo-stat"></div>
