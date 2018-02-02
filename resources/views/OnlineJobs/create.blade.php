@@ -94,7 +94,7 @@
 
                     <div class="col-sm-8">
                         <input id="budget_holder" data-help="budget_holder" type="text" class="form-control"
-                               name="budget_holder" value="{{ old('budget_holder') }}" placeholder="Provide the name of the budget holder of the cost code" required>
+                               name="budget_holder" value="{{ old('budget_holder') }}" placeholder="Provide the name of the budget holder of the cost code">
 
                         @if ($errors->has('budget_holder'))
                             <span class="help-block">

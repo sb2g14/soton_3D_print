@@ -115,9 +115,6 @@ class OrderOnlineController extends Controller
             ],
             'use_case' => [
                 'required',
-                'min:3',
-                'max:30',
-                'alpha_dash',
                 new UseCase
             ],
             'claim_id' => [
@@ -135,6 +132,12 @@ class OrderOnlineController extends Controller
                 'string',
                 'min:8',
                 'max:64'
+            ],
+            'budget_holder' => [
+                'string',
+                'min:3',
+                'max:100',
+                new CustomerNameValidation
             ]
         ]);
 
@@ -161,13 +164,16 @@ class OrderOnlineController extends Controller
             // If shortage exists, then populate cost code and shortage with the DB data
             $cost_code = $query->value('cost_code');
             $use_case = strtoupper($online_request['use_case']);
+            $budget_holder = $query->holder;
         } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
             $query = cost_code::all()->where('cost_code','=',$online_request['use_case'])->first();
             $cost_code = $online_request['use_case'];
             if ($query !== null){ // The cost code was found. Set a corresponding flag
                 $use_case = 'Cost Code - approved';
-            } else { // The cost code was not found. Set a corresponding flag
+                $budget_holder = $query->holder;
+                } else { // The cost code was not found. Set a corresponding flag
                 $use_case = 'Cost Code - unknown';
+                $budget_holder = $online_request['budget_holder'];
             }
         }
 
@@ -179,7 +185,8 @@ class OrderOnlineController extends Controller
             'cost_code' => $cost_code,
             'requested_online' => 1,
             'status' => 'Waiting',
-            'job_title' => $online_request['job_title']
+            'job_title' => $online_request['job_title'],
+            'budget_holder' => $budget_holder
             ));
 
         // Send an email to the 3d print account
