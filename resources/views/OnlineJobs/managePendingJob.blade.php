@@ -61,6 +61,9 @@
                                 Time Remain: <b>@if (Carbon\Carbon::now('Europe/London')->gte($time_finish) || $print->status == 'Success' || $print->status == 'Failed')  completed  @else {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60)}} @endif</b>
                                 Status: <b> {{ $print->status }} </b>
                             </p>
+                            <p>
+                                Comment: <b>{{$print->print_comment}}</b>
+                            </p>
                             @if($print->status == 'In Progress')
                                 <div class="text-right">
                                     <a href="/OnlineJobs/printSuccessful/{{ $print->id }}" class="btn btn-success">Print Successful</a>
@@ -93,7 +96,7 @@
 
                 <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If the requested job
                 cannot be printed for some reason, please click on this button and provide an explanation for the customer.">
-                    <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed</button>
+                    <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed/Cancel Job</button>
                 </span>
 
                 @if($query_in_progress == null & $query_success !== null)
@@ -185,15 +188,15 @@
                                 <span class="help-block" id="multipleselect"></span>
                             </div>
                         </div>
-
+                        {{--Add comment to the print--}}
                         <div class="form-group text-left">
                             <div class="col-sm-12">
                                 <label for="comments">Add comments to the print:</label><br>
                                 <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
                                 @if ($errors->has('comments'))
                                     <span class="help-block">
-                                                    <strong>{{ $errors->first('comments') }}</strong>
-                                                </span>
+                                        <strong>{{ $errors->first('comments') }}</strong>
+                                    </span>
                                 @endif
                                 <span class="help-block" id="message_error"></span>
                             </div>
