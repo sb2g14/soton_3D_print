@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Carbon\Carbon;
 use App\cost_code;
 
 class UseCase implements Rule
@@ -26,9 +27,11 @@ class UseCase implements Rule
      */
     public function passes($attribute, $value)
     {
-        // Check the module name is in the database
-        $query = cost_code::where('shortage','=',strtoupper($value))->first();
-        if ($query !== null){
+        // Check that the cost code is in data base and is active
+        $nowDate = new Carbon();
+        $nowDate = $nowDate->toDateString();
+        $query = cost_code::where('shortage','=',strtoupper($value))->where('expires','>',$nowDate)->count();
+        if ($query >= 1){
             return true;
         } else {
             // Otherwise, accept a cost code

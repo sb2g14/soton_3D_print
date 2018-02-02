@@ -158,9 +158,6 @@ class PrintingDataController extends Controller
             ],
             'use_case' => [
                 'required',
-                'min:3',
-                'max:30',
-                'alpha_dash',
                 new UseCase
             ],
             'material_amount' => [
