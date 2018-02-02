@@ -16,14 +16,21 @@
         Use the following to complete the UnworkForce Timesheet:
         <ol>
             <li>Fill in your personal details.</li>
-            <li>Pay reference number: Refer to your Casual Worker Permit.</li>
-            <li>Faculty: Engineering and the Environment</li>
-            <li>Division: Central Faculty (FEE)</li>
-            <li>Type of Work (FOR PGRs): Demonstrator</li>
-            <li>Type of Work (FOR UGs): Student Demonstrator</li>
-            <li>Pay Rate: Demonstrator rate</li>
+            <li><b>Pay reference number</b>: Refer to your Casual Worker Permit.</li>
+            <li><b>Faculty</b>: Engineering and the Environment</li>
+            <li><b>Division</b>: Central Faculty (FEE)</li>
+            <li><b>Type of Work</b>:
+                <ul>
+                    <li>for PGRs: Demonstrator</li>
+                    <li>for UGs: Student Demonstrator</li>
+                </ul>
+            </li>
+            <li><b>Pay Rate</b>: Demonstrator rate</li>
+            <li><b>Supporting Comments</b>: Insert &lsquo;3D Printing Workshop; Note: This is not a module but a workshop.&rsquo; (or similar).
             <li>Fill in your hours worked for each date.</li>
-            <li>Fill in the “Job ID number” using the "assignment ID number” that you received via email upon appointment.</li>
+            <li>Fill in the <b>Job ID number</b> using the &lsquo;assignment ID number&rsquo; that you received via email upon appointment.</li>
+            <li>Fill in your training attendance dates under the &lsquo;Demonstrator Training&rsquo; tab.</li>
+            <li>Save file using the filename specified on the lower right side of the hourly timesheet tab.</li>
         </ol> <br>
         At the end of each month, send your form to Andrew Hamilton (<a href="mailto:a.r.hamilton@soton.ac.uk">A.R.Hamilton@soton.ac.uk</a>) for approval.
     </div>

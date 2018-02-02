@@ -167,6 +167,11 @@
         </div>
         <div class="col-sm-6 instructions">
             <div class="hint text-left is-active before-filling" data-hint="general">
+                <h4 style="color: red" class="text-justify">
+                        Online 3D printing is primarily intended for print jobs that cannot be undertaken by students in the workshop.
+                        If you are unable to complete a job using the open-access printers in the workshop and have been referred to
+                        the online service, then you can follow the instructions below to submit your job.
+                    </h4>
                 <h3 class="text-center lead">How to request a print using online service</h3>
                 <p>Submit the Request form to the left providing all the necessary details. Click on each field of the
                 form and read the detailed guidance on how to fill it.</p>
