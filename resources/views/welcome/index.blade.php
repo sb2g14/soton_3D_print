@@ -116,10 +116,13 @@
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
                             <div class="body bg-teal">
-                                <h3>The number of prints in the last 12 months</h3>
-                                @for($i=0; $i<24; $i++)
-                                       {{$count_months[$i]->toFormattedDateString()}}: {{$count_prints[$i]}} prints<br/>
-                                @endfor
+                                {!! $chart->html() !!}
+                                {!! Charts::scripts() !!}
+                                {!! $chart->script() !!}
+                                {{--<h3>The number of prints in the last 12 months</h3>--}}
+                                {{--@for($i=0; $i<24; $i++)--}}
+                                       {{--{{$count_months[$i]->toFormattedDateString()}}: {{$count_prints[$i]}} prints<br/>--}}
+                                {{--@endfor--}}
                             </div>
                         </div>
                     </div>
@@ -186,7 +189,10 @@
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
                             <div class="body bg-teal">
-                                
+                                <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
+                                {!! $chart1->html() !!}
+                                {!! Charts::scripts() !!}
+                                {!! $chart1->script() !!}
                             </div>
                         </div>
                     </div>
