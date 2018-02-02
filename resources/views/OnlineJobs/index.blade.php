@@ -1,14 +1,6 @@
 @extends('layouts.layout')
 
 @section('content')
-
-    {{--@if ($flash=session('message'))--}}
-    {{--<div id="flash_message" class="alert alert-success" role="alert" style="position: relative; top: -10px">--}}
-        {{--{{ $flash }}--}}
-    {{--</div>--}}
-    {{--@endif--}}
-
-   
     <div class="container text-center m-b-md">
         {{--<div class="title">Pending Jobs</div>--}}
         <ul class="nav nav-pills nav-justified">
