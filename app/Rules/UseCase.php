@@ -27,7 +27,7 @@ class UseCase implements Rule
     public function passes($attribute, $value)
     {
         // Check the module name is in the database
-        $query = cost_code::all()->where('shortage','=',strtoupper($value))->first();
+        $query = cost_code::where('shortage','=',strtoupper($value))->first();
         if ($query !== null){
             return true;
         } else {

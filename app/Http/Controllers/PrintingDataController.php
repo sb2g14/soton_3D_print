@@ -14,6 +14,13 @@ use Illuminate\Validation\Rules\In;
 use Excel;
 use Carbon\Carbon;
 
+use App\Rules\Alphanumeric;
+use App\Rules\SotonEmail;
+use App\Rules\SotonID;
+use App\Rules\SotonIdMinMax;
+use App\Rules\UseCase;
+use App\Rules\CustomerNameValidation;
+
 class PrintingDataController extends Controller
 {
     /**
@@ -126,47 +133,129 @@ class PrintingDataController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-
-        $this->validate(request(), [
-            'student_name' => 'required|string|min:3|max:100|regex:/^[a-z ,.\'-]+$/i',
-            'email' => 'required|email|min:3|max:30|regex:/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/',
-            'student_id' => 'required|numeric|min:8',
-            'material_amount' => 'required|numeric|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
-            'use_case' => 'required|min:3'
+        // Validate the online request
+        $workshop_request = request()->validate([
+            'customer_name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:100',
+                new CustomerNameValidation
+            ],
+            'customer_email' => [
+                "required",
+                "min:14",
+                "max:100",
+                "email",
+                new SotonEmail
+            ],
+            'customer_id' => [
+                'required',
+                'digits_between:8,9',
+                new SotonID,
+            ],
+            'use_case' => [
+                'required',
+                'min:3',
+                'max:30',
+                'alpha_dash',
+                new UseCase
+            ],
+            'material_amount' => [
+                'required',
+                'numeric',
+                'regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/'
+    ],
+            'job_title' => [
+                'required',
+                'string',
+                'min:8',
+                'max:64'
+            ],
+            'budget_holder' => [
+                'string',
+                'min:3',
+                'max:100',
+                new CustomerNameValidation
+            ]
         ]);
-        if (Auth::check()) {
-            $shortages = cost_code::all()->pluck('shortage', 'id')->toArray();
-            $shortages = array_map('strtolower', $shortages);
-            $cost_codes = cost_code::all()->pluck('cost_code', 'id')->toArray();
+
+        // Store the online request in the database
+        //$job = Jobs::create($workshop_request);
+
+        // Define payment category
+        $customer_id = $workshop_request['customer_id'];
+
+        if (substr($customer_id, 0, 1) == '1') {
+            $payment_category = 'staff';
+        } elseif (substr($customer_id, 0, 1) == '2') {
+            $payment_category = 'postgraduate';
+        } elseif (substr($customer_id, 0, 1) == '3') {
+            $payment_category = 'masters';
         } else {
-            $shortages = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('shortage', 'id')->toArray();
-            $shortages = array_map('strtolower', $shortages);
-            $cost_codes = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('cost_code', 'id')->toArray();
+            $payment_category = 'undergraduate';
         }
-        // $cost_codes = $cost_codes->toArray();
-        $use_case = strtolower(request('use_case'));
-        if( in_array($use_case, $shortages)) {
 
-            // Update record in staff database in order to link with users database
-            $shortage_id = array_search($use_case, $shortages);
-            $cost_code = cost_code::where('id', $shortage_id)->first()->cost_code;
-
-        } elseif(preg_match('/^(\d{9,10})$/', $use_case) === 1) {
-        $cost_code = (int)$use_case;
-            if (in_array($cost_code, $cost_codes)){
-            $use_case = 'Cost Code - approved';
-            } else {
+        // Define a cost code
+        // check the module shortage exists
+        $query = cost_code::all()->where('shortage','=',strtoupper($workshop_request['use_case']))->first();
+        if ($query !== null){
+            // If shortage exists, then populate cost code and shortage with the DB data
+            $cost_code = $query->value('cost_code');
+            $use_case = strtoupper($workshop_request['use_case']);
+            $budget_holder = $query->holder;
+        } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
+            $query = cost_code::all()->where('cost_code','=',$workshop_request['use_case'])->first();
+            $cost_code = $workshop_request['use_case'];
+            if ($query !== null){ // The cost code was found. Set a corresponding flag
+                $use_case = 'Cost Code - approved';
+                $budget_holder = $query->holder;
+            } else { // The cost code was not found. Set a corresponding flag
                 $use_case = 'Cost Code - unknown';
+                $budget_holder = $workshop_request['budget_holder'];
             }
-        } else {
-            notify()->flash('Error with data provided', 'error', [
-                'text' => 'Please check the module name or enter a valid cost code',
-            ]);
-
-            return redirect('printingData/create')->withInput();
         }
+
+//        $this->validate(request(), [
+//            'student_name' => 'required|string|min:3|max:100|regex:/^[a-z ,.\'-]+$/i',
+//            'email' => 'required|email|min:3|max:30|regex:/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/',
+//            'student_id' => 'required|numeric|min:8',
+//            'material_amount' => 'required|numeric|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
+//            'use_case' => 'required|min:3'
+//        ]);
+//        if (Auth::check()) {
+//            $shortages = cost_code::all()->pluck('shortage', 'id')->toArray();
+//            $shortages = array_map('strtolower', $shortages);
+//            $cost_codes = cost_code::all()->pluck('cost_code', 'id')->toArray();
+//        } else {
+//            $shortages = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('shortage', 'id')->toArray();
+//            $shortages = array_map('strtolower', $shortages);
+//            $cost_codes = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('cost_code', 'id')->toArray();
+//        }
+//        // $cost_codes = $cost_codes->toArray();
+//        $use_case = strtolower(request('use_case'));
+//        if( in_array($use_case, $shortages)) {
+//
+//            // Update record in staff database in order to link with users database
+//            $shortage_id = array_search($use_case, $shortages);
+//            $cost_code = cost_code::where('id', $shortage_id)->first()->cost_code;
+//
+//        } elseif(preg_match('/^(\d{9,10})$/', $use_case) === 1) {
+//        $cost_code = (int)$use_case;
+//            if (in_array($cost_code, $cost_codes)){
+//            $use_case = 'Cost Code - approved';
+//            } else {
+//                $use_case = 'Cost Code - unknown';
+//            }
+//        } else {
+//            notify()->flash('Error with data provided', 'error', [
+//                'text' => 'Please check the module name or enter a valid cost code',
+//            ]);
+//
+//            return redirect('printingData/create')->withInput();
+//        }
 
         // Calculating printing time from the dropdown
         $hours = Input::get('hours');
@@ -178,7 +267,7 @@ class PrintingDataController extends Controller
         $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
 
         // Request id and identify the payment category
-        $student_id = request('student_id');
+        $student_id = request('customer_id');
         if (substr($student_id, 0, 1) == '1') {
             $payment_category = 'staff';
         } elseif (substr($student_id, 0, 1) == '2') {
@@ -193,22 +282,40 @@ class PrintingDataController extends Controller
 
         // Submit the data to the database
 
-        $job = new Jobs;
+        // Updating database
+        $job = Jobs::create(array(
+            'paid'=> 'No',
+            'payment_category' => $payment_category,
+            'use_case' => $use_case,
+            'cost_code' => $cost_code,
+            'requested_online' => 0,
+            'status' => 'Waiting',
+            'job_title' => $workshop_request['job_title'],
+            'budget_holder' => $budget_holder,
+            'total_material_amount' => $material_amount,
+            'total_price' => $price,
+            'total_duration' => $time,
+            'customer_id' => $student_id,
+            'customer_name' => $workshop_request['customer_name'],
+            'customer_email' => $workshop_request['customer_email']
+        ));
 
-         $job -> total_material_amount = $material_amount;
-         $job -> total_price = $price;
-         $job -> total_duration = $time;
-         $job -> paid = 'No';
-         $job -> payment_category = $payment_category;
-         $job -> cost_code = $cost_code;
-         $job -> use_case = $use_case;
-         $job -> customer_id = $student_id;
-         $job -> customer_name = request('student_name');
-         $job -> customer_email = request('email');
-         $job -> requested_online = 0;
-         $job -> status = 'Waiting';
-
-         $job->save();
+//        $job = new Jobs;
+//
+//         $job -> total_material_amount = $material_amount;
+//         $job -> total_price = $price;
+//         $job -> total_duration = $time;
+//         $job -> paid = 'No';
+//         $job -> payment_category = $payment_category;
+//         $job -> cost_code = $cost_code;
+//         $job -> use_case = $use_case;
+//         $job -> customer_id = $student_id;
+//         $job -> customer_name = request('student_name');
+//         $job -> customer_email = request('email');
+//         $job -> requested_online = 0;
+//         $job -> status = 'Waiting';
+//
+//         $job->save();
 
         $print = new Prints;
 
@@ -220,12 +327,15 @@ class PrintingDataController extends Controller
 
         $print->save();
 
-        $job_print = new JobsPrints;
+        // Associate the print with the job
+        $job->prints()->attach($print);
 
-        $job_print -> jobs_id = $job->id;
-        $job_print -> prints_id = $print->id;
-
-        $job_print->save();
+//        $job_print = new JobsPrints;
+//
+//        $job_print -> jobs_id = $job->id;
+//        $job_print -> prints_id = $print->id;
+//
+//        $job_print->save();
 
         printers::where('id','=', Input::get('printers_id'))->update(array('in_use'=> 1));
 
