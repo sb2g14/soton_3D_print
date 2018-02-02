@@ -96,7 +96,7 @@
 
                 <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If the requested job
                 cannot be printed for some reason, please click on this button and provide an explanation for the customer.">
-                    <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed</button>
+                    <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed/Cancel Job</button>
                 </span>
 
                 @if($query_in_progress == null & $query_success !== null)
