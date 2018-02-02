@@ -407,7 +407,8 @@ class OrderOnlineController extends Controller
         // Pass all the available printers to the blade
         $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
         // Pass the jobs In Progress to the view
-        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->pluck('id','id');
+        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->addSelect('id')->selectRaw("CONCAT(id,' ', job_title) AS id_title")->pluck('id_title','id');
+//        addSelect('id')->selectRaw('job_title AS desc')->
         // Pass all the prints associated with the job
        $query_in_progress = $job->prints->where('status','=','In Progress')->first();
        $query_success = $job->prints->where('status','=','Success')->first();

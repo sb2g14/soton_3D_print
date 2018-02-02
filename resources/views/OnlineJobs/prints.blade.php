@@ -28,7 +28,7 @@
                     <th>#</th>
                     <th>Printer No</th>
                     <th>Printed by</th>
-                    <th>Job IDs</th>
+                    <th>Job IDs: Titles</th>
                     <th>Started on</th>
                     <th>Time Remain</th>
                     <th>Manage</th>
@@ -45,7 +45,7 @@
                             <td data-th="ID">{{ $print->id }}</td>
                             <td data-th="Printer No">{{ $print->printers_id }}</td>
                             <td data-th="Printed by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
-                            <td data-th="Job IDs">@foreach($print->jobs as $job) {{ $job->id }} @endforeach</td>
+                            <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }}: {{ $job->job_title }} <br> @endforeach</td>
                             <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%m') }}</td>
                             <td data-th="Time Remain">@if ($time_finish->gte(Carbon\Carbon::now('Europe/London'))) {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60) }} @else  completed @endif </td>
                             <td data-th="Manage">
@@ -69,7 +69,7 @@
             <tr>
                 <th>#</th>
                 <th>Printer No</th>
-                <th>Job IDs</th>
+                <th>Job IDs: Titles</th>
                 <th>Started by</th>
                 <th>Started on</th>
                 <th>Finished by</th>
@@ -84,7 +84,7 @@
                             <tr class="text-left">
                                 <td data-th="ID">{{ $print->id }}</td>
                                 <td data-th="Printer No">{{ $print->printers_id }}</td>
-                                <td data-th="Job IDs">@foreach($print->jobs as $job) {{ $job->id }} @endforeach</td>
+                                <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }} {{ $job->job_title }} <br> @endforeach</td>
                                 <td data-th="Started by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                                 <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%m') }}</td>
                                 <td data-th="Finished by">{{$print->staff_finished->first_name}} {{$print->staff_finished->last_name}}</td>

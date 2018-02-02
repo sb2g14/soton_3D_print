@@ -27,7 +27,7 @@
                     <th>Price</th>
                     <th>Approved on</th>
                     <th>Approved by</th>
-                    <th>Project Name</th>
+                    <th>Module/Cost Code</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,7 +52,7 @@
                         <td data-th="Price">£{{ $job->total_price }}</td>
                         <td data-th="Approved on">{{ Carbon\Carbon::parse($job->approved_at)->formatLocalized('%d %b, %H:%m') }}</td>
                         <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
-                        <td data-th="Project Name">{{ $job->use_case  }}</td>
+                        <td data-th="Module/Cost Code"> @if($job->use_case == 'Cost Code - approved') {{$job->cost_code}} @elseif($job->use_case == 'Cost Code - unknown') {{$job->cost_code}} @else {{$job->use_case}} @endif </td>
                         <td><a href="/printingData/abort/{{$job->id}}" class="btn btn-danger">Job Failed</a><br><br>
                             <a href="/printingData/success/{{$job->id}}" class="btn btn-success">Job Successful</a></td>
                     </tr>
