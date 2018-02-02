@@ -50,13 +50,13 @@ $(function () {
     function check_message() {
         var message = $("#message");
 
-        if(message.val().length < 8 || message.val().length > 500){
-            $("#message_error").html("The message must be between 8 and 500 characters long");
+        if(message.val().length < 8 || message.val().length > 2048){
+            $("#message_error").html("The message must be between 8 and 2048 characters long");
             $("#message_error").show();
             $("#message").addClass("parsley-error");
             error_message = true;
         } else {
-            $("#message_error").hide();
+            $("#message_error").html("Remaining characters : " +(2048 - message.val().length));
             $("#message").removeClass("parsley-error");
             $("#message").addClass("parsley-success");
             error_message = false;

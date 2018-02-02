@@ -416,7 +416,7 @@ class OrderOnlineController extends Controller
             'minutes' => 'required|numeric',
             'material_amount' => 'required|numeric|min:0.1|max:9999',
             'multipleselect' => 'required',
-            'comments' => 'max:255',
+            'comments' => 'max:2048',
             new Printer()
         ]);
 
