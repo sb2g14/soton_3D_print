@@ -9,12 +9,10 @@
 
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
-            <li class="active"><a href="#">Active cost codes</a></li>
-            <li><a href="/costCodes/expired">Expired cost codes</a></li>
+            <li ><a href="/costCodes/index">Active cost codes</a></li>
+            <li class="active"><a href="#">Expired cost codes</a></li>
         </ul>
     </div>
-
-    <a href="/costCodes/create" class="btn btn-lg btn-success">Add cost code</a>
 
     <div class="container">
         <table class="table table-hover">

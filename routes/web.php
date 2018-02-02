@@ -171,6 +171,9 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
     // Here we redirect to the view where all cost codes are shown
     Route::get('/costCodes/index','CostCodesController@index');
 
+    // Here old cost codes are displayed
+    Route::get('/costCodes/expired','CostCodesController@indexInactive');
+
     // Here we redirect to the view where a cost codes can be created
     Route::get('/costCodes/create','CostCodesController@create');
 

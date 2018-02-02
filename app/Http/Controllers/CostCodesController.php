@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Rules\CustomerNameValidation;
+use App\Rules\text;
+//use Faker\Provider\ar_JO\Text;
 use Illuminate\Http\Request;
 use App\cost_code;
+use Carbon\Carbon;
 
 class CostCodesController extends Controller
 {
@@ -16,9 +19,19 @@ class CostCodesController extends Controller
     }
     public function index()
     {
-        // Request all cost codes from the database
-        $cost_codes = cost_code::all();
+        // Request only active cost codes from the database
+        $nowDate = new Carbon();
+        $nowDate = $nowDate->toDateString();
+        $cost_codes = cost_code::where('expires','>',$nowDate)->get();
         return view('costCodes.index',compact('cost_codes'));
+    }
+    public function indexInactive()
+    {
+        // Return only the inactive cost codes
+        $nowDate = new Carbon();
+        $nowDate = $nowDate->toDateString();
+        $cost_codes = cost_code::where('expires','<',$nowDate)->get();
+        return view('costCodes.expired',compact('cost_codes'));
     }
     public function create()
     {
@@ -33,6 +46,11 @@ class CostCodesController extends Controller
                 'min:3',
                 'max:13',
                 'alpha_dash'
+            ],
+            'explanation' => [
+                'min:15',
+                'max:2048',
+                new text
             ],
             // Cost code numeric with 11 digits
             'cost_code' => [
@@ -83,6 +101,11 @@ class CostCodesController extends Controller
                'max:13',
                'alpha_dash'
            ],
+            'explanation' => [
+                'min:15',
+                'max:2048',
+                new text
+            ],
             'cost_code' => [
                 'digits:9'
             ],
