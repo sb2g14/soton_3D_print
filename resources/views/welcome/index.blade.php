@@ -110,7 +110,7 @@
                     <!-- #END# Announcements -->
                     <!-- Statistics -->
                     <div class="col-xs-12 col-md-4">
-                        <div class="cardblock hover-expand-effect">
+                        <div class="cardblock">
                             <div class="info-box box-stat">
                                 <div class="bl-logo logo-stat"></div>
                                 <div class="caption"><h3>STATISTICS</h3></div>

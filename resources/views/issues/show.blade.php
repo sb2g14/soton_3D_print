@@ -126,7 +126,7 @@
     </div>
                       
 
-<ul class="lsn container">
+<ul class="lsn container printer-details">
     {{-- Printer signed out--}}
     @if($printer->printer_status === 'Signed out')
     <li class="item">

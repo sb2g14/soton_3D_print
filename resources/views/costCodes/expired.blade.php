@@ -9,7 +9,7 @@
 
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
-            <li ><a href="/costCodes/index">Active cost codes</a></li>
+            <li class="connected"><a href="/costCodes/index">Active cost codes</a></li>
             <li class="active"><a href="#">Expired cost codes</a></li>
         </ul>
     </div>

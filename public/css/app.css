@@ -697,6 +697,10 @@ body.is-fixed {
 .s-request-form .instructions .hint.is-active {
   display: block;
 }
+.connected {
+  background-color: #ddd;
+  border-radius: 4px;
+}
 .nav > li > a:focus,
 .nav > li > a:hover {
   text-decoration: none;
@@ -704,6 +708,9 @@ body.is-fixed {
 }
 .table-hover > tbody > tr:focus,
 .table-hover > tbody > tr:hover {
+  background-color: #ddd;
+}
+.printer-details > .item > .row:hover {
   background-color: #ddd;
 }
 .contacts .col-left {
