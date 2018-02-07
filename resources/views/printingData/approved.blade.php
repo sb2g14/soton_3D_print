@@ -45,7 +45,7 @@
                     @if (Carbon\Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i)->gte(Carbon\Carbon::now('Europe/London')))
                     <tr class="text-left">
                         <td data-th="ID">{{ $job->id }}</td>
-                        <td data-th="Printer No">{{ $print->printers_id }}</td>
+                        <td data-th="Printer No"><a href="/issues/show/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
                         <td data-th="Name"><a href="mailto:{{$job->customer_email}}?Subject=Soton3Dprint Job {{ $job->id }}" target="_top">{{$job->customer_name}}</a></td>
                         <td data-th="Job title">{{$job->job_title}}</td>
                         <td data-th="Remaining time">@if ($time_finish->gte(Carbon\Carbon::now('Europe/London'))) {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60) }} @else  completed @endif</td>
