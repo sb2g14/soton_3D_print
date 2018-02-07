@@ -169,7 +169,7 @@ class PrintingDataController extends Controller
                 'required',
                 'string',
                 'min:8',
-                'max:64'
+                'max:256'
             ],
             'budget_holder' => [
                 'string',

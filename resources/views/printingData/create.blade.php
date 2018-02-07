@@ -116,6 +116,9 @@
                         </span>
                         @endif
                    </div>
+                    <div class="col-sm-8">
+                        <span class="help-block" id="time_error"></span>
+                    </div>
                 </div>
 
                 <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
@@ -145,7 +148,7 @@
                 </div>
 
                 {{--Budget Holder--}}
-                <div class="form-group{{ $errors->has('budget_holder') ? ' has-error' : '' }}">
+                <div id="budget_holder_group" class="form-group{{ $errors->has('budget_holder') ? ' has-error' : '' }}">
                     <label for="budget_holder" class="col-sm-4 control-label">Budget Holder</label>
 
                     <div class="col-sm-8">
@@ -260,7 +263,6 @@
 @endsection
 
 @section('scripts')
-<script src="/js/request_job_validation.js"></script>
     @if (notify()->ready())
         <script>
             swal({
@@ -271,5 +273,6 @@
             });
         </script>
     @endif
+    <script src="/js/request_job_validation.js"></script>
     <script src="/js/print_preview_validation.js"></script>
 @endsection

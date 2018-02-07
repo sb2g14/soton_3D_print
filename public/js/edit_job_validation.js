@@ -60,62 +60,77 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 46);
+/******/ 	return __webpack_require__(__webpack_require__.s = 38);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 46:
+/***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(47);
+module.exports = __webpack_require__(39);
 
 
 /***/ }),
 
-/***/ 47:
+/***/ 39:
 /***/ (function(module, exports) {
 
 $(function () {
-    $("#message_last_error").hide();
+    $("#material_amount_error").hide();
 
-    var error_message = true;
+    var error_material = true;
 
-    $("#message_last").keyup(function () {
-        check_message();
-    });
-    $("#message_last").focusout(function () {
-        check_message();
+    $("#material_amount").keyup(function () {
+        check_material_amount();
     });
 
-    function check_message() {
-        var message = $("#message_last");
+    $("#material_amount").focusout(function () {
+        check_material_amount();
+    });
+    $("#hours").focusout(function () {
+        evaluate_price();
+    });
+    $("#minutes").focusout(function () {
+        evaluate_price();
+    });
+    $("#material_amount").focusout(function () {
+        evaluate_price();
+    });
 
-        if (message.val().length < 8 || message.val().length > 300) {
-            $("#message_last_error").html("The message must be between 8 and 300 characters long");
-            $("#message_last_error").show();
-            $("#message_last").addClass("parsley-error");
-            error_message = true;
-            // } else if(!message.val().match(/^[a-z A-Z0-9-.,?!']+$/)){
-            //     $("#message_last_error").html("Only alphanumeric characters are allowed");
-            //     $("#message_last_error").show();
-            //     $("#message_last").addClass("parsley-error");
-            //     error_message = true;
+    function check_material_amount() {
+        var material = $("#material_amount");
+
+        if (material.val().length < 1) {
+            $("#material_amount_error").html("The value must be between 0.1 and 9999 in grams");
+            $("#material_amount_error").show();
+            $("#material_amount").focus();
+            $("#material_amount").addClass("parsley-error");
+            error_material = true;
+        } else if (!material.val().match(/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/)) {
+            $("#material_amount_error").html("The value must be between 0.1 and 9999 in grams");
+            $("#material_amount_error").show();
+            $("#material_amount").focus();
+            $("#material_amount").addClass("parsley-error");
+            error_material = true;
         } else {
-            $("#message_last_error").hide();
-            $("#message_last").removeClass("parsley-error");
-            $("#message_last").addClass("parsley-success");
-            error_message = false;
-        }if (error_message === false) {
-            $("#comment_last").addClass("btn-success");
-        } else {
-            $("#comment_last").removeClass("btn-success");
+            $("#material_amount_error").hide();
+            $("#material_amount").removeClass("parsley-error");
+            $("#material_amount").addClass("parsley-success");
+            error_material = false;
+            $("#submit").removeClass("btn-success");
         }
     }
-    $("#comment_last").click(function () {
-        $("#message_last_error").hide();
-        $("#message_last").removeClass("parsley-success");
-        $("#comment_last").removeClass("btn-success");
+    function evaluate_price() {
+        if (error_material === false && $("#hours") != null && $("#minutes" != null)) {
+            var $price = 3 * ($("#hours").val() + $("#minutes").val()) / 60 + 5 * $("#material_amount").val() / 100;
+            $("#price").html($price);
+        }
+    }
+    $("#submit").click(function () {
+        $("#material_amount_error").hide();
+        $("#material_amount").removeClass("parsley-success");
+        $("#submit").removeClass("btn-success");
     });
 });
 
