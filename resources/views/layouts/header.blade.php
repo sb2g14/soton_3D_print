@@ -31,7 +31,10 @@
                         <li><a class="dropdown-item" href={{ url('/printingData/create') }}>Request a job</a></li>
                         <li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
-                        <li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Pending Jobs</a></li>
+                        <li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Workshop Jobs</a></li>
+                        @can('manage_online_jobs')
+                            <li><a class="dropdown-ite" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
+                        @endcan
                         <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
                     </ul>
                 </li>
@@ -61,7 +64,6 @@
                 {{--Online workflow and demonstrator workflow available to online jobs manager--}}
                 @can('manage_online_jobs')
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
-                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 {{--Ø--}}
                 @else
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>

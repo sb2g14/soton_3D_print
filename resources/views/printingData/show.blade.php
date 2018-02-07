@@ -12,7 +12,7 @@
             <div class="col-sm-6 text-left job-details">
                 <div class="alert alert-info text-left">
                     <p>
-                        Printer number: <b>{{ $print->printers_id }}</b><br>
+                        Printer number: <a href="/issues/show/{{ $print->printers_id }}"><b>{{ $print->printers_id }}</b></a><br>
                         Printer serial number: <b>{{ $print->printer->serial_no }}</b><br>
                         Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
                         Requested by: <b>{{$job->customer_name}}</b><br>
