@@ -228,7 +228,11 @@
         @php
             //print very last entry
             $outStartDate = new \Carbon\Carbon($lastEntry->StartDate);
-            $outEndDate = new \Carbon\Carbon($lastEntry->EndDate);
+            if(!$lastEntry->EndDate){
+                $outEndDate = null;
+            } else {
+                $outEndDate = new \Carbon\Carbon($lastEntry->EndDate);
+            }
             $outDescription = $lastEntry->Description;
             $outType = $lastEntry->Type;
             $outClass = '';
