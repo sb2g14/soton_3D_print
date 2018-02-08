@@ -21,10 +21,10 @@ class FaultData extends Model
     }
     public function issue_created()
     {
-        return $this->belongsTo(Staff::class, 'staff_id_created_issue');
+        return $this->belongsTo(staff::class, 'staff_id_created_issue');
     }
     public function issue_resolved()
     {
-        return $this->belongsTo(Staff::class, 'staff_id_resolved_issue');
+        return $this->belongsTo(staff::class, 'staff_id_resolved_issue');
     }
 }

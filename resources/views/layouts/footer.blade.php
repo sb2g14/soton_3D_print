@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <hr>
-                <div style="font-weight: 200;">version 2.0</div>
+                <div style="font-weight: 200;">version 2.1</div>
             </div>
         </div>
     </div>
