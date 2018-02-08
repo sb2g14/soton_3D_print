@@ -60,6 +60,9 @@ Route::get('/printers/index','PrintersController@index');
 /////////////////////////////////////////////////////////////////////////////////////////////
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
 
+    // Resolve issues in posts
+    Route::get('/posts/resolve/{id}', 'PostsController@resolve');
+
     // Redirect to the view where one can manage issues
 
     Route::get('/issues/index','IssuesController@index');
@@ -167,6 +170,9 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
 
     // Here we redirect to the view where all cost codes are shown
     Route::get('/costCodes/index','CostCodesController@index');
+
+    // Here old cost codes are displayed
+    Route::get('/costCodes/expired','CostCodesController@indexInactive');
 
     // Here we redirect to the view where a cost codes can be created
     Route::get('/costCodes/create','CostCodesController@create');

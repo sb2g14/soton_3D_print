@@ -24,9 +24,9 @@ class posts extends Model
 
     }
     // The function shows the user who created a post
-    public function user()
+    public function staff()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Staff::class);
     }
 
     public function addComment($body)

@@ -19,7 +19,7 @@ $(function () {
         check_email();
     });
     $("#student_id").keyup(function () {
-       check_student_id();
+        check_student_id();
     });
     $("#material_amount").keyup(function () {
         check_material_amount();
@@ -50,34 +50,35 @@ $(function () {
     $("#message").keyup(function () {
         check_message();
     });
-    $( window ).load(function() {
+    $(window).load(function () {
         check_student_name();
         check_email();
     });
 
 
     function check_student_name() {
-     var name = $("#student_name");
+        var name = $("#student_name");
 
-     if(name.val().length < 3 || name.val().length > 100){
-         $("#student_name_error").html("The name should be between 2 and 100 characters");
-         $("#student_name_error").show();
-         $("#student_name").focus();
-         $("#student_name").addClass("parsley-error");
-         error_name = true;
-     } else if (!name.val().match(/^[a-z ,.'-]+$/i)){
-         $("#student_name_error").html("Only letters and hyphens(-) are allowed");
-         $("#student_name_error").show();
-         $("#student_name").focus();
-         $("#student_name").addClass("parsley-error");
-         error_name = true;
-     } else {
-         $("#student_name_error").hide();
-         $("#student_name").removeClass("parsley-error");
-         $("#student_name").addClass("parsley-success");
-         error_name = false;
-     } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false){
+        if (name.val().length < 3 || name.val().length > 100) {
+            $("#student_name_error").html("The name should be between 2 and 100 characters");
+            $("#student_name_error").show();
+            $("#student_name").focus();
+            $("#student_name").addClass("parsley-error");
+            error_name = true;
+        } else if (!name.val().match(/^[a-z ,.'-]+$/i)) {
+            $("#student_name_error").html("Only letters and hyphens(-) are allowed");
+            $("#student_name_error").show();
+            $("#student_name").focus();
+            $("#student_name").addClass("parsley-error");
+            error_name = true;
+        } else {
+            $("#student_name_error").hide();
+            $("#student_name").removeClass("parsley-error");
+            $("#student_name").addClass("parsley-success");
+            error_name = false;
+        }
+        if (error_name === false && error_email === false &&
+            error_id === false && error_material === false) {
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -86,16 +87,17 @@ $(function () {
         }
 
     }
+
     function check_email() {
         var email = $("#email");
 
-        if(email.val().length < 11 || email.val().length > 30){
+        if (email.val().length < 11 || email.val().length > 30) {
             $("#email_error").html("Email is too short or too long");
             $("#email_error").show();
             $("#email").focus();
             $("#email").addClass("parsley-error");
             error_email = true;
-        } else if(!email.val().match(/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/)){
+        } else if (!email.val().match(/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/)) {
             $("#email_error").html("Only @soton.ac.uk emails are allowed");
             $("#email_error").show();
             $("#email").focus();
@@ -106,8 +108,9 @@ $(function () {
             $("#email").removeClass("parsley-error");
             $("#email").addClass("parsley-success");
             error_email = false;
-        } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false){
+        }
+        if (error_name === false && error_email === false &&
+            error_id === false && error_material === false) {
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -115,16 +118,17 @@ $(function () {
             $("#submit").removeClass("btn-success");
         }
     }
+
     function check_student_id() {
         var id = $("#student_id");
 
-        if(id.val().length < 1){
+        if (id.val().length < 1) {
             $("#student_id_error").html("Id cannot be empty");
             $("#student_id_error").show();
             $("#student_id").focus();
             $("#student_id").addClass("parsley-error");
             error_id = true;
-        }else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
+        } else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
             $("#student_id_error").html("Id of a member of staff must be 8 digits long");
             $("#student_id_error").show();
             $("#student_id").focus();
@@ -147,8 +151,9 @@ $(function () {
             $("#student_id").removeClass("parsley-error");
             $("#student_id").addClass("parsley-success");
             error_id = false;
-        } if( error_name === false && error_email === false &&
-            error_id === false && error_material === false ){
+        }
+        if (error_name === false && error_email === false &&
+            error_id === false && error_material === false) {
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -156,10 +161,11 @@ $(function () {
             $("#submit").removeClass("btn-success");
         }
     }
+
     function check_material_amount() {
         var material = $("#material_amount");
 
-        if(material.val().length < 1){
+        if (material.val().length < 1) {
             $("#material_amount_error").html("The value must be between 0.1 and 9999 in grams");
             $("#material_amount_error").show();
             $("#material_amount").focus();
@@ -176,9 +182,10 @@ $(function () {
             $("#material_amount").removeClass("parsley-error");
             $("#material_amount").addClass("parsley-success");
             error_material = false;
-        } if( error_name === false && error_email === false &&
+        }
+        if (error_name === false && error_email === false &&
 
-            error_id === false && error_material === false && error_use_case === false){
+            error_id === false && error_material === false && error_use_case === false) {
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
@@ -186,38 +193,42 @@ $(function () {
             $("#submit").removeClass("btn-success");
         }
     }
+
     function check_message() {
         var message = $("#message");
 
-        if(message.val().length < 8 || message.val().length > 300){
+        if (message.val().length < 8 || message.val().length > 300) {
             $("#message_error").html("The message must be between 8 and 300 characters long");
             $("#message_error").show();
             $("#message").focus();
             $("#message").addClass("parsley-error");
             error_message = true;
-        // } else if(!message.val().match(/^[a-z A-Z0-9-.,!?']+$/)){
-        //     $("#message_error").html("Only alphanumeric characters are allowed");
-        //     $("#message_error").show();
-        //     $("#message").focus();
-        //     $("#message").addClass("parsley-error");
-        //     error_message = true;
+            // } else if(!message.val().match(/^[a-z A-Z0-9-.,!?']+$/)){
+            //     $("#message_error").html("Only alphanumeric characters are allowed");
+            //     $("#message_error").show();
+            //     $("#message").focus();
+            //     $("#message").addClass("parsley-error");
+            //     error_message = true;
         } else {
             $("#message_error").hide();
             $("#message").removeClass("parsley-error");
             $("#message").addClass("parsley-success");
             error_message = false;
-        } if(error_message === false){
+        }
+        if (error_message === false) {
             $("#submit").addClass("btn-success");
         } else {
             $("#submit").removeClass("btn-success");
         }
     }
+
     function evaluate_price() {
-        if( error_material === false && $("#hours") != null && $("#minutes" != null)){
-            var $price = 3*($("#hours").val() + $("#minutes").val())/60 + 5*$("#material_amount").val()/100;
+        if (error_material === false && $("#hours") != null && $("#minutes" != null)) {
+            var $price = 3 * ($("#hours").val() + $("#minutes").val()) / 60 + 5 * $("#material_amount").val() / 100;
             $("#price").html($price);
         }
     }
+
     $("#submit").click(function () {
         $("#student_name_error").hide();
         $("#email_error").hide();
@@ -230,3 +241,5 @@ $(function () {
         $("#submit").removeClass("btn-success");
 
     });
+
+});

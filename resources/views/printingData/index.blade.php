@@ -47,7 +47,7 @@
                                 Requested on: <b>{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</b><br>
                                 Job is printed on <br>
                                 @foreach($job->prints as $print)
-                                    Printer number: <b>{{ $print->printers_id }}</b><br>
+                                    Printer number: <a href="/issues/show/{{ $print->printers_id }}"><b>{{ $print->printers_id }}</b></a><br>
                                 @endforeach
                             </p>
                             <a href="/printingData/show/{{$job->id}}" class="btn btn-info">Manage</a>

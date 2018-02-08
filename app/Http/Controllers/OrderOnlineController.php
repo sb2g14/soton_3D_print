@@ -115,9 +115,6 @@ class OrderOnlineController extends Controller
             ],
             'use_case' => [
                 'required',
-                'min:3',
-                'max:30',
-                'alpha_dash',
                 new UseCase
             ],
             'claim_id' => [
@@ -133,8 +130,14 @@ class OrderOnlineController extends Controller
             'job_title' => [
                 'required',
                 'string',
+                'min:8',
+                'max:64'
+            ],
+            'budget_holder' => [
+                'string',
                 'min:3',
-                'max:30'
+                'max:100',
+                new CustomerNameValidation
             ]
         ]);
 
@@ -161,13 +164,16 @@ class OrderOnlineController extends Controller
             // If shortage exists, then populate cost code and shortage with the DB data
             $cost_code = $query->value('cost_code');
             $use_case = strtoupper($online_request['use_case']);
+            $budget_holder = $query->holder;
         } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
             $query = cost_code::all()->where('cost_code','=',$online_request['use_case'])->first();
             $cost_code = $online_request['use_case'];
             if ($query !== null){ // The cost code was found. Set a corresponding flag
                 $use_case = 'Cost Code - approved';
-            } else { // The cost code was not found. Set a corresponding flag
+                $budget_holder = $query->holder;
+                } else { // The cost code was not found. Set a corresponding flag
                 $use_case = 'Cost Code - unknown';
+                $budget_holder = $online_request['budget_holder'];
             }
         }
 
@@ -179,6 +185,8 @@ class OrderOnlineController extends Controller
             'cost_code' => $cost_code,
             'requested_online' => 1,
             'status' => 'Waiting',
+            'job_title' => $online_request['job_title'],
+            'budget_holder' => $budget_holder
             ));
 
         // Send an email to the 3d print account
@@ -187,7 +195,7 @@ class OrderOnlineController extends Controller
         \Mail::to($email)->queue(new onlineRequest($job));
 
         // Notification of request acceptance
-        notify()->flash('Your order request has been accepted!', 'success', [
+        notify()->flash('Your order request is now being considered!', 'success', [
             'text' => 'Please wait for our manager to contact you via provided email address',
         ]);
         // Redirect to home directory
@@ -397,9 +405,10 @@ class OrderOnlineController extends Controller
         // Pass the job to the blade
         $job = Jobs::findOrFail($id);
         // Pass all the available printers to the blade
-        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
+        $available_printers = printers::all()->where('printer_status', 'Available')->where('in_use', 0)->pluck('id', 'id')->all();
         // Pass the jobs In Progress to the view
-        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->pluck('id','id');
+        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->addSelect('id')->selectRaw("CONCAT(id,' ', job_title) AS id_title")->pluck('id_title','id');
+//        addSelect('id')->selectRaw('job_title AS desc')->
         // Pass all the prints associated with the job
        $query_in_progress = $job->prints->where('status','=','In Progress')->first();
        $query_success = $job->prints->where('status','=','Success')->first();
@@ -415,7 +424,7 @@ class OrderOnlineController extends Controller
             'minutes' => 'required|numeric',
             'material_amount' => 'required|numeric|min:0.1|max:9999',
             'multipleselect' => 'required',
-            'comments' => 'max:255',
+            'comments' => 'max:2048',
             new Printer()
         ]);
 

@@ -48,9 +48,9 @@
         <div class="container"> 
                       
             @if (Auth::check())  {{--Check whether user is logged in--}}
-                <div class="row clearfix is-table-row">
+                <div class="row row-flex">
                     <!-- Issues -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4">
                         <div class="cardblock card-issue hover-expand-effect">
                             <div class="info-box box-issue">
                                 <div class="bl-logo logo-issue"></div>
@@ -59,16 +59,20 @@
                             <div class="body bg-pink">
                                 
                                 {{--Here we show last issue:--}}
+                                @php
+                                    $post_last = $issues->first();
+                                @endphp
                                 @if(!empty($post_last))
                                     <ul id="form" class=" lsn list-group">
                                         <li class="list-group-item">
                                             <div class="alert">
                                                 {{--Print title of a post--}}
-                                                 <h4><b> {{ isset($post_last->printer)  ? 'Printer '.$post_last->printer->id.':' : '' }} {{ $post_last->title }}</b></h4>
+                                                 <h4><b> {{ isset($post_last->printers_id)  ? 'Printer '.$post_last->printers_id.':' : '' }} {{ $post_last->title }}</b></h4>
                                                 {{--Print name of a user who created a post--}}
-                                                <h5 class="media-heading"> {{$post_last->user->name}}  <small><i>
-                                                            {{--Print date and time when a post was created--}}
-                                                            Posted {{ $post_last->created_at->diffForHumans() }}:</i></small></h5>
+                                                <h5 class="media-heading"> {{App\Staff::where('id', $post_last->staff_id)->first()->first_name}}
+                                                                            {{App\Staff::where('id', $post_last->staff_id)->first()->last_name}} <small><i>
+                                                {{--Print date and time when a post was created--}}
+                                                Posted {{ $post_last->created_at->diffForHumans() }}:</i></small></h5>
                                                 {{--Print the text of a post--}}
                                                 {{ $post_last->body }}
                                             </div>
@@ -80,7 +84,7 @@
                     </div>
                     <!-- #END# Issues -->
                     <!-- Announcements -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4">
                         <div class="cardblock card-announcement hover-expand-effect">
                             <div class="info-box box-announcement">
                                 <div class="bl-logo logo-announcement"></div>
@@ -90,6 +94,9 @@
                                 <ul class="lsn list-group">
                                     <li class="list-group-item">
                                         <div class="alert">
+                                            @php
+                                                $announcement_last = $announcements->first();
+                                            @endphp
                                             <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
@@ -102,14 +109,20 @@
                     </div>
                     <!-- #END# Announcements -->
                     <!-- Statistics -->
-                    <div class="col-md-4">
-                        <div class="cardblock hover-expand-effect">
+                    <div class="col-xs-12 col-md-4">
+                        <div class="cardblock">
                             <div class="info-box box-stat">
                                 <div class="bl-logo logo-stat"></div>
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
                             <div class="body bg-teal">
-                                
+                                {!! $chart->html() !!}
+                                {!! Charts::scripts() !!}
+                                {!! $chart->script() !!}
+                                {{--<h3>The number of prints in the last 12 months</h3>--}}
+                                {{--@for($i=0; $i<24; $i++)--}}
+                                       {{--{{$count_months[$i]->toFormattedDateString()}}: {{$count_prints[$i]}} prints<br/>--}}
+                                {{--@endfor--}}
                             </div>
                         </div>
                     </div>
@@ -117,9 +130,9 @@
                 </div>
 
                 @else
-                <div class="row clearfix is-table-row">
+                <div class="row row-flex">
                     <!-- RULES -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4 ">
                         <div class="cardblock card-rules hover-expand-effect">
                             <div class="info-box box-issue">
                                 <div class="bl-logo logo-issue"></div>
@@ -144,7 +157,7 @@
                     </div>
                     <!-- #END# Rules -->
                     <!-- Announcements -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4">
                         <div class="cardblock card-announcement hover-expand-effect">
                             <div class="info-box box-announcement">
                                 <div class="bl-logo logo-announcement"></div>
@@ -154,6 +167,9 @@
                                 <ul class="lsn list-group">
                                     <li class="list-group-item">
                                         <div class="alert">
+                                            @php
+                                            $public_announcement_last = $announcements->where('public', 1)->first();
+                                            @endphp
                                             <h5 class="media-heading"> {{ $public_announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $public_announcement_last->created_at->diffForHumans() }}:</i></small></h5>
@@ -166,14 +182,17 @@
                     </div>
                     <!-- #END# Announcements -->
                     <!-- Statistics -->
-                    <div class="col-md-4">
+                    <div class="col-xs-12 col-md-4">
                         <div class="cardblock hover-expand-effect">
                             <div class="info-box box-stat">
                                 <div class="bl-logo logo-stat"></div>
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
                             <div class="body bg-teal">
-                                
+                                <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
+                                {!! $chart1->html() !!}
+                                {!! Charts::scripts() !!}
+                                {!! $chart1->script() !!}
                             </div>
                         </div>
                     </div>
@@ -219,33 +238,48 @@
                             <button id="report_issue" type="submit" class="btn btn-primary">Report Issue</button>
                         </form>
                     </div>
-
-                    <div id="all-issues"> 
-                        @foreach($posts as $post)
-                            <li class="list-group-item well">
+                    @if(Auth::check())
+                    <div id="all-issues">
+                        @foreach($issues as $post)
+                            <li class="list-group-item well {{isset($post->printers_id) ? 'alert alert-info' : 'alert alert-warning'}}">
                                 {{--Print title of a post--}}
-                                <h4><b>{{ isset($post->printer)  ? 'Printer '.$post->printer->id.':' : '' }} {{ $post->title }}</b></h4>
+                                <h4><b>{{ isset($post->printers_id)  ? 'Printer '.$post->printers_id.':' : '' }} {{ $post->title }}</b></h4>
                                 {{--Print name of a user who created a post--}}
-                                <h5 class="media-heading"> {{$post->user->name}}  <small><i>
-                                            {{--Print date and time when a post was created--}}
-                                            Posted {{ $post->created_at->diffForHumans() }}:</i></small></h5>
+                                <h5 class="media-heading"> {{App\Staff::where('id', $post->staff_id)->first()->first_name}}
+                                                            {{App\Staff::where('id', $post->staff_id)->first()->last_name}}<small><i>
+                                {{--Print date and time when a post was created--}}
+                                Posted {{ $post->created_at->diffForHumans() }}:</i></small></h5>
                                 {{--Print the text of a post--}}
                                 <p>{{ $post->body }}</p>
+                                @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\Staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
+                                    <a href="/posts/resolve/{{$post->id}}" class="btn btn-primary">Resolve{{ $post->resolved }}</a>
+                                @endif
                                 <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
                                         Show comments
                                 </button>
                                 <div id="{{ $post->id}}" class="card collapse">
                                     {{--Here we show comments to each issue:--}}
                                     <ul class="lsn">
-                                        @foreach($post->comments as $comment)
+                                        @php
+                                        if(isset($post->printers_id)){
+                                        $comments = \App\FaultUpdates::where('fault_data_id', $post->id)->get();
+                                        } else {
+                                        $comments = \App\comments::where('posts_id', $post->id)->get();
+                                        }
+                                        @endphp
+                                        @foreach($comments as $comment)
                                             <li>
                                                 <div class="media">
                                                     <div class="media-left">
                                                         <img src="/Images/img_avatar3.png" class="media-object">
                                                     </div>
                                                     <div class="media-body">
-                                                        <h5 class="media-heading"> {{$comment->user->name}}  <small><i>Posted {{ $comment->created_at->diffForHumans() }}:</i></small></h5>
-                                                        <p>{{ $comment->body }}</p>
+                                                        <h5 class="media-heading"> {{$comment->staff->first_name}} <small>
+                                                                <i>Posted {{ $comment->created_at->diffForHumans() }}:</i></small></h5>
+                                                        <p>
+                                                            <h5 style="color: red"> {{ isset($comment->printer_status) ? 'Printer Status: '.$comment->printer_status : ''}} </h5>
+                                                            {{ $comment->body }}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -253,18 +287,27 @@
                                     </ul>
                                     {{--This is a form to add a comment--}}
                                     @can('add_private_posts_and_announcements')
-                                    <div id="{{ $post->id }}" class="card">
-                                        <form method="POST" action="/posts/{{ $post->id }}/comments">
-                                            {{ csrf_field() }}
+
+                                    @if(isset($post->printers_id))
+                                        <div class="card">
                                             <div class="form-group">
-                                                <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                <span id="message_error" class="help-block"></span>
+                                                <a href="/issues/update/{{ $post->id }}#buttons" class="btn btn-primary">Update </a>
                                             </div>
-                                            <div class="form-group">
-                                                <button id="comment" type="submit" class="btn btn-primary">Comment </button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    @else
+                                        <div id="{{ $post->id }}" class="card">
+                                            <form method="POST" action="/posts/{{ $post->id }}/comments">
+                                                {{ csrf_field() }}
+                                                <div class="form-group">
+                                                    <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                                    <span id="message_error" class="help-block"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button id="comment" type="submit" class="btn btn-primary">Comment </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    @endif
                                     @endcan
                                 </div>
                             </li>
@@ -306,7 +349,7 @@
                                               {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
                                                 {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
                                               {{--@else --}}
-                                                placeholder="Post will appear only for registered users"
+                                                placeholder="Post will appear only for registered users unless you check 'Public announcement"
                                               {{--@endif --}}
                                                 class="form-control"></textarea>
                                     <span id="announcement_error" class="help-block"></span>
@@ -322,11 +365,12 @@
                                 <button id="post" type="submit" class="btn btn-primary">Post</button>
                             </form>
                         </div>
+                        @endif
 
                         <div id="all-announcements">
                             @if(Auth::check())
                                 @foreach($announcements as $announcement)
-                                    <li class="list-group-item">
+                                    <li class="list-group-item well @if($announcement->public === 0) alert alert-info @else alert alert-warning @endif ">
                                         <!-- <div class="alert alert-info"> -->
                                         <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
                                                     {{--Print date and time when a post was created--}}
@@ -336,11 +380,14 @@
                                     </li>
                                 @endforeach
                             @else
+                                @php
+                                $public_announcements = $announcements->where('public', 1);
+                                @endphp
                                 @foreach($public_announcements as $announcement)
                                     <li class="list-group-item">
                                         <!-- <div class="alert alert-info"> -->
                                         <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
-                                                    {{--Print date and time when a post was created--}}
+                                                    Print date and time when a post was created
                                                     Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
                                         <h5> {{ $announcement->message }} </h5>
                                         <!-- </div> -->

@@ -17,6 +17,9 @@
                     <label for="shortage">Shortage: </label> <br>
                         <input id="shortage" type="text" name="shortage" class="form-control" value="{{ old('shortage') }}"/><br>
                         <td><span class="help-block" id="shortage_error"></span></td>
+                    <label for="explanation">Explanation of the shortage:</label><br>
+                    <textarea id="explanation" type="text" name="explanation" class="form-control" value="{{ old('explanation') }}">{{ old('explanation') }}</textarea><br>
+                        <td><span class="help-block" id="explanation_error"></span></td>
                     <label for="cost_code">Cost code: </label><br>
                         <input id="cost_code" type="text" name="cost_code" class="form-control" value="{{ old('cost_code') }}"/><br>
                         <td><span class="help-block" id="cost_code_error"></span></td>

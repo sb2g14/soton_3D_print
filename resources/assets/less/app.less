@@ -458,7 +458,6 @@ body {
         text-align: left;
     }
 
-
     .bl-header {
         position: relative;
         overflow: hidden;
@@ -498,9 +497,14 @@ body {
         }
     }
 
+    .row-flex {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
     .cardblock {
         background: #fff;
-        min-height: 50px;
+        height: 95%;
         position: relative;
         margin-bottom: 30px;
         &:hover {
@@ -512,6 +516,7 @@ body {
             padding: 20px 20px 0;
             position: relative;
             overflow: hidden;
+            // height: 12%;
             &.box-issue {
                 background-color: #880E4F;   
             }
@@ -528,7 +533,7 @@ body {
         }
         .body {
             padding: 20px;
-            min-height: 390px;
+            height: 89%;
             color: #fff;
             small {
                 color: #fff;
@@ -572,7 +577,7 @@ body {
         transition: all 0.95s;
     }
     .cardblock.hover-expand-effect:hover:after {
-        height: 80%
+        height: 90%
     }
     
 
@@ -688,6 +693,12 @@ body {
     }
 } // s-request-form
 
+//connected nav styles
+.connected {
+    background-color: #ddd;
+    border-radius: 4px;
+}
+
 //custom styles for background on hover in nav and table-hover
 .nav>li>a:focus, .nav>li>a:hover {
     text-decoration: none;
@@ -696,6 +707,13 @@ body {
 .table-hover>tbody>tr:focus, .table-hover>tbody>tr:hover {
     background-color: #ddd;
 }
+
+//background on hover in printer detail list
+.printer-details>.item>.row:hover {
+    background-color: #ddd;
+}
+
+
 
 .contacts {
     .col-left {

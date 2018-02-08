@@ -12,7 +12,7 @@
             <div class="col-sm-6 text-left job-details">
                 <div class="alert alert-info text-left">
                     <p>
-                        Printer number: <b>{{ $print->printers_id }}</b><br>
+                        Printer number: <a href="/issues/show/{{ $print->printers_id }}"><b>{{ $print->printers_id }}</b></a><br>
                         Printer serial number: <b>{{ $print->printer->serial_no }}</b><br>
                         Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
                         Requested by: <b>{{$job->customer_name}}</b><br>
@@ -22,8 +22,10 @@
                         Total estimated duration: <b>{{$job->total_duration}}</b><br>
                         Total estimated material amount: <b>{{$job->total_material_amount}} grams</b><br>
                         Total estimated price: <b>£{{$job->total_price}}</b><br>
-                        Module name or cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @elseif($job->use_case == 'Cost Code - unknown') <b style="color: red"> @endif {{$job->use_case}} </b><br>
-                            Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @elseif($job->use_case == 'Cost Code - unknown')</b> <b style="color: red"> @endif {{$job->cost_code}} </b><br>
+                        {{--Module name or cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @elseif($job->use_case == 'Cost Code - unknown') <b style="color: red"> @endif {{$job->use_case}} </b><br>--}}
+                        Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> {{$job->cost_code}} @elseif($job->use_case == 'Cost Code - unknown')</b> <b style="color: red"> {{$job->cost_code}} @else <b style="color: forestgreen"> {{$job->use_case}} @endif  </b><br>
+                        Budget Holder: <b> {{ $job->budget_holder }} </b>
+                        Job Title: {{ $job->job_title }} <br>
                         Job number: <b>{{$job->id}}</b><br>
                     </p>
                 </div>

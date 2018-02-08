@@ -48,7 +48,7 @@
                     @if (Carbon\Carbon::now('Europe/London')->gte(Carbon\Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i)) || $job->status == 'Failed' || $job->status == 'Success')
                     <tr class="text-left">
                         <td data-th="ID">{{ $job->id }}</td>
-                        <td data-th="Printer No">{{ $print->printers_id }}</td>
+                        <td data-th="Printer No"><a href="/issues/show/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
                         <td data-th="Job title">{{ $job->job_title  }}</td>
                         <td data-th="Name"><a href="mailto:{{$job->customer_email}}?Subject=Soton3Dprint Job {{ $job->id }}" target="_top">{{$job->customer_name}}</a></td>
                         {{--<td data-th="Payment Category">{{$job->payment_category}}</td>--}}

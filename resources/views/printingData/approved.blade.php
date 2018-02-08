@@ -27,7 +27,7 @@
                     <th>Price</th>
                     <th>Approved on</th>
                     <th>Approved by</th>
-                    <th>Project Name</th>
+                    <th>Module/Cost Code</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,14 +45,14 @@
                     @if (Carbon\Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i)->gte(Carbon\Carbon::now('Europe/London')))
                     <tr class="text-left">
                         <td data-th="ID">{{ $job->id }}</td>
-                        <td data-th="Printer No">{{ $print->printers_id }}</td>
+                        <td data-th="Printer No"><a href="/issues/show/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
                         <td data-th="Name"><a href="mailto:{{$job->customer_email}}?Subject=Soton3Dprint Job {{ $job->id }}" target="_top">{{$job->customer_name}}</a></td>
                         <td data-th="Job title">{{$job->job_title}}</td>
                         <td data-th="Remaining time">@if ($time_finish->gte(Carbon\Carbon::now('Europe/London'))) {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60) }} @else  completed @endif</td>
                         <td data-th="Price">£{{ $job->total_price }}</td>
                         <td data-th="Approved on">{{ Carbon\Carbon::parse($job->approved_at)->formatLocalized('%d %b, %H:%m') }}</td>
                         <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
-                        <td data-th="Project Name">{{ $job->use_case  }}</td>
+                        <td data-th="Module/Cost Code"> @if($job->use_case == 'Cost Code - approved') {{$job->cost_code}} @elseif($job->use_case == 'Cost Code - unknown') {{$job->cost_code}} @else {{$job->use_case}} @endif </td>
                         <td><a href="/printingData/abort/{{$job->id}}" class="btn btn-danger">Job Failed</a><br><br>
                             <a href="/printingData/success/{{$job->id}}" class="btn btn-success">Job Successful</a></td>
                     </tr>

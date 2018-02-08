@@ -88,6 +88,23 @@
                     </div>
                 </div>
 
+                {{--Budget Holder--}}
+                <div id="budget_holder_group" class="form-group{{ $errors->has('budget_holder') ? ' has-error' : '' }}">
+                    <label for="budget_holder" class="col-sm-4 control-label">Budget Holder</label>
+
+                    <div class="col-sm-8">
+                        <input id="budget_holder" data-help="budget_holder" type="text" class="form-control"
+                               name="budget_holder" value="{{ old('budget_holder') }}" placeholder="Provide the name of the budget holder of the cost code">
+
+                        @if ($errors->has('budget_holder'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('budget_holder') }}</strong>
+                        </span>
+                        @endif
+                        <span class="help-block" id="budget_holder_error"></span>
+                    </div>
+                </div>
+
                 {{--Dropoff cliam id--}}
                 <div class="form-group{{ $errors->has('claim_id') ? ' has-error' : '' }}">
                     <label for="claim_id" class="col-sm-4 control-label">Drop-off file id</label>
@@ -150,6 +167,11 @@
         </div>
         <div class="col-sm-6 instructions">
             <div class="hint text-left is-active before-filling" data-hint="general">
+                <h4 style="color: red" class="text-justify">
+                        Online 3D printing is primarily intended for print jobs that cannot be undertaken by students in the workshop.
+                        If you are unable to complete a job using the open-access printers in the workshop and have been referred to
+                        the online service, then you can follow the instructions below to submit your job.
+                    </h4>
                 <h3 class="text-center lead">How to request a print using online service</h3>
                 <p>Submit the Request form to the left providing all the necessary details. Click on each field of the
                 form and read the detailed guidance on how to fill it.</p>
@@ -220,5 +242,5 @@
 @endsection
 
 @section('scripts')
-<script src="/js/request_job_validation.js"></script>
+<script src="/js/request_online_job_validation.js"></script>
 @endsection
