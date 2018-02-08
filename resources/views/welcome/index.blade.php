@@ -69,8 +69,8 @@
                                                 {{--Print title of a post--}}
                                                  <h4><b> {{ isset($post_last->printers_id)  ? 'Printer '.$post_last->printers_id.':' : '' }} {{ $post_last->title }}</b></h4>
                                                 {{--Print name of a user who created a post--}}
-                                                <h5 class="media-heading"> {{App\Staff::where('id', $post_last->staff_id)->first()->first_name}}
-                                                                            {{App\Staff::where('id', $post_last->staff_id)->first()->last_name}} <small><i>
+                                                <h5 class="media-heading"> {{App\staff::where('id', $post_last->staff_id)->first()->first_name}}
+                                                                            {{App\staff::where('id', $post_last->staff_id)->first()->last_name}} <small><i>
                                                 {{--Print date and time when a post was created--}}
                                                 Posted {{ $post_last->created_at->diffForHumans() }}:</i></small></h5>
                                                 {{--Print the text of a post--}}
@@ -245,13 +245,13 @@
                                 {{--Print title of a post--}}
                                 <h4><b>{{ isset($post->printers_id)  ? 'Printer '.$post->printers_id.':' : '' }} {{ $post->title }}</b></h4>
                                 {{--Print name of a user who created a post--}}
-                                <h5 class="media-heading"> {{App\Staff::where('id', $post->staff_id)->first()->first_name}}
-                                                            {{App\Staff::where('id', $post->staff_id)->first()->last_name}}<small><i>
+                                <h5 class="media-heading"> {{App\staff::where('id', $post->staff_id)->first()->first_name}}
+                                                            {{App\staff::where('id', $post->staff_id)->first()->last_name}}<small><i>
                                 {{--Print date and time when a post was created--}}
                                 Posted {{ $post->created_at->diffForHumans() }}:</i></small></h5>
                                 {{--Print the text of a post--}}
                                 <p>{{ $post->body }}</p>
-                                @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\Staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
+                                @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
                                     <a href="/posts/resolve/{{$post->id}}" class="btn btn-primary">Resolve{{ $post->resolved }}</a>
                                 @endif
                                 <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
