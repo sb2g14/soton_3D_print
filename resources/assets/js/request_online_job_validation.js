@@ -44,7 +44,7 @@ $(function () {
         $(target).addClass("parsley-success");
     }
 
-    var check_name = function check_name() {
+    function check_name() {
      var name = $("#customer_name");
      console.log('check_name called');
 
@@ -60,7 +60,7 @@ $(function () {
      }
      check_all_fields();
     };
-    var check_email = function check_email() {
+    function check_email() {
         var email = $("#customer_email");
         console.log('check_email called');
 
@@ -76,7 +76,7 @@ $(function () {
         }
         check_all_fields();
     };
-    var check_id = function check_id() {
+    function check_id() {
         var id = $("#customer_id");
         console.log('check_id called');
 
@@ -98,11 +98,11 @@ $(function () {
         }
         check_all_fields();
     };
-    var check_use_case = function check_use_case() {
+    function check_use_case() {
         var use_case = $("#use_case");
 
         if(use_case.val().length < 3 || use_case.val().length > 15) {
-            addError("#use_case", "Either 9 digit cost code or standard module name are allowed");
+            addError("#use_case", "Either 9 digit university cost code or standard module name are allowed");
             error_use_case = true;
         } else if((!use_case.val().match(/^[A-Z]{3}/) &&
         !use_case.val().match(/^[a-z0-9]+$/i))){
@@ -120,7 +120,7 @@ $(function () {
         }
         check_all_fields();
     };
-    var check_budget_holder = function check_budget_holder() {
+    function check_budget_holder() {
         var budget_holder = $("#budget_holder");
         var use_case = $("#use_case");
         if(!$.isNumeric(use_case.val())){
@@ -138,7 +138,7 @@ $(function () {
         }
         check_all_fields();
     };
-    var check_claim_id = function check_claim_id() {
+    function check_claim_id() {
       var  claim_id = $("#claim_id");
       if(claim_id.val().length !== 16){
           addError("#claim_id", "The claim ID must contain 16 characters");
@@ -152,7 +152,7 @@ $(function () {
       }
         check_all_fields();
     };
-    var check_claim_passcode = function check_claim_passcode() {
+    function check_claim_passcode() {
         var  claim_passcode = $("#claim_passcode");
         if(claim_passcode.val().length !== 16){
             addError("#claim_passcode", "The claim passcode must contain 16 characters");
@@ -166,7 +166,7 @@ $(function () {
         }
         check_all_fields();
     };
-    var check_job_title = function check_job_title() {
+    function check_job_title() {
         var job_title= $("#job_title");
 
         if(job_title.val().length < 8 || job_title.val().length > 256) {
@@ -186,11 +186,10 @@ $(function () {
         "#budget_holder", "#claim_id", "#claim_passcode", "#job_title"];
     var funcs = [check_name, check_email, check_id, check_use_case,
         check_budget_holder, check_claim_id, check_claim_passcode, check_job_title];
-    // alert(html_triggers);
-    alert(funcs);
+
     for(var i = 0; i <= html_triggers.length; i++ ){
-        $(html_triggers[i]).keyup(function () {funcs[i];});
-        $(html_triggers[i]).focusout(function () {funcs[i];});
+        $(html_triggers[i]).keyup(funcs[i]);
+        $(html_triggers[i]).focusout(funcs[i]);
     }
     $("#submit").click(function () {
         for(var i = 0; i <= html_triggers.length; i++ ){
