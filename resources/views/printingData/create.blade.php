@@ -202,9 +202,9 @@
                     the job and not for the whole job.</p>
             </div>
             
-            <div class="hint text-left" data-hint="printer_id">
+            <div class="hint text-left" data-hint="printers_id">
                 <h3 class="text-center lead">If the chosen printer is unavailable</h3>
-                <p>If the printer you have selected is not on the list of available printers this means that it is
+                <p>If the printer you have selected is not in the list of available printers, then it is
                     either broken or scheduled to use for other print. In either case please contact the demonstrator
                     for further information.</p>
             </div>

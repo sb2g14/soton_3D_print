@@ -67,6 +67,12 @@ $(function () {
     $("#minutes").keyup(function () {
         check_time();
     });
+    $("#hours").change(function () {
+        check_time();
+    });
+    $("#minutes").change(function () {
+        check_time();
+    });
 
     $("#student_name").focusout(function () {
         check_student_name();
