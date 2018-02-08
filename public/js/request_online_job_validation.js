@@ -60,55 +60,58 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 56);
+/******/ 	return __webpack_require__(__webpack_require__.s = 58);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 56:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(57);
+module.exports = __webpack_require__(59);
 
 
 /***/ }),
 
-/***/ 57:
+/***/ 59:
 /***/ (function(module, exports) {
 
 $(function () {
-    $("#student_name_error").hide();
-    $("#email_error").hide();
-    $("#student_id_error").hide();
-    $("#material_amount_error").hide();
+    $("#customer_name_error").hide();
+    $("#customer_email_error").hide();
+    $("#customer_id_error").hide();
     $("#use_case_error").hide();
     $("#budget_holder_error").hide();
+    $("#claim_id_error").hide();
+    $("#claim_passcode_error").hide();
     $("#job_title_error").hide();
-    $("#time_error").hide();
 
-    var error_name = true;
-    var error_email = true;
-    var error_id = true;
-    var error_material = true;
+    var error_customer_name = true;
+    var error_customer_email = true;
+    var error_customer_id = true;
     var error_use_case = true;
     var error_budget_holder = true;
+    var error_claim_id = true;
+    var error_claim_passcode = true;
     var error_job_title = true;
-    var error_time = true;
+
+    $(window).load(function () {
+        $("#budget_holder_group").hide();
+        check_all_fields();
+    });
 
     function check_all_fields() {
-        if (!error_name && !error_email && !error_id && !error_material && !error_use_case && !error_budget_holder && !error_job_title && !error_time) {
+        if (!error_customer_name && !error_customer_email && !error_customer_id && !error_use_case && !error_budget_holder && error_claim_id && !error_job_title && !error_claim_passcode) {
             $("#submit").addClass("btn-success");
             $("#submit").trigger("cssClassChanged");
             $("#submit").prop('disabled', false);
         } else {
             $("#submit").removeClass("btn-success");
-            //$("#submit").prop('disabled', true);
         }
     }
     function addError(target, message) {
         $(target.concat("_error")).html(message);
         $(target.concat("_error")).show();
-        //$(target).focus();
         $(target).addClass("parsley-error");
     }
     function removeError(target) {
@@ -117,164 +120,61 @@ $(function () {
         $(target).addClass("parsley-success");
     }
 
-    $("#student_name").keyup(function () {
-        check_student_name();
-    });
-    $("#email").keyup(function () {
-        check_email();
-    });
-    $("#student_id").keyup(function () {
-        check_student_id();
-    });
-    $("#material_amount").keyup(function () {
-        check_material_amount();
-    });
-    $("#use_case").keyup(function () {
-        check_use_case();
-    });
-    $("#budget_holder").keyup(function () {
-        check_budget_holder();
-    });
-    $("#job_title").keyup(function () {
-        check_job_title();
-    });
-    $("#hours").keyup(function () {
-        check_time();
-    });
-    $("#minutes").keyup(function () {
-        check_time();
-    });
-    $("#hours").change(function () {
-        check_time();
-    });
-    $("#minutes").change(function () {
-        check_time();
-    });
-
-    $("#student_name").focusout(function () {
-        check_student_name();
-    });
-    $("#email").focusout(function () {
-        check_email();
-    });
-    $("#student_id").focusout(function () {
-        check_student_id();
-    });
-    $("#material_amount").focusout(function () {
-        check_material_amount();
-    });
-    $("#use_case").focusout(function () {
-        check_use_case();
-    });
-    $("#hours").focusout(function () {
-        evaluate_price();
-        check_time();
-    });
-    $("#minutes").focusout(function () {
-        evaluate_price();
-        check_time();
-    });
-    $("#material_amount").focusout(function () {
-        evaluate_price();
-    });
-    $("#budget_holder").focusout(function () {
-        check_budget_holder();
-    });
-    $("#job_title").focusout(function () {
-        check_job_title();
-    });
-    $(window).load(function () {
-        check_student_name();
-        check_email();
-        check_student_id();
-        check_time();
-        $("#budget_holder_group").hide();
-    });
-
-    function check_student_name() {
-        var name = $("#student_name");
+    var check_name = function check_name() {
+        var name = $("#customer_name");
+        console.log('check_name called');
 
         if (name.val().length < 3 || name.val().length > 100) {
-            addError("#student_name", "The name should be between 2 and 20 characters");
-            error_name = true;
+            addError("#customer_name", "The name should be between 2 and 20 characters");
+            error_customer_name = true;
         } else if (!name.val().match(/^[a-z ,.'-]+$/i)) {
-            addError("#student_name", "Only letters and hyphens(-) are allowed");
-            error_name = true;
+            addError("#customer_name", "Only letters and hyphens(-) are allowed");
+            error_customer_name = true;
         } else {
-            removeError("#student_name");
-            error_name = false;
+            removeError("#customer_name");
+            error_customer_name = false;
         }
         check_all_fields();
-    }
-
-    function check_email() {
-        var email = $("#email");
+    };
+    var check_email = function check_email() {
+        var email = $("#customer_email");
+        console.log('check_email called');
 
         if (email.val().length < 11 || email.val().length > 30) {
-            addError("#email", "Email is too short or too long");
-            error_email = true;
+            addError("#customer_email", "Email is too short or too long");
+            error_customer_email = true;
         } else if (!email.val().match(/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/)) {
-            addError("#email", "Only @soton.ac.uk emails are allowed");
-            error_email = true;
+            addError("#customer_email", "Only @soton.ac.uk emails are allowed");
+            error_customer_email = true;
         } else {
-            removeError("#email");
-            error_email = false;
+            removeError("#customer_email");
+            error_customer_email = false;
         }
         check_all_fields();
-    }
-    function check_student_id() {
-        var id = $("#student_id");
+    };
+    var check_id = function check_id() {
+        var id = $("#customer_id");
+        console.log('check_id called');
 
         if (id.val().length < 1) {
-            addError("#student_id", "Id cannot be empty");
-            error_id = true;
+            addError("#customer_id", "Id cannot be empty");
+            error_customer_id = true;
         } else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
-            addError("#student_id", "Id of a member of staff must be 8 digits long");
-            error_id = true;
+            addError("#customer_id", "Id of a member of staff must be 8 digits long");
+            error_customer_id = true;
         } else if (id.val()[0].match(/^[2345]/) && id.val().length !== 9) {
-            addError("#student_id", "The id of students must be 9 digits long");
-            error_id = true;
+            addError("#customer_id", "The id of students must be 9 digits long");
+            error_customer_id = true;
         } else if (!id.val().match(/^[0-9]+$/)) {
-            addError("#student_id", "Only digits are allowed");
-            error_id = true;
+            addError("#customer_id", "Only digits are allowed");
+            error_customer_id = true;
         } else {
-            removeError("#student_id");
-
-            error_id = false;
+            removeError("#customer_id");
+            error_customer_id = false;
         }
         check_all_fields();
-    }
-    function check_time() {
-        var varhours = $("#hours").find(":selected").text();
-        var varminutes = $("#minutes").find(":selected").text();
-        if (varhours === "Hours" || varminutes === "Minutes") {
-            addError("#time", "Please set the printing time");
-            error_time = true;
-        } else if (parseInt(varhours) + parseInt(varminutes) == 0) {
-            addError("#time", "The printing time cannot be zero");
-            error_time = true;
-        } else {
-            removeError("#time");
-            error_time = false;
-        }
-        check_all_fields();
-    }
-    function check_material_amount() {
-        var material = $("#material_amount");
-
-        if (material.val().length < 1) {
-            addError("#material_amount", "The value must be between 0.1 and 9999 in grams");
-            error_material = true;
-        } else if (!material.val().match(/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/)) {
-            addError("#material_amount", "The value must be between 0.1 and 9999 in grams");
-            error_material = true;
-        } else {
-            removeError("#material_amount");
-            error_material = false;
-        }
-        check_all_fields();
-    }
-    function check_use_case() {
+    };
+    var check_use_case = function check_use_case() {
         var use_case = $("#use_case");
 
         if (use_case.val().length < 3 || use_case.val().length > 15) {
@@ -291,12 +191,11 @@ $(function () {
             } else {
                 $("#budget_holder_group").show();
                 check_budget_holder();
-                //$("#use_case").focus();
             }
         }
         check_all_fields();
-    }
-    function check_budget_holder() {
+    };
+    var check_budget_holder = function check_budget_holder() {
         var budget_holder = $("#budget_holder");
         var use_case = $("#use_case");
         if (!$.isNumeric(use_case.val())) {
@@ -313,8 +212,36 @@ $(function () {
             error_budget_holder = false;
         }
         check_all_fields();
-    }
-    function check_job_title() {
+    };
+    var check_claim_id = function check_claim_id() {
+        var claim_id = $("#claim_id");
+        if (claim_id.val().length !== 16) {
+            addError("#claim_id", "The claim ID must contain 16 characters");
+            error_claim_id = true;
+        } else if (!claim_id.val().match(/^[a-zA-Z0-9-]+$/i)) {
+            addError("#claim_id", "Only alpha-numeric characters are allowed");
+            error_claim_id = true;
+        } else {
+            removeError("#claim_id");
+            error_claim_id = false;
+        }
+        check_all_fields();
+    };
+    var check_claim_passcode = function check_claim_passcode() {
+        var claim_passcode = $("#claim_passcode");
+        if (claim_passcode.val().length !== 16) {
+            addError("#claim_passcode", "The claim passcode must contain 16 characters");
+            error_claim_passcode = true;
+        } else if (!claim_passcode.val().match(/^[a-zA-Z0-9-]+$/i)) {
+            addError("#claim_passcode", "Only alpha-numeric characters are allowed");
+            error_claim_passcode = true;
+        } else {
+            removeError("#claim_passcode");
+            error_claim_passcode = false;
+        }
+        check_all_fields();
+    };
+    var check_job_title = function check_job_title() {
         var job_title = $("#job_title");
 
         if (job_title.val().length < 8 || job_title.val().length > 256) {
@@ -327,25 +254,26 @@ $(function () {
             removeError("#job_title");
             error_job_title = false;
         }
-    }
+        check_all_fields();
+    };
 
-    function evaluate_price() {
-        if (error_material === false && $("#hours") != null && $("#minutes" != null)) {
-            var $price = (3 * (parseInt($("#hours").val()) + parseInt($("#minutes").val()) / 60) + 5 * parseFloat($("#material_amount").val()) / 100).toFixed(2);
-            $("#price").html($price);
-        }
+    var html_triggers = ["#customer_name", "#customer_email", "#customer_id", "#use_case", "#budget_holder", "#claim_id", "#claim_passcode", "#job_title"];
+    var funcs = [check_name, check_email, check_id, check_use_case, check_budget_holder, check_claim_id, check_claim_passcode, check_job_title];
+    // alert(html_triggers);
+    alert(funcs);
+    for (var i = 0; i <= html_triggers.length; i++) {
+        $(html_triggers[i]).keyup(function () {
+            funcs[i];
+        });
+        $(html_triggers[i]).focusout(function () {
+            funcs[i];
+        });
     }
     $("#submit").click(function () {
-        $("#student_name_error").hide();
-        $("#email_error").hide();
-        $("#student_id_error").hide();
-        $("#material_amount_error").hide();
-        $("#use_case_error").hide();
-        $("#student_name").removeClass("parsley-success");
-        $("#email").removeClass("parsley-success");
-        $("#student_id").removeClass("parsley-success");
-        $("#material_amount").removeClass("parsley-success");
-        $("#submit").removeClass("btn-success");
+        for (var i = 0; i <= html_triggers.length; i++) {
+            $(html_triggers[i]).hide();
+            $(html_triggers[i]).removeClass("parsley-success");
+        }
     });
 });
 
