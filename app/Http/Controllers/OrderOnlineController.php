@@ -498,7 +498,8 @@ class OrderOnlineController extends Controller
 
         // Change the job flag to 'Failed'
         $job->update(array(
-            'status' => 'Failed'
+            'status' => 'Failed',
+            'job_finished_by' => Auth::user()->staff->id
         ));
 
         // Send an email to the customer
@@ -519,7 +520,8 @@ class OrderOnlineController extends Controller
 
         // Change the job flag to 'Success'
         $job->update(array(
-            'status' => 'Success'
+            'status' => 'Success',
+            'job_finished_by' => Auth::user()->staff->id
         ));
 
         // Send an email notification to the customer

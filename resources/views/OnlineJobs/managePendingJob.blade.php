@@ -83,10 +83,19 @@
 
                 <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Back</a>
 
-                <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If the requested job
+
+                @if($query_in_progress == null)
+                    <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If the requested job
                 cannot be printed for some reason, please click on this button and provide an explanation for the customer.">
                     <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed/Cancel Job</button>
                 </span>
+                @else
+                    <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If the requested job
+                cannot be printed for some reason, please click on this button and provide an explanation for the customer. Please finish all the started prints before doing so.">
+                    <a href="#" class="btn btn-lg btn-danger" data-placement="top" data-toggle="popover" data-trigger="hover"
+                            data-content="You cannot mark this job as failed because you still have some unfinished prints." disabled>Job Failed/Cancel Job</a>
+                </span>
+                @endif
 
                 @if($query_in_progress == null & $query_success !== null)
                     <a href="/OnlineJobs/jobSuccess/{{$job->id}}" class="btn btn-lg btn-success" data-placement="top"
