@@ -29,7 +29,7 @@
                     <p>Printer serial number: <b>{{$printer->serial_no}}</b></p>
                     <p>Date added: <b>{{$printer->created_at->toDayDateTimeString()}}</b></p>
                     @if($printer->updated_at)
-                        @if($printer->status === 'Signed out')
+                        @if($printer->printer_status === 'Signed out')
                             <p>Date signed out: <b>{{$printer->updated_at->toDayDateTimeString()}}</b></p>
                         @else
                             <p>Last updated: <b>{{$printer->updated_at->toDayDateTimeString()}}</b></p>
@@ -115,7 +115,7 @@
                         @endphp
                         <a href="mailto:{{$lastUserEmail}}">{{$lastUser}}</a>
                     </p>
-                    <p>@if($printer->status !== 'Broken' && $printer->status !== 'Missing' && $printer->status !== 'Signed out')
+                    <p>@if($printer->printer_status !== 'Broken' && $printer->printer_status !== 'Missing' && $printer->printer_status !== 'Signed out')
                             There are no issues with this printer.
                         @else
                            Current issue:
@@ -142,9 +142,22 @@
     </li>
     @endif
     @php
+        //collect all prints and loans
         $printdata = $printer->prints()->select('created_at AS StartDate', 'updated_at AS EndDate','purpose AS Type','status AS Description', 'id as EntryID');
+        //collect all issues
         $issuedata = $printer->fault_data()->select('created_at AS StartDate', 'resolved_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'id as EntryID');
-        $historydata = $printdata->unionAll($issuedata)->orderBy('StartDate', 'DESC')->get();
+        //combine them
+        $historydata = $printdata->unionAll($issuedata);
+        //collect all issue updates
+        $issueupdatedata = $printer->fault_data()->orderBy('created_at','desc')->where('resolved',0)->first();
+        if($issueupdatedata){
+            $issueupdatedata = $issueupdatedata->FaultUpdates()->select('created_at AS StartDate', 'updated_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'fault_data_id as EntryID');
+            //combine since there are issues
+            $historydata = $historydata->unionAll($issueupdatedata);
+        }
+        //sort entries
+        $historydata = $historydata->orderBy('StartDate', 'DESC')->get();
+
     @endphp
     @php
         $lastEntry = null;
