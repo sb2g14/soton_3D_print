@@ -21,7 +21,7 @@
             <tr>
                 <th>#</th>
                 <th>Requested by</th>
-                <th>Project/Cost Code</th>
+                <th>Job Title</th>
                 <th>Estimated cost</th>
                 <th>Job controls</th>
             </tr>
@@ -31,7 +31,7 @@
                 <tr class="text-left">
                     <td data-th="Job ID">{{$job->id}}</td>
                     <td data-th="Requested by">{{$job->customer_name}}</td>
-                    <td data-th="Project/Cost Code">{{ $job->use_case}}</td>
+                    <td data-th="Job Title">{{ $job->job_title}}</td>
                     <td data-th="Estimated cost">£{{ $job->total_price }}</td>
                     <td data-th="Job controls"  title="Job controls" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="Depending on customer reply you can either start assigning prints by clicking on Customer Approved button or cancel the job by clicking on Customer Reject button. To check the job details please click on Manage button.">
                         <a href="/OnlineJobs/manageApproved/{{$job->id}}" class="btn btn-info">Manage</a>

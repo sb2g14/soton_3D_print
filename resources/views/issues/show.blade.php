@@ -117,6 +117,8 @@
                     </p>
                     <p>@if($printer->printer_status !== 'Broken' && $printer->printer_status !== 'Missing' && $printer->printer_status !== 'Signed out')
                             There are no issues with this printer.
+                       @elseif($printer->printer_status === 'Signed out')
+                            The printer is signed out from the workshop.
                         @else
                            Current issue:
                             <b>{{$printer->fault_data()->orderBy('updated_at','desc')->first()->body}}</b>

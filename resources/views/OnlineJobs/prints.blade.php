@@ -83,7 +83,7 @@
                         @if($print->status == 'Success' || $print->status == 'Failed')
                             <tr class="text-left">
                                 <td data-th="ID">{{ $print->id }}</td>
-                                <td data-th="Printer No">{{ $print->printers_id }}</td>
+                                <td data-th="Printer No"><a href="/issues/show/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
                                 <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }} {{ $job->job_title }} <br> @endforeach</td>
                                 <td data-th="Started by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                                 <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%m') }}</td>
