@@ -1,3 +1,10 @@
+#ignore system files
+Thumbs.db
+.DS_Store*
+desktop.ini
+#don't place databases on GitHub!
+*.sql
+#old ignore commands
 /node_modules
 /public/hot
 /public/storage
