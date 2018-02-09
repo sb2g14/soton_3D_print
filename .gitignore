@@ -1,11 +1,32 @@
+# System files Mac
+._*
+Thumbs.db
+.DS_Store*
+
+# System files Windows
+Desktop.ini
+
+# SQL databases
+*.sql
+
+# Composer specific
+composer.phar
+/vendor/
+
+# Laravel specific
 /node_modules
-/public/hot
-/public/storage
-/storage/*.key
 /vendor
+npm-debug.log
+
+# Laravel 5 specific
+storage/*.key
+.env.*.php
+.env.php
+.env
+Homestead.yaml
+Homestead.json
+
+#other ignores
 /.idea
 /.vagrant
-Homestead.json
-Homestead.yaml
-npm-debug.log
-.env
+
