@@ -19,7 +19,7 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Project</th>
+                    <th>Job title</th>
                     <th>Requested on</th>
                     <th>Last updated</th>
                     <th>Job controls</th>
@@ -30,7 +30,7 @@
                     <tr class="text-center">
                         <td data-th="#">{{ $job->id }}</td>
                         <td data-th="Name">{{$job->customer_name}}</td>
-                        <td data-th="Project name">{{$job->use_case}}</td>
+                        <td data-th="Job title">{{$job->job_title}}</td>
                         <td data-th="Requested on">{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</td>
                         <td data-th="Accepted on">{{ Carbon\Carbon::parse($job->updated_at)->diffForHumans() }}</td>
                         <td data-th="Job controls">

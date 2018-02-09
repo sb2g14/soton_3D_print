@@ -37,7 +37,7 @@
                     <th>Created</th>
                     <th>Finished</th>
                     <th>Approved by</th>
-                    <th>Project Name</th>
+                    <th>Job Title</th>
                     <th>Status</th>
                     {{--@hasanyrole('LeadDemonstrator|administrator|OnlineJobsManager')--}}
                     {{--<th>Edit</th>--}}
@@ -58,7 +58,7 @@
                         <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</td>
                         <td data-th="Last updated on">{{ Carbon\Carbon::parse($job->updated_at)->formatLocalized('%d %b, %H:%m') }}</td>
                         <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
-                        <td data-th="Project Name">{{ $job->use_case  }}</td>
+                        <td data-th="Job Title">{{ $job->job_title }}</td>
                         @if ($job->status === 'Success')
                             <td data-th="Status" class="success">{{ $job->status }}</td>
                         @elseif ($job->status === 'Failed')

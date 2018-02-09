@@ -18,6 +18,7 @@
                 <tr>
                     <th>#</th>
                     <th>Requested by</th>
+                    <th>Job Title</th>
                     <th>Project/Cost Code</th>
                     <th>Requested on</th>
                     <th></th>
@@ -28,6 +29,7 @@
                     <tr class="text-left">
                         <td data-th="Job ID">{{$job->id}}</td>
                         <td data-th="Requested by">{{$job->customer_name}}</td>
+                        <td data-th="Job Title">{{ $job->job_title }}</td>
                         <td data-th="Project/Cost Code">{{ $job->use_case}}</td>
                         <td data-th="Requested on">{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</td>
                         <td><a href="/OnlineJobs/checkrequest/{{$job->id}}" class="btn btn-info">Manage</a></td>
