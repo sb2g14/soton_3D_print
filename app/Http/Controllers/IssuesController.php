@@ -201,7 +201,7 @@ class IssuesController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
     public function select()
     {

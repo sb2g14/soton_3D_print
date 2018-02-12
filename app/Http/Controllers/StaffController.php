@@ -185,7 +185,7 @@ class StaffController extends Controller
             $user->syncRoles(['OldDemonstrator']);
         }
         // Update record in staff table
-        staff::where('id','=', $id)->update(array('role'=> 'Former member'));
+        staff::where('id','=', $id)->update(array('role'=> 'Former member', 'phone' => 'unknown'));
         session()->flash('message', 'The record has been deleted');
 
         return redirect('/members/index');

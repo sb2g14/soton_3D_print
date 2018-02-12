@@ -39,9 +39,11 @@
                     @endforeach
                 </ul>
             @endif
+            @if($issue->resolved === 0)
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#update">Update</button>
             <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#resolve">Resolve</button>
-            <a id="buttons" href="/issues/index" class="btn btn-danger">Go back</a>
+            @endif
+            <a id="buttons" href="/issues/index" class="btn btn-danger">See all issues</a>
 
 
             <div id="update" class="card collapse">
