@@ -222,7 +222,7 @@ class OrderOnlineController extends Controller
             ]);
 
         // create a print from the specified details
-        $time = $assigned_print_preview["hours"].':'.sprintf('%02d', $assigned_print_preview["minutes"]); // Created printing time
+        $time = $assigned_print_preview["hours"].':'.sprintf('%02d', $assigned_print_preview["minutes"]).':00'; // Created printing time
         // Create price
         $price = round(3 * ($assigned_print_preview["hours"] + $assigned_print_preview["minutes"] / 60) +
             5 * $assigned_print_preview["material_amount"] / 100, 2);
@@ -284,7 +284,7 @@ class OrderOnlineController extends Controller
             $total_minutes = $total_minutes + $minutes;
         }
         // Coming back to hours and minutes
-        $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
+        $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60).':00';
 
         // Remove print previews from the database
         $prints = $job->prints;
@@ -429,7 +429,7 @@ class OrderOnlineController extends Controller
         ]);
 
         // create a print from the specified details
-        $time = $assigned_print["hours"].':'.sprintf('%02d', $assigned_print["minutes"]); // Created printing time
+        $time = $assigned_print["hours"].':'.sprintf('%02d', $assigned_print["minutes"]).':00'; // Created printing time
         // Create price
         $price = round(3 * ($assigned_print["hours"] + $assigned_print["minutes"] / 60) +
             5 * $assigned_print["material_amount"] / 100, 2);
