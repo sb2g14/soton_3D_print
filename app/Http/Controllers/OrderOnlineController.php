@@ -134,10 +134,10 @@ class OrderOnlineController extends Controller
                 'max:64'
             ],
             'budget_holder' => [
-                'string',
-                'min:3',
+                //'string',
+                //'min:3',
                 'max:100',
-                new CustomerNameValidation
+                //new CustomerNameValidation
             ]
         ]);
 
