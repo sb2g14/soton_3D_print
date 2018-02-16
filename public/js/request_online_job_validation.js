@@ -353,18 +353,21 @@ module.exports = {
          *also sets the Error on the specified field. The error div needs to have
          *the identical fieldname but with _error appended.*/
         var localerror = true;
-        var message = $(fieldname);
+        var message = $(fieldname).val();
 
-        if (message.val().length < 8 || message.val().length > maxlength) {
+        if (message.length < 8 || message.length > maxlength) {
             module.exports.addError(fieldname, "The message must be between 8 and " + maxlength + " characters long");
             localerror = true;
+        } else if (!message.match(/^[a-z A-Z0-9-.,!?()/']+$/)) {
+            module.exports.addError(fieldname, "No special characters are allowed");
+            localerror = true;
         } else {
-            $(fieldname.concat("_error").html("Remaining characters : " + (maxlength - message.val().length)));
+            $(fieldname.concat("_error")).html("Remaining characters : " + (maxlength - message.length));
+            $(fieldname.concat("_error")).show();
             $(fieldname).removeClass("parsley-error");
             $(fieldname).addClass("parsley-success");
             localerror = false;
         }
-        //check_all_fields();
         return localerror;
     },
     check_message_long: function check_message_long(fieldname) {
