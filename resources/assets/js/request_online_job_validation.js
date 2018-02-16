@@ -1,4 +1,6 @@
-$(function () {
+// import {check_name} from './validations'; // or './module'
+const validations = require('./validations');
+$(document).ready(function() {
     $("#customer_name_error").hide();
     $("#customer_email_error").hide();
     $("#customer_id_error").hide();
@@ -33,6 +35,7 @@ $(function () {
             $("#submit").removeClass("btn-success");
         }
     }
+    /*
     function addError(target, message){
         $(target.concat("_error")).html(message);
         $(target.concat("_error")).show();
@@ -186,15 +189,48 @@ $(function () {
         "#budget_holder", "#claim_id", "#claim_passcode", "#job_title"];
     var funcs = [check_name, check_email, check_id, check_use_case,
         check_budget_holder, check_claim_id, check_claim_passcode, check_job_title];
-
-    for(var i = 0; i <= html_triggers.length; i++ ){
-        $(html_triggers[i]).keyup(funcs[i]);
-        $(html_triggers[i]).focusout(funcs[i]);
+        */
+    //var html_triggers = ["#customer_name"];
+    //var funcs = [validations.check_name];
+    var wrapFunction = function(fn, context, params) {
+        return function() {
+            fn.apply(context, params);
+        };
     }
+    var funCN = wrapFunction(validations.check_name, validations, ["#customer_name"]);
+    var funCE = wrapFunction(validations.check_email, validations, ["#customer_email"]);
+
+
+    var html_triggers = {"#customer_name":funCN,
+        "#customer_email":funCE};/*
+        "#customer_id":validations.check_university_id_number(),
+        "#use_case":validations.check_cost_code(),
+        "#budget_holder":validations.check_budget_holder(),
+        "#claim_id":validations.check_claim_id(),
+        "#claim_passcode":validations.check_claim_passcode(),
+        "#job_title":validations.check_job_title()
+    };*/
+    var errors = [true,true];//,true,true,true,true,true,true];
+    var i = 0;
+    for(var trigger in html_triggers){
+        $(trigger).keyup(function(){errors[i] = html_triggers[trigger]()});
+        $(trigger).focusout(function(){errors[i] = html_triggers[trigger]()
+        });
+        i++;
+    }
+/*
+    $("#customer_name").keyup(function(){
+        errors[0] = validations.check_name("#customer_name");
+    });*/
+/*
+    for(var i = 0; i <= html_triggers.length; i++ ){
+        $(html_triggers[i]).keyup(function(){errors[i] = funcs[i](html_triggers[i])});
+        $(html_triggers[i]).focusout(function(){errors[i] = funcs[i](html_triggers[i])});
+    }*/
     $("#submit").click(function () {
-        for(var i = 0; i <= html_triggers.length; i++ ){
-            $(html_triggers[i]).hide();
-            $(html_triggers[i]).removeClass("parsley-success");
+        for(var trigger in html_triggers){
+            $(trigger).hide();
+            $(trigger).removeClass("parsley-success");
         }
     });
 });
