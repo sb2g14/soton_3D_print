@@ -245,6 +245,15 @@
                 <p>If you are a PhD student, postdoc or an academic, please input the Cost Code that will be charged for
                     the current print. If in doubt or if you have any questions, please contact the demonstrator.</p>
             </div>
+            <div class="hint text-left" data-hint="budget_holder">
+                <h3 class="text-center lead">Budget Holder</h3>
+                <p>Please provide the name of the budget holder of the university cost code you entered.</p>
+                <p>If you are unsure who is your the budget holder please ask Finance Office.</p>
+            </div>
+            <div class="hint text-left" data-hint="job_title">
+                <h3 class="text-center lead">Job Title</h3>
+                <p>Please provide a title for your print. This will appear to the module coordinator/ cost code budget holder as the cost of the print is claimed.</p>
+            </div>
             <div class="hint text-left after-filling" data-hint="final">
                 <h3 class="text-center lead">The estimated cost of the print</h3>
                 <p>The cost of your print is £ <span id="price-final" style="color: red;"></span></p>

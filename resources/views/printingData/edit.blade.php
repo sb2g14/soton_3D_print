@@ -27,6 +27,7 @@
                         Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @else <b style="color: red"> @endif {{$job->cost_code}} </b><br>
                         Comment: <b>{{$job->job_approved_comment}}</b><br>
                         Job number: <b>{{$job->id}}</b><br>
+                        Job title: <b>{{$job->job_title}}</b>
                         Status: <b>{{$job->status}}</b>
                     </p>
                 </div>

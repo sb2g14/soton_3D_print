@@ -54,7 +54,16 @@
                         <td data-th="Days out of Order">{{ \Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at) }}</td>
                         <td data-th="Title">{{ isset($issue->title) ? $issue->title : "Issue with printer ".$issue->printers_id }}</td>
                         <td data-th="Message">{{ $issue->body }}</td>
-                        <td data-th="Modify"><a href="/issues/update/{{$issue->id}}" class="btn btn-info">Update/Resolve</a></td>
+                        <td data-th="Modify"><a href="/issues/update/{{$issue->id}}" class="btn btn-info">
+                                Update/Resolve</a>
+                        </td>
+                        {{--<td>--}}{{--@if($issue->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))--}}
+                            {{--<span data-placement="top" data-toggle="popover" data-trigger="hover"--}}
+                                  {{--data-content="Delete this issue if you created it by accident">--}}
+                                                            {{--<a type="button" id="deletePrint" href="/OnlineJobs/DeletePrint/{{$issue->id}}"--}}
+                                                               {{--class="close" style="color: red">&times;</a>--}}
+                                                    {{--</span>--}}
+                            {{--@endif--}}{{--</td>--}}
                     </tr>
                 @endforeach
             </tbody>

@@ -222,6 +222,8 @@
                                 <div class="col-sm-4">
                                     @if(!$outEndDate)
                                         <a href="/issues/update/{{$lastEntry->EntryID}}" class="btn btn-info">View/Update or Resolve</a>
+                                    @else
+                                        <a href="/issues/update/{{$lastEntry->EntryID}}">View details...</a>
                                     @endif
                                 </div>
                             @endcan
@@ -285,6 +287,8 @@
                         <div class="col-sm-4">
                             @if(!$outEndDate)
                                 <a href="/issues/update/{{$lastEntry->EntryID}}" class="btn btn-info">View/Update or Resolve</a>
+                            @else
+                                <a href="/issues/update/{{$lastEntry->EntryID}}">View details...</a>
                             @endif
                         </div>
                     @endcan

@@ -156,26 +156,25 @@ class PrintingDataController extends Controller
                 'digits_between:8,9',
                 new SotonID,
             ],
-            'use_case' => [
-                'required',
-                new UseCase
-            ],
             'material_amount' => [
                 'required',
                 'numeric',
                 'regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/'
-    ],
+            ],
+            'use_case' => [
+                'required',
+                new UseCase
+            ],
+            'budget_holder' => [
+//               'string',
+                'max:100',
+//                new CustomerNameValidation
+            ],
             'job_title' => [
                 'required',
                 'string',
                 'min:8',
                 'max:256'
-            ],
-            'budget_holder' => [
-                'string',
-                'min:3',
-                'max:100',
-                new CustomerNameValidation
             ]
         ]);
 
@@ -257,7 +256,7 @@ class PrintingDataController extends Controller
         // Calculating printing time from the dropdown
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
-        $time = $hours . ':' . sprintf('%02d', $minutes);
+        $time = $hours . ':' . sprintf('%02d', $minutes).':00';
 
         $material_amount = request('material_amount');
         // Calculation the job price £3 per h + £5 per 100g
@@ -380,7 +379,7 @@ class PrintingDataController extends Controller
 
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
-        $time = $hours.':'.sprintf('%02d', $minutes);
+        $time = $hours.':'.sprintf('%02d', $minutes).':00';
         $material_amount = request('material_amount');
         $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
 
@@ -442,7 +441,7 @@ class PrintingDataController extends Controller
 
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
-        $time = $hours.':'.sprintf('%02d', $minutes);
+        $time = $hours.':'.sprintf('%02d', $minutes).':00';
         $material_amount =request('material_amount');
 
         if (request('successful') == 'Failed') {
