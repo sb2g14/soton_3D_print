@@ -1,4 +1,6 @@
-$(function () {
+const validations = require('./validations');
+$(document).ready(function() {
+//$(function () {
     
     $(window).load(function () {
         $("#budget_holder_group").hide();
@@ -262,7 +264,6 @@ $(function () {
         check_all_fields();
     });
     
-
     function check_all_fields() {
         //could do all checks again
         for (var i = 0; i < html_triggers.length; i++) {

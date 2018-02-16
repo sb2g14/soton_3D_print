@@ -93,13 +93,6 @@ class IssuesController extends Controller
                 'body' => request('body')
             ]);
 
-        $post = new posts;
-        $post -> title = request('title');
-        $post -> body = request('body');
-        $post -> user_id = Auth::user()->id;
-        $post -> printers_id = $printer->id;
-        $post->save();
-
             session()->flash('message', 'The new issue created!');
             session()->flash('alert-class', 'alert-success');
 

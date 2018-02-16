@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\jobSuccess;
-use App\Rules\Alphanumeric;
 use App\Rules\SotonEmail;
 use App\Rules\SotonID;
-use App\Rules\SotonIdMinMax;
 use App\Rules\UseCase;
 use App\Rules\Printer;
 use App\User;
@@ -92,8 +90,24 @@ class OrderOnlineController extends Controller
     // The online job request is validated, stored in a DB and the online job manager notified via email
     public function store()
     {
-        // Validate the online request
-        $online_request = request()->validate([
+        // Store an online request
+        $online_request = request();
+
+        // Overwrite the budget holder if known
+        // check the module shortage exists
+        $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
+        if ($query !== null){
+            // If shortage exists, then populate budget holder with the DB data
+            $online_request['budget_holder'] = $query->holder;
+        }
+        // check that cost code exists
+        $query = cost_code::all()->where('cost_code','=',strtoupper($online_request['use_case']))->first();
+        if ($query !== null){
+            // If cost code exists, then populate budget holder with the DB data
+            $online_request['budget_holder'] = $query->holder;
+        }
+
+        $online_request = $online_request->validate([
             'customer_name' => [
                 'required',
                 'string',
@@ -134,10 +148,11 @@ class OrderOnlineController extends Controller
                 'max:64'
             ],
             'budget_holder' => [
-                //'string',
-                //'min:3',
+                'required',
+                'string',
+                'min:3',
                 'max:100',
-                //new CustomerNameValidation
+                new CustomerNameValidation
             ]
         ]);
 
@@ -157,23 +172,20 @@ class OrderOnlineController extends Controller
             $payment_category = 'undergraduate';
         }
 
-        // Define a cost code
+        // Define the use case
         // check the module shortage exists
         $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
         if ($query !== null){
             // If shortage exists, then populate cost code and shortage with the DB data
             $cost_code = $query->value('cost_code');
             $use_case = strtoupper($online_request['use_case']);
-            $budget_holder = $query->holder;
         } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
             $query = cost_code::all()->where('cost_code','=',$online_request['use_case'])->first();
             $cost_code = $online_request['use_case'];
             if ($query !== null){ // The cost code was found. Set a corresponding flag
                 $use_case = 'Cost Code - approved';
-                $budget_holder = $query->holder;
-                } else { // The cost code was not found. Set a corresponding flag
+            } else { // The cost code was not found. Set a corresponding flag
                 $use_case = 'Cost Code - unknown';
-                $budget_holder = $online_request['budget_holder'];
             }
         }
 
@@ -186,7 +198,7 @@ class OrderOnlineController extends Controller
             'requested_online' => 1,
             'status' => 'Waiting',
             'job_title' => $online_request['job_title'],
-            'budget_holder' => $budget_holder
+            'budget_holder' => $online_request['budget_holder']
             ));
 
         // Send an email to the 3d print account
