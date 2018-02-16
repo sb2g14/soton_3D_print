@@ -21,13 +21,13 @@ module.exports = {
         var name = $(fieldname);
 
         if (name.val().length < 3 || name.val().length > 100) {
-            this.addError(fieldname, "The name should be between 2 and 20 characters");
+            module.exports.addError(fieldname, "The name should be between 2 and 20 characters");
             localerror = true;
         } else if (!name.val().match(/^[a-z ,.'-]+$/i)) {
-            this.addError(fieldname, "Only letters and hyphens(-) are allowed");
+            module.exports.addError(fieldname, "Only letters and hyphens(-) are allowed");
             localerror = true;
         } else {
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         }
         //check_all_fields();
@@ -42,13 +42,13 @@ module.exports = {
         var email = $(fieldname);
 
         if(email.val().length < 11 || email.val().length > 30){
-            this.addError(fieldname,"Email is too short or too long");
+            module.exports.addError(fieldname,"Email is too short or too long");
             localerror = true;
         } else if(!email.val().match(/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/)){
-            this.addError(fieldname, "Only @soton.ac.uk emails are allowed");
+            module.exports.addError(fieldname, "Only @soton.ac.uk emails are allowed");
             localerror = true;
         } else {
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         }
         //check_all_fields();
@@ -60,22 +60,25 @@ module.exports = {
          *Also sets the Error on the specified field. The error div needs to have
          *the identical fieldname but with _error appended.*/
         var localerror = true;
-        var id = $(fieldname);
+        var id = $(fieldname).val();
 
-        if(id.val().length < 1){
-            this.addError(fieldname, "Id cannot be empty");
+        if(id.length < 1){
+            module.exports.addError(fieldname, "Id cannot be empty");
             localerror = true;
-        }else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
-            this.addError(fieldname, "Id of a member of staff must be 8 digits long");
+        }else if (id[0].match(/^[1]/) && id.length !== 8) {
+            module.exports.addError(fieldname, "Id of a member of staff must be 8 digits long");
             localerror = true;
-        }else if (id.val()[0].match(/^[2345]/) && id.val().length !== 9) {
-            this.addError(fieldname, "The id of students must be 9 digits long");
+        }else if (id[0].match(/^[2345]/) && id.length !== 9) {
+            module.exports.addError(fieldname, "The id of students must be 9 digits long");
             localerror = true;
-        }else if (!id.val().match(/^[0-9]+$/)) {
-            this.addError(fieldname, "Only digits are allowed");
+        }else if (!id.match(/^[0-9]+$/)) {
+            module.exports.addError(fieldname, "Only digits are allowed");
+            localerror = true;
+        }else if(id[0].match(/^[67890]/)){
+            module.exports.addError(fieldname, "This does not seem to be a valid university ID");
             localerror = true;
         }else{
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         }
         //check_all_fields();
@@ -90,16 +93,30 @@ module.exports = {
         var phone = $(fieldname);
 
         if(!phone.val().length === 11){
-            this.addError(fieldname, "The phone number must be 11 digits long");
+            module.exports.addError(fieldname, "The phone number must be 11 digits long");
             localerror = true;
         } else if(!phone.val().match(/^\d{11}$/)) {
-            this.addError(fieldname, "Only numbers are allowed");
+            module.exports.addError(fieldname, "Only numbers are allowed");
             localerror = true;
         } else {
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         }
         //check_all_fields();
+        return localerror;
+    },
+    check_printer_number: function (fieldname) {
+        /*checks that a printer number has been selected from the drop-down list*/
+        var localerror = true;
+        var printerno = $(fieldname).find(":selected").text();
+
+        if (!isNaN(parseFloat(printerno)) && isFinite(printerno)){
+            module.exports.removeError(fieldname);
+            localerror = false;
+        } else {
+            module.exports.addError(fieldname, "Please select a printer number");
+            localerror = true;
+        }
         return localerror;
     },
 
@@ -114,13 +131,13 @@ module.exports = {
         var varhours = $(hrsdropdown).find(":selected").text();
         var varminutes = $(mindropdown).find(":selected").text();
         if (varhours === "Hours" || varminutes === "Minutes"){
-            this.addError(group, "Please set the printing time");
+            module.exports.addError(group, "Please set the printing time");
             localerror = true;
         } else if(parseInt(varhours) + parseInt(varminutes) == 0){
-            this.addError(group, "The printing time cannot be zero");
+            module.exports.addError(group, "The printing time cannot be zero");
             localerror = true;
         } else {
-            this.removeError(group);
+            module.exports.removeError(group);
             localerror = false;
         }
         //check_all_fields();
@@ -135,13 +152,13 @@ module.exports = {
         var material = $(fieldname);
 
         if(material.val().length < 1){
-            this.addError(fieldname, "The value must be between 0.1 and 9999 in grams");
+            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams");
             localerror = true;
         } else if (!material.val().match(/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/)) {
-            this.addError(fieldname, "The value must be between 0.1 and 9999 in grams");
+            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams");
             localerror = true;
         } else {
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         }
         //check_all_fields();
@@ -159,24 +176,23 @@ module.exports = {
         var use_case = $(fieldname);
 
         if(use_case.val().length < 3 || use_case.val().length > 15) {
-            this.addError(fieldname, "Either 9 digit university cost code or standard module name are allowed");
+            module.exports.addError(fieldname, "Either 9 digit university cost code or standard module name are allowed");
             localerror = true;
         } else if((!use_case.val().match(/^[A-Z]{3}/) &&
         !use_case.val().match(/^[a-z0-9]+$/i))){
-            this.addError(fieldname, "Either 9 digit cost code or standard module name are allowed");
+            module.exports.addError(fieldname, "Either 9 digit cost code or standard module name are allowed");
             localerror = true;
         } else {
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
             if(!$.isNumeric(use_case.val())){
                 //should be like "#budget_holder_group" to hide field and label
                 $(budgetholder.concat("_group")).hide();
             } else {
                 $(budgetholder.concat("_group")).show();
-                this.check_budget_holder(budgetholder,fieldname);
+                module.exports.check_budget_holder(budgetholder,fieldname);
             }
         }
-        //check_all_fields();
         return localerror;
     },
     check_budget_holder: function (fieldname,costcode) {
@@ -189,19 +205,18 @@ module.exports = {
         var budget_holder = $(fieldname);
         var use_case = $(costcode);
         if(!$.isNumeric(use_case.val())){
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         } else if(budget_holder.val().length < 3 || budget_holder.val().length > 100){
-            this.addError(fieldname,"The name should be between 2 and 20 characters");
+            module.exports.addError(fieldname,"The name should be between 2 and 20 characters");
             localerror = true;
         } else if(!budget_holder.val().match(/^[a-z ,.'-]+$/i)){
-            this.addError(fieldname,"Only letters and hyphens(-) are allowed");
+            module.exports.addError(fieldname,"Only letters and hyphens(-) are allowed");
             localerror = true;
         } else {
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         }
-        //check_all_fields();
         return localerror;
     },
 
@@ -212,13 +227,13 @@ module.exports = {
         var localerror = true;
         var claim_id = $(fieldname);
         if(claim_id.val().length !== 16){
-            this.addError(fieldname, "The claim ID must contain 16 characters");
+            module.exports.addError(fieldname, "The claim ID must contain 16 characters");
             localerror = true;
         } else if(!claim_id.val().match(/^[a-zA-Z0-9-]+$/i)){
-            this.addError(fieldname, "Only alpha-numeric characters are allowed");
+            module.exports.addError(fieldname, "Only alpha-numeric characters are allowed");
             localerror = true;
         } else {
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         }
         //check_all_fields();
@@ -231,13 +246,13 @@ module.exports = {
         var localerror = true;
         var claim_passcode = $(fieldname);
         if(claim_passcode.val().length !== 16){
-            this.addError(fieldname, "The claim passcode must contain 16 characters");
+            module.exports.addError(fieldname, "The claim passcode must contain 16 characters");
             localerror = true;
         } else if(!claim_passcode.val().match(/^[a-zA-Z0-9-]+$/i)){
-            this.addError(fieldname, "Only alpha-numeric characters are allowed");
+            module.exports.addError(fieldname, "Only alpha-numeric characters are allowed");
             localerror = true;
         } else {
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         }
         //check_all_fields();
@@ -252,13 +267,13 @@ module.exports = {
         var job_title= $(fieldname);
 
         if(job_title.val().length < 8 || job_title.val().length > 256) {
-            this.addError(fieldname, 'The title should be between 8 and 256 characters');
+            module.exports.addError(fieldname, 'The title should be between 8 and 256 characters');
             localerror = true;
         } else if(!job_title.val().match(/^[a-zA-Z0-9 ,.'-]+$/i)){
-            this.addError(fieldname,"Only these special characters are allowed: ,.'-");
+            module.exports.addError(fieldname,"Only these special characters are allowed: ,.'-");
             localerror = true;
         } else {
-            this.removeError(fieldname);
+            module.exports.removeError(fieldname);
             localerror = false;
         }
         //check_all_fields();
@@ -272,7 +287,7 @@ module.exports = {
         var message = $(fieldname);
 
         if(message.val().length < 8 || message.val().length > maxlength){
-            this.addError(fieldname, "The message must be between 8 and "+maxlength+" characters long");
+            module.exports.addError(fieldname, "The message must be between 8 and "+maxlength+" characters long");
             localerror = true;
         }else{
             $(fieldname.concat("_error").html("Remaining characters : " + (maxlength - message.val().length)));
@@ -285,10 +300,10 @@ module.exports = {
     },
     check_message_long: function (fieldname) {
         var maxlength = 2048;
-        return this.check_message(fieldname,maxlength);
+        return module.exports.check_message(fieldname,maxlength);
     },
     check_message_default: function(fieldname) {
         var maxlength = 300;
-        return this.check_message(fieldname,maxlength);
+        return module.exports.check_message(fieldname,maxlength);
     }
 };

@@ -1,220 +1,27 @@
 const validations = require('./validations');
 $(document).ready(function() {
-//$(function () {
     
     $(window).load(function () {
         $("#budget_holder_group").hide();
         check_all_fields();
     });
-
-    /** THIS GOES INTO THE VALIDATION.JS FILE (in different format) AND IS LOADED VIA NODEJS **/
-    function addError(target, message) {
-        $(target.concat("_error")).html(message);
-        $(target.concat("_error")).show();
-        $(target).addClass("parsley-error");
-        console.warn(message);
+    function local_check_cost_code(fieldname) {
+        return validations.check_cost_code(fieldname, "#budget_holder");
     }
-    function removeError(target) {
-        $(target.concat("_error")).hide();
-        $(target).removeClass("parsley-error");
-        $(target).addClass("parsley-success");
+    function local_check_budget_holder(fieldname) {
+        return validations.check_budget_holder(fieldname,"#use_case");
     }
-
-    function check_name(fieldname) {
-        /*checks name fields if they are correct and returns a boolean. 
-         *Also sets the Error on the specified field. The error div needs to have 
-         *the identical fieldname but with _error appended.*/
-        var localerror = true;
-        var name = $(fieldname);
-
-        if(name.val().length < 3 || name.val().length > 100){
-            addError(fieldname,"The name should be between 2 and 20 characters");
-            localerror = true;
-        } else if (!name.val().match(/^[a-z ,.'-]+$/i)){
-            addError(fieldname,"Only letters and hyphens(-) are allowed");
-            localerror = true;
-        } else {
-            removeError(fieldname);
-            localerror = false;
-        }
-        //check_all_fields();
-        return localerror;
-    };
-    function check_email(fieldname) {
-        /*checks university email fields if they are correct and returns
-         *a boolean. 
-         *Also sets the Error on the specified field. The error div needs to have 
-         *the identical fieldname but with _error appended.*/
-        var localerror = true;
-        var email = $(fieldname);
-        if(email.val().length < 11 || email.val().length > 30){
-            addError(fieldname,"Email is too short or too long");
-            localerror = true;
-        } else if(!email.val().match(/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/)){
-            addError(fieldname, "Only @soton.ac.uk emails are allowed");
-            localerror = true;
-        } else {
-            removeError(fieldname);
-            localerror = false;
-        }
-        //check_all_fields();
-        return localerror;
-    };
-    function check_university_id_number(fieldname) {
-        /*checks University ID number fields if they are correct and returns
-         *a boolean. 
-         *Also sets the Error on the specified field. The error div needs to have 
-         *the identical fieldname but with _error appended.*/
-        var localerror = true;
-        var id = $(fieldname);
-
-        if(id.val().length < 1){
-            addError(fieldname, "Id cannot be empty");
-            localerror = true;
-        }else if (id.val()[0].match(/^[1]/) && id.val().length !== 8) {
-            addError(fieldname, "Id of a member of staff must be 8 digits long");
-            localerror = true;
-        }else if (id.val()[0].match(/^[2345]/) && id.val().length !== 9) {
-            addError(fieldname, "The id of students must be 9 digits long");
-            localerror = true;
-        }else if (!id.val().match(/^[0-9]+$/)) {
-            addError(fieldname, "Only digits are allowed");
-            localerror = true;
-        }else{
-            removeError(fieldname);
-            localerror = false;
-        }
-        //check_all_fields();
-        return localerror;
-    };
-    function check_cost_code(fieldname,budgetholder) {
-        /*checks University cost code fields if they are correct and returns
-         *a boolean. This function also requires the field for budget holder. 
-         *Note that there needs to be a div surrounding the Budget Holder input 
-         *field and its label called the same as the budget holder field but 
-         *with _group appended.
-         *Also sets the Error on the specified field. The error div needs to have 
-         *the identical fieldname but with _error appended.*/
-        var localerror = true;
-        var use_case = $(fieldname);
-
-        if(use_case.val().length < 3 || use_case.val().length > 15) {
-            addError(fieldname, "Either 9 digit university cost code or standard module name are allowed");
-            localerror = true;
-        } else if((!use_case.val().match(/^[A-Z]{3}/) &&
-        !use_case.val().match(/^[a-z0-9]+$/i))){
-            addError(fieldname, "Either 9 digit cost code or standard module name are allowed");
-            localerror = true;
-        } else {
-            removeError(fieldname);
-            localerror = false;
-            if(!$.isNumeric(use_case.val())){
-                //should be like "#budget_holder_group" to hide field and label
-                $(budgetholder.concat("_group")).hide(); 
-            } else {
-                $(budgetholder.concat("_group")).show();
-                check_budget_holder(budgetholder,fieldname);
-            }
-        }
-        //check_all_fields();
-        return localerror;
-    };
-    function check_budget_holder(fieldname,costcode) {
-        /*checks University cost code Budget Holder fields if they are correct 
-         *and returns a boolean. This function also requires the field containing 
-         *the cost code.
-         *Also sets the Error on the specified field. The error div needs to have 
-         *the identical fieldname but with _error appended.*/
-        var localerror = true;
-        var budget_holder = $(fieldname);
-        var use_case = $(costcode);
-        if(!$.isNumeric(use_case.val())){
-            removeError(fieldname);
-            localerror = false;
-        } else if(budget_holder.val().length < 3 || budget_holder.val().length > 100){
-            addError(fieldname,"The name should be between 2 and 20 characters");
-            localerror = true;
-        } else if(!budget_holder.val().match(/^[a-z ,.'-]+$/i)){
-            addError(fieldname,"Only letters and hyphens(-) are allowed");
-            localerror = true;
-        } else {
-            removeError(fieldname);
-            localerror = false;
-        }
-        //check_all_fields();
-        return localerror;
-    };
-    function check_claim_id(fieldname) {
-        /*check DropOff claim id fields if they are correct and returns a boolean
-         *also sets the Error on the specified field. The error div needs to have 
-         *the identical fieldname but with _error appended.*/
-        var localerror = true;
-        var claim_id = $(fieldname);
-        if(claim_id.val().length !== 16){
-            addError(fieldname, "The claim ID must contain 16 characters");
-            localerror = true;
-        } else if(!claim_id.val().match(/^[a-zA-Z0-9-]+$/i)){
-            addError(fieldname, "Only alpha-numeric characters are allowed");
-            localerror = true;
-        } else {
-            removeError(fieldname);
-            localerror = false;
-        }
-        //check_all_fields();
-        return localerror;
-    };
-    function check_claim_passcode(fieldname) {
-        /*check DropOff claim passcode fields if they are correct and returns a boolean
-         *also sets the Error on the specified field. The error div needs to have 
-         *the identical fieldname but with _error appended.*/
-        var localerror = true;
-        var claim_passcode = $(fieldname);
-        if(claim_passcode.val().length !== 16){
-            addError(fieldname, "The claim passcode must contain 16 characters");
-            localerror = true;
-        } else if(!claim_passcode.val().match(/^[a-zA-Z0-9-]+$/i)){
-            addError(fieldname, "Only alpha-numeric characters are allowed");
-            localerror = true;
-        } else {
-            removeError(fieldname);
-            localerror = false;
-        }
-        //check_all_fields();
-        return localerror;
-    };
-    function check_job_title(fieldname) {
-        /*check Job Title fields if they are correct and returns a boolean
-         *also sets the Error on the specified field. The error div needs to have 
-         *the identical fieldname but with _error appended.*/
-        var localerror = true;
-        var job_title= $(fieldname);
-
-        if(job_title.val().length < 8 || job_title.val().length > 256) {
-            addError(fieldname, 'The title should be between 8 and 256 characters');
-            localerror = true;
-        } else if(!job_title.val().match(/^[a-zA-Z0-9 ,.'-]+$/i)){
-            addError(fieldname,"Only these special characters are allowed: ,.'-");
-            localerror = true;
-        } else {
-            removeError(fieldname);
-            localerror = false;
-        }
-        //check_all_fields();
-        return localerror;
-    };
-    /** END OF VALIDATION.JS FILE CONTENT**/
-    
     //map the field ids to the functions in this dictionary, 
     //assign null to input fields that you need to treat extra...
     var funs = {
-        "#customer_name": check_name,
-        "#customer_email": check_email,
-        "#customer_id": check_university_id_number,
-        "#use_case": null,
-        "#budget_holder": null,
-        "#claim_id": check_claim_id,
-        "#claim_passcode": check_claim_passcode,
-        "#job_title": check_job_title
+        "#customer_name": validations.check_name,
+        "#customer_email": validations.check_email,
+        "#customer_id": validations.check_university_id_number,
+        "#use_case": local_check_cost_code,
+        "#budget_holder": local_check_budget_holder,
+        "#claim_id": validations.check_claim_id,
+        "#claim_passcode": validations.check_claim_passcode,
+        "#job_title": validations.check_job_title
     };
     //get a list of all the input fields from previous dictionary so we don't need to redefine.
     var html_triggers = Object.keys(funs);
@@ -232,7 +39,7 @@ $(document).ready(function() {
     
     //construct to modify the keyup function for all fields
     //iterates through input fields of type text or customer_email, as well as select fields
-    $("input[type='text'], select, input[type=customer_email]").keyup(function() {
+    $("input[type='text'], select, input[type='customer_email']").keyup(function() {
         //here we create a variable for the validation function for that field, 
         //passing the field id to it as an argument
         var fun = funs["#" + $(this).attr('id')];
@@ -243,7 +50,7 @@ $(document).ready(function() {
         }
     });
     //construct to modify the focusout function for all fields
-    $("input[type='text'], select, input[type=customer_email]").focusout(function() {
+    $("input, select").focusout(function() {
         //here we create a variable for the validation function for that field, 
         //passing the field id to it as an argument
         var fun = funs["#" + $(this).attr('id')];
@@ -253,16 +60,7 @@ $(document).ready(function() {
             check_all_fields();
         }
     });
-    
-    //then deal with special input fields
-    $("#use_case").keyup(function() {
-        errors["#" + $(this).attr('id')] = check_cost_code("#" + $(this).attr('id'),"#budget_holder");
-        check_all_fields();
-    });
-    $("#budget_holder").keyup(function() {
-        errors["#" + $(this).attr('id')] = check_budget_holder("#" + $(this).attr('id'),"#use_case");
-        check_all_fields();
-    });
+
     
     function check_all_fields() {
         //could do all checks again
