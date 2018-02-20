@@ -66,7 +66,7 @@
                             <strong>{{ $errors->first('customer_name') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="customer_name_error"></span>
+                        <span class="help-block" id="student_name_error"></span>
                     </div>
                 </div>
 
@@ -81,7 +81,7 @@
                                         <strong>{{ $errors->first('customer_email') }}</strong>
                                     </span>
                         @endif
-                        <span class="help-block" id="customer_email_error"></span>
+                        <span class="help-block" id="email_error"></span>
                     </div>
                 </div>
 
@@ -94,7 +94,7 @@
                             <strong>{{ $errors->first('customer_id') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="customer_id_error"></span>
+                        <span class="help-block" id="student_id_error"></span>
                     </div>
                 </div>
 

@@ -18,5 +18,6 @@
   "/js/print_preview_validation.js": "/js/print_preview_validation.js",
   "/js/edit_job_validation.js": "/js/edit_job_validation.js",
   "/js/approve_job_validation.js": "/js/approve_job_validation.js",
-  "/js/request_online_job_validation.js": "/js/request_online_job_validation.js"
+  "/js/request_online_job_validation.js": "/js/request_online_job_validation.js",
+  "/js/validations.js": "/js/validations.js"
 }

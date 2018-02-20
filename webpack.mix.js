@@ -28,4 +28,5 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .js('resources/assets/js/reset_validation.js', 'public/js')
     .js('resources/assets/js/update_issue_validation.js', 'public/js')
     .js('resources/assets/js/update_personal_validation.js', 'public/js')
+    .js('resources/assets/js/validations.js', 'public/js')
     .less('resources/assets/less/app.less', 'public/css');
