@@ -72,15 +72,24 @@ module.exports = {
     addError: function addError(target, message) {
         /*shows the error div with the specified message 
          *and sets the input field class to error*/
-        $(target.concat("_error")).html(message);
-        $(target.concat("_error")).show();
-        $(target).addClass("parsley-error");
+        module.exports.addErrorSpec(target, target.concat("_error"), message);
+    },
+    addErrorSpec: function addErrorSpec(inputId, errorId, message) {
+        /*shows the error div with the specified message 
+         *and sets the input field class to error*/
+        $(errorId).html(message);
+        $(errorId).show();
+        $(inputId).addClass("parsley-error");
     },
     removeError: function removeError(target) {
         /*hides the error div and sets the input field class to success*/
-        $(target.concat("_error")).hide();
-        $(target).removeClass("parsley-error");
-        $(target).addClass("parsley-success");
+        module.exports.removeErrorSpec(target, target.concat("_error"));
+    },
+    removeErrorSpec: function removeErrorSpec(inputId, errorId) {
+        /*hides the error div and sets the input field class to success*/
+        $(errorId).hide();
+        $(inputId).removeClass("parsley-error");
+        $(inputId).addClass("parsley-success");
     },
 
     check_name: function check_name(fieldname) {
@@ -201,13 +210,16 @@ module.exports = {
         var varhours = $(hrsdropdown).find(":selected").text();
         var varminutes = $(mindropdown).find(":selected").text();
         if (varhours === "Hours" || varminutes === "Minutes") {
-            module.exports.addError(group, "Please set the printing time");
+            module.exports.addErrorSpec(mindropdown,group, "");
+            module.exports.addErrorSpec(hrsdropdown,group, "Please set the printing time");
             localerror = true;
         } else if (parseInt(varhours) + parseInt(varminutes) == 0) {
-            module.exports.addError(group, "The printing time cannot be zero");
+            module.exports.addErrorSpec(mindropdown,group, "");
+            module.exports.addErrorSpec(hrsdropdown,group, "The printing time cannot be zero");
             localerror = true;
         } else {
-            module.exports.removeError(group);
+            module.exports.removeErrorSpec(mindropdown,group);
+            module.exports.removeErrorSpec(hrsdropdown,group);
             localerror = false;
         }
         //check_all_fields();
@@ -423,6 +435,8 @@ $(document).ready(function () {
         "#material_amount": validations.check_material_amount,
         "#use_case": local_check_cost_code,
         "#budget_holder": local_check_budget_holder,
+        "#claim_id": validations.check_claim_id,
+        "#claim_passcode": validations.check_claim_passcode,
         "#job_title": validations.check_job_title,
         "#hours": local_check_time_hours,
         "#minutes": local_check_time_minutes
@@ -469,7 +483,7 @@ $(document).ready(function () {
         //could do all checks again
         for (var i = 0; i < html_triggers.length; i++) {
             var el = html_triggers[i];
-            if (funs[el]) {
+            if (funs[el] && $(el).length) {
                 errors[el] = funs[el](el);
             }
         }
@@ -481,20 +495,21 @@ $(document).ready(function () {
         var hasError = false;
         var errCount = 0;
         for (e in errors) {
-            if (errors[e]) {
+            if (errors[e] && $(e).length) {
                 hasError = true;
                 errCount++;
             }
         }
         //if there has been no error, then submit button is good to go, otherwise disable
         if (!hasError) {
-            $("#submit").addClass("btn-success");
-            $("#submit").trigger("cssClassChanged");
+            //$("#submit").addClass("btn-success");
+            //$("#submit").trigger("cssClassChanged");
+            //$("#submit").html("Submit");
             $("#submit").prop('disabled', false);
-            $("#submit").html("Submit");
         } else {
-            $("#submit").removeClass("btn-success");
-            $("#submit").html(errCount + " validations failed");
+            //$("#submit").removeClass("btn-success");
+            //$("#submit").trigger("cssClassChanged");
+            //$("#submit").html(errCount + " validations failed");
             $("#submit").prop('disabled', true);
         }
     }
