@@ -161,11 +161,13 @@ class PostsController extends Controller
         $critical=Input::get('critical');
         if ($critical == 'critical')
         {
-            $id = $post->id;
+            $title = $post->title;
+            $body = $post->body;
             $printers =  printers::pluck('id','id')->all();
+            $post->delete();
 
             // Redirect to create issue
-            return view('issues/select',compact('id','printers'));
+            return view('issues/select',compact('title','body', 'printers'));
         } else {
 
         // Return to the homepage:
@@ -214,9 +216,15 @@ class PostsController extends Controller
      * @param  \App\welcome  $welcome
      * @return \Illuminate\Http\Response
      */
-    public function destroy(posts $posts)
+    public function destroy($id)
     {
-        //
+        $post = posts::findOrFail($id);
+        $post->delete();
+
+        notify()->flash('The post has been deleted.', 'success', [
+            'text' => "The post is removed from the database.",
+        ]);
+        return redirect('/');
     }
     public function resolve($id)
     {

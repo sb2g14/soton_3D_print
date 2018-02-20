@@ -194,7 +194,14 @@ class IssuesController extends Controller
      */
     public function destroy($id)
     {
+        $issue = FaultData::findOrFail($id);
+        $issue->delete();
 
+        notify()->flash('The issue has been deleted from the database.', 'success', [
+            'text' => "Please proceed further for creating another one.",
+        ]);
+
+        return redirect('/issues/index');
     }
     public function select()
     {
@@ -219,12 +226,10 @@ class IssuesController extends Controller
 
             return redirect('issues/index');
         } else {
-            // If the redirection is from welcome get the post id
-            $id = request('id');
-            if ( !empty ( $id ) ) {
-                $post = posts::findOrFail($id);
-                $title = $post->title;
-                $body = $post->body;
+            // If the redirection is from welcome get from the post
+            if ( !empty ( $title ) ) {
+                $title = request('title');
+                $body = request('body');
             } else {
                 $title = '';
                 $body = '';
