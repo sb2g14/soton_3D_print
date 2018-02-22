@@ -517,13 +517,13 @@ class PrintingDataController extends Controller
 }
     public function success($id)
     {
-        Jobs::where('id','=',$id)->update(array('status'=> 'Success'));
+        //Jobs::where('id','=',$id)->update(array('status'=> 'Success'));
         $job = Jobs::findOrFail($id);
         $print_id = $job->prints->first()->id;
         $print = Prints::findOrFail($print_id);
         printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
-        $job->update(array('job_finished_by' => Auth::user()->staff->id));
-        $print->update(array('print_finished_by' => Auth::user()->staff->id));
+        $job->update(array('job_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
+        $print->update(array('print_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
 
         notify()->flash('The job has been marked as Success!', 'success', [
             'text' => "You may continue reviewing other jobs.",

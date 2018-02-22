@@ -146,6 +146,7 @@ class StaffController extends Controller
                     $user->syncRoles(['LeadDemonstrator']);
                 }elseif($role == 'Former member'){
                     $user->syncRoles(['OldDemonstrator']);
+                    staff::where('id','=', $id)->update(array('phone' => 'unknown'));
                 }elseif($role == 'IT Manager' || $role == 'IT'){
                     $user->syncRoles(['administrator']);
                 }elseif($role == '3D Hub Manager'){

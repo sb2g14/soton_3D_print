@@ -26,6 +26,10 @@ Route::post('/posts','PostsController@store');
 // Here we redirect to the page where we store announcement data
 Route::post('/announcements','AnnouncementsController@store');
 
+// Delete announcements
+
+Route::get('/announcement/delete/{id}','AnnouncementsController@destroy');
+
 // Here we redirect to the controller that would store our comments
 Route::post('/posts/{post}/comments', 'CommentsController@store');
 
@@ -63,6 +67,10 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     // Resolve issues in posts
     Route::get('/posts/resolve/{id}', 'PostsController@resolve');
 
+    // Remove posts
+
+    Route::get('/post/delete/{id}', 'PostsController@destroy');
+
     // Redirect to the view where one can manage issues
 
     Route::get('/issues/index','IssuesController@index');
@@ -99,6 +107,10 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
             'as' => 'issues.export',
             'uses' => 'IssuesController@printersIssuesExport'
         ]);
+
+    // Delete issue if it has been created by accident
+
+    Route::get('/issues/delete/{id}','IssuesController@destroy');
 
     // Show a list of jobs waiting for approval
 
