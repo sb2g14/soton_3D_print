@@ -1,16 +1,36 @@
+/*** validations.js
+ * This file contains all input validation functions.
+ * Each function will take parameters and check the field
+ * corresponding to fieldname according to the rules defined.
+ * If one of the checks fails, the field is marked in red and
+ * the corresponding error field is populated with a message.
+ * If all the checks pass, the field is marked in green and 
+ * the error field is hidden. The function will return a
+ * boolean which is true, if the validation failed.
+ ***/
 module.exports = {
+//ERROR MESSAGE HANDLERS
+    addErrorDetail: function (inputfield, errorfield, message) {
+        /*shows the error div with the specified message 
+         *and sets the input field class to error*/
+        $(errorfield).html(message);
+        $(errorfield).show();
+        $(inputfield).addClass("parsley-error");
+    },
+    removeErrorDetail: function (inputfield, errorfield) {
+        /*hides the error div and sets the input field class to success*/
+        $(errorfield).hide();
+        $(inputfield).removeClass("parsley-error");
+        $(inputfield).addClass("parsley-success");
+    },
     addError: function (target, message) {
         /*shows the error div with the specified message 
          *and sets the input field class to error*/
-        $(target.concat("_error")).html(message);
-        $(target.concat("_error")).show();
-        $(target).addClass("parsley-error");
+        module.exports.addErrorDetail(target,target.concat("_error"),message);
     },
     removeError: function (target) {
         /*hides the error div and sets the input field class to success*/
-        $(target.concat("_error")).hide();
-        $(target).removeClass("parsley-error");
-        $(target).addClass("parsley-success");
+        module.exports.removeErrorDetail(target,target.concat("_error"));
     },
 //PERSON RELATED CHECKS
     check_name: function (fieldname) {
@@ -30,7 +50,6 @@ module.exports = {
             module.exports.removeError(fieldname);
             localerror = false;
         }
-        //check_all_fields();
         return localerror;
     },
     check_university_email: function (fieldname) {
@@ -51,7 +70,6 @@ module.exports = {
             module.exports.removeError(fieldname);
             localerror = false;
         }
-        //check_all_fields();
         return localerror;
     },
     check_university_id_number: function (fieldname) {
@@ -81,7 +99,6 @@ module.exports = {
             module.exports.removeError(fieldname);
             localerror = false;
         }
-        //check_all_fields();
         return localerror;
     },
     check_phone: function (fieldname) {
@@ -102,7 +119,6 @@ module.exports = {
             module.exports.removeError(fieldname);
             localerror = false;
         }
-        //check_all_fields();
         return localerror;
     },
     check_password: function (fieldname) {
@@ -230,6 +246,25 @@ module.exports = {
         return localerror;
     },
 //PRINT RELATED CHECKS
+    check_job_title: function (fieldname) {
+        /*check Job Title fields if they are correct and returns a boolean
+         *also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var localerror = true;
+        var job_title= $(fieldname);
+
+        if(job_title.val().length < 8 || job_title.val().length > 256) {
+            module.exports.addError(fieldname, 'The title should be between 8 and 256 characters');
+            localerror = true;
+        } else if(!job_title.val().match(/^[a-zA-Z0-9 ,.'-]+$/i)){
+            module.exports.addError(fieldname,"Only these special characters are allowed: ,.'-");
+            localerror = true;
+        } else {
+            module.exports.removeError(fieldname);
+            localerror = false;
+        }
+        return localerror;
+    },
     check_print_duration: function (hrsdropdown,mindropdown,group) {
         /*checks print duration fields if they are correct and returns
          *a boolean. Requires a reference to the drop-down for hours and
@@ -241,16 +276,18 @@ module.exports = {
         var varhours = $(hrsdropdown).find(":selected").text();
         var varminutes = $(mindropdown).find(":selected").text();
         if (varhours === "Hours" || varminutes === "Minutes"){
-            module.exports.addError(group, "Please set the printing time");
+            module.exports.addErrorDetail(mindropdown,group, "");
+            module.exports.addErrorDetail(hrsdropdown,group, "Please set the printing time");
             localerror = true;
         } else if(parseInt(varhours) + parseInt(varminutes) == 0){
-            module.exports.addError(group, "The printing time cannot be zero");
+            module.exports.addErrorDetail(mindropdown,group, "");
+            module.exports.addErrorDetail(hrsdropdown,group, "The printing time cannot be zero");
             localerror = true;
         } else {
-            module.exports.removeError(group);
+            module.exports.removeErrorDetail(mindropdown,group);
+            module.exports.removeErrorDetail(hrsdropdown,group);
             localerror = false;
         }
-        //check_all_fields();
         return localerror;
     },
     check_material_amount: function (fieldname) {
@@ -274,6 +311,7 @@ module.exports = {
         //check_all_fields();
         return localerror;
     },
+//PAYMENT RELATED CHECKS
     check_cost_code: function (fieldname,budgetholder) {
         /*checks University cost code fields if they are correct and returns
          *a boolean. This function also requires the field for budget holder.
@@ -329,7 +367,7 @@ module.exports = {
         }
         return localerror;
     },
-
+//DROPOFF RELATED CHECKS
     check_claim_id: function (fieldname) {
         /*check DropOff claim id fields if they are correct and returns a boolean
          *also sets the Error on the specified field. The error div needs to have
@@ -368,25 +406,7 @@ module.exports = {
         //check_all_fields();
         return localerror;
     },
-    check_job_title: function (fieldname) {
-        /*check Job Title fields if they are correct and returns a boolean
-         *also sets the Error on the specified field. The error div needs to have
-         *the identical fieldname but with _error appended.*/
-        var localerror = true;
-        var job_title= $(fieldname);
-
-        if(job_title.val().length < 8 || job_title.val().length > 256) {
-            module.exports.addError(fieldname, 'The title should be between 8 and 256 characters');
-            localerror = true;
-        } else if(!job_title.val().match(/^[a-zA-Z0-9 ,.'-]+$/i)){
-            module.exports.addError(fieldname,"Only these special characters are allowed: ,.'-");
-            localerror = true;
-        } else {
-            module.exports.removeError(fieldname);
-            localerror = false;
-        }
-        return localerror;
-    },
+//ISSUE RELATED CHECKS
     check_issue_title: function (fieldname) {
         /*check Issue Title fields if they are correct and returns a boolean
          *also sets the Error on the specified field. The error div needs to have
@@ -406,6 +426,7 @@ module.exports = {
         }
         return localerror;
     },
+//CHECKS RELATED TO GENERAL TEXT BOXES LIKE COMMENTS
     check_message: function (fieldname,minlength,maxlength) {
         /*check message fields if they are correct and returns a boolean
          *also sets the Error on the specified field. The error div needs to have
@@ -429,17 +450,24 @@ module.exports = {
         return localerror;
     },
     check_comment: function (fieldname) {
-        /*checks optional comment fields if they are correct and returns a boolean
+        /*checks optional(!) comment fields if they are correct and returns a boolean
          *also sets the Error on the specified field. The error div needs to have
          *the identical fieldname but with _error appended.*/
         var maxlength = 300;
         return module.exports.check_message(fieldname,0,maxlength)
     },
     check_message_long: function (fieldname) {
+        /*check message fields with maximum length of 2048 characters if they are 
+         *correct and returns a boolean
+         *also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
         var maxlength = 2048;
         return module.exports.check_message(fieldname,8,maxlength);
     },
     check_message_default: function(fieldname) {
+        /*check message fields if they are correct and returns a boolean
+         *also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
         var maxlength = 300;
         return module.exports.check_message(fieldname,8,maxlength);
     }
