@@ -1,3 +1,10 @@
+/*** validate_form.js ***
+ * This file can be loaded into an html containing a form
+ * it will then add javascript validations from validations.js
+ * to the input fields as defined in 'funs' below.
+ * it will also disable the submit button with the id 'submit'
+ * until all the validations are fulfilled.
+ ***/
 const validations = require('./validations');
 $(document).ready(function() {
 
@@ -36,6 +43,8 @@ $(document).ready(function() {
         "#minutes": local_check_time_minutes,
         "#use_case": local_check_cost_code,
         "#budget_holder": local_check_budget_holder,
+        "#comment": validations.check_comment,
+        "#message": validations.check_message_default,
     };
     //get a list of all the input fields from previous dictionary so we don't need to redefine.
     var html_triggers = Object.keys(funs);
@@ -97,6 +106,8 @@ $(document).ready(function() {
                 errCount ++;
             }
         }
+        //update the price preview as we are on it
+        evaluate_price();
         //if there has been no error, then submit button is good to go, otherwise disable
         if (!hasError) {
             //$("#submit").addClass("btn-success");
@@ -108,6 +119,21 @@ $(document).ready(function() {
             //$("#submit").trigger("cssClassChanged");
             //$("#submit").html(errCount+" validations failed");
             $("#submit").prop('disabled', true);
+        }
+    }
+
+    function evaluate_price() {
+        var idPrice = "#price";
+        var idHours = "#hours"; //select
+        var idMinutes = "#minutes";
+        var idMaterial = "#material_amount";
+        if ($(idPrice).length) {
+            if( !errors[idMaterial] && !errors[idHours] && errors[idMinutes]){
+                var time = $(idHours).val() + $(idMinutes).val()/60; //time in hours
+                var material = $(idMaterial).val(); //material in g
+                var $price = 3*time + 5*material/100;
+                $(idPrice).html($price);
+            }
         }
     }
 

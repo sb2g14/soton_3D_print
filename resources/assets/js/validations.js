@@ -279,8 +279,8 @@ module.exports = {
         //check_all_fields();
         return localerror;
     },
-    check_message: function (fieldname,maxlength) {
-        /*check comment fields if they are correct and returns a boolean
+    check_message: function (fieldname,minlength,maxlength) {
+        /*check message fields if they are correct and returns a boolean
          *also sets the Error on the specified field. The error div needs to have
          *the identical fieldname but with _error appended.*/
         var localerror = true;
@@ -301,12 +301,19 @@ module.exports = {
         }
         return localerror;
     },
+    check_comment: function (fieldname) {
+        /*checks optional comment fields if they are correct and returns a boolean
+         *also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var maxlength = 300;
+        return module.exports.check_message(fieldname,0,maxlength)
+    },
     check_message_long: function (fieldname) {
         var maxlength = 2048;
-        return module.exports.check_message(fieldname,maxlength);
+        return module.exports.check_message(fieldname,8,maxlength);
     },
     check_message_default: function(fieldname) {
         var maxlength = 300;
-        return module.exports.check_message(fieldname,maxlength);
+        return module.exports.check_message(fieldname,8,maxlength);
     }
 };
