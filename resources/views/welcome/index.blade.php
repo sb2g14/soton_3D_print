@@ -290,12 +290,18 @@
                                                         <img src="/Images/img_avatar3.png" class="media-object">
                                                     </div>
                                                     <div class="media-body">
-                                                        <h5 class="media-heading"> {{$comment->staff->first_name}} {{$comment->staff->last_name}} <small>
-                                                                <i>Posted {{ $comment->created_at->diffForHumans() }}:</i></small></h5>
+                                                        <h5 class="media-heading"> {{$comment->staff->first_name}} {{$comment->staff->last_name}}
+                                                            <small>
+                                                                <i>Posted {{ $comment->created_at->diffForHumans() }}:</i>
+                                                            </small>
+                                                        </h5>
                                                         <p>
-                                                            <h5 style="color: red"> {{ isset($comment->printer_status) ? 'Printer Status: '.$comment->printer_status : ''}} </h5>
+                                                            <h5 style="color: red">
+                                                                {{ isset($comment->printer_status) ? 'Printer Status: '.$comment->printer_status : ''}}
+                                                            </h5>
                                                             {{ $comment->body }}
                                                         </p>
+
                                                     </div>
                                                 </div>
                                             </li>

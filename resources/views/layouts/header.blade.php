@@ -100,6 +100,7 @@
                     <ul class="dropdown-bl dropdown-login" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="{{ route('auth.register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
                         <li><a class="dropdown-item" href="{{ route('auth.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        {{--<li><a class="dropdown-item" href="https://webauth.pprd.soton.ac.uk/idp/profile/SAML2/Redirect/SSO"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>--}}
                     </ul>
                 </li>
             </ul>

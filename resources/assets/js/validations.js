@@ -203,7 +203,7 @@ module.exports = {
          *Also sets the Error on the specified field. The error div needs to have
          *the identical fieldname but with _error appended.*/
         var localerror = true;
-        var fieldvalue = $('input[name = "'.fieldname.'"]:checked').val();
+        var fieldvalue = $('input[name = "'+fieldname+'"]:checked').val();
 
         if (!fieldvalue){
             module.exports.addError(fieldname, "Please select a printer type");
@@ -228,7 +228,7 @@ module.exports = {
          *the identical fieldname but with _error appended.*/
         var localerror = true;
         var fieldvalue = $(fieldname).val();
-        var radioselection = $('input[name = "'.radiogroup.'"]:checked').val();
+        var radioselection = $('input[name = "'+radiogroup+'"]:checked').val();
         if(radioselection !== "Other" ){
             module.exports.removeError(fieldname);
             localerror = false;

@@ -99,7 +99,7 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/edit_job_validation.js"></script>
+    <script src="/js/validate_form.js"></script>
 @endsection
 
 
