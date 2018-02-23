@@ -20,5 +20,12 @@
   "/js/approve_job_validation.js": "/js/approve_job_validation.js",
   "/js/request_online_job_validation.js": "/js/request_online_job_validation.js",
   "/js/validations.js": "/js/validations.js",
-  "/js/validate_form.js": "/js/validate_form.js"
+  "/js/validate_form.js": "/js/validate_form.js",
+  "/js/validate_form_issue_create.js": "/js/validate_form_issue_create.js",
+  "/js/validate_form_issue_comment.js": "/js/validate_form_issue_comment.js",
+  "/js/validate_form_announcement_create.js": "/js/validate_form_announcement_create.js",
+  "/js/validate_form_issue_resolve.js": "/js/validate_form_issue_resolve.js",
+  "/js/validate_form_online_job_reject.js": "/js/validate_form_online_job_reject.js",
+  "/js/validate_form_print_preview.js": "/js/validate_form_print_preview.js",
+  "/js/validate_form_online_print.js": "/js/validate_form_online_print.js"
 }

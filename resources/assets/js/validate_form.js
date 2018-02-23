@@ -10,27 +10,32 @@ const validations = require('./validations');
 $(document).ready(function() {
 
     $(window).load(function () {
-        $("#budget_holder_group").hide();
         check_all_fields();
+        $("#budget_holder_group").hide();
+        $("#printer_type_other_group").hide();
     });
     function local_check_cost_code(fieldname) {
-        return validations.check_cost_code(fieldname,"#budget_holder");
+        return validations.check_cost_code_combination(fieldname,"#budget_holder");
     }
     function local_check_budget_holder(fieldname) {
         return validations.check_budget_holder(fieldname,"#use_case");
     }
     function local_check_time_minutes(fieldname){
-        return validations.check_print_duration("#hours",fieldname,"#time")
+        return validations.check_print_duration("#hours",fieldname,"#time_error")
     }
     function local_check_time_hours(fieldname){
-        return validations.check_print_duration(fieldname,"#minutes","#time")
+        return validations.check_print_duration(fieldname,"#minutes","#time_error")
     }
     //TODO: this field is sometimes called #other, sometimes #other_printer_type. I suggest always calling it #printer_type_other and the selection group belonging to it #printer_type. Also remember to add a group around the input field so it can be hidden if not needed.
     function local_check_printer_type_radio(fieldname) {
         return validations.check_printer_type_radio(fieldname,"#printer_type_other");
     }
     function local_check_printer_type_input(fieldname) {
-        return validations.check_printer_type_input(fieldname,"#printer_type");
+        //passing printer_type without # since the radio buttons have no id
+        return validations.check_printer_type_input(fieldname,"printer_type");
+    }
+    function local_check_password_match(fieldname) {
+        return validations.check_password_match(fieldname,"#password");
     }
 
     //map the field ids to the functions in this dictionary,
@@ -72,6 +77,8 @@ $(document).ready(function() {
     var funs = {
         "#customer_name": validations.check_name,
         "#student_name": validations.check_name,
+        "#holder_name": validations.check_name,
+        "#staff_name": validations.check_name,
         "#first_name": validations.check_name,
         "#last_name": validations.check_name,
         "#customer_email": validations.check_university_email,
@@ -79,7 +86,7 @@ $(document).ready(function() {
         "#customer_id": validations.check_university_id_number,
         "#student_id": validations.check_university_id_number,
         "#password": validations.check_password,
-        "#password_confirm": validations.check_password,
+        "#password_confirm": local_check_password_match,
         "#phone": validations.check_phone,
         "#job_title": validations.check_job_title,
         "#claim_id": validations.check_claim_id,
@@ -87,20 +94,22 @@ $(document).ready(function() {
         "#printers_id": validations.check_printer_number_select,
         "#number": validations.check_printer_number_input,
         "#serial": validations.check_printer_serial,
-        "#printer_type": local_check_printer_type_radio,
+        "#printer_type": null,
         "#printer_type_other": local_check_printer_type_input,
-        "#other_printer_type": local_check_printer_type_input,
-        "#other": local_check_printer_type_input,
         "#material_amount": validations.check_material_amount,
         "#hours": local_check_time_hours,
         "#minutes": local_check_time_minutes,
+        "#shortage": validations.check_shortage,
+        "#cost_code": validations.check_cost_code,
         "#use_case": local_check_cost_code,
         "#budget_holder": local_check_budget_holder,
         "#issue": validations.check_issue_title,
         "#comment": validations.check_comment,
         "#message": validations.check_message_default,
         "#message_last": validations.check_message_default,
-        "#message_long": validations.check_message_long
+        "#message_long": validations.check_message_long,
+        "#explanation": validations.check_message_explanation,
+        "#description": validations.check_message_default
     };
     //get a list of all the input fields from previous dictionary so we don't need to redefine.
     var html_triggers = Object.keys(funs);
@@ -118,7 +127,7 @@ $(document).ready(function() {
 
     //construct to modify the keyup function for all fields
     //iterates through input fields of type text or customer_email, as well as select fields
-    $("input[type='text'], select, input[type='customer_email']").keyup(function() {
+    $("input, select, textarea").keyup(function() {
         //here we create a variable for the validation function for that field,
         //passing the field id to it as an argument
         var fun = funs["#" + $(this).attr('id')];
@@ -129,7 +138,7 @@ $(document).ready(function() {
         }
     });
     //construct to modify the focusout function for all fields
-    $("input, select").focusout(function() {
+    $("input, select, textarea").focusout(function() {
         //here we create a variable for the validation function for that field,
         //passing the field id to it as an argument
         var fun = funs["#" + $(this).attr('id')];
@@ -139,6 +148,12 @@ $(document).ready(function() {
             check_all_fields();
         }
     });
+    $("input[name='printer_type']").click(function() {
+        //this is a special case, where we have radio buttons that have a consistent name, not id.
+        errors["#" + $(this).attr('name')] = local_check_printer_type_radio($(this).attr('name'));
+        check_all_fields();
+    });
+
 
 
     function check_all_fields() {

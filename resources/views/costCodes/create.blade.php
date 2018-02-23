@@ -24,20 +24,20 @@
                         <input id="cost_code" type="text" name="cost_code" class="form-control" value="{{ old('cost_code') }}"/><br>
                         <td><span class="help-block" id="cost_code_error"></span></td>
                     <label for="aproving_member_of_staff">Member of staff approved: </label><br>
-                        <input type="text" name="aproving_member_of_staff" class="form-control" value="{{ old('aproving_member_of_staff') }}"/><br>
-                        <td><span class="help-block" id="aproving_member_of_staff_error"></span></td>
+                        <input id="staff_name" type="text" name="aproving_member_of_staff" class="form-control" value="{{ old('aproving_member_of_staff') }}"/><br>
+                        <td><span class="help-block" id="staff_name_error"></span></td>
                     <label for="expires">Expiry date (yyyy-mm-dd): </label> <br>
                         <input id="expires" type="text" name="expires" class="form-control" value="{{ old('expires') }}"/><br>
                         <td><span class="help-block" id="expires_error"></span></td>
                     <label for="holder">Holder: </label><br>
-                        <input id="holder" type="text" name="holder" class="form-control" value="{{ old('holder') }}"/><br>
-                        <td><span class="help-block" id="holder_error"></span></td>
+                        <input id="holder_name" type="text" name="holder" class="form-control" value="{{ old('holder') }}"/><br>
+                        <td><span class="help-block" id="holder_name_error"></span></td>
                     <label for="description">Description: </label><br>
                         <input id="description" type="text" name="description" class="form-control" value="{{ old('description') }}"/><br>
                         <td><span class="help-block" id="description_error"></span></td>
                     @include('layouts.errors')
-                    <button id="add-button" type="submit" class="btn-lg btn-primary">Add</button>
-                    <a href="/costCodes/index" class="btn btn-lg btn-danger">Go back</a>
+                    <button id="submit" type="submit" class="btn btn-success">Add</button>
+                    <a href="/costCodes/index" class="btn btn-danger">Go back</a>
                 </form>
             </div>
 
@@ -47,5 +47,5 @@
 @endsection
 
 @section("scripts")
-    {{--<script src="/js/update_personal_validation.js"></script>--}}
+    <script src="/js/validate_form.js"></script>
 @endsection

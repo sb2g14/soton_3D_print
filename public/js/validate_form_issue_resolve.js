@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 57);
+/******/ 	return __webpack_require__(__webpack_require__.s = 76);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -609,50 +609,37 @@ module.exports = {
 
 /***/ }),
 
-/***/ 57:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(58);
+module.exports = __webpack_require__(77);
 
 
 /***/ }),
 
-/***/ 58:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
+/*** validate_form.js ***
+ * This file can be loaded into an html containing a form
+ * it will then add javascript validations from validations.js
+ * to the input fields as defined in 'funs' below.
+ * it will also disable the submit button with the name 'submit'
+ * until all the validations are fulfilled and update the price
+ * in the field with the name 'price'.
+ ***/
 var validations = __webpack_require__(0);
 $(document).ready(function () {
 
     $(window).load(function () {
-        $("#budget_holder_group").hide();
         check_all_fields();
     });
-    function local_check_cost_code(fieldname) {
-        return validations.check_cost_code(fieldname, "#budget_holder");
-    }
-    function local_check_budget_holder(fieldname) {
-        return validations.check_budget_holder(fieldname, "#use_case");
-    }
-    function local_check_time_minutes(fieldname) {
-        return validations.check_print_duration("#hours", fieldname, "#time");
-    }
-    function local_check_time_hours(fieldname) {
-        return validations.check_print_duration(fieldname, "#minutes", "#time");
-    }
 
     //map the field ids to the functions in this dictionary,
     //assign null to input fields that you need to treat extra...
+
     var funs = {
-        "#printers_id": validations.check_printer_number,
-        "#student_name": validations.check_name,
-        "#email": validations.check_email,
-        "#student_id": validations.check_university_id_number,
-        "#material_amount": validations.check_material_amount,
-        "#use_case": local_check_cost_code,
-        "#budget_holder": local_check_budget_holder,
-        "#job_title": validations.check_job_title,
-        "#hours": local_check_time_hours,
-        "#minutes": local_check_time_minutes
+        "#message_resolve": validations.check_message_default
     };
     //get a list of all the input fields from previous dictionary so we don't need to redefine.
     var html_triggers = Object.keys(funs);
@@ -670,7 +657,7 @@ $(document).ready(function () {
 
     //construct to modify the keyup function for all fields
     //iterates through input fields of type text or customer_email, as well as select fields
-    $("input[type='text'], select, input[type='customer_email']").keyup(function () {
+    $("input, select, textarea").keyup(function () {
         //here we create a variable for the validation function for that field,
         //passing the field id to it as an argument
         var fun = funs["#" + $(this).attr('id')];
@@ -681,7 +668,7 @@ $(document).ready(function () {
         }
     });
     //construct to modify the focusout function for all fields
-    $("input, select").focusout(function () {
+    $("input, select, textarea").focusout(function () {
         //here we create a variable for the validation function for that field,
         //passing the field id to it as an argument
         var fun = funs["#" + $(this).attr('id')];
@@ -696,7 +683,7 @@ $(document).ready(function () {
         //could do all checks again
         for (var i = 0; i < html_triggers.length; i++) {
             var el = html_triggers[i];
-            if (funs[el]) {
+            if (funs[el] && $(el).length) {
                 errors[el] = funs[el](el);
             }
         }
@@ -708,25 +695,26 @@ $(document).ready(function () {
         var hasError = false;
         var errCount = 0;
         for (e in errors) {
-            if (errors[e]) {
+            if (errors[e] && $(e).length) {
                 hasError = true;
                 errCount++;
             }
         }
         //if there has been no error, then submit button is good to go, otherwise disable
         if (!hasError) {
-            $("#submit").addClass("btn-success");
-            $("#submit").trigger("cssClassChanged");
-            $("#submit").prop('disabled', false);
-            $("#submit").html("Submit");
+            //$("#submit").addClass("btn-success");
+            //$("#submit").trigger("cssClassChanged");
+            //$("#submit").html("Submit");
+            $("#btn-resolve").prop('disabled', false);
         } else {
-            $("#submit").removeClass("btn-success");
-            $("#submit").html(errCount + " validations failed");
-            $("#submit").prop('disabled', true);
+            //$("#submit").removeClass("btn-success");
+            //$("#submit").trigger("cssClassChanged");
+            //$("#submit").html(errCount+" validations failed");
+            $("#btn-resolve").prop('disabled', true);
         }
     }
 
-    $("#submit").click(function () {
+    $("#btn-resolve").click(function () {
         for (var i = 0; i < html_triggers.length; i++) {
             $(html_triggers[i]).hide();
             $(html_triggers[i]).removeClass("parsley-success");

@@ -37,7 +37,7 @@
             <!-- Submit button-->
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4">
-                    {!! Form::submit('Submit', ['class' => 'btn btn-primary', 'id' => 'submit'] ) !!}
+                    {!! Form::submit('Submit', ['class' => 'btn btn-success', 'id' => 'submit'] ) !!}
                     {{--Go back button--}}
                     <a href="/issues/select" class="btn btn-danger">Go back</a>
                 </div>
@@ -60,5 +60,5 @@
 </div>
 @endsection
 @section('scripts')
-    <script src="/js/issue_validation.js"></script>
+    <script src="/js/validate_form.js"></script>
 @endsection

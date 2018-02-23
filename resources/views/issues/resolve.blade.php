@@ -45,7 +45,7 @@
                         {!! Form::textarea('body', $value = null, ['class' => 'form-control', 'placeholder' => 'Please specify the details of the resolved issue', 'id' => 'message']) !!}
                         <div class="text-danger" id="message_error"></div>
                     </div>
-                        {!! Form::submit('Submit', ['class' => 'btn', 'id' => 'submit'] ) !!}
+                        {!! Form::submit('Submit', ['class' => 'btn-success', 'id' => 'submit'] ) !!}
                          <a href="/issues/index" class="btn btn-danger">Go back</a>
             {!! Form::close() !!}
         </div>
@@ -53,5 +53,5 @@
 </div>
 @endsection
 @section('scripts')
-    <script src="/js/message_validation.js"></script>
+    <script src="/js/validate_form.js"></script>
 @endsection

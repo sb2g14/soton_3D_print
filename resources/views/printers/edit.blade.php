@@ -14,7 +14,7 @@
                     {{--Generate security key --}}
                     {{ csrf_field() }}
                     <label for="body">Serial number: </label> <br>
-                    <input type="text" name="serial_no" class="form-control" value="{{ $printer->serial_no }}"/><br>
+                    <input id="serial" type="text" name="serial_no" class="form-control" value="{{ $printer->serial_no }}"/><br>
                     <label for="body">Printer type: </label> <br>
                     <!-- Radio list for the printer type -->
                     <div class="form-group text-left">
@@ -25,8 +25,10 @@
                             @endforeach
                             <input type="radio" name="printer_type" id="other" <?php if (isset($printer_type)
                                 && $printer->printer_type=="Other") echo "checked";?> value="Other">Other <br>
-                            <input type="text" name="other_printer_type" id="other_printer_type" class="form-control" placeholder="Please input if other"/><br>
-                                <span class="help-block" id="other_printer_type_error"></span>
+                                <div id="printer_type_other_group">
+                                    <input type="text" id="printer_type_other" name="other_printer_type" class="form-control" placeholder="Please input if other"/><br>
+                                    <td><span class="help-block" id="printer_type_other_error"></span> </td>
+                                </div>
                         </div> <!-- Class radio -->
                     </div> <!-- /form-group -->
                     @hasrole('administrator')
@@ -48,7 +50,7 @@
                     </div> <!-- /form-group -->
                     @endhasrole
                     @include('layouts.errors')
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button id="submit" type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
             <div class="col-sm-3"></div>
@@ -57,5 +59,6 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/printer_validation.js"></script>
+    {{--<script src="/js/printer_validation.js"></script>--}}
+    <script src="/js/validate_form.js"></script>
 @endsection

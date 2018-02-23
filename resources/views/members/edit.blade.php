@@ -21,7 +21,7 @@
                         <input id="last_name" type="text" name="last_name" class="form-control" value="{{ $member-> last_name}}"/><br>
                         <td><span class="help-block" id="last_name_error"></span></td>
                     <label for="body">Student/staff ID: </label><br>
-                        <input type="text" name="student_id" class="form-control" value="{{ $member-> student_id}}"/><br>
+                        <input id="student_id" type="text" name="student_id" class="form-control" value="{{ $member-> student_id}}"/><br>
                     <label for="body">Email: </label> <br>
                         <input id="email" type="email" name="email" class="form-control" value="{{ $member-> email}}"/><br>
                         <td><span class="help-block" id="email_error"></span></td>
@@ -37,7 +37,7 @@
                     </div>
                     @endcan
                     @include('layouts.errors')
-                    <button id="update-button" type="submit" class="btn-lg btn-primary">Update</button>
+                    <button id="submit" type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
 
@@ -47,5 +47,6 @@
 @endsection
 
 @section("scripts")
-    <script src="/js/update_personal_validation.js"></script>
+    {{--<script src="/js/update_personal_validation.js"></script>--}}
+    <script src="/js/validate_form.js"></script>
 @endsection

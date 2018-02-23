@@ -229,8 +229,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="body">Message</label><br>
-                                <textarea id="message" name="body" rows="4" placeholder="Describe your issue" class="form-control" required></textarea>
-                                <span id="message_error" class="help-block"></span>
+                                <textarea id="message_issue" name="body" rows="4" placeholder="Describe your issue" class="form-control" required></textarea>
+                                <span id="message_issue_error" class="help-block"></span>
                             </div>
                             <div class="checkbox">
                                 <label><input type="checkbox" name="critical" value="critical">Issue affects printer status</label>
@@ -321,8 +321,8 @@
                                             <form method="POST" action="/posts/{{ $post->id }}/comments">
                                                 {{ csrf_field() }}
                                                 <div class="form-group">
-                                                    <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                    <span id="message_error" class="help-block"></span>
+                                                    <textarea id="message_comment" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                                    <span id="message_comment_error" class="help-block"></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <button id="comment" type="submit" class="btn btn-primary">Comment </button>
@@ -368,12 +368,8 @@
                                 <div class="form-group">
                                     <label for="message">New Announcement</label><br>
                                     <textarea id="announcement" name="message" rows="8"
-                                              {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
-                                                {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
-                                              {{--@else --}}
-                                                placeholder="Post will appear only for registered users unless you check 'Public announcement"
-                                              {{--@endif --}}
-                                                class="form-control"></textarea>
+                                        placeholder="Post will appear only for registered users unless you check 'Public announcement"
+                                        class="form-control"></textarea>
                                     <span id="announcement_error" class="help-block"></span>
                                 </div>
                                 @can('add_public_posts_and_announcements')
@@ -488,8 +484,11 @@
 @endsection
 @section('scripts')
     {{--Load validation scripts--}}
-    <script src="/js/issue_validation.js"></script>
-    <script src="/js/message_validation.js"></script>
+    <script src="/js/validate_form_issue_create.js"></script>
+    <script src="/js/validate_form_issue_comment.js"></script>
+    <script src="/js/validate_form_announcement_create.js"></script>
+
+
 
     {{--Load notification--}}
     @if (notify()->ready())
