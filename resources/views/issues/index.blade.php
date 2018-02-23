@@ -20,13 +20,13 @@
 
     <div class="text-center m-b-md add-printer-issue">
         <div class="title">Printer Issues</div>
-        <a href="/issues/select" type="button" class="btn btn-lg btn-info">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </a>
     </div>
 
     <div class="container">
-        <table class="table">
+        <a href="/issues/select" type="button" class="btn btn-lg btn-success">
+            Raise New
+        </a>
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -46,11 +46,11 @@
                 @foreach($issues as $issue)
                     <tr class="text-left">
                         <td data-th="ID">{{ $issue->id }}</td>
-                        <td data-th="Printer Number">{{$issue->printers_id}}</td>
+                        <td data-th="Printer Number"><a href="/issues/show/{{ $issue->printers_id }}"> {{$issue->printers_id}} </a></td>
                         <td data-th="Serial Number">{{$issue->serial_number}}</td>
                         <td data-th="Issue Printer Status">{{ $issue->printer_status }}</td>
                         <td data-th="Created by">{{ $issue->issue_created->first_name}} {{ $issue->issue_created->last_name}}</td>
-                        <td data-th="Created on">{{ $issue->created_at->toDayDateTimeString() }}</td>
+                        <td data-th="Created on">{{ $issue->created_at->formatLocalized('%d/%m/%Y') }}</td>
                         <td data-th="Days out of Order">{{ \Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at) }}</td>
                         <td data-th="Title">{{ isset($issue->title) ? $issue->title : "Issue with printer ".$issue->printers_id }}</td>
                         <td data-th="Message">{{ $issue->body }}</td>

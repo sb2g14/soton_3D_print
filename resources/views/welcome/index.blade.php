@@ -12,8 +12,13 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="btn btn-lg pull-right"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
-                        <div class="btn-lg btn-success pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>
+                        {{--Show request job button only on Wednesdays--}}
+                        @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
+                            <div class="btn btn-lg pull-right"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
+                            <div class="btn-lg btn-success pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>
+                        @else
+                            <div class="btn btn-lg pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -44,7 +44,7 @@
                         {{--Print short description and a link--}}
                             <p>
                                 Requested by: <b>{{$job->customer_name}}</b><br>
-                                Requested on: <b>{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</b><br>
+                                Requested on: <b>{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</b><br>
                                 Job title: <b>{{$job->job_title}}</b>
                                 Job is printed on <br>
                                 @foreach($job->prints as $print)
