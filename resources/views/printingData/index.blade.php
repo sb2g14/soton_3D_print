@@ -61,7 +61,7 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/approve_job_validation.js"></script>
+    <script src="/js/validate_form.js"></script>
     @if (notify()->ready())
         <script>
             swal({

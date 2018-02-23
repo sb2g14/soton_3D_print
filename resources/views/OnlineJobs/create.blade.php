@@ -251,6 +251,5 @@
 @endsection
 
 @section('scripts')
-<script src="/js/validations.js"></script>
-<script src="/js/request_online_job_validation.js"></script>
+<script src="/js/validate_form.js"></script>
 @endsection

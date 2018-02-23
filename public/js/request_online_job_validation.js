@@ -65,7 +65,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 2:
+/***/ 1:
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -393,7 +393,7 @@ module.exports = __webpack_require__(60);
 /***/ 60:
 /***/ (function(module, exports, __webpack_require__) {
 
-var validations = __webpack_require__(2);
+var validations = __webpack_require__(1);
 $(document).ready(function () {
 
     $(window).load(function () {

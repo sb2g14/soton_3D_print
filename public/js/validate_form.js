@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 57);
+/******/ 	return __webpack_require__(__webpack_require__.s = 68);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -382,15 +382,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ 57:
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(58);
+module.exports = __webpack_require__(69);
 
 
 /***/ }),
 
-/***/ 58:
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
 var validations = __webpack_require__(1);
@@ -416,16 +416,21 @@ $(document).ready(function () {
     //map the field ids to the functions in this dictionary,
     //assign null to input fields that you need to treat extra...
     var funs = {
-        "#printers_id": validations.check_printer_number,
+        "#customer_name": validations.check_name,
         "#student_name": validations.check_name,
+        "#customer_email": validations.check_email,
         "#email": validations.check_email,
+        "#customer_id": validations.check_university_id_number,
         "#student_id": validations.check_university_id_number,
-        "#material_amount": validations.check_material_amount,
-        "#use_case": local_check_cost_code,
-        "#budget_holder": local_check_budget_holder,
         "#job_title": validations.check_job_title,
+        "#claim_id": validations.check_claim_id,
+        "#claim_passcode": validations.check_claim_passcode,
+        "#printers_id": validations.check_printer_number,
+        "#material_amount": validations.check_material_amount,
         "#hours": local_check_time_hours,
-        "#minutes": local_check_time_minutes
+        "#minutes": local_check_time_minutes,
+        "#use_case": local_check_cost_code,
+        "#budget_holder": local_check_budget_holder
     };
     //get a list of all the input fields from previous dictionary so we don't need to redefine.
     var html_triggers = Object.keys(funs);
@@ -469,7 +474,7 @@ $(document).ready(function () {
         //could do all checks again
         for (var i = 0; i < html_triggers.length; i++) {
             var el = html_triggers[i];
-            if (funs[el]) {
+            if (funs[el] && $(el).length) {
                 errors[el] = funs[el](el);
             }
         }
@@ -481,20 +486,21 @@ $(document).ready(function () {
         var hasError = false;
         var errCount = 0;
         for (e in errors) {
-            if (errors[e]) {
+            if (errors[e] && $(e).length) {
                 hasError = true;
                 errCount++;
             }
         }
         //if there has been no error, then submit button is good to go, otherwise disable
         if (!hasError) {
-            $("#submit").addClass("btn-success");
-            $("#submit").trigger("cssClassChanged");
+            //$("#submit").addClass("btn-success");
+            //$("#submit").trigger("cssClassChanged");
+            //$("#submit").html("Submit");
             $("#submit").prop('disabled', false);
-            $("#submit").html("Submit");
         } else {
-            $("#submit").removeClass("btn-success");
-            $("#submit").html(errCount + " validations failed");
+            //$("#submit").removeClass("btn-success");
+            //$("#submit").trigger("cssClassChanged");
+            //$("#submit").html(errCount+" validations failed");
             $("#submit").prop('disabled', true);
         }
     }

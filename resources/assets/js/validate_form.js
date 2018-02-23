@@ -35,7 +35,7 @@ $(document).ready(function() {
         "#hours": local_check_time_hours,
         "#minutes": local_check_time_minutes,
         "#use_case": local_check_cost_code,
-        "#budget_holder": local_check_budget_holder,
+        "#budget_holder": local_check_budget_holder
     };
     //get a list of all the input fields from previous dictionary so we don't need to redefine.
     var html_triggers = Object.keys(funs);
