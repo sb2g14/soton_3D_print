@@ -69,7 +69,12 @@ class printers extends Model
     }
     public function calculateTotalTimeOnLoan()
     {
-        return $this->calculateTotalTime($this->prints->where('purpose','Loan'));
+        $total_minutes = 0;
+        foreach ($this->prints->where('purpose','Loan') as $print) {
+                $minutes = $print->updated_at->diffInMinutes($print->created_at);
+                $total_minutes = $total_minutes + $minutes;
+        }
+        return $total_minutes;
     }
     public function calculateTotalTimeBroken()
     {

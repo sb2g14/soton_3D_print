@@ -14,9 +14,12 @@
                         {!! Form::label('select', 'Select Printer', ['class' => 'control-label'] )  !!}
                         {!!  Form::select('select',$printers,'1',['class' => ' form-control' ]) !!}
                     </div>
-                    <!-- If redirection is from post view save the post id -->
-                    @if(isset($id))
-                     {!!  Form::hidden('id',$id) !!}
+                    <!-- If redirection is from post view save the welcome post  -->
+                    @if(isset($title))
+                     {!!  Form::hidden('title',$title) !!}
+                    @endif
+                    @if(isset($body))
+                        {!!  Form::hidden('body',$body) !!}
                     @endif
                     {!! Form::submit('Submit', ['class' => 'btn btn-info'] ) !!}
                     <a href="/issues/index" class="btn btn-danger">Go to issues list</a>

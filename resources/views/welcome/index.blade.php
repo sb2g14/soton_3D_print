@@ -244,6 +244,22 @@
                             <li class="list-group-item well {{isset($post->printers_id) ? 'alert alert-info' : 'alert alert-warning'}}">
                                 {{--Print title of a post--}}
                                 <h4><b>{{ isset($post->printers_id)  ? 'Printer '.$post->printers_id.':' : '' }} {{ $post->title }}</b></h4>
+                                {{-- Button to delete the issue--}}
+                                @if( isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                                    <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                          data-content="Delete this issue if you created it by accident">
+                                                            <a type="button" id="deleteIssue" href="/issues/delete/{{$post->id}}"
+                                                               class="close" style="color: red">&times;</a>
+                                                    </span>
+                                @endif
+                                {{-- Button to delete post--}}
+                                @if( !isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                                    <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                          data-content="Delete this post if you created it by accident or made a mistake">
+                                                            <a type="button" id="deletePost" href="/post/delete/{{$post->id}}"
+                                                               class="close" style="color: red">&times;</a>
+                                                    </span>
+                                @endif
                                 {{--Print name of a user who created a post--}}
                                 <h5 class="media-heading"> {{App\staff::where('id', $post->staff_id)->first()->first_name}}
                                                             {{App\staff::where('id', $post->staff_id)->first()->last_name}}<small><i>
@@ -274,7 +290,7 @@
                                                         <img src="/Images/img_avatar3.png" class="media-object">
                                                     </div>
                                                     <div class="media-body">
-                                                        <h5 class="media-heading"> {{$comment->staff->first_name}}
+                                                        <h5 class="media-heading"> {{$comment->staff->first_name}} {{$comment->staff->last_name}}
                                                             <small>
                                                                 <i>Posted {{ $comment->created_at->diffForHumans() }}:</i>
                                                             </small>
@@ -379,6 +395,14 @@
                                     <li class="list-group-item well @if($announcement->public === 0) alert alert-info @else alert alert-warning @endif ">
                                         <!-- <div class="alert alert-info"> -->
                                         <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
+                                                    {{-- Delete the announcement if you have appropriate permissions--}}
+                                                    @if( strtolower(Auth::user()->email) == strtolower($announcement->user->email) || Auth::user()->can('delete_announcements'))
+                                                        <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                                              data-content="This button is to delete the announcement">
+                                                            <a type="button" id="deleteAnnouncement" href="/announcement/delete/{{$announcement->id}}"
+                                                               class="close" style="color: red">&times;</a>
+                                                    </span>
+                                                    @endif
                                                     {{--Print date and time when a post was created--}}
                                                     Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
                                         <h5> {{ $announcement->message }} </h5>
