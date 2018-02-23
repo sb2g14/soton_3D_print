@@ -122,7 +122,7 @@ class PrintingDataController extends Controller
         }
         return view('printingData.create',compact('available_printers','member'));
     } else {
-        $available_printers = printers::where('printer_status', 'Available')->where('in_use', 0)->where('printer_type', '!=', 'UP BOX')->pluck('id', 'id')->all();
+        $available_printers = printers::where('printer_type', 'UP!')->orWhere('printer_type', 'UP Plus 2')->where('printer_status', 'Available')->where('in_use', 0)->pluck('id', 'id')->all();
         return view('printingData.create',compact('available_printers'));
         }
     }
