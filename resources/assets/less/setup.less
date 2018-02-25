@@ -98,6 +98,28 @@ a:link {
   }
 }
 
+//bootstrap custom colors for table background
+
+.table>tbody>tr>td {
+  &.available {
+    background-color: #4c8658;
+  }
+  &.in-use {
+    background-color: #7a8500;
+  }
+  &.on-loan {
+    background-color: #0097c2;
+  }
+  &.broken {
+    background-color: #ff9900;
+  }
+  &.missing {
+    background-color: #cc181e;
+  }
+  &.signed-out {
+    background-color: #50626e;
+  }
+}
 
 //others
 @pth-images : "/Images";
