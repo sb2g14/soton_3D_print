@@ -111,6 +111,36 @@ a:link {
   text-decoration: none;
 }
 /* @blue: #266c8e; */
+.btn-primary {
+  background-color: #002e3b;
+}
+.btn-primary:hover {
+  background-color: #00465a;
+}
+.btn-danger {
+  background-color: #e9454b;
+}
+.btn-danger:hover {
+  background-color: #ee6b71;
+}
+.btn-info {
+  background-color: #0097c2;
+}
+.btn-info:hover {
+  background-color: #007697;
+}
+.btn-success {
+  background-color: #4c8658;
+}
+.btn-success:hover {
+  background-color: #539361;
+}
+.btn-warning {
+  background-color: #ff9900;
+}
+.btn-warning:hover {
+  background-color: #ffa114;
+}
 body {
   background: #f2f2f2;
   color: #080808;
@@ -551,7 +581,6 @@ body.is-fixed {
 }
 .s-welcome .cardblock {
   background: #fff;
-  height: 95%;
   position: relative;
   margin-bottom: 30px;
 }
@@ -891,6 +920,9 @@ footer .team {
     font-size: 50px;
     font-size: 3.125rem;
     margin-bottom: 10px;
+  }
+  .s-welcome .cardblock {
+    height: 95%;
   }
 }
 @media screen and (min-width: 1100px) {
