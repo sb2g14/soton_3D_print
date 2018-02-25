@@ -43,10 +43,10 @@
                         @endphp
                         <tr class="text-left">
                             <td data-th="ID">{{ $print->id }}</td>
-                            <td data-th="Printer No">{{ $print->printers_id }}</td>
+                            <td data-th="Printer No"><a href="/issues/show/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
                             <td data-th="Printed by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                             <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }}: {{ $job->job_title }} <br> @endforeach</td>
-                            <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%m') }}</td>
+                            <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
                             <td data-th="Time Remain">@if ($time_finish->gte(Carbon\Carbon::now('Europe/London'))) {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60) }} @else  completed @endif </td>
                             <td data-th="Manage">
                                 <a href="/OnlineJobs/printSuccessful/{{ $print->id }}" class="btn btn-success">Print Successful</a>
@@ -83,10 +83,10 @@
                         @if($print->status == 'Success' || $print->status == 'Failed')
                             <tr class="text-left">
                                 <td data-th="ID">{{ $print->id }}</td>
-                                <td data-th="Printer No">{{ $print->printers_id }}</td>
+                                <td data-th="Printer No"><a href="/issues/show/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
                                 <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }} {{ $job->job_title }} <br> @endforeach</td>
                                 <td data-th="Started by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
-                                <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%m') }}</td>
+                                <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
                                 <td data-th="Finished by">{{$print->staff_finished->first_name}} {{$print->staff_finished->last_name}}</td>
                                 @if ($print->status === 'Success')
                                     <td data-th="Status" class="success">{{ $print->status }}</td>

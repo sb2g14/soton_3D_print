@@ -89,9 +89,9 @@ class PostsController extends Controller
             ->dimensions(400,300)
             ->responsive(true);
 
-        $printers_in_use = printers::where('in_use','1')->count();
-        $printers_available = printers::where('printer_status','Available')->where('in_use','0')->count();
-        $unavailable_printers = printers::where('printer_status','!=','Available')->where('printer_status','!=','Signed out')->where('in_use','0')->count();
+        $printers_in_use = printers::where('in_use','1')->where('printer_type','!=','UP BOX')->count();
+        $printers_available = printers::where('printer_status','Available')->where('in_use','0')->where('printer_type','!=','UP BOX')->count();
+        //$unavailable_printers = printers::where('printer_status','!=','Available')->where('printer_status','!=','Signed out')->where('in_use','0')->count();
 
 //        $chart1 = Charts::create('pie', 'highcharts')
 //            ->title('Printers')
@@ -161,11 +161,13 @@ class PostsController extends Controller
         $critical=Input::get('critical');
         if ($critical == 'critical')
         {
-            $id = $post->id;
+            $title = $post->title;
+            $body = $post->body;
             $printers =  printers::pluck('id','id')->all();
+            $post->delete();
 
             // Redirect to create issue
-            return view('issues/select',compact('id','printers'));
+            return view('issues/select',compact('title','body', 'printers'));
         } else {
 
         // Return to the homepage:
@@ -214,9 +216,15 @@ class PostsController extends Controller
      * @param  \App\welcome  $welcome
      * @return \Illuminate\Http\Response
      */
-    public function destroy(posts $posts)
+    public function destroy($id)
     {
-        //
+        $post = posts::findOrFail($id);
+        $post->delete();
+
+        notify()->flash('The post has been deleted.', 'success', [
+            'text' => "The post is removed from the database.",
+        ]);
+        return redirect('/');
     }
     public function resolve($id)
     {

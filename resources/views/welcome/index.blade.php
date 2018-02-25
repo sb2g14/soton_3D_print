@@ -12,8 +12,13 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="btn btn-lg pull-right"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
-                        <div class="btn-lg btn-success pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>
+                        {{--Show request job button only on Wednesdays--}}
+                        @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
+                            <div class="btn btn-lg pull-right"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
+                            <div class="btn-lg btn-success pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>
+                        @else
+                            <div class="btn btn-lg pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -69,8 +74,8 @@
                                                 {{--Print title of a post--}}
                                                  <h4><b> {{ isset($post_last->printers_id)  ? 'Printer '.$post_last->printers_id.':' : '' }} {{ $post_last->title }}</b></h4>
                                                 {{--Print name of a user who created a post--}}
-                                                <h5 class="media-heading"> {{App\Staff::where('id', $post_last->staff_id)->first()->first_name}}
-                                                                            {{App\Staff::where('id', $post_last->staff_id)->first()->last_name}} <small><i>
+                                                <h5 class="media-heading"> {{App\staff::where('id', $post_last->staff_id)->first()->first_name}}
+                                                                            {{App\staff::where('id', $post_last->staff_id)->first()->last_name}} <small><i>
                                                 {{--Print date and time when a post was created--}}
                                                 Posted {{ $post_last->created_at->diffForHumans() }}:</i></small></h5>
                                                 {{--Print the text of a post--}}
@@ -229,8 +234,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="body">Message</label><br>
-                                <textarea id="message" name="body" rows="4" placeholder="Describe your issue" class="form-control" required></textarea>
-                                <span id="message_error" class="help-block"></span>
+                                <textarea id="message_issue" name="body" rows="4" placeholder="Describe your issue" class="form-control" required></textarea>
+                                <span id="message_issue_error" class="help-block"></span>
                             </div>
                             <div class="checkbox">
                                 <label><input type="checkbox" name="critical" value="critical">Issue affects printer status</label>
@@ -244,14 +249,30 @@
                             <li class="list-group-item well {{isset($post->printers_id) ? 'alert alert-info' : 'alert alert-warning'}}">
                                 {{--Print title of a post--}}
                                 <h4><b>{{ isset($post->printers_id)  ? 'Printer '.$post->printers_id.':' : '' }} {{ $post->title }}</b></h4>
+                                {{-- Button to delete the issue--}}
+                                @if( isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                                    <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                          data-content="Delete this issue if you created it by accident">
+                                                            <a type="button" id="deleteIssue" href="/issues/delete/{{$post->id}}"
+                                                               class="close" style="color: red">&times;</a>
+                                                    </span>
+                                @endif
+                                {{-- Button to delete post--}}
+                                @if( !isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                                    <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                          data-content="Delete this post if you created it by accident or made a mistake">
+                                                            <a type="button" id="deletePost" href="/post/delete/{{$post->id}}"
+                                                               class="close" style="color: red">&times;</a>
+                                                    </span>
+                                @endif
                                 {{--Print name of a user who created a post--}}
-                                <h5 class="media-heading"> {{App\Staff::where('id', $post->staff_id)->first()->first_name}}
-                                                            {{App\Staff::where('id', $post->staff_id)->first()->last_name}}<small><i>
+                                <h5 class="media-heading"> {{App\staff::where('id', $post->staff_id)->first()->first_name}}
+                                                            {{App\staff::where('id', $post->staff_id)->first()->last_name}}<small><i>
                                 {{--Print date and time when a post was created--}}
                                 Posted {{ $post->created_at->diffForHumans() }}:</i></small></h5>
                                 {{--Print the text of a post--}}
                                 <p>{{ $post->body }}</p>
-                                @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\Staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
+                                @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
                                     <a href="/posts/resolve/{{$post->id}}" class="btn btn-primary">Resolve{{ $post->resolved }}</a>
                                 @endif
                                 <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
@@ -274,12 +295,18 @@
                                                         <img src="/Images/img_avatar3.png" class="media-object">
                                                     </div>
                                                     <div class="media-body">
-                                                        <h5 class="media-heading"> {{$comment->staff->first_name}} <small>
-                                                                <i>Posted {{ $comment->created_at->diffForHumans() }}:</i></small></h5>
+                                                        <h5 class="media-heading"> {{$comment->staff->first_name}} {{$comment->staff->last_name}}
+                                                            <small>
+                                                                <i>Posted {{ $comment->created_at->diffForHumans() }}:</i>
+                                                            </small>
+                                                        </h5>
                                                         <p>
-                                                            <h5 style="color: red"> {{ isset($comment->printer_status) ? 'Printer Status: '.$comment->printer_status : ''}} </h5>
+                                                            <h5 style="color: red">
+                                                                {{ isset($comment->printer_status) ? 'Printer Status: '.$comment->printer_status : ''}}
+                                                            </h5>
                                                             {{ $comment->body }}
                                                         </p>
+
                                                     </div>
                                                 </div>
                                             </li>
@@ -299,8 +326,8 @@
                                             <form method="POST" action="/posts/{{ $post->id }}/comments">
                                                 {{ csrf_field() }}
                                                 <div class="form-group">
-                                                    <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                    <span id="message_error" class="help-block"></span>
+                                                    <textarea id="message_comment" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                                    <span id="message_comment_error" class="help-block"></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <button id="comment" type="submit" class="btn btn-primary">Comment </button>
@@ -346,12 +373,8 @@
                                 <div class="form-group">
                                     <label for="message">New Announcement</label><br>
                                     <textarea id="announcement" name="message" rows="8"
-                                              {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
-                                                {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
-                                              {{--@else --}}
-                                                placeholder="Post will appear only for registered users unless you check 'Public announcement"
-                                              {{--@endif --}}
-                                                class="form-control"></textarea>
+                                        placeholder="Post will appear only for registered users unless you check 'Public announcement"
+                                        class="form-control"></textarea>
                                     <span id="announcement_error" class="help-block"></span>
                                 </div>
                                 @can('add_public_posts_and_announcements')
@@ -373,6 +396,14 @@
                                     <li class="list-group-item well @if($announcement->public === 0) alert alert-info @else alert alert-warning @endif ">
                                         <!-- <div class="alert alert-info"> -->
                                         <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
+                                                    {{-- Delete the announcement if you have appropriate permissions--}}
+                                                    @if( strtolower(Auth::user()->email) == strtolower($announcement->user->email) || Auth::user()->can('delete_announcements'))
+                                                        <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                                              data-content="This button is to delete the announcement">
+                                                            <a type="button" id="deleteAnnouncement" href="/announcement/delete/{{$announcement->id}}"
+                                                               class="close" style="color: red">&times;</a>
+                                                    </span>
+                                                    @endif
                                                     {{--Print date and time when a post was created--}}
                                                     Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
                                         <h5> {{ $announcement->message }} </h5>
@@ -458,8 +489,11 @@
 @endsection
 @section('scripts')
     {{--Load validation scripts--}}
-    <script src="/js/issue_validation.js"></script>
-    <script src="/js/message_validation.js"></script>
+    <script src="/js/validate_form_issue_create.js"></script>
+    <script src="/js/validate_form_issue_comment.js"></script>
+    <script src="/js/validate_form_announcement_create.js"></script>
+
+
 
     {{--Load notification--}}
     @if (notify()->ready())

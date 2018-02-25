@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\jobSuccess;
-use App\Rules\Alphanumeric;
 use App\Rules\SotonEmail;
 use App\Rules\SotonID;
-use App\Rules\SotonIdMinMax;
 use App\Rules\UseCase;
 use App\Rules\Printer;
 use App\User;
@@ -92,8 +90,24 @@ class OrderOnlineController extends Controller
     // The online job request is validated, stored in a DB and the online job manager notified via email
     public function store()
     {
-        // Validate the online request
-        $online_request = request()->validate([
+        // Store an online request
+        $online_request = request();
+
+        // Overwrite the budget holder if known
+        // check the module shortage exists
+        $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
+        if ($query !== null){
+            // If shortage exists, then populate budget holder with the DB data
+            $online_request['budget_holder'] = $query->holder;
+        }
+        // check that cost code exists
+        $query = cost_code::all()->where('cost_code','=',strtoupper($online_request['use_case']))->first();
+        if ($query !== null){
+            // If cost code exists, then populate budget holder with the DB data
+            $online_request['budget_holder'] = $query->holder;
+        }
+
+        $online_request = $online_request->validate([
             'customer_name' => [
                 'required',
                 'string',
@@ -134,6 +148,7 @@ class OrderOnlineController extends Controller
                 'max:64'
             ],
             'budget_holder' => [
+                'required',
                 'string',
                 'min:3',
                 'max:100',
@@ -157,23 +172,20 @@ class OrderOnlineController extends Controller
             $payment_category = 'undergraduate';
         }
 
-        // Define a cost code
+        // Define the use case
         // check the module shortage exists
         $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
         if ($query !== null){
             // If shortage exists, then populate cost code and shortage with the DB data
             $cost_code = $query->value('cost_code');
             $use_case = strtoupper($online_request['use_case']);
-            $budget_holder = $query->holder;
         } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
             $query = cost_code::all()->where('cost_code','=',$online_request['use_case'])->first();
             $cost_code = $online_request['use_case'];
             if ($query !== null){ // The cost code was found. Set a corresponding flag
                 $use_case = 'Cost Code - approved';
-                $budget_holder = $query->holder;
-                } else { // The cost code was not found. Set a corresponding flag
+            } else { // The cost code was not found. Set a corresponding flag
                 $use_case = 'Cost Code - unknown';
-                $budget_holder = $online_request['budget_holder'];
             }
         }
 
@@ -186,7 +198,7 @@ class OrderOnlineController extends Controller
             'requested_online' => 1,
             'status' => 'Waiting',
             'job_title' => $online_request['job_title'],
-            'budget_holder' => $budget_holder
+            'budget_holder' => $online_request['budget_holder']
             ));
 
         // Send an email to the 3d print account
@@ -222,7 +234,7 @@ class OrderOnlineController extends Controller
             ]);
 
         // create a print from the specified details
-        $time = $assigned_print_preview["hours"].':'.sprintf('%02d', $assigned_print_preview["minutes"]); // Created printing time
+        $time = $assigned_print_preview["hours"].':'.sprintf('%02d', $assigned_print_preview["minutes"]).':00'; // Created printing time
         // Create price
         $price = round(3 * ($assigned_print_preview["hours"] + $assigned_print_preview["minutes"] / 60) +
             5 * $assigned_print_preview["material_amount"] / 100, 2);
@@ -284,7 +296,7 @@ class OrderOnlineController extends Controller
             $total_minutes = $total_minutes + $minutes;
         }
         // Coming back to hours and minutes
-        $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60);
+        $total_time = round($total_minutes/60).':'.sprintf('%02d', $total_minutes%60).':00';
 
         // Remove print previews from the database
         $prints = $job->prints;
@@ -405,7 +417,7 @@ class OrderOnlineController extends Controller
         // Pass the job to the blade
         $job = Jobs::findOrFail($id);
         // Pass all the available printers to the blade
-        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
+        $available_printers = printers::all()->where('printer_status', 'Available')->where('in_use', 0)->pluck('id', 'id')->all();
         // Pass the jobs In Progress to the view
         $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->addSelect('id')->selectRaw("CONCAT(id,' ', job_title) AS id_title")->pluck('id_title','id');
 //        addSelect('id')->selectRaw('job_title AS desc')->
@@ -429,7 +441,7 @@ class OrderOnlineController extends Controller
         ]);
 
         // create a print from the specified details
-        $time = $assigned_print["hours"].':'.sprintf('%02d', $assigned_print["minutes"]); // Created printing time
+        $time = $assigned_print["hours"].':'.sprintf('%02d', $assigned_print["minutes"]).':00'; // Created printing time
         // Create price
         $price = round(3 * ($assigned_print["hours"] + $assigned_print["minutes"] / 60) +
             5 * $assigned_print["material_amount"] / 100, 2);
@@ -498,7 +510,8 @@ class OrderOnlineController extends Controller
 
         // Change the job flag to 'Failed'
         $job->update(array(
-            'status' => 'Failed'
+            'status' => 'Failed',
+            'job_finished_by' => Auth::user()->staff->id
         ));
 
         // Send an email to the customer
@@ -519,7 +532,8 @@ class OrderOnlineController extends Controller
 
         // Change the job flag to 'Success'
         $job->update(array(
-            'status' => 'Success'
+            'status' => 'Success',
+            'job_finished_by' => Auth::user()->staff->id
         ));
 
         // Send an email notification to the customer

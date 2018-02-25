@@ -83,10 +83,19 @@
 
                 <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Back</a>
 
-                <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If the requested job
+
+                @if($query_in_progress == null)
+                    <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If the requested job
                 cannot be printed for some reason, please click on this button and provide an explanation for the customer.">
                     <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#jobReject">Job Failed/Cancel Job</button>
                 </span>
+                @else
+                    <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If the requested job
+                cannot be printed for some reason, please click on this button and provide an explanation for the customer. Please finish all the started prints before doing so.">
+                    <a href="#" class="btn btn-lg btn-danger" data-placement="top" data-toggle="popover" data-trigger="hover"
+                            data-content="You cannot mark this job as failed because you still have some unfinished prints." disabled>Job Failed/Cancel Job</a>
+                </span>
+                @endif
 
                 @if($query_in_progress == null & $query_success !== null)
                     <a href="/OnlineJobs/jobSuccess/{{$job->id}}" class="btn btn-lg btn-success" data-placement="top"
@@ -181,13 +190,13 @@
                         <div class="form-group text-left">
                             <div class="col-sm-12">
                                 <label for="comments">Add comments to the print:</label><br>
-                                <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                <textarea rows="4" id="comment" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
                                 @if ($errors->has('comments'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('comments') }}</strong>
                                     </span>
                                 @endif
-                                <span class="help-block" id="message_error"></span>
+                                <span class="help-block" id="comment_error"></span>
                             </div>
                         </div>
 
@@ -221,17 +230,17 @@
                         <div class="form-group text-left">
                             <div class="col-sm-12">
                                 <label for="comments">Add comments for the customer:</label><br>
-                                <textarea rows="4" id="message" name="comment" placeholder="Please explain why the job has failed" class="form-control"></textarea>
+                                <textarea rows="4" id="message_long" name="comment" placeholder="Please explain why the job has failed" class="form-control"></textarea>
                                 @if ($errors->has('comments'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('comments') }}</strong>
                                     </span>
                                 @endif
-                                <span class="help-block" id="message_error"></span>
+                                <span class="help-block" id="message_long_error"></span>
                             </div>
                         </div>
 
-                        <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
+                        <button id="reject" type="submit" class="btn btn-lg btn-primary">Submit</button>
                     </form>
                 </div>
 
@@ -254,6 +263,7 @@
             });
         </script>
     @endif
-    <script src="/js/print_preview_validation.js"></script>
+    <script src="/js/validate_form_online_print.js"></script>
+    <script src="/js/validate_form_online_job_reject.js"></script>
 @endsection
 

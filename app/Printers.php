@@ -47,6 +47,7 @@ class printers extends Model
                 if($job->requested_online == 0){
                     $this->update(array('in_use' => 0));
                     $job->update(array('status' => 'Success', 'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
+                    $print->update(array('status' => 'Success', 'print_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
                 }
             }
     }
@@ -68,7 +69,12 @@ class printers extends Model
     }
     public function calculateTotalTimeOnLoan()
     {
-        return $this->calculateTotalTime($this->prints->where('purpose','Loan'));
+        $total_minutes = 0;
+        foreach ($this->prints->where('purpose','Loan') as $print) {
+                $minutes = $print->updated_at->diffInMinutes($print->created_at);
+                $total_minutes = $total_minutes + $minutes;
+        }
+        return $total_minutes;
     }
     public function calculateTotalTimeBroken()
     {

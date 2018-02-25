@@ -122,7 +122,7 @@ class PrintingDataController extends Controller
         }
         return view('printingData.create',compact('available_printers','member'));
     } else {
-        $available_printers = printers::where('printer_status', 'Available')->where('in_use', 0)->where('printer_type', '!=', 'UP BOX')->pluck('id', 'id')->all();
+        $available_printers = printers::where('printer_type', 'UP!')->orWhere('printer_type', 'UP Plus 2')->where('printer_status', 'Available')->where('in_use', 0)->pluck('id', 'id')->all();
         return view('printingData.create',compact('available_printers'));
         }
     }
@@ -156,26 +156,25 @@ class PrintingDataController extends Controller
                 'digits_between:8,9',
                 new SotonID,
             ],
-            'use_case' => [
-                'required',
-                new UseCase
-            ],
             'material_amount' => [
                 'required',
                 'numeric',
                 'regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/'
-    ],
+            ],
+            'use_case' => [
+                'required',
+                new UseCase
+            ],
+            'budget_holder' => [
+//               'string',
+                'max:100',
+//                new CustomerNameValidation
+            ],
             'job_title' => [
                 'required',
                 'string',
                 'min:8',
-                'max:64'
-            ],
-            'budget_holder' => [
-                'string',
-                'min:3',
-                'max:100',
-                new CustomerNameValidation
+                'max:256'
             ]
         ]);
 
@@ -257,7 +256,7 @@ class PrintingDataController extends Controller
         // Calculating printing time from the dropdown
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
-        $time = $hours . ':' . sprintf('%02d', $minutes);
+        $time = $hours . ':' . sprintf('%02d', $minutes).':00';
 
         $material_amount = request('material_amount');
         // Calculation the job price £3 per h + £5 per 100g
@@ -380,7 +379,7 @@ class PrintingDataController extends Controller
 
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
-        $time = $hours.':'.sprintf('%02d', $minutes);
+        $time = $hours.':'.sprintf('%02d', $minutes).':00';
         $material_amount = request('material_amount');
         $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
 
@@ -442,7 +441,7 @@ class PrintingDataController extends Controller
 
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
-        $time = $hours.':'.sprintf('%02d', $minutes);
+        $time = $hours.':'.sprintf('%02d', $minutes).':00';
         $material_amount =request('material_amount');
 
         if (request('successful') == 'Failed') {
@@ -518,13 +517,13 @@ class PrintingDataController extends Controller
 }
     public function success($id)
     {
-        Jobs::where('id','=',$id)->update(array('status'=> 'Success'));
+        //Jobs::where('id','=',$id)->update(array('status'=> 'Success'));
         $job = Jobs::findOrFail($id);
         $print_id = $job->prints->first()->id;
         $print = Prints::findOrFail($print_id);
         printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
-        $job->update(array('job_finished_by' => Auth::user()->staff->id));
-        $print->update(array('print_finished_by' => Auth::user()->staff->id));
+        $job->update(array('job_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
+        $print->update(array('print_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
 
         notify()->flash('The job has been marked as Success!', 'success', [
             'text' => "You may continue reviewing other jobs.",

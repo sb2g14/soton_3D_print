@@ -29,7 +29,7 @@
                     <p>Printer serial number: <b>{{$printer->serial_no}}</b></p>
                     <p>Date added: <b>{{$printer->created_at->toDayDateTimeString()}}</b></p>
                     @if($printer->updated_at)
-                        @if($printer->status === 'Signed out')
+                        @if($printer->printer_status === 'Signed out')
                             <p>Date signed out: <b>{{$printer->updated_at->toDayDateTimeString()}}</b></p>
                         @else
                             <p>Last updated: <b>{{$printer->updated_at->toDayDateTimeString()}}</b></p>
@@ -99,19 +99,26 @@
                     <p>Last used by:
                         @php
                             $lastPrint=$printer->prints()->orderBy('updated_at', 'desc')->first();
-                            $lastJob=$lastPrint->jobs()->first();
-                            if($lastJob->requested_online == 0){
-                                $lastUser = $lastJob->customer_name;
-                                $lastUserEmail = $lastJob->customer_email;
-                            } else {
-                                $lastUser = $lastPrint->staff_started->first_name.' '.$lastPrint->staff_started->last_name;
-                                $lastUserEmail = $lastPrint->staff_started->email;
+                            if($lastPrint){
+                                $lastJob=$lastPrint->jobs()->first();
+                                if($lastJob->requested_online == 0){
+                                    $lastUser = $lastJob->customer_name;
+                                    $lastUserEmail = $lastJob->customer_email;
+                                } else {
+                                    $lastUser = $lastPrint->staff_started->first_name.' '.$lastPrint->staff_started->last_name;
+                                    $lastUserEmail = $lastPrint->staff_started->email;
+                                }
+                            }else{
+                                $lastUser = "--";
+                                $lastUserEmail = "";
                             }
                         @endphp
                         <a href="mailto:{{$lastUserEmail}}">{{$lastUser}}</a>
                     </p>
-                    <p>@if($printer->status !== 'Broken' && $printer->status !== 'Missing' && $printer->status !== 'Signed out')
+                    <p>@if($printer->printer_status !== 'Broken' && $printer->printer_status !== 'Missing' && $printer->printer_status !== 'Signed out')
                             There are no issues with this printer.
+                       @elseif($printer->printer_status === 'Signed out')
+                            The printer is signed out from the workshop.
                         @else
                            Current issue:
                             <b>{{$printer->fault_data()->orderBy('updated_at','desc')->first()->body}}</b>
@@ -119,7 +126,7 @@
 
                     </p>
                     <!-- <p>Days out of Order</p> -->
-                    <a href="/printers/index" class="btn btn-lg btn-info">Back to all printers</a>
+                    <a href="/printers/index" class="btn btn-lg btn-info">View all printers</a>
                 </div>
             </div>
         </div>
@@ -137,9 +144,22 @@
     </li>
     @endif
     @php
+        //collect all prints and loans
         $printdata = $printer->prints()->select('created_at AS StartDate', 'updated_at AS EndDate','purpose AS Type','status AS Description', 'id as EntryID');
+        //collect all issues
         $issuedata = $printer->fault_data()->select('created_at AS StartDate', 'resolved_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'id as EntryID');
-        $historydata = $printdata->unionAll($issuedata)->orderBy('StartDate', 'DESC')->get();
+        //combine them
+        $historydata = $printdata->unionAll($issuedata);
+        //collect all issue updates
+        $issueupdatedata = $printer->fault_data()->orderBy('created_at','desc')->where('resolved',0)->first();
+        if($issueupdatedata){
+            $issueupdatedata = $issueupdatedata->FaultUpdates()->select('created_at AS StartDate', 'updated_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'fault_data_id as EntryID');
+            //combine since there are issues
+            $historydata = $historydata->unionAll($issueupdatedata);
+        }
+        //sort entries
+        $historydata = $historydata->orderBy('StartDate', 'DESC')->get();
+
     @endphp
     @php
         $lastEntry = null;
@@ -202,6 +222,8 @@
                                 <div class="col-sm-4">
                                     @if(!$outEndDate)
                                         <a href="/issues/update/{{$lastEntry->EntryID}}" class="btn btn-info">View/Update or Resolve</a>
+                                    @else
+                                        <a href="/issues/update/{{$lastEntry->EntryID}}">View details...</a>
                                     @endif
                                 </div>
                             @endcan
@@ -223,7 +245,11 @@
         @php
             //print very last entry
             $outStartDate = new \Carbon\Carbon($lastEntry->StartDate);
-            $outEndDate = new \Carbon\Carbon($lastEntry->EndDate);
+            if(!$lastEntry->EndDate){
+                $outEndDate = null;
+            } else {
+                $outEndDate = new \Carbon\Carbon($lastEntry->EndDate);
+            }
             $outDescription = $lastEntry->Description;
             $outType = $lastEntry->Type;
             $outClass = '';
@@ -261,6 +287,8 @@
                         <div class="col-sm-4">
                             @if(!$outEndDate)
                                 <a href="/issues/update/{{$lastEntry->EntryID}}" class="btn btn-info">View/Update or Resolve</a>
+                            @else
+                                <a href="/issues/update/{{$lastEntry->EntryID}}">View details...</a>
                             @endif
                         </div>
                     @endcan

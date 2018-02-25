@@ -9,7 +9,22 @@
             <ul class="lsn bl-menu" id="my-menu">
 
                 {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
+                {{--Leading to welcome page--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
+                {{--Pages connected with printers--}}
+                <li class="item">
+                    <span>
+                        3D printers
+                        <span class="caret"></span></span>
+                    <ul class="dropdown-bl">
+                        <li><a class="dropdown-item" href="{{ url('/printers/index') }}">View printers</a></li>
+                        @can('issues_manage')
+                            <li><a class="dropdown-item" href="{{ url('/issues/index') }}">Pending issues</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/issues/select') }}">Log an issue</a></li>
+                        @endcan
+                    </ul>
+                </li>
+                {{--Manage finance--}}
                 @can('manage_cost_codes')
                 <li class="item">
                     <span>
@@ -20,52 +35,62 @@
                     </ul>
                 </li>
                 @endcan
+                {{--Printing in the workshop and online--}}
                 <li class="item">
                     <span>
-                        Workshop
+                        Printing
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
-                        {{--<li><a class="dropdown-item" href="{{ url('/orderOnline') }}">Order online</a></li>--}}
-                        <li><a class="dropdown-item" href="{{ url('/news') }}">News</a></li>
-                        <li><a class="dropdown-item" href={{ url('/printingData/create') }}>Request a job</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
-                        <li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Pending Jobs</a></li>
-                        <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
-                    </ul>
-                </li>
-                <li class="item">
-                    <span>
-                        3D printers
-                        <span class="caret"></span></span>
-                    <ul class="dropdown-bl">
-                        <li><a class="dropdown-item" href="{{ url('/printers/index') }}">View printers</a></li>
-                        @can('issues_manage')
-                        <li><a class="dropdown-item" href="{{ url('/issues/index') }}">Pending issues</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/issues/select') }}">Log an issue</a></li>
+                        <li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Workshop Jobs</a></li>
+                        <li><a class="dropdown-ite" href={{ url('/printingData/create') }}>Request to Print in the Workshop</a></li>
+                        @can('manage_online_jobs')
+                            <li><a class="dropdown-ite" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
                         @endcan
+                        <li><a class="dropdown-ite"  href="{{ url('/OnlineJobs/create') }}">Order a Print Online</a></li>
                     </ul>
                 </li>
+                {{--Managing staff--}}
                 <li class="item">
                     <span>
                         Staff
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our team</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/documents') }}">For demonstrators</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our Team</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/documents') }}">For Demonstrators</a></li>
                         <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting paid</a></li>
                     </ul>
                 </li>
+                {{--Other workshop-connected information--}}
+                <li class="item">
+                    <span>
+                        About
+                        <span class="caret"></span></span>
+                    <ul class="dropdown-bl">
+                        <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
+                        {{--<li><a class="dropdown-item" href="{{ url('/orderOnline') }}">Order online</a></li>--}}
+                        <li><a class="dropdown-item" href="{{ url('/news') }}">News</a></li>
+                        {{--<li><a class="dropdown-item" href={{ url('/printingData/create') }}>Request a job</a></li>--}}
+                        {{--<li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>--}}
+                        <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
+                        {{--<li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Workshop Jobs</a></li>--}}
+                        {{--@can('manage_online_jobs')--}}
+                            {{--<li><a class="dropdown-ite" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>--}}
+                        {{--@endcan--}}
+                        <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
+                    </ul>
+                </li>
 
-                {{--Online workflow and demonstrator workflow available to online jobs manager--}}
-                @can('manage_online_jobs')
+                {{--Each role has separate red button except for Lead Demonstrator and admin--}}
+                @hasrole('OnlineJobsManager')
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
-                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+                @endhasrole
                 {{--Ø--}}
-                @else
+                @hasrole('Coordinator')
+                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/costCodes/index') }}>Cost Codes</a></li>
+                @endhasrole
+                @hasrole('Demonstrator')
                     <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
-                @endcan
+                @endhasrole
 
                 <li class="item">
                     <span>
@@ -81,16 +106,36 @@
                 </li>
             </ul>
         @else
+           {{--Menu view for unregistered user--}}
             <ul class="lsn bl-menu" id="my-menu">
                 {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
-                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
-                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/OnlineJobs/create') }}">Request online job!</a></li>
+                {{--Welcome page--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
-                <li class="item"><a class="no-dropdown" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
-                {{--<li class="item"><a class="no-dropdown" href="{{ url('/orderOnline') }}">Order online</a></li>--}}
-                <li class="item"><a class="no-dropdown" href="{{ url('/news') }}">News</a></li>
-                <li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>
+                {{--Order print in the workshop--}}
+                {{--Show this button only on Wednesdays--}}
+                @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
+                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
+                @endif
+                {{--Order print online--}}
+                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/OnlineJobs/create') }}">Request online job!</a></li>
+                {{--Request a loan--}}
+                {{--<li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>--}}
+                {{--Page with the information about how to print--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/learn') }}">Learn to 3D print</a></li>
+                {{--Other workshop-connected information--}}
+                <li class="item">
+                    <span>
+                        About
+                        <span class="caret"></span></span>
+                    <ul class="dropdown-bl">
+                        <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our Team</a></li>
+                        {{--<li><a class="dropdown-item" href="{{ url('/news') }}">News</a></li>--}}
+                        <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
+                    </ul>
+                </li>
+
+
                 <li class="item">
                     <span>
                     <span class="glyphicon glyphicon-lock"></span>
@@ -98,6 +143,7 @@
                     <ul class="dropdown-bl dropdown-login" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="{{ route('auth.register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
                         <li><a class="dropdown-item" href="{{ route('auth.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        {{--<li><a class="dropdown-item" href="https://webauth.pprd.soton.ac.uk/idp/profile/SAML2/Redirect/SSO"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>--}}
                     </ul>
                 </li>
             </ul>

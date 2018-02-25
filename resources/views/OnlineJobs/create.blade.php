@@ -89,7 +89,7 @@
                 </div>
 
                 {{--Budget Holder--}}
-                <div class="form-group{{ $errors->has('budget_holder') ? ' has-error' : '' }}">
+                <div id="budget_holder_group" class="form-group{{ $errors->has('budget_holder') ? ' has-error' : '' }}">
                     <label for="budget_holder" class="col-sm-4 control-label">Budget Holder</label>
 
                     <div class="col-sm-8">
@@ -224,6 +224,15 @@
                 <h3 class="text-center lead">Drop-off claim passcode</h3>
                 <p>Copy and paste the drop-off passcode for file you have uploaded</p>
             </div>
+            <div class="hint text-left" data-hint="budget_holder">
+                <h3 class="text-center lead">Budget Holder</h3>
+                <p>Please provide the name of the budget holder of the university cost code you entered.</p>
+                <p>If you are unsure who is your the budget holder please ask Finance Office.</p>
+            </div>
+            <div class="hint text-left" data-hint="job_title">
+                <h3 class="text-center lead">Job Title</h3>
+                <p>Please provide a title for your print. This will appear to the module coordinator/ cost code budget holder as the cost of the print is claimed.</p>
+            </div>
             {{--<div class="hint text-left after-filling" data-hint="final">--}}
                 {{--<h3 class="text-center lead">The estimated cost of the print</h3>--}}
                 {{--<p>The cost of your print is £ </p>--}}
@@ -242,5 +251,5 @@
 @endsection
 
 @section('scripts')
-<script src="/js/request_job_validation.js"></script>
+<script src="/js/validate_form.js"></script>
 @endsection

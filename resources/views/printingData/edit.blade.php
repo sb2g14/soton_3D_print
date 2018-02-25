@@ -23,10 +23,10 @@
                         Estimated duration: <b>{{$job->total_duration}}</b><br>
                         Estimated material amount: <b>{{$job->total_material_amount}} grams</b><br>
                         Estimated price: <b>£{{$job->total_price}}</b><br>
-                        Module name or cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @else <b style="color: red"> @endif {{$job->use_case}} </b><br>
-                        Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @else <b style="color: red"> @endif {{$job->cost_code}} </b><br>
+                        Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> {{$job->cost_code}} @elseif($job->use_case == 'Cost Code - unknown')</b> <b style="color: red"> {{$job->cost_code}} @else <b style="color: forestgreen"> {{$job->use_case}} @endif </b><br>
                         Comment: <b>{{$job->job_approved_comment}}</b><br>
                         Job number: <b>{{$job->id}}</b><br>
+                        Job title: <b>{{$job->job_title}}</b>
                         Status: <b>{{$job->status}}</b>
                     </p>
                 </div>
@@ -86,9 +86,9 @@
                             </div> <!-- /form-group -->
 
                         <div class="col-sm-12 text-left">
-                                <button id="submit" type="submit" class="btn btn-lg btn-success">Save</button>
+                                <button id="submit" type="submit" class="btn btn-success">Save</button>
                                 {{--<a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>--}}
-                                <a href="/printingData/finished" class="btn btn-lg btn-info">Back</a>
+                                <a href="/printingData/finished" class="btn btn-danger">Back</a>
                         </div>
                     </form>
                 </div>
@@ -98,7 +98,7 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/edit_job_validation.js"></script>
+    <script src="/js/validate_form.js"></script>
 @endsection
 
 

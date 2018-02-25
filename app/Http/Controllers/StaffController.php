@@ -13,7 +13,7 @@ class StaffController extends Controller
     public function __construct()
     {
 
-        $this->middleware('auth');
+        $this->middleware('auth')->except('index');
 
     }
     /**
@@ -146,6 +146,7 @@ class StaffController extends Controller
                     $user->syncRoles(['LeadDemonstrator']);
                 }elseif($role == 'Former member'){
                     $user->syncRoles(['OldDemonstrator']);
+                    staff::where('id','=', $id)->update(array('phone' => 'unknown'));
                 }elseif($role == 'IT Manager' || $role == 'IT'){
                     $user->syncRoles(['administrator']);
                 }elseif($role == '3D Hub Manager'){
@@ -185,7 +186,7 @@ class StaffController extends Controller
             $user->syncRoles(['OldDemonstrator']);
         }
         // Update record in staff table
-        staff::where('id','=', $id)->update(array('role'=> 'Former member'));
+        staff::where('id','=', $id)->update(array('role'=> 'Former member', 'phone' => 'unknown'));
         session()->flash('message', 'The record has been deleted');
 
         return redirect('/members/index');

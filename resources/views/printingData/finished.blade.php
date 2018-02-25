@@ -48,15 +48,15 @@
                     @if (Carbon\Carbon::now('Europe/London')->gte(Carbon\Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i)) || $job->status == 'Failed' || $job->status == 'Success')
                     <tr class="text-left">
                         <td data-th="ID">{{ $job->id }}</td>
-                        <td data-th="Printer No">{{ $print->printers_id }}</td>
+                        <td data-th="Printer No"><a href="/issues/show/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
                         <td data-th="Job title">{{ $job->job_title  }}</td>
                         <td data-th="Name"><a href="mailto:{{$job->customer_email}}?Subject=Soton3Dprint Job {{ $job->id }}" target="_top">{{$job->customer_name}}</a></td>
                         {{--<td data-th="Payment Category">{{$job->payment_category}}</td>--}}
                         <td data-th="Time">{{ date("H:i", strtotime($job->total_duration)) }}</td>
                         <td data-th="Material Amount">{{ $job->total_material_amount }} g</td>
                         <td data-th="Price">£{{ $job->total_price }}</td>
-                        <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%m') }}</td>
-                        <td data-th="Updated last">{{ Carbon\Carbon::parse($job->updated_at)->formatLocalized('%d %b, %H:%m') }}</td>
+                        <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
+                        <td data-th="Updated last">{{ Carbon\Carbon::parse($job->updated_at)->formatLocalized('%d %b, %H:%M') }}</td>
                         @if ($job->staff_finished === null)
                             <td data-th="Completed by"></td>
                         @else

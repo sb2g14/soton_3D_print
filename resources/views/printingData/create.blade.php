@@ -66,7 +66,7 @@
                             <strong>{{ $errors->first('customer_name') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="customer_name_error"></span>
+                        <span class="help-block" id="student_name_error"></span>
                     </div>
                 </div>
 
@@ -81,7 +81,7 @@
                                         <strong>{{ $errors->first('customer_email') }}</strong>
                                     </span>
                         @endif
-                        <span class="help-block" id="customer_email_error"></span>
+                        <span class="help-block" id="email_error"></span>
                     </div>
                 </div>
 
@@ -94,11 +94,11 @@
                             <strong>{{ $errors->first('customer_id') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="customer_id_error"></span>
+                        <span class="help-block" id="student_id_error"></span>
                     </div>
                 </div>
 
-                <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
+                <div id="time" class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                     {!! Form::label('hours', 'Printing Time', ['class' => 'col-lg-4 control-label'] )  !!}
                     <div class="col-md-4">
                         {!! Form::select('hours',array('' => 'Hours')+ range(0,59), old('hours', $hours), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
@@ -116,6 +116,9 @@
                         </span>
                         @endif
                    </div>
+                    <div class="col-sm-8">
+                        <span class="help-block" id="time_error"></span>
+                    </div>
                 </div>
 
                 <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
@@ -145,7 +148,7 @@
                 </div>
 
                 {{--Budget Holder--}}
-                <div class="form-group{{ $errors->has('budget_holder') ? ' has-error' : '' }}">
+                <div id="budget_holder_group" class="form-group{{ $errors->has('budget_holder') ? ' has-error' : '' }}">
                     <label for="budget_holder" class="col-sm-4 control-label">Budget Holder</label>
 
                     <div class="col-sm-8">
@@ -199,9 +202,9 @@
                     the job and not for the whole job.</p>
             </div>
             
-            <div class="hint text-left" data-hint="printer_id">
+            <div class="hint text-left" data-hint="printers_id">
                 <h3 class="text-center lead">If the chosen printer is unavailable</h3>
-                <p>If the printer you have selected is not on the list of available printers this means that it is
+                <p>If the printer you have selected is not in the list of available printers, then it is
                     either broken or scheduled to use for other print. In either case please contact the demonstrator
                     for further information.</p>
             </div>
@@ -242,6 +245,15 @@
                 <p>If you are a PhD student, postdoc or an academic, please input the Cost Code that will be charged for
                     the current print. If in doubt or if you have any questions, please contact the demonstrator.</p>
             </div>
+            <div class="hint text-left" data-hint="budget_holder">
+                <h3 class="text-center lead">Budget Holder</h3>
+                <p>Please provide the name of the budget holder of the university cost code you entered.</p>
+                <p>If you are unsure who is your the budget holder please ask Finance Office.</p>
+            </div>
+            <div class="hint text-left" data-hint="job_title">
+                <h3 class="text-center lead">Job Title</h3>
+                <p>Please provide a title for your print. This will appear to the module coordinator/ cost code budget holder as the cost of the print is claimed.</p>
+            </div>
             <div class="hint text-left after-filling" data-hint="final">
                 <h3 class="text-center lead">The estimated cost of the print</h3>
                 <p>The cost of your print is £ <span id="price-final" style="color: red;"></span></p>
@@ -260,7 +272,6 @@
 @endsection
 
 @section('scripts')
-<script src="/js/request_job_validation.js"></script>
     @if (notify()->ready())
         <script>
             swal({
@@ -271,5 +282,5 @@
             });
         </script>
     @endif
-    <script src="/js/print_preview_validation.js"></script>
+    <script src="/js/validate_form.js"></script>
 @endsection

@@ -30,8 +30,10 @@
                             @endforeach
                             <input type="radio" name="printer_type" <?php if (isset($printer_type)
                                 && $printer_type=="Other") echo "checked";?> value="Other">Other <br>
-                            <input type="text" name="other_printer_type" class="form-control" id="other" placeholder="Please input if other"/><br>
-                            <td><span class="help-block" id="other_error"></span> </td>
+                            <div id="printer_type_other_group">
+                                <input type="text" id="printer_type_other" name="other_printer_type" class="form-control" placeholder="Please input if other"/><br>
+                                <td><span class="help-block" id="printer_type_other_error"></span> </td>
+                            </div>
                         </div> <!-- Class radio -->
                     </div> <!-- /form-group -->
                     @include('layouts.errors')
@@ -44,6 +46,6 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="/js/new_printer_validation.js"></script>
+    <script src="/js/validate_form.js"></script>
 @endsection
 

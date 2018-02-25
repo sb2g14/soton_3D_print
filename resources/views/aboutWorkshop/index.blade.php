@@ -12,12 +12,25 @@
     @endif
 @stop
 @section('content')
-    {{--<div class="title m-b-md">--}}
-        {{--How to find us --}}
-    {{--</div>--}}
+    <div class="title m-b-md">
+        About workshop
+    </div>
+    <div class="container well text-left">
+        <p>
+            For Part III and IV UG student, MSc, researcher and staff projects with a sub-project cost (‘budget’) code,
+            the EDMC offers further 3D printing options, for example binder jet powder printing (ABS) and Direct Metal
+            Laser Sintering (typically stainless steel). Please have a look at the
+            <a href="https://www.southampton.ac.uk/autonomous-systems/about/ecdm-workshop.page">
+                EDMC manufacturing methods</a>. Relevant details can be found on the page of the
+            <a href="https://groupsite.soton.ac.uk/Academic/FEE-Engineering-Design-and-Manufacturing-Centre/Pages/Home.aspx">
+                FEE Engineering Design and Manufacturing Centre</a>, in particular the
+            <a href="https://groupsite.soton.ac.uk/Academic/FEE-Engineering-Design-and-Manufacturing-Centre/_layouts/WordViewer.aspx?id=/Academic/FEE-Engineering-Design-and-Manufacturing-Centre/Documents/FEE-Workshop-Facilities-available-for-Student%2BResearcher%2BStaff-Use.docx">
+                'FEE Workshop Facilities available for Student Researcher Staff Use' file</a> in the Documents folder.
+        </p>
+    </div>
     <div class="container well">
         <div class="col-sm-12 text-center">
-            <h3 class="text-center lead">AVAILABLE PRINTERS</h3>
+            <h3 class="text-center lead">AVAILABLE PRINTERS FOR PRINTING IN THE WORKSHOP</h3>
             <p>Currently the workshop provides access to the following types of printers:</p>
         </div>
         <table class="table table-responsive table-sm">
@@ -33,50 +46,57 @@
             <tbody>
                 <tr>
                     <td>UP!</td>
-                    <td>{{\App\Printers::where('printer_type','UP!')->count()}}</td>
+                    <td>{{\App\Printers::where('printer_type','UP!')->where('printer_status','!=','Signed out')->count()}}</td>
                     <td>ABS or PLA</td>
                     <td>10-100 cm3/h</td>
                     <td>140×140×135mm</td>
                 </tr>
                 <tr>
                     <td>UP Plus 2</td>
-                    <td>{{\App\Printers::where('printer_type','UP Plus 2')->count()}}</td>
+                    <td>{{\App\Printers::where('printer_type','UP Plus 2')->where('printer_status','!=','Signed out')->count()}}</td>
                     <td>ABS or PLA</td>
                     <td>10-100 cm3/h</td>
                     <td>140×140×135mm</td>
                 </tr>
-                <tr>
-                    <td>UP BOX</td>
-                    <td>{{\App\Printers::where('printer_type','UP BOX')->count()}}</td>
-                    <td>ABS or PLA</td>
-                    <td></td>
-                    <td>255x205x205mm</td>
-                </tr>
-                <tr>
-                    <td>Malyan M200</td>
-                    <td>{{\App\Printers::where('printer_type','Malyan M200')->count()}}</td>
-                    <td>ABS or PLA</td>
-                    <td>180 mm/s</td>
-                    <td>120x120x120mm</td>
-                </tr>
-                <tr>
-                    <td>Original Prusa i3 MK3</td>
-                    <td>{{\App\Printers::where('printer_type','Original Prusa i3 MK3')->count()}}</td>
-                    <td>Any thermoplastic including Nylon and Polycarbonate</td>
-                    <td>200+ mm/s</td>
-                    <td>250x210x210mm</td>
-                </tr>
             </tbody>
 
         </table>
+        <div class="col-sm-12 text-center">
+            <h3 class="text-center lead">AVAILABLE PRINTERS FOR ORDERING ONLINE</h3>
+            <p>If the order can not be printed in the workshop, here is the list of printers available for online requests:</p>
+            <table class="table table-responsive table-sm">
+                <thead>
+                    <tr>
+                        <td>UP BOX</td>
+                        <td>{{\App\Printers::where('printer_type','UP BOX')->where('printer_status','!=','Signed out')->count()}}</td>
+                        <td>ABS or PLA</td>
+                        <td></td>
+                        <td>255x205x205mm</td>
+                    </tr>
+                    <tr>
+                        <td>Malyan M200</td>
+                        <td>{{\App\Printers::where('printer_type','Malyan M200')->where('printer_status','!=','Signed out')->count()}}</td>
+                        <td>ABS or PLA</td>
+                        <td>180 mm/s</td>
+                        <td>120x120x120mm</td>
+                    </tr>
+                    <tr>
+                        <td>Original Prusa i3 MK3</td>
+                        <td>{{\App\Printers::where('printer_type','Original Prusa i3 MK3')->where('printer_status','!=','Signed out')->count()}}</td>
+                        <td>Any thermoplastic including Nylon and Polycarbonate</td>
+                        <td>200+ mm/s</td>
+                        <td>250x210x210mm</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 
     <div class="container well">
         <div class="row vdivide">
             <div class="col-sm-6 text-left">
                 <h3 class="text-center lead">OPEN HOURS</h3>
-                <p>Open Access to 3D Printing Service in Design Workshop ​<br>
-                Wednesdays  9:00-18:00</p>
+                <p>Open Access to the 3D Printing Service in the Design Workshop ​(13/1055) on Wednesdays 9:00-18:00, except during University closure.</p>
             </div>
             <div class="col-sm-6 text-left">
                 <h3 class="text-center lead">CONTACTS</h3>

@@ -8,6 +8,11 @@
 
         <div class="text-center m-b-md">
         <div class="title">Former Members</div>
+            @can('staff_manage')
+                <a href="{{ url('/members/index') }}" type="button" class="btn btn-lg btn-info">
+                    View current members
+                </a>
+            @endcan
         </div>
 
         <div class="container">
