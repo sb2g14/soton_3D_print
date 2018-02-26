@@ -60,20 +60,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 57);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 3:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(4);
-
-
-/***/ }),
-
-/***/ 30:
+/***/ 0:
 /***/ (function(module, exports) {
 
 /*** validations.js
@@ -617,10 +609,18 @@ module.exports = {
 
 /***/ }),
 
-/***/ 4:
+/***/ 57:
 /***/ (function(module, exports, __webpack_require__) {
 
-var validations = __webpack_require__(30);
+module.exports = __webpack_require__(58);
+
+
+/***/ }),
+
+/***/ 58:
+/***/ (function(module, exports, __webpack_require__) {
+
+var validations = __webpack_require__(0);
 $(document).ready(function () {
 
     $(window).load(function () {

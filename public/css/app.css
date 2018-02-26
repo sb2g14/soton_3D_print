@@ -111,36 +111,6 @@ a:link {
   text-decoration: none;
 }
 /* @blue: #266c8e; */
-.btn-primary {
-  background-color: #002e3b;
-}
-.btn-primary:hover {
-  background-color: #00465a;
-}
-.btn-danger {
-  background-color: #e9454b;
-}
-.btn-danger:hover {
-  background-color: #ee6b71;
-}
-.btn-info {
-  background-color: #0097c2;
-}
-.btn-info:hover {
-  background-color: #007697;
-}
-.btn-success {
-  background-color: #4c8658;
-}
-.btn-success:hover {
-  background-color: #539361;
-}
-.btn-warning {
-  background-color: #ff9900;
-}
-.btn-warning:hover {
-  background-color: #ffa114;
-}
 .table > tbody > tr > td.available {
   background-color: #4c8658;
 }
@@ -249,12 +219,8 @@ body.is-fixed {
   display: block;
 }
 .p-header .bl-menu li .btn {
-  background: #ec595f;
   color: #fff;
   padding: 10px;
-}
-.p-header .bl-menu li .btn:hover {
-  background: #f00f2c;
 }
 .p-header .bl-menu a:hover,
 .p-header .bl-menu li > span:hover {

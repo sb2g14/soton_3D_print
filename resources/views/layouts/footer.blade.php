@@ -8,7 +8,7 @@
 
                 <div class="social-media">
                     <div class="row">
-                        <div class="col-xs-3"></div>
+                        <div class="col-xs-2"></div>
                         <div class="col-xs-2">
                             <a href="https://www.facebook.com/EDMC-and-Design-Workshops-University-of-Southampton-1569152903360637/" target="_blank"><i class="fa fa-facebook"></i></a>
                         </div>
@@ -21,7 +21,7 @@
                         <div class="col-xs-2">
                             <a href={{ url('/faq') }} target="_blank">FAQ</a>
                         </div>
-                        <div class="col-xs-3"></div>
+                        <div class="col-xs-2"></div>
                     </div>
                 </div>
             </div>

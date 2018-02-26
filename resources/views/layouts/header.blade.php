@@ -82,14 +82,14 @@
 
                 {{--Each role has separate red button except for Lead Demonstrator and admin--}}
                 @hasrole('OnlineJobsManager')
-                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
+                    <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
                 @endhasrole
                 {{--Ø--}}
                 @hasrole('Coordinator')
-                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/costCodes/index') }}>Cost Codes</a></li>
+                    <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href={{ url('/costCodes/index') }}>Cost Codes</a></li>
                 @endhasrole
                 @hasrole('Demonstrator')
-                    <li class="item"><a class="btn btn-lg no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+                    <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 @endhasrole
 
                 <li class="item">
@@ -114,10 +114,10 @@
                 {{--Order print in the workshop--}}
                 {{--Show this button only on Wednesdays--}}
                 @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
-                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
+                <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
                 @endif
                 {{--Order print online--}}
-                <li class="item"><a class="btn btn-lg no-dropdown" role="button" href="{{ url('/OnlineJobs/create') }}">Request online job!</a></li>
+                <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href="{{ url('/OnlineJobs/create') }}">Request online job!</a></li>
                 {{--Request a loan--}}
                 {{--<li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>--}}
                 {{--Page with the information about how to print--}}
