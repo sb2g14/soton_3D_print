@@ -80,18 +80,23 @@
  ***/
 module.exports = {
     //ERROR MESSAGE HANDLERS
-    addErrorDetail: function addErrorDetail(inputfield, errorfield, message) {
+    addErrorDetail: function (inputfield, errorfield, message) {
         /*shows the error div with the specified message 
          *and sets the input field class to error*/
         $(errorfield).html(message);
+        $(errorfield).removeClass("text-muted");
+        $(errorfield).addClass("text-danger");
         $(errorfield).show();
-        $(inputfield).addClass("parsley-error");
+        $(inputfield).removeClass("form-control is-valid");
+        $(inputfield).addClass("form-control is-invalid");
     },
-    removeErrorDetail: function removeErrorDetail(inputfield, errorfield) {
+    removeErrorDetail: function (inputfield, errorfield) {
         /*hides the error div and sets the input field class to success*/
+        $(errorfield).removeClass("text-danger");
+        $(errorfield).addClass("text-muted");
         $(errorfield).hide();
-        $(inputfield).removeClass("parsley-error");
-        $(inputfield).addClass("parsley-success");
+        $(inputfield).removeClass("form-control is-invalid");
+        $(inputfield).addClass("form-control is-valid");
     },
     addError: function addError(target, message) {
         /*shows the error div with the specified message 
@@ -454,7 +459,7 @@ module.exports = {
         if (use_case.val().length < 3 || use_case.val().length > 15) {
             module.exports.addError(fieldname, "Either 9 digit university cost code or standard module name are allowed");
             localerror = true;
-        } else if (!use_case.val().match(/^[A-Z]{3}/) && !use_case.val().match(/^[a-z0-9]+$/i)) {
+        } else if((!use_case.val().match(/^[A-Z]{3}/) && !use_case.val().match(/^([5]{1}[0-9]{8})$/i))){
             module.exports.addError(fieldname, "Either 9 digit cost code or standard module name are allowed");
             localerror = true;
         } else {
@@ -568,10 +573,9 @@ module.exports = {
             module.exports.addError(fieldname, "No special characters are allowed");
             localerror = true;
         } else {
+            module.exports.removeError(fieldname);
             $(fieldname.concat("_error")).html("Remaining characters : " + (maxlength - message.length));
             $(fieldname.concat("_error")).show();
-            $(fieldname).removeClass("parsley-error");
-            $(fieldname).addClass("parsley-success");
             localerror = false;
         }
         return localerror;

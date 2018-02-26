@@ -32,8 +32,8 @@ $(document).ready(function() {
         $(el.concat("_error")).hide();
     }
 
+    //iterate through input and select fields as well as textareas.
     //construct to modify the keyup function for all fields
-    //iterates through input fields of type text or customer_email, as well as select fields
     $("input, select, textarea").keyup(function() {
         //here we create a variable for the validation function for that field,
         //passing the field id to it as an argument
@@ -65,9 +65,6 @@ $(document).ready(function() {
                 errors[el] = funs[el](el);
             }
         }
-        //but only really need special checks that affect more than one field
-        //errors["#use_case"] = check_cost_code("#use_case","#budget_holder");
-        //errors["#budget_holder"] = check_budget_holder("#budget_holder","#use_case");
         //now count the errors
         console.log("checking number of errors");
         var hasError = false;
@@ -78,37 +75,11 @@ $(document).ready(function() {
                 errCount ++;
             }
         }
-        //update the price preview as we are on it
-        evaluate_price();
         //if there has been no error, then submit button is good to go, otherwise disable
-        if (!hasError) {
-            //$("#submit").addClass("btn-success");
-            //$("#submit").trigger("cssClassChanged");
-            //$("#submit").html("Submit");
+        if (!hasError) { 
             $("#comment").prop('disabled', false);
         } else {
-            //$("#submit").removeClass("btn-success");
-            //$("#submit").trigger("cssClassChanged");
-            //$("#submit").html(errCount+" validations failed");
             $("#comment").prop('disabled', true);
-        }
-    }
-
-    function evaluate_price() {
-        /* check if a price field exists, calculates the price
-         * and enters it into that field */
-        var idPrice = "#price"; //name of the field containing the price.
-        //the following three names should be the same as defined in funs!
-        var idHours = "#hours";
-        var idMinutes = "#minutes";
-        var idMaterial = "#material_amount";
-        if ($(idPrice).length) {
-            if( !errors[idMaterial] && !errors[idHours] && !errors[idMinutes]){
-                var time = $(idHours).find(":selected").text() + $(idMinutes).find(":selected").text()/60; //time in hours
-                var material = $(idMaterial).val(); //material in g
-                var $price = 3*time + 5*material/100;
-                $(idPrice).html($price);
-            }
         }
     }
 
