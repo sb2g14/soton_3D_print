@@ -21,8 +21,6 @@ $(document).ready(function() {
 
     //map the field ids to the functions in this dictionary,
     //assign null to input fields that you need to treat extra...
-    //TODO: message_long is currently defined as message in print_preview_validation.js -> need to change that in the blade!
-    //TODO: definition of printer_type and other field is not consistent accross blades -> suggest to make them cosistent as mentioned above...
     var funs = {
         "#material_amount": validations.check_material_amount,
         "#hours": local_check_time_hours,
@@ -75,9 +73,6 @@ $(document).ready(function() {
                 errors[el] = funs[el](el);
             }
         }
-        //but only really need special checks that affect more than one field
-        //errors["#use_case"] = check_cost_code("#use_case","#budget_holder");
-        //errors["#budget_holder"] = check_budget_holder("#budget_holder","#use_case");
         //now count the errors
         console.log("checking number of errors");
         var hasError = false;
@@ -91,14 +86,8 @@ $(document).ready(function() {
 
         //if there has been no error, then submit button is good to go, otherwise disable
         if (!hasError) {
-            //$("#submit").addClass("btn-success");
-            //$("#submit").trigger("cssClassChanged");
-            //$("#submit").html("Submit");
             $("#submit").prop('disabled', false);
         } else {
-            //$("#submit").removeClass("btn-success");
-            //$("#submit").trigger("cssClassChanged");
-            //$("#submit").html(errCount+" validations failed");
             $("#submit").prop('disabled', true);
         }
     }

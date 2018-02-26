@@ -84,11 +84,16 @@ module.exports = {
         /*shows the error div with the specified message 
          *and sets the input field class to error*/
         $(errorfield).html(message);
+        $(errorfield).removeClass("form-text text-muted");
+        $(errorfield).addClass("form-text text-danger");
         $(errorfield).show();
+        $(inputfield).removeClass("parsley-success");
         $(inputfield).addClass("parsley-error");
     },
     removeErrorDetail: function removeErrorDetail(inputfield, errorfield) {
         /*hides the error div and sets the input field class to success*/
+        $(errorfield).removeClass("form-text text-danger");
+        $(errorfield).addClass("form-text text-muted");
         $(errorfield).hide();
         $(inputfield).removeClass("parsley-error");
         $(inputfield).addClass("parsley-success");
@@ -449,13 +454,13 @@ module.exports = {
          *Also sets the Error on the specified field. The error div needs to have
          *the identical fieldname but with _error appended.*/
         var localerror = true;
-        var use_case = $(fieldname);
+        var use_case = $(fieldname).val();
 
-        if (use_case.val().length < 3 || use_case.val().length > 15) {
-            module.exports.addError(fieldname, "Either 9 digit university cost code or standard module name are allowed");
+        if (use_case.length < 3 || use_case.length > 15) {
+            module.exports.addError(fieldname, "Either university cost code or standard module names are allowed");
             localerror = true;
-        } else if (!use_case.val().match(/^[A-Z]{3}/) && !use_case.val().match(/^[a-z0-9]+$/i)) {
-            module.exports.addError(fieldname, "Either 9 digit cost code or standard module name are allowed");
+        } else if (!use_case.match(/^[A-Z]{3}/) && use_case !== "Demonstrator" && !use_case.match(/^([5]{1}[0-9]{8})$/i)) {
+            module.exports.addError(fieldname, "Either university cost code or standard module names are allowed");
             localerror = true;
         } else {
             module.exports.removeError(fieldname);
@@ -568,10 +573,9 @@ module.exports = {
             module.exports.addError(fieldname, "No special characters are allowed");
             localerror = true;
         } else {
+            module.exports.removeError(fieldname);
             $(fieldname.concat("_error")).html("Remaining characters : " + (maxlength - message.length));
             $(fieldname.concat("_error")).show();
-            $(fieldname).removeClass("parsley-error");
-            $(fieldname).addClass("parsley-success");
             localerror = false;
         }
         return localerror;
@@ -655,8 +659,8 @@ $(document).ready(function () {
         $(el.concat("_error")).hide();
     }
 
+    //iterate through input and select fields as well as textareas.
     //construct to modify the keyup function for all fields
-    //iterates through input fields of type text or customer_email, as well as select fields
     $("input, select, textarea").keyup(function () {
         //here we create a variable for the validation function for that field,
         //passing the field id to it as an argument
@@ -687,9 +691,6 @@ $(document).ready(function () {
                 errors[el] = funs[el](el);
             }
         }
-        //but only really need special checks that affect more than one field
-        //errors["#use_case"] = check_cost_code("#use_case","#budget_holder");
-        //errors["#budget_holder"] = check_budget_holder("#budget_holder","#use_case");
         //now count the errors
         console.log("checking number of errors");
         var hasError = false;
@@ -700,37 +701,11 @@ $(document).ready(function () {
                 errCount++;
             }
         }
-        //update the price preview as we are on it
-        evaluate_price();
         //if there has been no error, then submit button is good to go, otherwise disable
         if (!hasError) {
-            //$("#submit").addClass("btn-success");
-            //$("#submit").trigger("cssClassChanged");
-            //$("#submit").html("Submit");
             $("#report_issue").prop('disabled', false);
         } else {
-            //$("#submit").removeClass("btn-success");
-            //$("#submit").trigger("cssClassChanged");
-            //$("#submit").html(errCount+" validations failed");
             $("#report_issue").prop('disabled', true);
-        }
-    }
-
-    function evaluate_price() {
-        /* check if a price field exists, calculates the price
-         * and enters it into that field */
-        var idPrice = "#price"; //name of the field containing the price.
-        //the following three names should be the same as defined in funs!
-        var idHours = "#hours";
-        var idMinutes = "#minutes";
-        var idMaterial = "#material_amount";
-        if ($(idPrice).length) {
-            if (!errors[idMaterial] && !errors[idHours] && !errors[idMinutes]) {
-                var time = $(idHours).find(":selected").text() + $(idMinutes).find(":selected").text() / 60; //time in hours
-                var material = $(idMaterial).val(); //material in g
-                var $price = 3 * time + 5 * material / 100;
-                $(idPrice).html($price);
-            }
         }
     }
 

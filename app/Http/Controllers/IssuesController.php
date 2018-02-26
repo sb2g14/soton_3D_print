@@ -133,6 +133,7 @@ class IssuesController extends Controller
             ->title('Printer usage')
             ->labels(['Days Printing', 'Days on Loan', 'Days Broken or Missing', 'Days Idle'])
             ->values([$success,$loan,$broken,$idle])
+            ->colors(['#7a8500', '#0097c2', '#ff9900', '#4c8658'])
             ->dimensions(400,200)
             ->responsive(true);
 
