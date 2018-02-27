@@ -465,7 +465,7 @@ module.exports = {
         } else {
             module.exports.removeError(fieldname);
             localerror = false;
-            if (!$.isNumeric(use_case.val())) {
+            if (!$.isNumeric(use_case)) {
                 //should be like "#budget_holder_group" to hide field and label
                 $(budgetholder.concat("_group")).hide();
             } else {
@@ -646,8 +646,10 @@ $(document).ready(function () {
         check_all_fields();
         //hide elements after checking all fields.
         //this may crash if a group field doesn't exist.
-        $("#budget_holder_group").hide();
-        $("#printer_type_other_group").hide();
+        //also we shouldn't require this, since the validation 
+        //functions should hide/ show them automatically.
+        //$("#budget_holder_group").hide();
+        //$("#printer_type_other_group").hide();
     });
 
     //these functions are defined so that the check function only takes one argument.

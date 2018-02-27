@@ -21,8 +21,10 @@ $(document).ready(function() {
         check_all_fields();
         //hide elements after checking all fields.
         //this may crash if a group field doesn't exist.
-        $("#budget_holder_group").hide();
-        $("#printer_type_other_group").hide();
+        //also we shouldn't require this, since the validation 
+        //functions should hide/ show them automatically.
+        //$("#budget_holder_group").hide();
+        //$("#printer_type_other_group").hide();
     });
     
     //these functions are defined so that the check function only takes one argument.

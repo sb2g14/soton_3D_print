@@ -395,7 +395,7 @@ module.exports = {
         } else {
             module.exports.removeError(fieldname);
             localerror = false;
-            if(!$.isNumeric(use_case.val())){
+            if(!$.isNumeric(use_case)){
                 //should be like "#budget_holder_group" to hide field and label
                 $(budgetholder.concat("_group")).hide();
             } else {
