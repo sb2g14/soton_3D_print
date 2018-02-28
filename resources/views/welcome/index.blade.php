@@ -7,17 +7,19 @@
         <div class="bl-welcome">    
             <div class="row">
                 <div class="col-xs-12">
-                    <p>Welcome to 3D printing workshop<br>at the University of Southampton</p>
+                    <p>Welcome to the 3D printing workshop<br>at the University of Southampton.</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
                     {{--Show request job button only on Wednesdays--}}
                     @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
-                        <div class="btn btn-lg btn-online pull-right"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
-                        <div class="btn-lg btn-request pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>
+                        {{--<div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
+                        {{--<div class="btn-lg btn-request pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>--}}
+                        <p><br/><a href="{{ url('/printingData/create') }}">  Start by requesting to print in the workshop now!</a></p>
                     @else
-                        <div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
+                        {{--<div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
+                        <p><br/><a style="font-size: 3.125rem;" href="{{ url('/OnlineJobs/create') }}">  Start by ordering a print now!</a></p>
                     @endif
                 </div>
             </div>

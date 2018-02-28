@@ -369,14 +369,14 @@ body.is-fixed {
 }
 .bl-welcome a {
   color: #fff;
-  font-size: 20px;
-  font-size: 1.25rem;
+  font-size: 32px;
+  font-size: 2rem;
   display: block;
   padding: 5px 20px;
   text-decoration: none;
 }
 .bl-welcome a:hover {
-  color: #fff;
+  color: #50626e;
 }
 .bl-welcome .btn {
   padding: 10px;
