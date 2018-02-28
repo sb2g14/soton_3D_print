@@ -98,11 +98,13 @@
                                         <div class="alert">
                                             @php
                                                 $announcement_last = $announcements->first();
+                                                $shortmessage = $announcement_last->message;
+                                                $shortmessage = (strlen($shortmessage) > 653) ? substr($shortmessage,0,650).'...' : $shortmessage;
                                             @endphp
                                             <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
-                                            <h5> {{ $announcement_last->message }} </h5>
+                                            <h5> {{ $shortmessage }} (See more)</h5>
                                         </div>
                                     </li>
                                 </ul>
@@ -171,11 +173,13 @@
                                         <div class="alert">
                                             @php
                                             $public_announcement_last = $announcements->where('public', 1)->first();
+                                            $shortmessage = $public_announcement_last->message;
+                                            $shortmessage = (strlen($shortmessage) > 653) ? substr($shortmessage,0,650).'...' : $shortmessage;
                                             @endphp
                                             <h5 class="media-heading"> {{ $public_announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $public_announcement_last->created_at->diffForHumans() }}:</i></small></h5>
-                                            <h5> {{ $public_announcement_last->message }} </h5>
+                                            <h5> {{ $shortmessage }} </h5>
                                         </div>
                                     </li>
                                 </ul>
