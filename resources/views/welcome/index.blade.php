@@ -373,10 +373,13 @@
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="message">New Announcement</label><br>
+                                    <div class="form-text text-muted text-user">Dear Demonstrator</div>
                                     <textarea id="announcement" name="message" rows="8"
                                         placeholder="Post will appear only for registered users unless you check 'Public announcement"
                                         class="form-control"></textarea>
-                                    <span id="announcement_error" class="help-block"></span>
+                                    <div class="form-text text-muted text-user">Thanks,<br/>&nbsp;&nbsp;{{Auth::user()->staff->first_name}} {{Auth::user()->staff->last_name}}, 3D Printing Workshop Team<br/></div>
+                                    <span id="announcement_error" class=""></span>
+                                    <div class="form-text text-muted">Note: This form supports <a href="https://daringfireball.net/projects/markdown/syntax">markdown</a> when sending emails.</div>
                                 </div>
                                 @can('add_public_posts_and_announcements')
                                 <div class="checkbox">

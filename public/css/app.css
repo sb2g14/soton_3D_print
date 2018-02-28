@@ -475,6 +475,10 @@ body.is-fixed {
   font-size: 32px;
   font-size: 2rem;
 }
+.content .text-user {
+  font-style: italic;
+}
+
 .content .m-b-md {
   margin-bottom: 30px;
 }
