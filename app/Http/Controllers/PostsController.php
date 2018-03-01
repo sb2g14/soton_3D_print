@@ -70,10 +70,12 @@ class PostsController extends Controller
             $count_prints[] = $prints;
             $count_months[] = new \Carbon\Carbon($t2str);
         }
+        // Create labels
         $month_labels = [];
         foreach ($count_months as $date) {
              $month_labels[] = $date->format('M y');
         }
+        // Create chart for prints over past 12 months
         $month_labels = array_reverse($month_labels);
         $count_prints = array_reverse($count_prints);
         $chart = Charts::create('area', 'highcharts')
@@ -88,7 +90,20 @@ class PostsController extends Controller
             ->values($count_prints)
             ->dimensions(400,300)
             ->responsive(true);
-
+        // Users per year
+        $time = new \Carbon\Carbon;
+        $t1str = $time->format('Y')."-01-01 00:00:00";
+        $time = $time->subYear();
+        $t2str = $time->format('Y')."-01-01 00:00:00";
+        $count_users = \App\Jobs::where('created_at', '>', $t2str)
+            ->where('created_at', '<', $t1str)->select('customer_id')->groupBy('customer_id')->get();
+        $count_users = $count_users->count();
+        // Material since creation
+        $count_material = \App\Prints::select('material_amount')->get();
+        $count_material = $count_material->sum('material_amount');
+        $count_material = (int)(0.5+(float)($count_material)/1000);
+        $count_material = $count_material." kg";
+        // Printer Availability
         $printers_in_use = printers::where('in_use','1')->where('printer_type','!=','UP BOX')->count();
         $printers_available = printers::where('printer_status','Available')->where('in_use','0')->where('printer_type','!=','UP BOX')->count();
         //$unavailable_printers = printers::where('printer_status','!=','Available')->where('printer_status','!=','Signed out')->where('in_use','0')->count();
@@ -109,7 +124,7 @@ class PostsController extends Controller
             ->responsive(false)
             ->height(300)
             ->width(0);
-        return view('welcome.index', compact('issues','announcements', 'count_prints','count_months', 'chart', 'chart1'));
+        return view('welcome.index', compact('issues','announcements', 'count_prints','count_months','count_users','count_material', 'chart', 'chart1'));
     }
 
     /**

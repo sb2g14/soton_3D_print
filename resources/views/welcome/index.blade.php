@@ -48,7 +48,7 @@
         {{-- style="position: relative; top: -130px">--}}
 
         <div class="container"> 
-                      
+<!-- CARDS DISPLAYED FOR DEMONSTRATOR -->        
             @if (Auth::check())  {{--Check whether user is logged in--}}
                 <div class="row row-flex">
                     <!-- Issues -->
@@ -99,12 +99,13 @@
                                             @php
                                                 $announcement_last = $announcements->first();
                                                 $shortmessage = $announcement_last->message;
-                                                $shortmessage = (strlen($shortmessage) > 653) ? substr($shortmessage,0,650).'...' : $shortmessage;
+                                                $shortmessage = (strlen($shortmessage) > 553) ? substr($shortmessage,0,550).'...' : $shortmessage;
+                                                $shortmessage = str_replace("\n","<br/>",$shortmessage);
                                             @endphp
                                             <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
-                                            <h5> {{ $shortmessage }} (See more)</h5>
+                                            <h5> @php echo $shortmessage @endphp <br/>  (See more)</h5>
                                         </div>
                                     </li>
                                 </ul>
@@ -134,6 +135,7 @@
                 </div>
 
                 @else
+<!-- CARDS DISPLAYED FOR CUSTOMER -->
                 <div class="row row-flex">
                     <!-- RULES -->
                     <div class="col-xs-12 col-md-4 ">
@@ -194,12 +196,22 @@
                                 <div class="bl-logo logo-stat"></div>
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
+                            @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
                             <div class="body bg-teal">
                                 <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
                                 {!! $chart1->html() !!}
                                 {!! Charts::scripts() !!}
                                 {!! $chart1->script() !!}
                             </div>
+                            @else
+                            <div class="body bg-teal">
+                                <div style="text-align: center; font-size: larger; font-weight: bold"> 
+                                    Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[1]}}<br/>
+                                    Number of users last year: {{$count_users}}<br/>
+                                    Total material used: {{$count_material}}<br/>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                     <!-- #END# Statistics -->
@@ -207,6 +219,7 @@
             @endif
         </div>
 
+<!-- FORMS TO EDIT CONTENT -->
 
         <!-- Modal ISSUES-->
         <div id="issueModal" class="modal fade" role="dialog">
@@ -231,12 +244,12 @@
                             <div class="form-group">
                                 <label for="title">Issue Name</label><br>
                                 <input id="issue" name="title" placeholder="Specify issue name" class="form-control" required>
-                                <span id="issue_error" class="help-block"></span>
+                                <span id="issue_error" class=""></span>
                             </div>
                             <div class="form-group">
                                 <label for="body">Message</label><br>
                                 <textarea id="message_issue" name="body" rows="4" placeholder="Describe your issue" class="form-control" required></textarea>
-                                <span id="message_issue_error" class="help-block"></span>
+                                <span id="message_issue_error" class=""></span>
                             </div>
                             <div class="checkbox">
                                 <label><input type="checkbox" name="critical" value="critical">Issue affects printer status</label>
@@ -274,7 +287,7 @@
                                 {{--Print the text of a post--}}
                                 <p>{{ $post->body }}</p>
                                 @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
-                                    <a href="/posts/resolve/{{$post->id}}" class="btn btn-primary">Resolve{{ $post->resolved }}</a>
+                                    <a href="/posts/resolve/{{$post->id}}" class="btn btn-danger">Resolve{{ $post->resolved }}</a>
                                 @endif
                                 <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
                                         Show comments
@@ -328,7 +341,7 @@
                                                 {{ csrf_field() }}
                                                 <div class="form-group">
                                                     <textarea id="message_comment" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                    <span id="message_comment_error" class="help-block"></span>
+                                                    <span id="message_comment_error" class=""></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <button id="comment" type="submit" class="btn btn-primary">Comment </button>
