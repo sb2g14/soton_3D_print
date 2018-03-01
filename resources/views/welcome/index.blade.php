@@ -196,22 +196,27 @@
                                 <div class="bl-logo logo-stat"></div>
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
-                            @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
                             <div class="body bg-teal">
+                                <div style="text-align: left; font-size: larger; font-weight: bold"> 
+                                    Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[sizeof($count_prints) - 2]}}<br/>
+                                    Number of users last year: {{$count_users}}<br/>
+                                    Total material used: {{$count_material}}<br/>
+                                </div><br/>
+                            @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)   
                                 <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
                                 {!! $chart1->html() !!}
                                 {!! Charts::scripts() !!}
                                 {!! $chart1->script() !!}
-                            </div>
                             @else
-                            <div class="body bg-teal">
                                 <div style="text-align: center; font-size: larger; font-weight: bold"> 
-                                    Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[1]}}<br/>
-                                    Number of users last year: {{$count_users}}<br/>
-                                    Total material used: {{$count_material}}<br/>
+                                    Opening Hours:  
                                 </div>
-                            </div>
+                                <div style="text-align: center; font-weight: bold"> 
+                                    Every Wednesday 9am to 6pm during term-time.<br/>
+                                    (Live opening hours coming soon)
+                                </div>
                             @endif
+                            </div>
                         </div>
                     </div>
                     <!-- #END# Statistics -->
