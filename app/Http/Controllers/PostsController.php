@@ -114,7 +114,7 @@ class PostsController extends Controller
     private function createChartWorkshopUsage(){
         // Creates a chart to show how busy the workshop is at specific times and returns it.
         // Initiate variables
-        $timeinterval = 0.25; //in hours but gives minutes accuracy
+        $timeinterval = 1; //in hours but gives minutes accuracy
         $Nweeks = 5; //number of weeks to go into the past to create average
         $open_days = [];
         $printersbusy = [];
@@ -176,8 +176,8 @@ class PostsController extends Controller
              $chart_labels[$i] = $chart_labels[$i]->format('H:i');
         }
         $chart_values = $printersbusy;
-        $chart = Charts::create('area', 'highcharts')
-            ->title('Busyness of the workshop over the day')
+        $chart = Charts::create('bar', 'highcharts')
+            ->title('Average number of simultaneous prints')
             ->colors(['#00796B'])
             //->colors(['#ffffff'])
             ->template('teal-material')
