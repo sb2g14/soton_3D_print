@@ -252,7 +252,7 @@
                                 {{-- Button to delete the issue--}}
                                 @if( isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
                                     <span data-placement="top" data-toggle="popover" data-trigger="hover"
-                                          data-content="Delete this issue if you created it by accident">
+                                          data-content="Delete this issue from the database (this option is available only first 5 minutes after creation).The printer status will be changed to Available.">
                                                             <a type="button" id="deleteIssue" href="/issues/delete/{{$post->id}}"
                                                                class="close" style="color: red">&times;</a>
                                                     </span>
@@ -260,7 +260,7 @@
                                 {{-- Button to delete post--}}
                                 @if( !isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
                                     <span data-placement="top" data-toggle="popover" data-trigger="hover"
-                                          data-content="Delete this post if you created it by accident or made a mistake">
+                                          data-content="Delete this post from the database (this option is available only first 5 minutes after creation)">
                                                             <a type="button" id="deletePost" href="/post/delete/{{$post->id}}"
                                                                class="close" style="color: red">&times;</a>
                                                     </span>
@@ -291,10 +291,17 @@
                                         @foreach($comments as $comment)
                                             <li>
                                                 <div class="media">
-                                                    <div class="media-left">
-                                                        <img src="/Images/img_avatar3.png" class="media-object">
-                                                    </div>
+                                                    {{--<div class="media-left">--}}
+                                                        {{--<img src="/Images/img_avatar3.png" class="media-object">--}}
+                                                    {{--</div>--}}
                                                     <div class="media-body">
+                                                        @if( isset($comment->posts_id) && $comment->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                                                            <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                                                  data-content="Delete this comment from the datable (this option is available only first 5 minutes after creation)">
+                                                            <a type="button" id="deleteComment" href="/comments/delete/{{$comment->id}}"
+                                                               class="close" style="color: red">&times;</a>
+                                                            </span>
+                                                        @endif
                                                         <h5 class="media-heading"> {{$comment->staff->first_name}} {{$comment->staff->last_name}}
                                                             <small>
                                                                 <i>Posted {{ $comment->created_at->diffForHumans() }}:</i>
@@ -403,7 +410,7 @@
                                                     {{-- Delete the announcement if you have appropriate permissions--}}
                                                     @if( strtolower(Auth::user()->email) == strtolower($announcement->user->email) || Auth::user()->can('delete_announcements'))
                                                         <span data-placement="top" data-toggle="popover" data-trigger="hover"
-                                                              data-content="This button is to delete the announcement">
+                                                              data-content="This button is to delete the announcement from the database. Please use it with care.">
                                                             <a type="button" id="deleteAnnouncement" href="/announcement/delete/{{$announcement->id}}"
                                                                class="close" style="color: red">&times;</a>
                                                     </span>

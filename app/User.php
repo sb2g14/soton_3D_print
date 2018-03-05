@@ -74,7 +74,7 @@ class User extends Authenticatable
     public function addComment(comments $comment, $post){
         $comment = new comments;
         $comment -> body = request('body');
-        $comment -> user_id = Auth::user()->id;
+        $comment -> staff_id = Auth::user()->staff->id;
         $comment -> posts_id = $post->id;
         $comment -> save();
     }

@@ -195,6 +195,9 @@ class IssuesController extends Controller
     public function destroy($id)
     {
         $issue = FaultData::findOrFail($id);
+
+        Printers::where('id', $issue->printers_id)->update(array('printer_status' => 'Available'));
+
         $issue->delete();
 
         notify()->flash('The issue has been deleted from the database.', 'success', [
@@ -203,6 +206,25 @@ class IssuesController extends Controller
 
         return redirect('/issues/index');
     }
+    public function deleteupdate($id)
+    {
+        $update = FaultUpdates::findOrFail($id);
+        $issue = $update->FaultData->first();
+        $update->delete();
+        if(!empty(array_filter((array)$issue->FaultUpdates))) {
+            $previous_status = $issue->FaultUpdates()->orderBy('created_at', 'desc')->first()->printer_status;
+        }else{
+            $previous_status = $issue->printer_status;
+        }
+
+        Printers::where('id','=', $issue->printers_id)->update(array('printer_status' => $previous_status));
+        notify()->flash('The issue update has been deleted from the database.', 'success', [
+            'text' => "The printer status is changed to the previous one.",
+        ]);
+
+        return redirect('/issues/index');
+    }
+
     public function select()
     {
         $printers =  printers::pluck('id','id')->all();

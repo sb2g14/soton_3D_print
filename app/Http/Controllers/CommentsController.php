@@ -26,6 +26,20 @@ class CommentsController extends Controller
         auth()->user()->addComment(
             new comments(request(['body'])), $post
         );
+
+        notify()->flash('The comment has been added.', 'success', [
+            'text' => "Please do back to the post to view the comments.",
+        ]);
+
         return redirect()->home();
+    }
+    public function destroy($id){
+        $comment = comments::findOrFail($id);
+        $comment->delete();
+
+        notify()->flash('The comment has been deleted.', 'success', [
+            'text' => "The comment is removed from the database.",
+        ]);
+        return redirect('/');
     }
 }

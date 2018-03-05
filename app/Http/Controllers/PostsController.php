@@ -170,7 +170,11 @@ class PostsController extends Controller
             return view('issues/select',compact('title','body', 'printers'));
         } else {
 
-        // Return to the homepage:
+        // Notify and Return to the homepage:
+
+            notify()->flash('The post has been created.', 'success', [
+                'text' => "Please go to the posts if you want to add anything else.",
+            ]);
 
         return redirect('/');
         }

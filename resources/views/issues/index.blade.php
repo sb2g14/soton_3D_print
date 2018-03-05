@@ -59,7 +59,7 @@
                         </td>
                         <td>@if($issue->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
                             <span data-placement="top" data-toggle="popover" data-trigger="hover"
-                                  data-content="Delete this issue if you created it by accident">
+                                  data-content="Delete this issue from the database (this option is available only 5 minutes after creation). The printer status will be changed to Available.">
                                                             <a type="button" id="deleteIssue" href="/issues/delete/{{$issue->id}}"
                                                                class="close" style="color: red">&times;</a>
                                                     </span>

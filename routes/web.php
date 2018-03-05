@@ -33,6 +33,9 @@ Route::get('/announcement/delete/{id}','AnnouncementsController@destroy');
 // Here we redirect to the controller that would store our comments
 Route::post('/posts/{post}/comments', 'CommentsController@store');
 
+// Delete comments
+Route::get('/comments/delete/{id}', 'CommentsController@destroy');
+
 // This route uses controller to redirect to the 'About Workshop' page
 Route::get('/aboutWorkshop','AboutWorkshopController@index');
 
@@ -111,6 +114,9 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     // Delete issue if it has been created by accident
 
     Route::get('/issues/delete/{id}','IssuesController@destroy');
+
+    // Delete issue update
+    Route::get('/issues/delete_update/{id}', 'IssuesController@deleteupdate');
 
     // Show a list of jobs waiting for approval
 
