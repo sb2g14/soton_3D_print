@@ -4,6 +4,9 @@
         Photo Library
     </div>
 	<div class="container gallery-container">
+        <p style="text-align:left;">Want to show what you have achieved? Email us a photo of your finished project with a short description (50 words max) and a link to your related publication (optional). Your photos help us to ensure that we can keep this service running for you and future students.<br/>
+Make sure that the part you printed in the workshop is visible in the photo.
+        </p>
     
 	    <div class="tz-gallery">
 
@@ -61,7 +64,7 @@
 	            </div>
 	            <div class="col-sm-6 col-md-4">
 	                <a class="lightbox" href="/Images/gallery/gal011_800x600.png">
-	                    <img src="/Images/gallery/gal011_800x600.png" alt="Vascular network extracted from a micro-CT scan of a human lung tissue sample, see <a href='dx.doi.org/10.1007/s10278-017-9966-5'>DOI: 10.1007/s10278-017-9966-5</a>">
+	                    <img src="/Images/gallery/gal011_800x600.png" alt="Vascular network extracted from a micro-CT scan of a human lung tissue sample, see <a href='http://dx.doi.org/10.1007/s10278-017-9966-5'>DOI: 10.1007/s10278-017-9966-5</a>">
 	                </a>
 	            </div> 
 	            <div class="col-sm-6 col-md-4">
