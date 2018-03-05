@@ -25,6 +25,67 @@ class PostsController extends Controller
 
     }
 
+    private function getArrayPrintsLastMonths($n_months){
+        // Call the prints model to extract statistical data
+        $count_prints = [];
+        // Count the number of prints since the beginning of the current month
+        $time = new \Carbon\Carbon;
+        $t1str = $time->toDateTimeString();
+        $t2str = $time->format('Y-m')."-01 00:00:00";
+        $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
+            ->where('created_at', '<', $t1str)->count();
+        $count_prints[] = $prints;
+        // Count the number of prints for the last year
+        for($i=0; $i<$n_months-1; $i++){
+            $t1str = $time->format('Y-m')."-01 00:00:00";
+            $time = $time->subMonth();
+            $t2str = $time->format('Y-m')."-01 00:00:00";
+            $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
+                ->where('created_at', '<', $t1str)->count();
+            $count_prints[] = $prints;
+        }
+        return $count_prints;
+    }
+
+    private function getArrayLastMonths($n_months){
+        $count_months = [];
+        $time = new \Carbon\Carbon;
+        $t2str = $time->format('Y-m')."-01 00:00:00";
+        $count_months[] = new \Carbon\Carbon($t2str);
+        // Count the number of prints for the last year
+        for($i=0; $i<$n_months-1; $i++){
+            $time = $time->subMonth();
+            $t2str = $time->format('Y-m')."-01 00:00:00";
+            $count_months[] = new \Carbon\Carbon($t2str);
+        }
+        return $count_months;
+    }
+
+    private function createChartPrintsLastMonths($count_prints,$count_months){
+        
+        // Create labels
+        $month_labels = [];
+        foreach ($count_months as $date) {
+             $month_labels[] = $date->format('M y');
+        }
+        // Create chart for prints over past 12 months
+        $month_labels = array_reverse($month_labels);
+        $count_prints = array_reverse($count_prints);
+        $chart = Charts::create('area', 'highcharts')
+            ->title('Prints per months')
+            ->colors(['#00796B'])
+            //->colors(['#ffffff'])
+            ->template('teal-material')
+            //->background_color('')
+            ->elementLabel('')
+            ->legend('')
+            ->labels($month_labels)
+            ->values($count_prints)
+            ->dimensions(400,300)
+            ->responsive(true);
+        return $chart;
+    }
+
     private function createChartPrinterAvailability(){
         // Creates a chart for Printer Availability and returns it.
         $printers_in_use = printers::where('in_use','1')->where('printer_type','!=','UP BOX')->count();
@@ -70,9 +131,13 @@ class PostsController extends Controller
         $time = $time->subDay();
         $t1str = $time->format('Y-m-d')." 00:00:00";
         $t2str = $time->subWeeks($Nweeks)->format('Y-m-d')." 00:00:00";
-        //TODO: need to filter out online prints!
-        $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
-            ->where('created_at', '<', $t1str)->select('created_at','updated_at')->get();
+        //get all prints excluding online-prints
+        $prints = \App\Jobs::where('jobs.requested_online', 0)
+            ->join('jobs_prints', 'jobs.id', '=', 'jobs_prints.jobs_id')
+            ->join('prints', 'prints.id', '=', 'jobs_prints.prints_id')
+            ->orderBy('prints.created_at', 'desc')
+            ->where('prints.created_at', '>', $t2str)->where('prints.created_at', '<', $t1str)
+            ->select('prints.created_at','prints.updated_at')->get();
 
         // Count the number of different days and assign prints to time histogram
         foreach ($prints as $print) { //iterate over all the prints
@@ -175,57 +240,26 @@ class PostsController extends Controller
         // Get issues as a combination of printer issues and posts (workshop issues)
         $issues = $this->getIssues();
 
+        // Get public and internal announcements
         $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
 
-        // Call the prints model to extract statistical data
-        $count_prints = [];
-        $count_months = [];
-        // Count the number of prints since the beginning of the current month
-        $time = new \Carbon\Carbon;
-        $t1str = $time->toDateTimeString();
-        $t2str = $time->format('Y-m')."-01 00:00:00";
-        $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
-            ->where('created_at', '<', $t1str)->count();
-        $count_prints[] = $prints;
-        $count_months[] = new \Carbon\Carbon($t2str);
-        // Count the number of prints for the last year
-        for($i=0; $i<11; $i++){
-            $t1str = $time->format('Y-m')."-01 00:00:00";
-            $time = $time->subMonth();
-            $t2str = $time->format('Y-m')."-01 00:00:00";
-            $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
-                ->where('created_at', '<', $t1str)->count();
-            $count_prints[] = $prints;
-            $count_months[] = new \Carbon\Carbon($t2str);
-        }
-        // Create labels
-        $month_labels = [];
-        foreach ($count_months as $date) {
-             $month_labels[] = $date->format('M y');
-        }
-        // Create chart for prints over past 12 months
-        $month_labels = array_reverse($month_labels);
-        $count_prints = array_reverse($count_prints);
-        $chart = Charts::create('area', 'highcharts')
-            ->title('Prints per months')
-            ->colors(['#00796B'])
-            //->colors(['#ffffff'])
-            ->template('teal-material')
-            //->background_color('')
-            ->elementLabel('')
-            ->legend('')
-            ->labels($month_labels)
-            ->values($count_prints)
-            ->dimensions(400,300)
-            ->responsive(true);
+        // Prints over last 12 months
+        $count_prints = $this->getArrayPrintsLastMonths(12);
+        $count_months = $this->getArrayLastMonths(12);
+        $chart = $this->createChartPrintsLastMonths($count_prints,$count_months);
+        
         // Users per year
         $count_users = $this->getUsersLastYear();
+
         // Material since creation
         $count_material = $this->getMaterialTotal();
+
         // Printer Availability
         $chart1 = $this->createChartPrinterAvailability();
+
         // Workshop Busy Periods
         $chartBusy = $this->createChartWorkshopUsage();
+
         return view('welcome.index', compact('issues','announcements', 'count_prints','count_months','count_users','count_material', 'chart', 'chart1','chartBusy'));
     }
 
