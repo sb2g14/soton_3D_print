@@ -146,29 +146,29 @@
     {{-- Prints, Loans and Issues --}}
     @foreach($historyEntries as $entry)
         <li class="item">
-                    <div class=" row {{$entry['Class']}}">
-                        <div class="col-sm-4 text-left"> 
-                            {{$entry['StartDate']->format('d/m/Y')}} -
-                            @if($entry['EndDate'])
-                                {{$entry['EndDate']->format('d/m/Y')}}
+            <div class=" row {{$entry['Class']}}">
+                <div class="col-sm-4 text-left"> 
+                    {{$entry['StartDate']->format('d/m/Y')}} -
+                    @if($entry['EndDate'])
+                        {{$entry['EndDate']->format('d/m/Y')}}
+                    @else
+                        Now
+                    @endif
+                </div>
+                <div class="col-sm-4 text-justify">{{$entry['Type']}}: {{$entry['Description']}}</div> 
+                @if($entry['Type'] === 'Broken' || $entry['Type'] === 'Missing')
+                    @can('issues_manage')
+                        <div class="col-sm-4">
+                            @if(!$entry['EndDate'])
+                                <a href="/issues/update/{{$entry['EntryID']}}" class="btn btn-info">View/Update or Resolve</a>
                             @else
-                                Now
+                                <a href="/issues/update/{{$entry['EntryID']}}">View details...</a>
                             @endif
                         </div>
-                        <div class="col-sm-4 text-justify">{{$entry['Type']}}: {{$entry['Description']}}</div> 
-                        @if($entry['Type'] === 'Broken' || $entry['Type'] === 'Missing')
-                            @can('issues_manage')
-                                <div class="col-sm-4">
-                                    @if(!$entry['EndDate'])
-                                        <a href="/issues/update/{{$entry['EntryID']}}" class="btn btn-info">View/Update or Resolve</a>
-                                    @else
-                                        <a href="/issues/update/{{$entry['EntryID']}}">View details...</a>
-                                    @endif
-                                </div>
-                            @endcan
-                        @endif
-                    </div>
-                </li>
+                    @endcan
+                @endif
+            </div>
+        </li>
     @endforeach
     {{-- Printer created --}}
     <li class="item">
