@@ -31,12 +31,12 @@
                     @foreach($issue->FaultUpdates as $update)
                         <li class="list-group-item">
                             {{--Print date and time when an issue was updated--}}
-                            {{--@if($update->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))--}}
-                            {{--<span data-placement="top" data-toggle="popover" data-trigger="hover"--}}
-                                  {{--data-content="Delete this update from the database (this option is available only 5 minutes after creation). This will change the status of the printer to the previous one.">--}}
-                                {{--<a type="button" id="deleteUpdate" href="/issues/delete_update/{{$update->id}}" class="close" style="color: red">&times;</a>--}}
-                            {{--</span>--}}
-                            {{--@endif--}}
+                            @if($update->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                            <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                  data-content="Delete this update from the database (this option is available only 5 minutes after creation). This will change the status of the printer to the previous one.">
+                                <a type="button" id="deleteUpdate" href="/issues/delete_update/{{$update->id}}" class="close" style="color: red">&times;</a>
+                            </span>
+                            @endif
                             <small><i>{{ $update->staff->first_name }} {{ $update->staff->last_name }} updated on {{ $update->created_at->toDayDateTimeString() }}:</i></small></h5><br>
                             <p>Printer Status: <b>{{$update->printer_status}}</b><br>
                                 Description: <b>{{ $update->body }}</b>

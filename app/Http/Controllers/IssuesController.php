@@ -294,7 +294,7 @@ class IssuesController extends Controller
     public function deleteupdate($id)
     {
         $update = FaultUpdates::findOrFail($id);
-        $issue = $update->FaultData->first();
+        $issue = $update->FaultData;
         $update->delete();
         if(!empty(array_filter((array)$issue->FaultUpdates))) {
             $previous_status = $issue->FaultUpdates()->orderBy('created_at', 'desc')->first()->printer_status;

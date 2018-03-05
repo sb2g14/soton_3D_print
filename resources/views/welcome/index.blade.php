@@ -202,7 +202,7 @@
                                     Number of users last year: {{$count_users}}<br/>
                                     Total material used: {{$count_material}}<br/>
                                 </div><br/>
-                            @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)   
+                            @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
                                 <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
                                 {!! $chart1->html() !!}
                                 {!! Charts::scripts() !!}
