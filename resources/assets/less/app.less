@@ -74,12 +74,12 @@ body {
                 display: block;
             }
             .btn {
-                background: @light-red;
+                // background: @light-red;
                 color: @c-link;
                 padding: 10px;
-                &:hover{
-                    background: @red;
-                }
+                // &:hover{
+                //     background: @red;
+                // }
             }
         }
 
@@ -255,7 +255,6 @@ body {
 .bl-welcome {
     position: absolute;
     top: 100px;
-    left: 10%;
     z-index: 2;
     color: #fff;
    
@@ -268,19 +267,29 @@ body {
 
     a {
         color: @c-link;
-        .font-size( (20/@fs-base) );
+        /*.font-size( (20/@fs-base) );*/
+        .font-size( (32/@fs-base) );
         display: block;
         padding: 5px 20px;
         text-decoration: none; 
         &:hover{
-            color: @c-link;
+            /*color: @c-link;*/
+            color: #50626e;
         }
     }
     .btn {
-        background: @light-blue;
         padding: 10px;
+    }
+    .btn-online {
+        background: #E91E63;
         &:hover{
-            background: @blue;
+            background: #C2185B;
+        }
+    }
+    .btn-request {
+        background: #00BCD4;
+        &:hover{
+            background: #0097A7;
         }
     }
 }
@@ -387,6 +396,10 @@ body {
     .title {
         font-family: @f-extra;
         .font-size( (32/@fs-base) );
+    }
+
+    .text-user {
+        font-style: italic;
     }
 
     .m-b-md {
@@ -504,7 +517,6 @@ body {
 
     .cardblock {
         background: #fff;
-        height: 95%;
         position: relative;
         margin-bottom: 30px;
         &:hover {
@@ -920,6 +932,13 @@ footer {
             margin-bottom: 10px;
         }
     }
+    .s-welcome {
+        .cardblock {
+            height: 95%;
+        }
+    }
+
+
 }
 
  @media screen and (min-width: 1100px ) {

@@ -98,7 +98,7 @@
                     </div>
                 </div>
 
-                <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
+                <div id="time" class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                     {!! Form::label('hours', 'Printing Time', ['class' => 'col-lg-4 control-label'] )  !!}
                     <div class="col-md-4">
                         {!! Form::select('hours',array('' => 'Hours')+ range(0,59), old('hours', $hours), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
@@ -282,6 +282,5 @@
             });
         </script>
     @endif
-    <script src="/js/request_job_validation.js"></script>
-    <script src="/js/print_preview_validation.js"></script>
+    <script src="/js/validate_form.js"></script>
 @endsection

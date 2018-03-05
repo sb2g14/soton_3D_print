@@ -3,40 +3,37 @@
 @section('slider')
     {{--Slider --}}
     
-        <div class="container">
-            <div class="bl-welcome">    
-                <div class="row">
-                    <div class="col-sm-12">
-                        <p>Welcome to 3D printing workshop<br>at the University of Southampton</p>
-                    </div>
+    <div class="container">
+        <div class="bl-welcome">    
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>Welcome to the 3D printing workshop<br>at the University of Southampton.</p>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        {{--Show request job button only on Wednesdays--}}
-                        @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
-                            <div class="btn btn-lg pull-right"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
-                            <div class="btn-lg btn-success pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>
-                        @else
-                            <div class="btn btn-lg pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>
-                        @endif
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    {{--Show request job button only on Wednesdays--}}
+                    @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
+                        {{--<div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
+                        {{--<div class="btn-lg btn-request pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>--}}
+                        <p><br/><a href="{{ url('/printingData/create') }}">  Start by requesting to print in the workshop now!</a></p>
+                    @else
+                        {{--<div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
+                        <p><br/><a style="font-size: 3.125rem;" href="{{ url('/OnlineJobs/create') }}">  Start by ordering a print now!</a></p>
+                    @endif
                 </div>
             </div>
         </div>
-
-    <div class="ctr">
-        <div class="bl-welcome">
-            <p>Welcome to 3D printing workshop<br>at the University of Southampton</p>
-        </div>
-        
-        <div id="image-slider_home" class="image-slider bl-slider owl-carousel owl-theme">
-            <div class="item img_1"></div>
-            <div class="item img_2"></div>
-            <div class="item img_3"></div>
-            <div class="item img_4"></div>
-            {{--<div class="item print3"></div>--}}
-        </div>
     </div>
+
+    <div id="image-slider_home" class="image-slider bl-slider owl-carousel owl-theme">
+        <div class="item img_1"></div>
+        <div class="item img_2"></div>
+        <div class="item img_3"></div>
+        <div class="item img_4"></div>
+        {{--<div class="item print3"></div>--}}
+    </div>
+    
 @endsection
 
 @section('content')
@@ -51,7 +48,7 @@
         {{-- style="position: relative; top: -130px">--}}
 
         <div class="container"> 
-                      
+<!-- CARDS DISPLAYED FOR DEMONSTRATOR -->        
             @if (Auth::check())  {{--Check whether user is logged in--}}
                 <div class="row row-flex">
                     <!-- Issues -->
@@ -101,11 +98,14 @@
                                         <div class="alert">
                                             @php
                                                 $announcement_last = $announcements->first();
+                                                $shortmessage = $announcement_last->message;
+                                                $shortmessage = (strlen($shortmessage) > 553) ? substr($shortmessage,0,550).'...' : $shortmessage;
+                                                $shortmessage = str_replace("\n","<br/>",$shortmessage);
                                             @endphp
                                             <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
-                                            <h5> {{ $announcement_last->message }} </h5>
+                                            <h5> @php echo $shortmessage @endphp <br/>  (See more)</h5>
                                         </div>
                                     </li>
                                 </ul>
@@ -135,6 +135,7 @@
                 </div>
 
                 @else
+<!-- CARDS DISPLAYED FOR CUSTOMER -->
                 <div class="row row-flex">
                     <!-- RULES -->
                     <div class="col-xs-12 col-md-4 ">
@@ -174,11 +175,13 @@
                                         <div class="alert">
                                             @php
                                             $public_announcement_last = $announcements->where('public', 1)->first();
+                                            $shortmessage = $public_announcement_last->message;
+                                            $shortmessage = (strlen($shortmessage) > 653) ? substr($shortmessage,0,650).'...' : $shortmessage;
                                             @endphp
                                             <h5 class="media-heading"> {{ $public_announcement_last->user->name}}  <small><i>
                                                         {{--Print date and time when a post was created--}}
                                                         Posted {{ $public_announcement_last->created_at->diffForHumans() }}:</i></small></h5>
-                                            <h5> {{ $public_announcement_last->message }} </h5>
+                                            <h5> {{ $shortmessage }} </h5>
                                         </div>
                                     </li>
                                 </ul>
@@ -194,10 +197,28 @@
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
                             <div class="body bg-teal">
+                                <div style="text-align: left; font-size: larger; font-weight: bold"> 
+                                    Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[sizeof($count_prints) - 2]}}<br/>
+                                    Number of users last year: {{$count_users}}<br/>
+                                    Total material used: {{$count_material}}<br/>
+                                </div><br/>
+                            @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)   
                                 <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
                                 {!! $chart1->html() !!}
                                 {!! Charts::scripts() !!}
                                 {!! $chart1->script() !!}
+                            @else
+                                <!--<div style="text-align: center; font-size: larger; font-weight: bold"> 
+                                    Opening Hours:  
+                                </div>
+                                <div style="text-align: center; font-weight: bold"> 
+                                    Every Wednesday 9am to 6pm during term-time.<br/>
+                                    (Live opening hours coming soon)
+                                </div>-->
+                                {!! $chartBusy->html() !!}
+                                {!! Charts::scripts() !!}
+                                {!! $chartBusy->script() !!}
+                            @endif
                             </div>
                         </div>
                     </div>
@@ -206,6 +227,7 @@
             @endif
         </div>
 
+<!-- FORMS TO EDIT CONTENT -->
 
         <!-- Modal ISSUES-->
         <div id="issueModal" class="modal fade" role="dialog">
@@ -230,12 +252,12 @@
                             <div class="form-group">
                                 <label for="title">Issue Name</label><br>
                                 <input id="issue" name="title" placeholder="Specify issue name" class="form-control" required>
-                                <span id="issue_error" class="help-block"></span>
+                                <span id="issue_error" class=""></span>
                             </div>
                             <div class="form-group">
                                 <label for="body">Message</label><br>
-                                <textarea id="message" name="body" rows="4" placeholder="Describe your issue" class="form-control" required></textarea>
-                                <span id="message_error" class="help-block"></span>
+                                <textarea id="message_issue" name="body" rows="4" placeholder="Describe your issue" class="form-control" required></textarea>
+                                <span id="message_issue_error" class=""></span>
                             </div>
                             <div class="checkbox">
                                 <label><input type="checkbox" name="critical" value="critical">Issue affects printer status</label>
@@ -273,7 +295,7 @@
                                 {{--Print the text of a post--}}
                                 <p>{{ $post->body }}</p>
                                 @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
-                                    <a href="/posts/resolve/{{$post->id}}" class="btn btn-primary">Resolve{{ $post->resolved }}</a>
+                                    <a href="/posts/resolve/{{$post->id}}" class="btn btn-danger">Resolve{{ $post->resolved }}</a>
                                 @endif
                                 <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
                                         Show comments
@@ -333,8 +355,8 @@
                                             <form method="POST" action="/posts/{{ $post->id }}/comments">
                                                 {{ csrf_field() }}
                                                 <div class="form-group">
-                                                    <textarea id="message" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                    <span id="message_error" class="help-block"></span>
+                                                    <textarea id="message_comment" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
+                                                    <span id="message_comment_error" class=""></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <button id="comment" type="submit" class="btn btn-primary">Comment </button>
@@ -379,14 +401,13 @@
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="message">New Announcement</label><br>
+                                    <div class="form-text text-muted text-user">Dear Demonstrator</div>
                                     <textarea id="announcement" name="message" rows="8"
-                                              {{--@if(Auth::user()->can('add_private_posts_and_announcements')) --}}
-                                                {{--placeholder="Post will appear only for registered users unless you check 'Public announcement' " --}}
-                                              {{--@else --}}
-                                                placeholder="Post will appear only for registered users unless you check 'Public announcement"
-                                              {{--@endif --}}
-                                                class="form-control"></textarea>
-                                    <span id="announcement_error" class="help-block"></span>
+                                        placeholder="Post will appear only for registered users unless you check 'Public announcement"
+                                        class="form-control"></textarea>
+                                    <div class="form-text text-muted text-user">Thanks,<br/>&nbsp;&nbsp;{{Auth::user()->staff->first_name}} {{Auth::user()->staff->last_name}}, 3D Printing Workshop Team<br/></div>
+                                    <span id="announcement_error" class=""></span>
+                                    <div class="form-text text-muted">Note: This form supports <a href="https://daringfireball.net/projects/markdown/syntax">markdown</a> when sending emails.</div>
                                 </div>
                                 @can('add_public_posts_and_announcements')
                                 <div class="checkbox">
@@ -500,8 +521,11 @@
 @endsection
 @section('scripts')
     {{--Load validation scripts--}}
-    <script src="/js/issue_validation.js"></script>
-    <script src="/js/message_validation.js"></script>
+    <script src="/js/validate_form_issue_create.js"></script>
+    <script src="/js/validate_form_issue_comment.js"></script>
+    <script src="/js/validate_form_announcement_create.js"></script>
+
+
 
     {{--Load notification--}}
     @if (notify()->ready())

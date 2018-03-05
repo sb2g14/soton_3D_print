@@ -14,11 +14,16 @@ module.exports = {
         /*shows the error div with the specified message 
          *and sets the input field class to error*/
         $(errorfield).html(message);
+        $(errorfield).removeClass("form-text text-muted");
+        $(errorfield).addClass("form-text text-danger");
         $(errorfield).show();
+        $(inputfield).removeClass("parsley-success");
         $(inputfield).addClass("parsley-error");
     },
     removeErrorDetail: function (inputfield, errorfield) {
         /*hides the error div and sets the input field class to success*/
+        $(errorfield).removeClass("form-text text-danger");
+        $(errorfield).addClass("form-text text-muted");
         $(errorfield).hide();
         $(inputfield).removeClass("parsley-error");
         $(inputfield).addClass("parsley-success");
@@ -140,6 +145,23 @@ module.exports = {
         }
         return localerror;
     },
+    check_password_match: function (fieldname,password) {
+        /*checks password fields if they are correct and returns
+         *a boolean.
+         *Also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var localerror = true;
+        var password1 = $(password).val();
+        var password2 = $(fieldname).val();
+        if(password1 !== password2){
+            module.exports.addError(fieldname, "The passwords don't match.");
+            localerror = true;
+        } else {
+            module.exports.removeError(fieldname);
+            localerror = false;
+        }
+        return localerror;
+    },
 //PRINTER RELATED CHECKS
     check_printer_number_select: function (fieldname) {
         /*checks that a printer number has been selected from the drop-down list*/
@@ -229,6 +251,7 @@ module.exports = {
         var localerror = true;
         var fieldvalue = $(fieldname).val();
         var radioselection = $('input[name = "'+radiogroup+'"]:checked').val();
+        console.log(radioselection);
         if(radioselection !== "Other" ){
             module.exports.removeError(fieldname);
             localerror = false;
@@ -265,7 +288,7 @@ module.exports = {
         }
         return localerror;
     },
-    check_print_duration: function (hrsdropdown,mindropdown,group) {
+    check_print_duration: function (hrsdropdown,mindropdown,grouperror) {
         /*checks print duration fields if they are correct and returns
          *a boolean. Requires a reference to the drop-down for hours and
          *minutes, as well as group div. the group div should have an _error
@@ -276,16 +299,16 @@ module.exports = {
         var varhours = $(hrsdropdown).find(":selected").text();
         var varminutes = $(mindropdown).find(":selected").text();
         if (varhours === "Hours" || varminutes === "Minutes"){
-            module.exports.addErrorDetail(mindropdown,group, "");
-            module.exports.addErrorDetail(hrsdropdown,group, "Please set the printing time");
+            module.exports.addErrorDetail(mindropdown,grouperror, "");
+            module.exports.addErrorDetail(hrsdropdown,grouperror, "Please set the printing time");
             localerror = true;
         } else if(parseInt(varhours) + parseInt(varminutes) == 0){
-            module.exports.addErrorDetail(mindropdown,group, "");
-            module.exports.addErrorDetail(hrsdropdown,group, "The printing time cannot be zero");
+            module.exports.addErrorDetail(mindropdown,grouperror, "");
+            module.exports.addErrorDetail(hrsdropdown,grouperror, "The printing time cannot be zero");
             localerror = true;
         } else {
-            module.exports.removeErrorDetail(mindropdown,group);
-            module.exports.removeErrorDetail(hrsdropdown,group);
+            module.exports.removeErrorDetail(mindropdown,grouperror);
+            module.exports.removeErrorDetail(hrsdropdown,grouperror);
             localerror = false;
         }
         return localerror;
@@ -312,7 +335,47 @@ module.exports = {
         return localerror;
     },
 //PAYMENT RELATED CHECKS
-    check_cost_code: function (fieldname,budgetholder) {
+    check_cost_code: function (fieldname) {
+        /*checks University cost code fields if they are correct and returns
+         *a boolean.
+         *Also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var localerror = true;
+        var use_case = $(fieldname).val();
+
+        if(use_case.length != 9 || !use_case.match(/^[5]{1}/)) {
+            module.exports.addError(fieldname, "This Cost Code doesn't seem right");
+            localerror = true;
+        } else if(!use_case.match(/^[0-9]+$/i)){
+            module.exports.addError(fieldname, "Only digits are allowed");
+            localerror = true;
+        } else {
+            module.exports.removeError(fieldname);
+            localerror = false;
+        }
+        return localerror;
+    },
+    check_shortage: function (fieldname) {
+        /*checks University cost code fields if they are correct and returns
+         *a boolean.
+         *Also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var localerror = true;
+        var use_case = $(fieldname);
+
+        if(use_case.val().length < 3 ) {
+            module.exports.addError(fieldname, "Please choose a longer shortage");
+            localerror = true;
+        } else if(!use_case.val().match(/^[A-Z0-9]/)){
+            module.exports.addError(fieldname, "Traditionally we only use capital letters and numbers");
+            localerror = true;
+        } else {
+            module.exports.removeError(fieldname);
+            localerror = false;
+        }
+        return localerror;
+    },
+    check_cost_code_combination: function (fieldname,budgetholder) {
         /*checks University cost code fields if they are correct and returns
          *a boolean. This function also requires the field for budget holder.
          *Note that there needs to be a div surrounding the Budget Holder input
@@ -321,19 +384,18 @@ module.exports = {
          *Also sets the Error on the specified field. The error div needs to have
          *the identical fieldname but with _error appended.*/
         var localerror = true;
-        var use_case = $(fieldname);
+        var use_case = $(fieldname).val();
 
-        if(use_case.val().length < 3 || use_case.val().length > 15) {
-            module.exports.addError(fieldname, "Either 9 digit university cost code or standard module name are allowed");
+        if(use_case.length < 3 || use_case.length > 15) {
+            module.exports.addError(fieldname, "Either university cost code or standard module names are allowed");
             localerror = true;
-        } else if((!use_case.val().match(/^[A-Z]{3}/) &&
-        !use_case.val().match(/^[a-z0-9]+$/i))){
-            module.exports.addError(fieldname, "Either 9 digit cost code or standard module name are allowed");
+        } else if((!use_case.match(/^[A-Z]{3}/) && use_case !== "Demonstrator" && !use_case.match(/^([5]{1}[0-9]{8})$/i))){
+            module.exports.addError(fieldname, "Either university cost code or standard module names are allowed");
             localerror = true;
         } else {
             module.exports.removeError(fieldname);
             localerror = false;
-            if(!$.isNumeric(use_case.val())){
+            if(!$.isNumeric(use_case)){
                 //should be like "#budget_holder_group" to hide field and label
                 $(budgetholder.concat("_group")).hide();
             } else {
@@ -434,17 +496,16 @@ module.exports = {
         var localerror = true;
         var message = $(fieldname).val();
 
-        if(message.length < 8 || message.length > maxlength){
-            module.exports.addError(fieldname, "The message must be between 8 and "+maxlength+" characters long");
+        if(message.length < minlength || message.length > maxlength){
+            module.exports.addError(fieldname, "The message must be between "+minlength+" and "+maxlength+" characters long");
             localerror = true;
-        } else if(!message.match(/^[a-z A-Z0-9-.,!?()/']+$/)){
+        } else if(!message.match(/^[a-z A-Z0-9-.,!?()/']+$/ && message)){
             module.exports.addError(fieldname, "No special characters are allowed");
             localerror = true;
         }else{
+            module.exports.removeError(fieldname);
             $(fieldname.concat("_error")).html("Remaining characters : " + (maxlength - message.length));
             $(fieldname.concat("_error")).show();
-            $(fieldname).removeClass("parsley-error");
-            $(fieldname).addClass("parsley-success");
             localerror = false;
         }
         return localerror;
@@ -470,5 +531,12 @@ module.exports = {
          *the identical fieldname but with _error appended.*/
         var maxlength = 300;
         return module.exports.check_message(fieldname,8,maxlength);
-    }
+    },
+    check_message_explanation: function (fieldname) {
+        /*checks optional(!) comment fields if they are correct and returns a boolean
+         *also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var maxlength = 300;
+        return module.exports.check_message(fieldname,15,maxlength)
+    },
 };

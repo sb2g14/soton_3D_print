@@ -110,6 +110,88 @@ class IssuesController extends Controller
         //
     }
 
+    private function createPrinterHistoryEntry($lastEntry,$entryCounter){
+        //print last entry
+        $history_entry = array();
+        $history_entry['EntryID'] = $lastEntry->EntryID;
+        $history_entry['StartDate'] = new \Carbon\Carbon($lastEntry->StartDate);
+        if(!$lastEntry->EndDate){
+            $history_entry['EndDate'] = null;
+        } else {
+            $history_entry['EndDate'] = new \Carbon\Carbon($lastEntry->EndDate);
+        }
+        $history_entry['Description'] = $lastEntry->Description;
+        $history_entry['Type'] = $lastEntry->Type;
+        $history_entry['Class'] = '';
+        if($lastEntry->Type == 'Use'){
+            $history_entry['Type'] = $entryCounter.' Prints';
+            if($lastEntry->Description === 'Success'){
+                $history_entry['Class'] = 'alert alert-success';
+            }else{
+                $history_entry['Class'] = 'alert alert-warning';
+            }
+        }
+        if($lastEntry->Type === 'Loan'){
+            $history_entry['Class'] = 'alert alert-info';
+        }
+        if($lastEntry->Type === 'Broken'){
+            $history_entry['Class'] = 'alert alert-danger';
+        }
+        if($lastEntry->Type === 'Missing'){
+            $history_entry['Class'] = 'alert alert-danger';
+        }
+        return $history_entry;
+    }
+
+    private function getPrinterHistory($id){
+        $outEntries = [];
+        $printer = Printers::where('id', $id)->first();
+        //collect all prints and loans
+        $printdata = $printer->prints()->select('created_at AS StartDate', 'updated_at AS EndDate','purpose AS Type','status AS Description', 'id as EntryID');
+        //collect all issues
+        $issuedata = $printer->fault_data()->select('created_at AS StartDate', 'resolved_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'id as EntryID');
+        //combine them
+        $historydata = $printdata->unionAll($issuedata);
+        //collect all issue updates
+        $issueupdatedata = $printer->fault_data()->orderBy('created_at','desc')->where('resolved',0)->first();
+        if($issueupdatedata){
+            $issueupdatedata = $issueupdatedata->FaultUpdates()->select('created_at AS StartDate', 'updated_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'fault_data_id as EntryID');
+            //combine since there are issues
+            $historydata = $historydata->unionAll($issueupdatedata);
+        }
+        //sort entries
+        $historydata = $historydata->orderBy('StartDate', 'DESC')->get();
+        $lastEntry = null;
+        $entryCounter = 1;
+    
+        foreach($historydata as $entry){
+            if($lastEntry){
+                if($entry->Type === 'Use' && $entry->Type === $lastEntry->Type && $entry->Description === $lastEntry->Description){
+                    $entryCounter += 1;
+                    //combine them
+                    $lastEntry->StartDate = $entry->StartDate;
+                }else{
+                    //print last entry
+                    $out = $this->createPrinterHistoryEntry($lastEntry,$entryCounter);
+                    $outEntries[] = $out;
+                    $entryCounter = 1;
+                    //$this->renderHistoryEntryToHTML($out);
+                    $lastEntry = $entry;
+                }
+            }else{
+                $lastEntry = $entry;
+            }
+        }
+
+        if($lastEntry){
+            //print very last entry
+            $out = $this->createPrinterHistoryEntry($lastEntry,$entryCounter);
+            $outEntries[] = $out;
+            //$this->renderHistoryEntryToHTML($out);
+        }
+        return $outEntries;
+    }
+
     /**
      * Display the specified resource.
      *
@@ -133,10 +215,13 @@ class IssuesController extends Controller
             ->title('Printer usage')
             ->labels(['Days Printing', 'Days on Loan', 'Days Broken or Missing', 'Days Idle'])
             ->values([$success,$loan,$broken,$idle])
+            ->colors(['#7a8500', '#0097c2', '#ff9900', '#4c8658'])
             ->dimensions(400,200)
             ->responsive(true);
 
-        return view('issues.show', compact('issues', 'id','printer','chart'));
+        $historyEntries = $this->getPrinterHistory($id);
+
+        return view('issues.show', compact('issues', 'id','printer','chart','historyEntries'));
     }
 
     /**

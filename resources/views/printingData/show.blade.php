@@ -131,8 +131,8 @@
                         <div class="form-group text-left">
                             <div class="col-md-12">
                                 <label for="comments">Add comments (optional):</label><br>
-                                <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
-                                <span class="help-block" id="message_error"></span>
+                                <textarea rows="4" id="comment" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                <span class="help-block" id="comment_error"></span>
                             </div>
                         </div>
 
@@ -149,7 +149,6 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/approve_job_validation.js"></script>
     @if (notify()->ready())
         <script>
             swal({
@@ -160,6 +159,7 @@
             });
         </script>
     @endif
+    <script src="/js/validate_form.js"></script>
 @endsection
 
 

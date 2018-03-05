@@ -65,7 +65,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 1:
+/***/ 0:
 /***/ (function(module, exports) {
 
 /*** validations.js
@@ -84,11 +84,16 @@ module.exports = {
         /*shows the error div with the specified message 
          *and sets the input field class to error*/
         $(errorfield).html(message);
+        $(errorfield).removeClass("form-text text-muted");
+        $(errorfield).addClass("form-text text-danger");
         $(errorfield).show();
+        $(inputfield).removeClass("parsley-success");
         $(inputfield).addClass("parsley-error");
     },
     removeErrorDetail: function removeErrorDetail(inputfield, errorfield) {
         /*hides the error div and sets the input field class to success*/
+        $(errorfield).removeClass("form-text text-danger");
+        $(errorfield).addClass("form-text text-muted");
         $(errorfield).hide();
         $(inputfield).removeClass("parsley-error");
         $(inputfield).addClass("parsley-success");
@@ -210,6 +215,23 @@ module.exports = {
         }
         return localerror;
     },
+    check_password_match: function check_password_match(fieldname, password) {
+        /*checks password fields if they are correct and returns
+         *a boolean.
+         *Also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var localerror = true;
+        var password1 = $(password).val();
+        var password2 = $(fieldname).val();
+        if (password1 !== password2) {
+            module.exports.addError(fieldname, "The passwords don't match.");
+            localerror = true;
+        } else {
+            module.exports.removeError(fieldname);
+            localerror = false;
+        }
+        return localerror;
+    },
     //PRINTER RELATED CHECKS
     check_printer_number_select: function check_printer_number_select(fieldname) {
         /*checks that a printer number has been selected from the drop-down list*/
@@ -299,6 +321,7 @@ module.exports = {
         var localerror = true;
         var fieldvalue = $(fieldname).val();
         var radioselection = $('input[name = "' + radiogroup + '"]:checked').val();
+        console.log(radioselection);
         if (radioselection !== "Other") {
             module.exports.removeError(fieldname);
             localerror = false;
@@ -335,7 +358,7 @@ module.exports = {
         }
         return localerror;
     },
-    check_print_duration: function check_print_duration(hrsdropdown, mindropdown, group) {
+    check_print_duration: function check_print_duration(hrsdropdown, mindropdown, grouperror) {
         /*checks print duration fields if they are correct and returns
          *a boolean. Requires a reference to the drop-down for hours and
          *minutes, as well as group div. the group div should have an _error
@@ -346,16 +369,16 @@ module.exports = {
         var varhours = $(hrsdropdown).find(":selected").text();
         var varminutes = $(mindropdown).find(":selected").text();
         if (varhours === "Hours" || varminutes === "Minutes") {
-            module.exports.addErrorDetail(mindropdown, group, "");
-            module.exports.addErrorDetail(hrsdropdown, group, "Please set the printing time");
+            module.exports.addErrorDetail(mindropdown, grouperror, "");
+            module.exports.addErrorDetail(hrsdropdown, grouperror, "Please set the printing time");
             localerror = true;
         } else if (parseInt(varhours) + parseInt(varminutes) == 0) {
-            module.exports.addErrorDetail(mindropdown, group, "");
-            module.exports.addErrorDetail(hrsdropdown, group, "The printing time cannot be zero");
+            module.exports.addErrorDetail(mindropdown, grouperror, "");
+            module.exports.addErrorDetail(hrsdropdown, grouperror, "The printing time cannot be zero");
             localerror = true;
         } else {
-            module.exports.removeErrorDetail(mindropdown, group);
-            module.exports.removeErrorDetail(hrsdropdown, group);
+            module.exports.removeErrorDetail(mindropdown, grouperror);
+            module.exports.removeErrorDetail(hrsdropdown, grouperror);
             localerror = false;
         }
         return localerror;
@@ -382,7 +405,47 @@ module.exports = {
         return localerror;
     },
     //PAYMENT RELATED CHECKS
-    check_cost_code: function check_cost_code(fieldname, budgetholder) {
+    check_cost_code: function check_cost_code(fieldname) {
+        /*checks University cost code fields if they are correct and returns
+         *a boolean.
+         *Also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var localerror = true;
+        var use_case = $(fieldname).val();
+
+        if (use_case.length != 9 || !use_case.match(/^[5]{1}/)) {
+            module.exports.addError(fieldname, "This Cost Code doesn't seem right");
+            localerror = true;
+        } else if (!use_case.match(/^[0-9]+$/i)) {
+            module.exports.addError(fieldname, "Only digits are allowed");
+            localerror = true;
+        } else {
+            module.exports.removeError(fieldname);
+            localerror = false;
+        }
+        return localerror;
+    },
+    check_shortage: function check_shortage(fieldname) {
+        /*checks University cost code fields if they are correct and returns
+         *a boolean.
+         *Also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var localerror = true;
+        var use_case = $(fieldname);
+
+        if (use_case.val().length < 3) {
+            module.exports.addError(fieldname, "Please choose a longer shortage");
+            localerror = true;
+        } else if (!use_case.val().match(/^[A-Z0-9]/)) {
+            module.exports.addError(fieldname, "Traditionally we only use capital letters and numbers");
+            localerror = true;
+        } else {
+            module.exports.removeError(fieldname);
+            localerror = false;
+        }
+        return localerror;
+    },
+    check_cost_code_combination: function check_cost_code_combination(fieldname, budgetholder) {
         /*checks University cost code fields if they are correct and returns
          *a boolean. This function also requires the field for budget holder.
          *Note that there needs to be a div surrounding the Budget Holder input
@@ -391,18 +454,18 @@ module.exports = {
          *Also sets the Error on the specified field. The error div needs to have
          *the identical fieldname but with _error appended.*/
         var localerror = true;
-        var use_case = $(fieldname);
+        var use_case = $(fieldname).val();
 
-        if (use_case.val().length < 3 || use_case.val().length > 15) {
-            module.exports.addError(fieldname, "Either 9 digit university cost code or standard module name are allowed");
+        if (use_case.length < 3 || use_case.length > 15) {
+            module.exports.addError(fieldname, "Either university cost code or standard module names are allowed");
             localerror = true;
-        } else if (!use_case.val().match(/^[A-Z]{3}/) && !use_case.val().match(/^[a-z0-9]+$/i)) {
-            module.exports.addError(fieldname, "Either 9 digit cost code or standard module name are allowed");
+        } else if (!use_case.match(/^[A-Z]{3}/) && use_case !== "Demonstrator" && !use_case.match(/^([5]{1}[0-9]{8})$/i)) {
+            module.exports.addError(fieldname, "Either university cost code or standard module names are allowed");
             localerror = true;
         } else {
             module.exports.removeError(fieldname);
             localerror = false;
-            if (!$.isNumeric(use_case.val())) {
+            if (!$.isNumeric(use_case)) {
                 //should be like "#budget_holder_group" to hide field and label
                 $(budgetholder.concat("_group")).hide();
             } else {
@@ -503,17 +566,16 @@ module.exports = {
         var localerror = true;
         var message = $(fieldname).val();
 
-        if (message.length < 8 || message.length > maxlength) {
-            module.exports.addError(fieldname, "The message must be between 8 and " + maxlength + " characters long");
+        if (message.length < minlength || message.length > maxlength) {
+            module.exports.addError(fieldname, "The message must be between " + minlength + " and " + maxlength + " characters long");
             localerror = true;
-        } else if (!message.match(/^[a-z A-Z0-9-.,!?()/']+$/)) {
+        } else if (!message.match(/^[a-z A-Z0-9-.,!?()/']+$/ && message)) {
             module.exports.addError(fieldname, "No special characters are allowed");
             localerror = true;
         } else {
+            module.exports.removeError(fieldname);
             $(fieldname.concat("_error")).html("Remaining characters : " + (maxlength - message.length));
             $(fieldname.concat("_error")).show();
-            $(fieldname).removeClass("parsley-error");
-            $(fieldname).addClass("parsley-success");
             localerror = false;
         }
         return localerror;
@@ -539,6 +601,13 @@ module.exports = {
          *the identical fieldname but with _error appended.*/
         var maxlength = 300;
         return module.exports.check_message(fieldname, 8, maxlength);
+    },
+    check_message_explanation: function check_message_explanation(fieldname) {
+        /*checks optional(!) comment fields if they are correct and returns a boolean
+         *also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        var maxlength = 300;
+        return module.exports.check_message(fieldname, 15, maxlength);
     }
 };
 
@@ -562,36 +631,91 @@ module.exports = __webpack_require__(69);
  * it will also disable the submit button with the name 'submit'
  * until all the validations are fulfilled and update the price
  * in the field with the name 'price'.
+ * You should use this file in all blades that contain only one
+ * form. If a blade contains more than one form, you need to 
+ * create one copy of this file for each of the forms. Ensure that
+ * all ids for the inputs and buttons are unique accross the blade
+ * and only keep the function assignments that are used within one
+ * form for the file corresponding to that form. Also remember to
+ * rename the button id in the file.
  ***/
-var validations = __webpack_require__(1);
+var validations = __webpack_require__(0);
 $(document).ready(function () {
 
     $(window).load(function () {
-        $("#budget_holder_group").hide();
         check_all_fields();
+        //hide elements after checking all fields.
+        //this may crash if a group field doesn't exist.
+        //also we shouldn't require this, since the validation 
+        //functions should hide/ show them automatically.
+        //$("#budget_holder_group").hide();
+        //$("#printer_type_other_group").hide();
     });
+
+    //these functions are defined so that the check function only takes one argument.
+    //these need to be adapted if the stadard ids for the input fields changes.
     function local_check_cost_code(fieldname) {
-        return validations.check_cost_code(fieldname, "#budget_holder");
+        return validations.check_cost_code_combination(fieldname, "#budget_holder");
     }
     function local_check_budget_holder(fieldname) {
         return validations.check_budget_holder(fieldname, "#use_case");
     }
     function local_check_time_minutes(fieldname) {
-        return validations.check_print_duration("#hours", fieldname, "#time");
+        return validations.check_print_duration("#hours", fieldname, "#time_error");
     }
     function local_check_time_hours(fieldname) {
-        return validations.check_print_duration(fieldname, "#minutes", "#time");
+        return validations.check_print_duration(fieldname, "#minutes", "#time_error");
     }
-    //TODO: this field is sometimes called #other, sometimes #other_printer_type. I suggest always calling it #printer_type_other and the selection group belonging to it #printer_type. Also remember to add a group around the input field so it can be hidden if not needed.
     function local_check_printer_type_radio(fieldname) {
         return validations.check_printer_type_radio(fieldname, "#printer_type_other");
     }
     function local_check_printer_type_input(fieldname) {
-        return validations.check_printer_type_input(fieldname, "#printer_type");
+        //passing printer_type without # since the radio buttons have no id
+        return validations.check_printer_type_input(fieldname, "printer_type");
+    }
+    function local_check_password_match(fieldname) {
+        return validations.check_password_match(fieldname, "#password");
     }
 
     //map the field ids to the functions in this dictionary,
-    //assign null to input fields that you need to treat extra...
+    //assign null to input fields that you need to treat extra... 
+    var funs = {
+        "#customer_name": validations.check_name,
+        "#student_name": validations.check_name,
+        "#holder_name": validations.check_name,
+        "#staff_name": validations.check_name,
+        "#first_name": validations.check_name,
+        "#last_name": validations.check_name,
+        "#customer_email": validations.check_university_email,
+        "#email": validations.check_university_email,
+        "#customer_id": validations.check_university_id_number,
+        "#student_id": validations.check_university_id_number,
+        "#password": validations.check_password,
+        "#password_confirm": local_check_password_match,
+        "#phone": validations.check_phone,
+        "#job_title": validations.check_job_title,
+        "#claim_id": validations.check_claim_id,
+        "#claim_passcode": validations.check_claim_passcode,
+        "#printers_id": validations.check_printer_number_select,
+        "#number": validations.check_printer_number_input,
+        "#serial": validations.check_printer_serial,
+        "#printer_type": local_check_printer_type_radio,
+        "#printer_type_other": local_check_printer_type_input,
+        "#material_amount": validations.check_material_amount,
+        "#hours": local_check_time_hours,
+        "#minutes": local_check_time_minutes,
+        "#shortage": validations.check_shortage,
+        "#cost_code": validations.check_cost_code,
+        "#use_case": local_check_cost_code,
+        "#budget_holder": local_check_budget_holder,
+        "#issue": validations.check_issue_title,
+        "#comment": validations.check_comment,
+        "#message": validations.check_message_default,
+        "#message_last": validations.check_message_default,
+        "#message_long": validations.check_message_long,
+        "#explanation": validations.check_message_explanation,
+        "#description": validations.check_message_default
+    };
     /*//proposed new naming of the fields:
     var funs = {
         "#customer_name": validations.check_name,
@@ -624,41 +748,7 @@ $(document).ready(function () {
         "#message_last": validations.check_message_default,
         "#message_long": validations.check_message_long
     };*/
-    //TODO: message_long is currently defined as message in print_preview_validation.js -> need to change that in the blade!
-    //TODO: definition of printer_type and other field is not consistent accross blades -> suggest to make them cosistent as mentioned above...
-    var funs = {
-        "#customer_name": validations.check_name,
-        "#student_name": validations.check_name,
-        "#first_name": validations.check_name,
-        "#last_name": validations.check_name,
-        "#customer_email": validations.check_university_email,
-        "#email": validations.check_university_email,
-        "#customer_id": validations.check_university_id_number,
-        "#student_id": validations.check_university_id_number,
-        "#password": validations.check_password,
-        "#password_confirm": validations.check_password,
-        "#phone": validations.check_phone,
-        "#job_title": validations.check_job_title,
-        "#claim_id": validations.check_claim_id,
-        "#claim_passcode": validations.check_claim_passcode,
-        "#printers_id": validations.check_printer_number_select,
-        "#number": validations.check_printer_number_input,
-        "#serial": validations.check_printer_serial,
-        "#printer_type": local_check_printer_type_radio,
-        "#printer_type_other": local_check_printer_type_input,
-        "#other_printer_type": local_check_printer_type_input,
-        "#other": local_check_printer_type_input,
-        "#material_amount": validations.check_material_amount,
-        "#hours": local_check_time_hours,
-        "#minutes": local_check_time_minutes,
-        "#use_case": local_check_cost_code,
-        "#budget_holder": local_check_budget_holder,
-        "#issue": validations.check_issue_title,
-        "#comment": validations.check_comment,
-        "#message": validations.check_message_default,
-        "#message_last": validations.check_message_default,
-        "#message_long": validations.check_message_long
-    };
+
     //get a list of all the input fields from previous dictionary so we don't need to redefine.
     var html_triggers = Object.keys(funs);
     //create a dictionary to keep track of the errors for the fields and
@@ -675,7 +765,7 @@ $(document).ready(function () {
 
     //construct to modify the keyup function for all fields
     //iterates through input fields of type text or customer_email, as well as select fields
-    $("input[type='text'], select, input[type='customer_email']").keyup(function () {
+    $("input, select, textarea").keyup(function () {
         //here we create a variable for the validation function for that field,
         //passing the field id to it as an argument
         var fun = funs["#" + $(this).attr('id')];
@@ -686,7 +776,7 @@ $(document).ready(function () {
         }
     });
     //construct to modify the focusout function for all fields
-    $("input, select").focusout(function () {
+    $("input, select, textarea").focusout(function () {
         //here we create a variable for the validation function for that field,
         //passing the field id to it as an argument
         var fun = funs["#" + $(this).attr('id')];
@@ -696,9 +786,16 @@ $(document).ready(function () {
             check_all_fields();
         }
     });
+    //special case "printer type" since this is a group of radio buttons, their id is different/ undefined so we need to select them by name.
+    $("input[name='printer_type']").click(function () {
+        //this is a special case, where we have radio buttons that have a consistent name, not id.
+        var fun = funs["#" + $(this).attr('name')];
+        errors["#" + $(this).attr('name')] = local_check_printer_type_radio($(this).attr('name'));
+        check_all_fields();
+    });
 
     function check_all_fields() {
-        //could do all checks again
+        //do all checks again
         for (var i = 0; i < html_triggers.length; i++) {
             var el = html_triggers[i];
             if (funs[el] && $(el).length) {

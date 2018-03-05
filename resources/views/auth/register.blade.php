@@ -13,14 +13,14 @@
                                 <label for="name" class="col-md-4 control-label">Name</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required><br>
+                                    <input id="student_name" type="text" class="form-control" name="name" value="{{ old('name') }}" required><br>
 
                                     @if ($errors->has('name'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                     @endif
-                                    <span class="help-block" id="name_error"></span>
+                                    <span class="help-block" id="student_name_error"></span>
 
                                 </div>
                             </div>
@@ -86,10 +86,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                                <label for="password_confirm" class="col-md-4 control-label">Confirm Password</label>
 
                                 <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required><br>
+                                    <input id="password_confirm" type="password" class="form-control" name="password_confirmation" required><br>
                                     <span class="help-block" id="password_confirm_error"></span>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4 text-left">
-                                    <button id="register-button" type="submit" class="btn btn-primary">
+                                    <button id="submit" type="submit" class="btn btn-success">
                                         Register
                                     </button>
                                 </div>
@@ -114,5 +114,6 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/register_validation.js"></script>
+    {{--<script src="/js/register_validation.js"></script>--}}
+    <script src="/js/validate_form.js"></script>
 @endsection

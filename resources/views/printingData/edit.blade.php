@@ -86,9 +86,9 @@
                             </div> <!-- /form-group -->
 
                         <div class="col-sm-12 text-left">
-                                <button id="submit" type="submit" class="btn btn-lg btn-success">Save</button>
+                                <button id="submit" type="submit" class="btn btn-success">Save</button>
                                 {{--<a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>--}}
-                                <a href="/printingData/finished" class="btn btn-lg btn-info">Back</a>
+                                <a href="/printingData/finished" class="btn btn-danger">Back</a>
                         </div>
                     </form>
                 </div>
