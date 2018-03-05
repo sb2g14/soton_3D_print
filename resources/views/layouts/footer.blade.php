@@ -10,11 +10,11 @@
                     <div class="row">
                         <div class="col-xs-2"></div>
                         <div class="col-xs-2">
-                            <a href="https://www.facebook.com/EDMC-and-Design-Workshops-University-of-Southampton-1569152903360637/" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="https://www.facebook.com/EDMC-and-Design-Workshops-University-of-Southampton-1569152903360637/" target="_blank"><i class="fa fa-facebook-square"></i></a>
                         </div>
-                        <div class="col-xs-2">
+                        {{--<div class="col-xs-2">
                             <a href="https://sites.google.com/site/soton3dprinting/home" target="_blank"><i class="fa fa-google"></i></a>
-                        </div>
+                        </div>--}}
                         <div class="col-xs-2">
                             <a href="https://www.youtube.com/channel/UCYrrokbBniAgVg_On7BSD3A" target="_blank"><i class="fa fa-youtube"></i></a>
                         </div>
@@ -43,14 +43,14 @@
                             Andrii Iakovliev <br>
                             Svitlana Braichenko <br>
                             Illya Khromov <br>
+                            {{--Kamran Esmaeili <br>
+                            Faezeh Shalchy--}}
                             Lasse Wollatz <br>
-                            Kamran Esmaeili <br>
-                            Faezeh Shalchy
                         </div>
                     </div>
                 </div>
                 <hr>
-                <div style="font-weight: 200;">version 2.1</div>
+                <div style="font-weight: 200;">version 2.2 (dev)</div>
             </div>
         </div>
     </div>
