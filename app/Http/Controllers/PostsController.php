@@ -25,6 +25,140 @@ class PostsController extends Controller
 
     }
 
+    private function createChartPrinterAvailability(){
+        // Creates a chart for Printer Availability and returns it.
+        $printers_in_use = printers::where('in_use','1')->where('printer_type','!=','UP BOX')->count();
+        $printers_available = printers::where('printer_status','Available')->where('in_use','0')->where('printer_type','!=','UP BOX')->count();
+        //$unavailable_printers = printers::where('printer_status','!=','Available')->where('printer_status','!=','Signed out')->where('in_use','0')->count();
+
+//        $chart1 = Charts::create('pie', 'highcharts')
+//            ->title('Printers')
+//            ->colors(['#00796B','#C2185B','#005C85'])
+//            ->labels(['Available', 'In use', 'Unavailable'])
+//            ->values([$printers_available,$printers_in_use,$unavailable_printers])
+//            ->dimensions(400,200)
+//            ->responsive(false);
+
+        $chart1 = Charts::create('percentage', 'justgage')
+            ->title(false)
+            ->elementLabel('Available')
+            //->colors(['#C2185B'])
+            ->values([$printers_available,0,$printers_in_use + $printers_available])
+            ->responsive(false)
+            ->height(300)
+            ->width(0);
+        return $chart1;
+    }
+
+    private function createChartWorkshopUsage(){
+        // Creates a chart to show how busy the workshop is at specific times and returns it.
+        // Initiate variables
+        $timeinterval = 0.25; //in hours but gives minutes accuracy
+        $Nweeks = 5; //number of weeks to go into the past to create average
+        $open_days = [];
+        $printersbusy = [];
+        $timesofday = [];
+        $time = new \Carbon\Carbon;
+        $time->setTime(0, 0, 0);
+        for($i=9; $i<=18; $i+=$timeinterval){
+            $timesofday[] = $time->copy()->addMinutes((int)(60*$i));
+            $printersbusy[] = 0;
+        }
+
+        // Get the various of prints for the past 4 weeks
+        $time = new \Carbon\Carbon;
+        $time = $time->subDay();
+        $t1str = $time->format('Y-m-d')." 00:00:00";
+        $t2str = $time->subWeeks($Nweeks)->format('Y-m-d')." 00:00:00";
+        //TODO: need to filter out online prints!
+        $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
+            ->where('created_at', '<', $t1str)->select('created_at','updated_at')->get();
+
+        // Count the number of different days and assign prints to time histogram
+        foreach ($prints as $print) { //iterate over all the prints
+            for($i=0; $i<count($timesofday); $i++){ 
+                $t1 = $print->created_at;
+                $t2 = $print->updated_at;
+                //check if date of print is new
+                $day = $t1->format('Y-m-d');
+                if(!in_array($day, $open_days)){
+                    $open_days[] = $day;
+                }
+                //check if the timestamp falls into the print usage interval
+                $ti = $timesofday[$i];
+                //need to adjust date, since we only want to compare the time
+                $now = new \Carbon\Carbon;
+                $ti->setDate($now->year,$now->month,$now->day);
+                $t1->setDate($now->year,$now->month,$now->day);
+                $t2->setDate($now->year,$now->month,$now->day);
+                if($t1<=$ti && $ti<=$t2){
+                    // add 1 to the timestamp busyness
+                    $printersbusy[$i]++;
+                }
+            }
+        }
+        // Normalise the data
+        $Ndays = count($open_days);
+        if($Ndays == 0){
+            $Ndays = 1;
+        }
+        for($i=0; $i<count($printersbusy); $i++){
+             $printersbusy[$i] = $printersbusy[$i]/$Ndays;
+        }
+        // Create chart for prints over past 12 months
+        $chart_labels = $timesofday;
+        for($i=0; $i<count($chart_labels); $i++){
+             $chart_labels[$i] = $chart_labels[$i]->format('H:i');
+        }
+        $chart_values = $printersbusy;
+        $chart = Charts::create('area', 'highcharts')
+            ->title('Busyness of the workshop over the day')
+            ->colors(['#00796B'])
+            //->colors(['#ffffff'])
+            ->template('teal-material')
+            //->background_color('')
+            ->elementLabel('')
+            ->legend('')
+            ->labels($chart_labels)
+            ->values($chart_values)
+            ->dimensions(400,300)
+            ->responsive(true);
+        return $chart;
+    }
+
+    private function getIssues(){
+//        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
+//        $posts -> toArray($posts);
+//        $post_last = posts::orderBy('created_at','desc')->first();
+        // Getting post and fault data and combining it
+        $faults = FaultData::select('id', 'title', 'body', 'created_at', 'staff_id_created_issue as staff_id', 'printers_id')
+        ->where('resolved', 0);
+        $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id')->where('resolved', 0);
+        $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
+        return $issues;
+    }
+    
+    private function getUsersLastYear(){
+        //look at all the jobs from last year and count the number of different users.
+        $time = new \Carbon\Carbon;
+        $t1str = $time->format('Y')."-01-01 00:00:00";
+        $time = $time->subYear();
+        $t2str = $time->format('Y')."-01-01 00:00:00";
+        $count_users = \App\Jobs::where('created_at', '>', $t2str)
+            ->where('created_at', '<', $t1str)->select('customer_id')->groupBy('customer_id')->get();
+        $count_users = $count_users->count();
+        return $count_users;
+    }
+
+    private function getMaterialTotal(){
+        // returns the Material since creation in kg as a string with unit
+        $count_material = \App\Prints::select('material_amount')->get();
+        $count_material = $count_material->sum('material_amount');
+        $count_material = (int)(0.5+(float)($count_material)/1000);
+        $count_material = $count_material." kg";
+        return $count_material;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -38,14 +172,8 @@ class PostsController extends Controller
             $printer_busy->changePrinterStatus($printers_busy);
         }
 
-//        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
-//        $posts -> toArray($posts);
-//        $post_last = posts::orderBy('created_at','desc')->first();
-        // Getting post and fault data and combining it
-        $faults = FaultData::select('id', 'title', 'body', 'created_at', 'staff_id_created_issue as staff_id', 'printers_id')
-        ->where('resolved', 0);
-        $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id')->where('resolved', 0);
-        $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
+        // Get issues as a combination of printer issues and posts (workshop issues)
+        $issues = $this->getIssues();
 
         $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
 
@@ -91,40 +219,14 @@ class PostsController extends Controller
             ->dimensions(400,300)
             ->responsive(true);
         // Users per year
-        $time = new \Carbon\Carbon;
-        $t1str = $time->format('Y')."-01-01 00:00:00";
-        $time = $time->subYear();
-        $t2str = $time->format('Y')."-01-01 00:00:00";
-        $count_users = \App\Jobs::where('created_at', '>', $t2str)
-            ->where('created_at', '<', $t1str)->select('customer_id')->groupBy('customer_id')->get();
-        $count_users = $count_users->count();
+        $count_users = $this->getUsersLastYear();
         // Material since creation
-        $count_material = \App\Prints::select('material_amount')->get();
-        $count_material = $count_material->sum('material_amount');
-        $count_material = (int)(0.5+(float)($count_material)/1000);
-        $count_material = $count_material." kg";
+        $count_material = $this->getMaterialTotal();
         // Printer Availability
-        $printers_in_use = printers::where('in_use','1')->where('printer_type','!=','UP BOX')->count();
-        $printers_available = printers::where('printer_status','Available')->where('in_use','0')->where('printer_type','!=','UP BOX')->count();
-        //$unavailable_printers = printers::where('printer_status','!=','Available')->where('printer_status','!=','Signed out')->where('in_use','0')->count();
-
-//        $chart1 = Charts::create('pie', 'highcharts')
-//            ->title('Printers')
-//            ->colors(['#00796B','#C2185B','#005C85'])
-//            ->labels(['Available', 'In use', 'Unavailable'])
-//            ->values([$printers_available,$printers_in_use,$unavailable_printers])
-//            ->dimensions(400,200)
-//            ->responsive(false);
-
-        $chart1 = Charts::create('percentage', 'justgage')
-            ->title(false)
-            ->elementLabel('Available')
-            //->colors(['#C2185B'])
-            ->values([$printers_available,0,$printers_in_use + $printers_available])
-            ->responsive(false)
-            ->height(300)
-            ->width(0);
-        return view('welcome.index', compact('issues','announcements', 'count_prints','count_months','count_users','count_material', 'chart', 'chart1'));
+        $chart1 = $this->createChartPrinterAvailability();
+        // Workshop Busy Periods
+        $chartBusy = $this->createChartWorkshopUsage();
+        return view('welcome.index', compact('issues','announcements', 'count_prints','count_months','count_users','count_material', 'chart', 'chart1','chartBusy'));
     }
 
     /**

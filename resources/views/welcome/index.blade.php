@@ -208,13 +208,16 @@
                                 {!! Charts::scripts() !!}
                                 {!! $chart1->script() !!}
                             @else
-                                <div style="text-align: center; font-size: larger; font-weight: bold"> 
+                                <!--<div style="text-align: center; font-size: larger; font-weight: bold"> 
                                     Opening Hours:  
                                 </div>
                                 <div style="text-align: center; font-weight: bold"> 
                                     Every Wednesday 9am to 6pm during term-time.<br/>
                                     (Live opening hours coming soon)
-                                </div>
+                                </div>-->
+                                {!! $chartBusy->html() !!}
+                                {!! Charts::scripts() !!}
+                                {!! $chartBusy->script() !!}
                             @endif
                             </div>
                         </div>
