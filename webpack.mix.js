@@ -14,7 +14,6 @@ const { mix } = require('laravel-mix');
 mix.js('resources/assets/js/app.js', 'public/js')
     .js('resources/assets/js/bootstrap.js', 'public/js')
     .js('resources/assets/js/login_validation.js', 'public/js')
-    .js('resources/assets/js/register_validation.js', 'public/js')
     .js('resources/assets/js/reset_validation.js', 'public/js')
     .js('resources/assets/js/validations.js', 'public/js')
     .js('resources/assets/js/validate_form.js', 'public/js')

@@ -369,6 +369,7 @@ body.is-fixed {
 }
 .bl-welcome a {
   color: #fff;
+  /*.font-size( (20/@fs-base) );*/
   font-size: 32px;
   font-size: 2rem;
   display: block;
@@ -376,6 +377,7 @@ body.is-fixed {
   text-decoration: none;
 }
 .bl-welcome a:hover {
+  /*color: @c-link;*/
   color: #50626e;
 }
 .bl-welcome .btn {
@@ -478,7 +480,6 @@ body.is-fixed {
 .content .text-user {
   font-style: italic;
 }
-
 .content .m-b-md {
   margin-bottom: 30px;
 }
@@ -590,13 +591,13 @@ body.is-fixed {
   overflow: hidden;
 }
 .s-welcome .cardblock .info-box.box-issue {
-  background-color: #880E4F;
+  background-color: #ad0011;
 }
 .s-welcome .cardblock .info-box.box-announcement {
-  background-color: #006064;
+  background-color: #315765;
 }
 .s-welcome .cardblock .info-box.box-stat {
-  background-color: #004D40;
+  background-color: #5e8493;
 }
 .s-welcome .cardblock .info-box .caption {
   display: inline-block;
@@ -611,13 +612,13 @@ body.is-fixed {
   color: #fff;
 }
 .s-welcome .cardblock .body.bg-pink {
-  background-color: #C2185B;
+  background-color: #ff6b63;
 }
 .s-welcome .cardblock .body.bg-cyan {
-  background-color: #0097A7;
+  background-color: #30959f;
 }
 .s-welcome .cardblock .body.bg-teal {
-  background-color: #00796B;
+  background-color: #68c6d0;
 }
 .s-welcome .cardblock.hover-expand-effect:after {
   background-color: rgba(0, 0, 0, 0.05);

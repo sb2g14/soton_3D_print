@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 78);
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -465,7 +465,7 @@ module.exports = {
         } else {
             module.exports.removeError(fieldname);
             localerror = false;
-            if (!$.isNumeric(use_case.val())) {
+            if (!$.isNumeric(use_case)) {
                 //should be like "#budget_holder_group" to hide field and label
                 $(budgetholder.concat("_group")).hide();
             } else {
@@ -613,15 +613,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ 78:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(79);
+module.exports = __webpack_require__(53);
 
 
 /***/ }),
 
-/***/ 79:
+/***/ 53:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*** validate_form.js ***
