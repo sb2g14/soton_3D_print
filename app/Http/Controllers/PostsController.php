@@ -46,6 +46,28 @@ class PostsController extends Controller
         }
         return $count_prints;
     }
+    
+    private function getArrayPrintsLastYears($n_years){
+        // Call the prints model to extract statistical data
+        $count_prints = [];
+        // Count the number of prints since the beginning of the current month
+        $time = new \Carbon\Carbon;
+        $t1str = $time->toDateTimeString();
+        $t2str = $time->format('Y')."-01-01 00:00:00";
+        $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
+            ->where('created_at', '<', $t1str)->count();
+        $count_prints[] = $prints;
+        // Count the number of prints for the last year
+        for($i=0; $i<$n_years-1; $i++){
+            $t1str = $time->format('Y')."-01-01 00:00:00";
+            $time = $time->subYear();
+            $t2str = $time->format('Y')."-01-01 00:00:00";
+            $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
+                ->where('created_at', '<', $t1str)->count();
+            $count_prints[] = $prints;
+        }
+        return $count_prints;
+    }
 
     private function getArrayLastMonths($n_months){
         $count_months = [];
@@ -60,9 +82,23 @@ class PostsController extends Controller
         }
         return $count_months;
     }
+    
+    private function getArrayLastYears($n_years){
+        $count = [];
+        $time = new \Carbon\Carbon;
+        $t2str = $time->format('Y')."-01-01 00:00:00";
+        $count[] = new \Carbon\Carbon($t2str);
+        // Count the number of prints for the last year
+        for($i=0; $i<$n_years-1; $i++){
+            $time = $time->subYear();
+            $t2str = $time->format('Y')."-01-01 00:00:00";
+            $count[] = new \Carbon\Carbon($t2str);
+        }
+        return $count;
+    }
 
     private function createChartPrintsLastMonths($count_prints,$count_months){
-        
+        /***Total number of prints per month over the last x months (Area Chart)***/
         // Create labels
         $month_labels = [];
         foreach ($count_months as $date) {
@@ -73,12 +109,12 @@ class PostsController extends Controller
         $count_prints = array_reverse($count_prints);
         $chart = Charts::create('area', 'highcharts')
             ->title('Prints per months')
-            ->colors(['#00796B'])
             //->colors(['#ffffff'])
-            ->template('teal-material')
+            ->template('shamrock-uni')
+            ->oneColor(true)
             //->background_color('')
             ->elementLabel('')
-            ->legend('')
+            ->legend(false)
             ->labels($month_labels)
             ->values($count_prints)
             ->dimensions(400,300)
@@ -86,8 +122,81 @@ class PostsController extends Controller
         return $chart;
     }
 
+    private function createChartPrintsLastYearsPerMonth($years){
+        /***Total number of prints per month comparing the past $years years (Line Chart)***/
+        // get data
+        $time = new \Carbon\Carbon;
+        $this_month = $time->month;
+        $this_year = $time->year;
+        $count_prints = $this->getArrayPrintsLastMonths(12*($years-1)+$this_month);
+        $count_months = $this->getArrayLastMonths(12*($years-1)+$this_month);
+        // Set Colours
+        $colourset = ['#00593b','#1e8765','#56b893','#89ebc3','#bcfff6','#f0ffff'];
+        $year_color = array_reverse(array_slice($colourset,0,$years+1));
+        //format data
+        $year_data = [];
+        $year_label = [];
+        $year_data[] = array_reverse(array_slice($count_prints,0,$this_month));
+        $year_label[] = $this_year;
+        for ($y = 0; $y < $years; $y++){
+            $year_data[] = array_reverse(array_slice($count_prints,$this_month+12*$y,12));
+            $year_label[] = $this_year-$y-1;
+        }
+        // Create labels
+        $months12 = array_slice($count_months,$this_month,12);
+        $month_labels = [];
+        foreach ($months12 as $date) {
+             $month_labels[] = $date->format('M');
+        }
+        // Create chart for prints over past 12 months
+        $month_labels = array_reverse($month_labels);
+        $count_prints = array_reverse($count_prints);
+        $chart = Charts::multi('line', 'highcharts')
+            ->title('Prints per months')
+            ->colors($year_color)
+            //->template('shamrock-uni')
+            //->background_color('')
+            ->elementLabel('')
+            ->legend('')
+            ->labels($month_labels);
+        for ($y = $years; $y >= 0; $y--){
+            $chart = $chart->dataset($year_label[$y],$year_data[$y]);
+        }
+        $chart = $chart->dimensions(400,300)
+            ->responsive(true);
+        return $chart;
+    }
+
+    private function createChartPrintsLastYears($n_years){
+        /***Total number of Workshop and Online Prints per year since 2014 (Column Chart)***/
+        //TODO: need to separate online and workshop prints
+        $count_prints = $this->getArrayPrintsLastYears($n_years);
+        $years = $this->getArrayLastYears($n_years);
+        // Create labels
+        $labels = [];
+        foreach ($years as $date) {
+             $labels[] = $date->format('Y');
+        }
+        // Create chart for prints over past years
+        $labels = array_reverse($labels);
+        $count_prints = array_reverse($count_prints);
+        $chart = Charts::create('bar', 'highcharts')
+            ->title('Prints per year')
+            ->template('prussian-uni')
+            ->oneColor(false)
+            //->background_color('')
+            ->elementLabel('')
+            ->legend('')
+            ->labels($labels)
+            ->values($count_prints)
+            ->dimensions(400,300)
+            ->responsive(true)
+            ->loader(false);
+        return $chart;
+    }
+
     private function createChartPrinterAvailability(){
-        // Creates a chart for Printer Availability and returns it.
+        /***Creates a chart for Printer Availability and returns it.***/
         $printers_in_use = printers::where('in_use','1')->where('printer_type','!=','UP BOX')->count();
         $printers_available = printers::where('printer_status','Available')->where('in_use','0')->where('printer_type','!=','UP BOX')->count();
         //$unavailable_printers = printers::where('printer_status','!=','Available')->where('printer_status','!=','Signed out')->where('in_use','0')->count();
@@ -104,6 +213,8 @@ class PostsController extends Controller
             ->title(false)
             ->elementLabel('Available')
             //->colors(['#C2185B'])
+            ->template('coral-uni')
+            ->oneColor(true)
             ->values([$printers_available,0,$printers_in_use + $printers_available])
             ->responsive(false)
             ->height(300)
@@ -112,7 +223,7 @@ class PostsController extends Controller
     }
 
     private function createChartWorkshopUsage(){
-        // Creates a chart to show how busy the workshop is at specific times and returns it.
+        /***Creates a chart to show how busy the workshop is at specific times and returns it.***/
         // Initiate variables
         $timeinterval = 1; //in hours but gives minutes accuracy
         $Nweeks = 5; //number of weeks to go into the past to create average
@@ -156,9 +267,15 @@ class PostsController extends Controller
                 $ti->setDate($now->year,$now->month,$now->day);
                 $t1->setDate($now->year,$now->month,$now->day);
                 $t2->setDate($now->year,$now->month,$now->day);
-                if($t1<=$ti && $ti<=$t2){
-                    // add 1 to the timestamp busyness
-                    $printersbusy[$i]++;
+                //if($t1<=$ti && $ti<=$t2){
+                if($ti->between($t1,$t2)){
+                    //calculate overlap as
+                    $ovstart = max($t1,$ti->subMinutes(30*$timeinterval));
+                    $ovend = min($t2,$ti->addMinutes(30*$timeinterval));
+                    $overlap = $ovend->diffInMinutes($ovstart);
+                    $printersbusy[$i]+=(float)($overlap)/60;
+                    //add 1 to the timestamp busyness
+                    //$printersbusy[$i]++;
                 }
             }
         }
@@ -168,7 +285,8 @@ class PostsController extends Controller
             $Ndays = 1;
         }
         for($i=0; $i<count($printersbusy); $i++){
-             $printersbusy[$i] = $printersbusy[$i]/$Ndays;
+            $printersbusy[$i] = $printersbusy[$i]/$Ndays;
+            $printersbusy[$i] = $printersbusy[$i]/$timeinterval;
         }
         // Create chart for prints over past 12 months
         $chart_labels = $timesofday;
@@ -177,10 +295,9 @@ class PostsController extends Controller
         }
         $chart_values = $printersbusy;
         $chart = Charts::create('bar', 'highcharts')
-            ->title('Average number of simultaneous prints')
-            ->colors(['#00796B'])
-            //->colors(['#ffffff'])
-            ->template('teal-material')
+            ->title('Average number of simultaneous prints during the last '.$Ndays.' sessions')
+            ->template('coral-uni')
+            ->oneColor(true)
             //->background_color('')
             ->elementLabel('')
             ->legend('')
@@ -246,7 +363,13 @@ class PostsController extends Controller
         // Prints over last 12 months
         $count_prints = $this->getArrayPrintsLastMonths(12);
         $count_months = $this->getArrayLastMonths(12);
-        $chart = $this->createChartPrintsLastMonths($count_prints,$count_months);
+        $chartY1 = $this->createChartPrintsLastMonths($count_prints,$count_months);
+        
+        // Prints over 12 months for last 4 years
+        $chartY2 = $this->createChartPrintsLastYearsPerMonth(3);
+
+        // Total Prints for last 4 years
+        $chart = $this->createChartPrintsLastYears(5);
         
         // Users per year
         $count_users = $this->getUsersLastYear();
