@@ -10,6 +10,10 @@ $(document).ready(function() {
     $(".card-rules").click(function(){
         $("#rulesModal").modal();
     });
+    
+    $(".card-stat").click(function () {
+        $("#statModal").modal();
+    });
 
     $('[data-toggle="popover"]').popover(); 
 

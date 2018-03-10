@@ -115,19 +115,17 @@
                     <!-- #END# Announcements -->
                     <!-- Statistics -->
                     <div class="col-xs-12 col-md-4">
-                        <div class="cardblock">
+                        <div class="cardblock card-stat hover-expand-effect">
                             <div class="info-box box-stat">
                                 <div class="bl-logo logo-stat"></div>
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
                             <div class="body bg-teal">
-                                {!! $chart->html() !!}
-                                {!! Charts::scripts() !!}
-                                {!! $chart->script() !!}
                                 {{--<h3>The number of prints in the last 12 months</h3>--}}
-                                {{--@for($i=0; $i<24; $i++)--}}
-                                       {{--{{$count_months[$i]->toFormattedDateString()}}: {{$count_prints[$i]}} prints<br/>--}}
-                                {{--@endfor--}}
+                                @php $chartMainDemonstrator=$chartY1 @endphp
+                                {!! $chartMainDemonstrator->html() !!}
+                                {!! Charts::scripts() !!}
+                                {!! $chartMainDemonstrator->script() !!}
                             </div>
                         </div>
                     </div>
@@ -202,11 +200,9 @@
                                     Number of users last year: {{$count_users}}<br/>
                                     Total material used: {{$count_material}}<br/>
                                 </div><br/>
-                            @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
-                                <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
-                                {!! $chart1->html() !!}
-                                {!! Charts::scripts() !!}
-                                {!! $chart1->script() !!}
+                                @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
+                                    <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
+                                @php $chartMainCustomer = $chartPA; @endphp
                             @else
                                 <!--<div style="text-align: center; font-size: larger; font-weight: bold"> 
                                     Opening Hours:  
@@ -215,10 +211,11 @@
                                     Every Wednesday 9am to 6pm during term-time.<br/>
                                     (Live opening hours coming soon)
                                 </div>-->
-                                {!! $chartBusy->html() !!}
-                                {!! Charts::scripts() !!}
-                                {!! $chartBusy->script() !!}
+                                @php $chartMainCustomer = $chartBusy; @endphp
                             @endif
+                                {!! $chartMainCustomer->html() !!}
+                                {!! Charts::scripts() !!}
+                                {!! $chartMainCustomer->script() !!}
                             </div>
                         </div>
                     </div>
@@ -227,7 +224,7 @@
             @endif
         </div>
 
-<!-- FORMS TO EDIT CONTENT -->
+<!-- DETAIL CARDS WITH FORMS TO EDIT CONTENT -->
 
         <!-- Modal ISSUES-->
         <div id="issueModal" class="modal fade" role="dialog">
@@ -516,6 +513,71 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modal STATISTICS PRIVATE -->
+        <div id="statModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title">STATISTICS</h3>
+                    </div>
+                    <div class="modal-body text-left">
+                        <div style="display: inline-block; overflow: auto; width:45%;height:200pt; float=left;">
+                            @php $chartDBusy=$chartBusy @endphp
+                            {!! $chartDBusy->html() !!}
+                            {!! Charts::scripts() !!}
+                            {!! $chartDBusy->script() !!}
+                        </div>
+                        <div style="display: inline-block; overflow: auto; width:45%;height:200pt; float=left;">
+                            @php $chartDAvailable=$chart1 @endphp
+                            {!! $chartDAvailable->html() !!}
+                            {!! Charts::scripts() !!}
+                            {!! $chartDAvailable->script() !!}
+                        </div>
+                        
+                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left; clear: left;">
+                            @php $chartDPrintsLastMonths=$chartY1 @endphp
+                            {!! $chartDPrintsLastMonths->html() !!}
+                            {!! Charts::scripts() !!}
+                            {!! $chartDPrintsLastMonths->script() !!}
+                        </div>
+                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left;">
+                            @php $chartDPrintsPerMonth=$chartY2 @endphp
+                            {!! $chartDPrintsPerMonth->html() !!}
+                            {!! Charts::scripts() !!}
+                            {!! $chartDPrintsPerMonth->script() !!}
+                        </div>
+                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left;">
+                            @php $chartDPrintsPerYear=$chartY3 @endphp
+                            {!! $chartDPrintsPerYear->html() !!}
+                            {!! Charts::scripts() !!}
+                            {!! $chartDPrintsPerYear->script() !!}
+                        </div>
+
+                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left;">
+                            @php $chartDUsersPerYear=$chartYU @endphp
+                            {!! $chartDUsersPerYear->html() !!}
+                            {!! Charts::scripts() !!}
+                            {!! $chartDUsersPerYear->script() !!}
+                        </div>
+                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left;">
+                            @php $chartDPrinterReliability=$chartPR @endphp
+                            {!! $chartDPrinterReliability->html() !!}
+                            {!! Charts::scripts() !!}
+                            {!! $chartDPrinterReliability->script() !!}
+                        </div>
+                        
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
      
 @endsection
@@ -524,7 +586,7 @@
     <script src="/js/validate_form_issue_create.js"></script>
     <script src="/js/validate_form_issue_comment.js"></script>
     <script src="/js/validate_form_announcement_create.js"></script>
-
+    
 
 
     {{--Load notification--}}
