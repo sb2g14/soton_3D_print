@@ -7,7 +7,7 @@
         <div class="bl-welcome">    
             <div class="row">
                 <div class="col-xs-12">
-                    <p>Welcome to the 3D printing workshop<br>at the University of Southampton.</p>
+                    <p>Welcome to the 3D printing service<br>at the University of Southampton.</p>
                 </div>
             </div>
             <div class="row">
@@ -122,10 +122,12 @@
                             </div>
                             <div class="body bg-teal">
                                 {{--<h3>The number of prints in the last 12 months</h3>--}}
-                                @php $chartMainDemonstrator=$chartY1 @endphp
+                                @php $chart_height = 300; @endphp
+                                <!--@php $chartMainDemonstrator=$chartY1 @endphp
                                 {!! $chartMainDemonstrator->html() !!}
                                 {!! Charts::scripts() !!}
-                                {!! $chartMainDemonstrator->script() !!}
+                                {!! $chartMainDemonstrator->script() !!} !--> 
+                                <iframe id="C_demonstrator_main" src="{{ route('chart', ['name' => 'printspm', 'height' => $chart_height]) }}" height="{{ $chart_height + 150 }}" width="100%" style="width:100%; border:none;"></iframe>
                             </div>
                         </div>
                     </div>
@@ -195,6 +197,7 @@
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
                             <div class="body bg-teal">
+                                @php $chart_height = 300; @endphp
                                 <div style="text-align: left; font-size: larger; font-weight: bold"> 
                                     Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[sizeof($count_prints) - 2]}}<br/>
                                     Number of users last year: {{$count_users}}<br/>
@@ -202,7 +205,7 @@
                                 </div><br/>
                                 @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
                                     <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
-                                @php $chartMainCustomer = $chartPA; @endphp
+                                <iframe id="C_printer_availability" src="{{ route('chart', ['name' => 'printer_availability', 'height' => $chart_height]) }}" height="{{$chart_height + 50}}" width="100%" style="width:100%; border:none;"></iframe>
                             @else
                                 <!--<div style="text-align: center; font-size: larger; font-weight: bold"> 
                                     Opening Hours:  
@@ -211,11 +214,8 @@
                                     Every Wednesday 9am to 6pm during term-time.<br/>
                                     (Live opening hours coming soon)
                                 </div>-->
-                                @php $chartMainCustomer = $chartBusy; @endphp
+                                <iframe id="C_workshop_usage" src="{{ route('chart', ['name' => 'workshop_usage', 'height' => $chart_height]) }}" height="{{$chart_height + 150}}" width="100%" style="width:100%; border:none;"></iframe>
                             @endif
-                                {!! $chartMainCustomer->html() !!}
-                                {!! Charts::scripts() !!}
-                                {!! $chartMainCustomer->script() !!}
                             </div>
                         </div>
                     </div>
@@ -525,49 +525,30 @@
                         <h3 class="modal-title">STATISTICS</h3>
                     </div>
                     <div class="modal-body text-left">
-                        <div style="display: inline-block; overflow: auto; width:45%;height:200pt; float=left;">
-                            @php $chartDBusy=$chartBusy @endphp
-                            {!! $chartDBusy->html() !!}
-                            {!! Charts::scripts() !!}
-                            {!! $chartDBusy->script() !!}
+                        @php 
+                            $chart_height = 300; 
+                            $chart_box_height = $chart_height+150; 
+                        @endphp
+                        <div style="display: inline-block; overflow: none; width:48%;height:{{$chart_box_height}}; float=left;">
+                            <iframe id="DC_printer_availability" src="{{ route('chart', ['name' => 'printer_status', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none;"></iframe>
                         </div>
-                        <div style="display: inline-block; overflow: auto; width:45%;height:200pt; float=left;">
-                            @php $chartDAvailable=$chart1 @endphp
-                            {!! $chartDAvailable->html() !!}
-                            {!! Charts::scripts() !!}
-                            {!! $chartDAvailable->script() !!}
+                        <div style="display: inline-block; overflow: none; width:48%;height:{{$chart_box_height}}px; float=left;">
+                            <iframe id="DC_workshop_usage" src="{{ route('chart', ['name' => 'workshop_usage', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none;"></iframe>
                         </div>
                         
-                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left; clear: left;">
-                            @php $chartDPrintsLastMonths=$chartY1 @endphp
-                            {!! $chartDPrintsLastMonths->html() !!}
-                            {!! Charts::scripts() !!}
-                            {!! $chartDPrintsLastMonths->script() !!}
+
+                        <div style="display: inline-block; overflow: none; width:32%;height:{{$chart_box_height}}; float=left;">
+                            <iframe id="DC_prints_per_month" src="{{ route('chart', ['name' => 'printspmpy', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none; overflow: none;"></iframe>
                         </div>
-                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left;">
-                            @php $chartDPrintsPerMonth=$chartY2 @endphp
-                            {!! $chartDPrintsPerMonth->html() !!}
-                            {!! Charts::scripts() !!}
-                            {!! $chartDPrintsPerMonth->script() !!}
-                        </div>
-                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left;">
-                            @php $chartDPrintsPerYear=$chartY3 @endphp
-                            {!! $chartDPrintsPerYear->html() !!}
-                            {!! Charts::scripts() !!}
-                            {!! $chartDPrintsPerYear->script() !!}
+                        <div style="display: inline-block; overflow: none; width:32%;height:{{$chart_box_height}}; float=left;">
+                            <iframe id="DC_prints_peryear" src="{{ route('chart', ['name' => 'printspy', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none; overflow: none;"></iframe>
                         </div>
 
-                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left;">
-                            @php $chartDUsersPerYear=$chartYU @endphp
-                            {!! $chartDUsersPerYear->html() !!}
-                            {!! Charts::scripts() !!}
-                            {!! $chartDUsersPerYear->script() !!}
+                        <div style="display: inline-block; overflow: none; width:32%;height:{{$chart_box_height}}; float=left;">
+                            <iframe id="DC_users_peryear" src="{{ route('chart', ['name' => 'userspy', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none; overflow: none;"></iframe>
                         </div>
-                        <div style="display: inline-block; overflow: auto; width:30%;height:200pt; float=left;">
-                            @php $chartDPrinterReliability=$chartPR @endphp
-                            {!! $chartDPrinterReliability->html() !!}
-                            {!! Charts::scripts() !!}
-                            {!! $chartDPrinterReliability->script() !!}
+                        <div style="display: inline-block; overflow: none; width:96%;height:{{$chart_box_height}}; float=left;">
+                            <iframe id="DC_printertype_reliability" src="{{ route('chart', ['name' => 'printertype_reliability', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none;"></iframe>
                         </div>
                         
                     </div>
@@ -587,6 +568,28 @@
     <script src="/js/validate_form_issue_comment.js"></script>
     <script src="/js/validate_form_announcement_create.js"></script>
     
+    {{--Adjust Charts--}}
+    <script>
+    $(function() {
+        // Your tab id must match with the click element: administration_toggle
+        // Change it how you like :)
+        $('.card-stat').click(function() {
+            //$('.preloader-wrapper').fadeIn();
+            $('#statModal iframe').css('opacity', 0);
+            setTimeout(function() {
+                $('#statModal iframe').each(function() {
+                    $(this).attr('src', $(this).attr('src'));
+                });
+                //$('.preloader-wrapper').fadeOut();
+                setTimeout(function() {
+                    $('#statModal iframe').animate({
+                        opacity: 1,
+                    }, 1000);
+                }, 500);
+            }, 50);
+        });
+    });
+    </script>
 
 
     {{--Load notification--}}

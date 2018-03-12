@@ -63,6 +63,9 @@ Route::get('/members/former/show','StaffController@former');
 // Here we redirect to the page containing general printer info using controller
 Route::get('/printers/index','PrintersController@index');
 
+// display of charts
+Route::get('/charts/{name}/{height}', 'ChartsController@show')->name('chart');
+
 // Group of routes available only to roles administrator, Lead Demonstrator, Demonstrator
 /////////////////////////////////////////////////////////////////////////////////////////////
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {

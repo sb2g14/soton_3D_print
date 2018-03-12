@@ -64,12 +64,12 @@ Make sure that the part you printed in the workshop is visible in the photo.
 	            </div>
 	            <div class="col-sm-6 col-md-4">
 	                <a class="lightbox" href="/Images/gallery/gal011_800x600.png">
-	                    <img src="/Images/gallery/gal011_800x600.png" alt="Vascular network extracted from a micro-CT scan of a human lung tissue sample, see <a href='http://dx.doi.org/10.1007/s10278-017-9966-5'>DOI: 10.1007/s10278-017-9966-5</a>">
+	                    <img src="/Images/gallery/gal011_800x600.png" alt="Vascular network extracted from a &mu;-CT scan of a human lung tissue sample. See more: <a href='http://dx.doi.org/10.1007/s10278-017-9966-5'>DOI: 10.1007/s10278-017-9966-5</a>">
 	                </a>
 	            </div> 
 	            <div class="col-sm-6 col-md-4">
 	                <a class="lightbox" href="/Images/gallery/gal012_800x600.png">
-	                    <img src="/Images/gallery/gal012_800x600.png" alt="Paediatric temporal bone">
+	                    <img src="/Images/gallery/gal012_800x600.png" alt="3D printed paediatric temporal bone model drilled by ENT specialists at Southampton Children's Hospital. See more: <a href='http://eprints.soton.ac.uk/401289'>eprints.soton.ac.uk/401289</a>">
 	                </a>
 	            </div>
 
