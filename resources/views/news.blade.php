@@ -7,34 +7,55 @@
     @php
         $entries = [];
         $entry = [];
+        $entry['icon'] = "flag";
         $entry['Time'] = "Early 2014";
         $entry['Text'] = "The Workshop was founded by Shoufeng Yang, with the aim to give students the chance to get to know 3D printing and experience the possibilities of fast prototyping.";
         $entries[] = $entry;
+        $entry['icon'] = "edit";
         $entry['Time'] = "2014";
         $entry['Text'] = "The workshop operates with only a few printers. Initially Up! and soon after Up Plus 2 printers were purchased. Thanks to the management of Dani Newman, students could use the workshop to there liking, but had to pay a small fee to allow for material cost to be covered.";
         $entries[] = $entry;
         $entry['Time'] = "Late 2014";
         $entry['Text'] = "The workshops popularity increases and it now used by several modules to enable students to create items in their design projects.";
         $entries[] = $entry;
+        $entry['icon'] = "cogs";
         $entry['Time'] = "Spring 2015";
         $entry['Text'] = "To simplify the demonstrating and printing process, two changes are made: Prints are now managed in a consistent spreadsheet and they are free of charge. This increased the usage of the workshop since more students start to use the workshop for printing for their own use.";
         $entries[] = $entry;
+        $entry['icon'] = "archive";
+        $entry['Time'] = "June 2015";
+        $entry['Text'] = "New Up! BOX printers have arrived. These allow to print larger object at a higher accuracy.";
+        $entries[] = $entry;
+        $entry['icon'] = "edit";
         $entry['Time'] = "Autumn 2015";
         $entry['Text'] = "The free printing was suspended, since it resulted in too many printers being broken due to poor treatment.";
         $entries[] = $entry;
+        $entry['icon'] = "user";
         $entry['Time'] = "Spring 2016";
-        $entry['Text'] = "Dani Newman parts as a Lead Demonstrator and Gianluca Cidonio takes over. Wei Keum initiates online orders on 3D Hubs to prevent the more expensive printers from breaking.";
+        $entry['Text'] = "Dani Newman parts as a Lead Demonstrator and Gianluca Cidonio takes over.";
         $entries[] = $entry;
+        $entry['icon'] = "cogs";
+        $entry['Time'] = "April 2016";
+        $entry['Text'] = "Wei Keum initiates online orders on 3D Hubs to prevent the more expensive printers from breaking.";
+        $entries[] = $entry;
+        $entry['icon'] = "user";
         $entry['Time'] = "Academic year 16/17";
         $entry['Text'] = "Shoufeng Yang parts and the workshop is run entirely by students, with Gianluca and later Apostolos Grammatikopolous and Katherine Crawford organising the sessions as a Lead Demonstrator and the staff support of Tim Woolman and Chris Malcome.";
         $entries[] = $entry;
-        $entry['Time'] = "Summer 2017";
-        $entry['Text'] = "With Andrew Hamilton a new academic takes over the workshop. The recording of prints is moved to a website built by Svitlana Braichenko, Andrii Iakovliev and Illya Khromov under the lead of Lasse Wollatz.";
+        $entry['icon'] = "cogs";
+        $entry['Time'] = "July 2017";
+        $entry['Text'] = "The recording of prints is moved to a website built by Svitlana Braichenko, Andrii Iakovliev and Illya Khromov under the lead of Lasse Wollatz.";
         $entries[] = $entry;
-        $entry['Time'] = "Winter 2017";
+        $entry['icon'] = "user";
+        $entry['Time'] = "September 2017";
+        $entry['Text'] = "With Andrew Hamilton a new academic takes over the workshop.";
+        $entries[] = $entry;
+        $entry['icon'] = "cogs";
+        $entry['Time'] = "January 2018";
         $entry['Text'] = "We leave 3D Hubs and include the online prints into the website.";
         $entries[] = $entry;
-        $entry['Time'] = "Spring 2018";
+        $entry['icon'] = "archive";
+        $entry['Time'] = "March 2018";
         $entry['Text'] = "Several new Prusia printers are purchased, to replace the old Up! printers.";
         $entries[] = $entry;
 
@@ -43,7 +64,7 @@
         <li class="item">
             <div class=" row alert alert-info">
                 <div class="col-sm-4 text-left"> 
-                    {{$entry['Time']}}
+                    <i class="fa fa-{{$entry['icon']}}"></i> {{$entry['Time']}}
                 </div>
                 <div class="col-sm-4 text-justify">{{$entry['Text']}}</div> 
             </div>

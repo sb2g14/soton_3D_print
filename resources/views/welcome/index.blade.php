@@ -123,10 +123,6 @@
                             <div class="body bg-teal">
                                 {{--<h3>The number of prints in the last 12 months</h3>--}}
                                 @php $chart_height = 300; @endphp
-                                <!--@php $chartMainDemonstrator=$chartY1 @endphp
-                                {!! $chartMainDemonstrator->html() !!}
-                                {!! Charts::scripts() !!}
-                                {!! $chartMainDemonstrator->script() !!} !--> 
                                 <iframe id="C_demonstrator_main" src="{{ route('chart', ['name' => 'printspm', 'height' => $chart_height]) }}" height="{{ $chart_height + 150 }}" width="100%" style="width:100%; border:none;"></iframe>
                             </div>
                         </div>

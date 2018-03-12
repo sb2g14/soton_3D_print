@@ -1,23 +1,15 @@
 @extends('layouts.layout')
-@section('scripts')
-    @if (notify()->ready())
-        <script>
-            swal({
-                title: "{!! notify()->message() !!}",
-                text: "{!! notify()->option('text') !!}",
-                type: "{{ notify()->type() }}",
-                showConfirmButton: true
-            });
-        </script>
-    @endif
-@stop
+
 @section('content')
     <div class="title m-b-md">
-        About workshop
+        About the Service
     </div>
     <div class="container well text-left">
         <p>
-            This workshop offers students and staff the opportunity to get into contact with additive manufacturing. We provide open access to a range of fused deposit modelling (FDM) printers in the Design Workshop. For more information, please consult our <a href="faq">FAQ</a>.
+            This service offers students and staff the opportunity to get into contact with additive manufacturing. We provide open access to a range of fused deposit modelling (FDM) printers in the Design Workshop. For more information, please consult our <a href="faq">FAQ</a>.
+        </p>
+        <p>
+            We do appreciate when users consider it appropriate to acknowledge the 'support of the 3D Printing Service among the Faculty of Engineering and the Environment design and manufacturing facilities at the University of Southampton', and would be proud to link to any such work from our website. Please also send us photos of your work to be presented in our <a href="photolibrary">Photo Gallery</a>.
         </p>
         <p>
             For Part III and IV UG student, MSc, researcher and staff projects with a sub-project cost (‘budget’) code,
@@ -76,7 +68,32 @@
         </div>
     </div>
                 <section id="canvas1" class="s-map">
-                    <iframe id="map_canvas1" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4480.157517437024!2d-1.3984993030069568!3d50.93475279559591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x28ef7c4fb80298da!2sThe+Tizard!5e0!3m2!1sen!2sde!4v1497548468301" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    <!--<iframe id="map_canvas1" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4480.157517437024!2d-1.3984993030069568!3d50.93475279559591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x28ef7c4fb80298da!2sThe+Tizard!5e0!3m2!1sen!2sde!4v1497548468301" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>-->
+                    <iframe width="100%" height="450" frameborder="0" marginheight="0" marginwidth="0" style="border:0" src="https://maps.southampton.ac.uk/#18/50.93573/-1.39377/nomenu,nojump,doors?marker=50.93570779114204%2C-1.3939815759658813"></iframe>
+                    
                 </section>
 
+@endsection
+
+@section('scripts')
+    <script>
+        //want to show B13 by default
+        //this requires to access the iframe -> not possible
+        //$(document).ready( function(){
+        //    id = 13;
+        //    console.log(id);
+        //    obj = parentobject.layer[id];
+        //    if(!(obj === null)) { obj.openPopup(); }
+        //});
+    </script>
+    @if (notify()->ready())
+        <script>
+            swal({
+                title: "{!! notify()->message() !!}",
+                text: "{!! notify()->option('text') !!}",
+                type: "{{ notify()->type() }}",
+                showConfirmButton: true
+            });
+        </script>
+    @endif
 @endsection

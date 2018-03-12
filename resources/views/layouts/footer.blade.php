@@ -3,9 +3,43 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12 col-sm-4">
-                <p class="text-justify">3D Printing Workshop at the University of Southampton IT platform for managing online and in-premises
-                print requests. Designed and maintained by a team of university students.</p>
-
+                <p class="text-justify">FEE 3D Printing Service at the University of Southampton IT platform for managing online and in-premises print requests. Designed and maintained by a team of university students.</p>
+                <hr>
+                <div class="copyright">
+                        
+                        <span style="font-weight: 500;">&copy; 2017</span>
+                        <a href="{{ url('/') }}">Soton3Dprint</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a> - 
+                        <span style="font-weight: 200;"> version 2.3 (dev) </span>
+                </div>
+            </div>
+            <div class="col-sm-4 text-left support">
+                <div class="row">
+                    <div class="col-xs-6 team">
+                        <b>Developer team: </b><br>
+                        <div class="developers">
+                            <a href="mailto:sb2g14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Svitlana Braichenko</a> <br>
+                            Illya Khromov <br>
+                            {{--Kamran Esmaeili <br>
+                            Faezeh Shalchy--}}
+                        </div>
+                    </div>
+                    <div class="col-xs-6 team">
+                        <br>
+                        <div class="developers">
+                            <a href="mailto:ai1v14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Andrii Iakovliev</a> <br>
+                            <a href="mailto:l.wollatz@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Lasse Wollatz</a>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                Please send the feedback to: <br>
+                <a href="mailto:ai1v14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Andrii Iakovliev</a> <br>
+                <a href="mailto:sb2g14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Svitlana Braichenko</a> <br>
+                <a href="mailto:l.wollatz@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Lasse Wollatz</a>
+                -->
+                
+            </div>
+            <div class="col-xs-12 col-sm-4 text-center">
                 <div class="social-media">
                     <div class="row">
                         <div class="col-xs-2"></div>
@@ -24,33 +58,9 @@
                         <div class="col-xs-2"></div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-4 text-left support">
-                Please send the feedback to: <br>
-                <a href="mailto:ai1v14@soton.ac.uk?Subject=Soton3Dprint" target="_top">ai1v14@soton.ac.uk</a> <br>
-                <a href="mailto:sb2g14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">sb2g14@soton.ac.uk</a> <br>
-                <a href="mailto:l.wollatz@soton.ac.uk?Subject=Soton3Dprint" target="_blank">l.wollatz@soton.ac.uk</a>
-            </div>
-            <div class="col-xs-12 col-sm-4 text-center">
-                <div class="row">
-                    <div class="col-xs-6 copyright">
-                        <span style="font-weight: 500;">Copyright &copy; 2017</span><br>
-                        <a href="{{ url('/') }}">Soton3Dprint</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a>
-                    </div>
-                    <div class="col-xs-6 team">
-                        <b>Developer team: </b><br>
-                        <div class="developers">
-                            Andrii Iakovliev <br>
-                            Svitlana Braichenko <br>
-                            Illya Khromov <br>
-                            {{--Kamran Esmaeili <br>
-                            Faezeh Shalchy--}}
-                            Lasse Wollatz <br>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div style="font-weight: 200;">version 2.3 (dev)</div>
+                
+                
+                
             </div>
         </div>
     </div>
