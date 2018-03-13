@@ -194,11 +194,7 @@
                             </div>
                             <div class="body bg-teal">
                                 @php $chart_height = 300; @endphp
-                                <div style="text-align: left; font-size: larger; font-weight: bold"> 
-                                    Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[sizeof($count_prints) - 2]}}<br/>
-                                    Number of users last year: {{$count_users}}<br/>
-                                    Total material used: {{$count_material}}<br/>
-                                </div><br/>
+                                
                                 @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
                                     <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
                                 <iframe id="C_printer_availability" src="{{ route('chart', ['name' => 'printer_availability', 'height' => $chart_height]) }}" height="{{$chart_height + 50}}" width="100%" style="width:100%; border:none;"></iframe>
@@ -212,6 +208,11 @@
                                 </div>-->
                                 <iframe id="C_workshop_usage" src="{{ route('chart', ['name' => 'workshop_usage', 'height' => $chart_height]) }}" height="{{$chart_height + 150}}" width="100%" style="width:100%; border:none;"></iframe>
                             @endif
+                                <div style="text-align: left; font-size: larger; font-weight: bold"> 
+                                    Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[sizeof($count_prints) - 2]}}<br/>
+                                    Number of users last year: {{$count_users}}<br/>
+                                    Total material used: {{$count_material}}<br/>
+                                </div><br/>
                             </div>
                         </div>
                     </div>

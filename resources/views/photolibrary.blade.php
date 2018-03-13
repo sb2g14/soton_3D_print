@@ -6,6 +6,7 @@
 	<div class="container gallery-container">
         <p style="text-align:left;">Want to show what you have achieved? Email us a photo of your finished project with a short description (50 words max) and a link to your related publication (optional). Your photos help us to ensure that we can keep this service running for you and future students.<br/>
 Make sure that the part you printed in the workshop is visible in the photo.
+Please be aware that we can't accept any photos with people visible in them, unless you complete the <a href="intranet.soton.ac.uk/sites/commsandmarketing/Pages/Photography.%20Videos%20and%20Films/photography-permissions.aspx" target="_blank">model release agreement form</a> and send it to us together with the photo.
         </p>
     
 	    <div class="tz-gallery">

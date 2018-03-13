@@ -111,23 +111,47 @@ a:link {
   text-decoration: none;
 }
 /* @blue: #266c8e; */
-.table > tbody > tr > td.available {
-  background-color: #4c8658;
+.table > tbody > tr.available {
+  color: #1E8765;
 }
-.table > tbody > tr > td.in-use {
+.table > tbody > tr.available:hover {
+  background-color: #1E8765;
+  color: #fff;
+}
+.table > tbody > tr.in-use {
+  color: #7a8500;
+}
+.table > tbody > tr.in-use:hover {
   background-color: #7a8500;
+  color: #fff;
 }
-.table > tbody > tr > td.on-loan {
+.table > tbody > tr.on-loan {
+  color: #0097c2;
+}
+.table > tbody > tr.on-loan:hover {
   background-color: #0097c2;
+  color: #fff;
 }
-.table > tbody > tr > td.broken {
-  background-color: #ff9900;
+.table > tbody > tr.broken {
+  color: #E73238;
 }
-.table > tbody > tr > td.missing {
-  background-color: #cc181e;
+.table > tbody > tr.broken:hover {
+  background-color: #E73238;
+  color: #fff;
 }
-.table > tbody > tr > td.signed-out {
-  background-color: #50626e;
+.table > tbody > tr.missing {
+  color: #315765;
+}
+.table > tbody > tr.missing:hover {
+  background-color: #315765;
+  color: #fff;
+}
+.table > tbody > tr.signed-out {
+  color: #5e8493;
+}
+.table > tbody > tr.signed-out:hover {
+  background-color: #5e8493;
+  color: #fff;
 }
 body {
   background: #f2f2f2;

@@ -65,7 +65,21 @@ a:link {
 @uni-prussian-light: #315765;
 @uni-prussian-light-i: #315765;
 @uni-prussian-light-ii: #5e8493;
-
+@uni-shamrock: #1E8765;
+@uni-shamrock-light: #1E8765;
+@uni-shamrock-light-i: #1E8765;
+@uni-shamrock-light-ii: #1E8765;
+@uni-coral: #E73238;
+@uni-coral-light: #E73238;
+@uni-coral-light-i: #E73238;
+@uni-coral-light-ii: #E73238;
+//printer status:
+@printer-available: @uni-shamrock;
+@printer-inuse: @uni-coral-light-i;
+@printer-onloan: @uni-coral-light-ii;
+@printer-broken: @uni-coral;
+@printer-missing: @uni-prussian-light-i;
+@printer-signedout: @uni-prussian-light-ii;
 //logo color
 @dark-blue:#002e3b;
 @blue: #005C85;
@@ -119,24 +133,48 @@ a:link {
 
 //bootstrap custom colors for table background
 
-.table>tbody>tr>td {
+.table>tbody>tr {
   &.available {
-    background-color: #4c8658;
+    color: @printer-available;
+    &:hover{
+        background-color: @printer-available;
+        color: #fff;
+    }
   }
   &.in-use {
-    background-color: #7a8500;
+    color: @printer-inuse;
+    &:hover{
+        background-color: @printer-available;
+        color: #fff;
+    }
   }
   &.on-loan {
-    background-color: #0097c2;
+    color: @printer-onloan;
+    &:hover{
+        background-color: @printer-available;
+        color: #fff;
+    }
   }
   &.broken {
-    background-color: #ff9900;
+    color: @printer-broken;
+    &:hover{
+        background-color: @printer-available;
+        color: #fff;
+    }
   }
   &.missing {
-    background-color: #cc181e;
+    color: @printer-missing;
+    &:hover{
+        background-color: @printer-available;
+        color: #fff;
+    }
   }
   &.signed-out {
-    background-color: #50626e;
+    color: @printer-signedout;
+    &:hover{
+        background-color: @printer-available;
+        color: #fff;
+    }
   }
 }
 

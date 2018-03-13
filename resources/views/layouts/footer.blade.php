@@ -17,18 +17,22 @@
                     <div class="col-xs-6 team">
                         <b>Developer team: </b><br>
                         <div class="developers">
-                            <a href="mailto:sb2g14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Svitlana Braichenko</a> <br>
+                            Svitlana Braichenko <br>
                             Illya Khromov <br>
                             {{--Kamran Esmaeili <br>
-                            Faezeh Shalchy--}}
+                            Faezeh Shalchy <br>--}}
+                            Andrii Iakovliev <br>
+                            Lasse Wollatz
                         </div>
                     </div>
                     <div class="col-xs-6 team">
-                        <br>
+                        <b>Contact us: </b><br>
                         <div class="developers">
-                            <a href="mailto:ai1v14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Andrii Iakovliev</a> <br>
-                            <a href="mailto:l.wollatz@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Lasse Wollatz</a>
-                        </div>
+                            Student Lead: <a href="mailto:k.a.crawford@soton.ac.uk?Subject=3D%20Printing%20Service" target="_blank">Katherine Crawford</a> <br>
+                            Faculty Lead: <a href="mailto:a.r.hamilton@soton.ac.uk?Subject=3D%20Printing%20Service" target="_blank">Andrew Hamilton</a> <br>
+                            IT Support: <a href="mailto:l.wollatz@soton.ac.uk?Subject=3D%20Printing%20Service" target="_blank">Lasse Wollatz</a> <br>
+                        </div><br>
+                        <a href="/aboutWorkshop">Find us on campus</a><br>
                     </div>
                 </div>
                 <!--
@@ -39,18 +43,21 @@
                 -->
                 
             </div>
-            <div class="col-xs-12 col-sm-4 text-center">
-                <div class="social-media">
+            <div class="col-xs-12 col-sm-4 text-center"> 
+                <div class="row">
+                        Connect with us
+                </div>
+                <div class="social-media"> 
                     <div class="row">
-                        <div class="col-xs-2"></div>
-                        <div class="col-xs-2">
-                            <a href="https://www.facebook.com/EDMC-and-Design-Workshops-University-of-Southampton-1569152903360637/" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-1">
+                            <a href="https://www.facebook.com/EDMC-and-Design-Workshops-University-of-Southampton-1569152903360637/" target="_blank"><i class="fa fa-facebook-f"></i></a>
                         </div>
-                        {{--<div class="col-xs-2">
-                            <a href="https://sites.google.com/site/soton3dprinting/home" target="_blank"><i class="fa fa-google"></i></a>
-                        </div>--}}
-                        <div class="col-xs-2">
-                            <a href="https://www.youtube.com/channel/UCYrrokbBniAgVg_On7BSD3A" target="_blank"><i class="fa fa-youtube"></i></a>
+                        <div class="col-xs-1">
+                            <a href="https://www.youtube.com/channel/UCYrrokbBniAgVg_On7BSD3A" target="_blank"><i class="fa fa-youtube-play"></i></a>
+                        </div>
+                        <div class="col-xs-1">
+                            <a href="https://www.southampton.ac.uk" target="_blank">S</a>
                         </div>
                         <div class="col-xs-2">
                             <a href={{ url('/faq') }} target="_blank">FAQ</a>

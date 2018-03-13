@@ -50,10 +50,19 @@
             </thead>
             <tbody>
                 @foreach($printers as $printer)
-                    <tr class="text-left">
-                        <td data-th="Printer Number">{{$printer->id}}</td>
-                        <td data-th="Serial Number">{{$printer->serial_no}}</td>
-                        <td data-th="Printer Type">{{$printer->printer_type}}</td>
+                    @php
+                        $printerstatus = $printer->printer_status;
+                        if($printer->printer_status == 'Available' && $printer->in_use == 1){
+                            $printerstatus = 'In Use';
+                        }
+                        $printerclass = strtolower($printerstatus);
+                        $printerclass = str_replace(" ","-",$printerclass);
+                    @endphp
+                    <tr class="text-left {{$printerclass}}">
+                        <td data-th="Printer Number" class="{{$printerclass}}">{{$printer->id}}</td>
+                        <td data-th="Serial Number" class="{{$printerclass}}">{{$printer->serial_no}}</td>
+                        <td data-th="Printer Type" class="{{$printerclass}}">{{$printer->printer_type}}</td>
+                        <td data-th="Status" class="{{$printerclass}}">{{$printerstatus}}</td>
                         @if ($printer->printer_status == 'Available' && $printer->in_use == 0)
                             <td data-th="Status" class="available">{{$printer->printer_status}}</td>
                             @elseif($printer->printer_status == 'Available' && $printer->in_use == 1)
