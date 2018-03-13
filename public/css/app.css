@@ -618,10 +618,10 @@ body.is-fixed {
   background-color: #ad0011;
 }
 .s-welcome .cardblock .info-box.box-announcement {
-  background-color: #315765;
+  background-color: #00593b;
 }
 .s-welcome .cardblock .info-box.box-stat {
-  background-color: #5e8493;
+  background-color: #002e3b;
 }
 .s-welcome .cardblock .info-box .caption {
   display: inline-block;
@@ -635,14 +635,23 @@ body.is-fixed {
 .s-welcome .cardblock .body small {
   color: #fff;
 }
+.s-welcome .cardblock .body.bg-issue {
+  background-color: #E73238;
+}
+.s-welcome .cardblock .body.bg-announcement {
+  background-color: #1E8765;
+}
+.s-welcome .cardblock .body.bg-stat {
+  background-color: #315765;
+}
 .s-welcome .cardblock .body.bg-pink {
-  background-color: #ff6b63;
+  background-color: #E73238;
 }
 .s-welcome .cardblock .body.bg-cyan {
-  background-color: #30959f;
+  background-color: #1E8765;
 }
 .s-welcome .cardblock .body.bg-teal {
-  background-color: #68c6d0;
+  background-color: #315765;
 }
 .s-welcome .cardblock.hover-expand-effect:after {
   background-color: rgba(0, 0, 0, 0.05);

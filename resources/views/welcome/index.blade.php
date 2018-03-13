@@ -58,7 +58,7 @@
                                 <div class="bl-logo logo-issue"></div>
                                 <div class="caption"><h3>ISSUES</h3></div>
                             </div>
-                            <div class="body bg-pink">
+                            <div class="body bg-issue">
                                 
                                 {{--Here we show last issue:--}}
                                 @php
@@ -92,7 +92,7 @@
                                 <div class="bl-logo logo-announcement"></div>
                                 <div class="caption"><h3>ANNOUNCEMENTS</h3></div>
                             </div>
-                            <div class="body bg-cyan">
+                            <div class="body bg-announcement">
                                 <ul class="lsn list-group">
                                     <li class="list-group-item">
                                         <div class="alert">
@@ -120,7 +120,7 @@
                                 <div class="bl-logo logo-stat"></div>
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
-                            <div class="body bg-teal">
+                            <div class="body bg-stat">
                                 {{--<h3>The number of prints in the last 12 months</h3>--}}
                                 @php $chart_height = 300; @endphp
                                 <iframe id="C_demonstrator_main" src="{{ route('chart', ['name' => 'printspm', 'height' => $chart_height]) }}" height="{{ $chart_height + 150 }}" width="100%" style="width:100%; border:none;"></iframe>
@@ -140,7 +140,7 @@
                                 <div class="bl-logo logo-issue"></div>
                                 <div class="caption"><h3>WORKSHOP RULES</h3></div>
                             </div>
-                            <div class="body bg-pink">
+                            <div class="body bg-issue">
                                 
                                 <ul id="form" class=" lsn list-group">
                                     <li class="list-group-item">
@@ -165,7 +165,7 @@
                                 <div class="bl-logo logo-announcement"></div>
                                 <div class="caption"><h3>ANNOUNCEMENTS</h3></div>
                             </div>
-                            <div class="body bg-cyan">
+                            <div class="body bg-announcement">
                                 <ul class="lsn list-group">
                                     <li class="list-group-item">
                                         <div class="alert">
@@ -192,7 +192,7 @@
                                 <div class="bl-logo logo-stat"></div>
                                 <div class="caption"><h3>STATISTICS</h3></div>
                             </div>
-                            <div class="body bg-teal">
+                            <div class="body bg-stat">
                                 @php $chart_height = 300; @endphp
                                 
                                 @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
