@@ -32,7 +32,7 @@
                     </div> <!-- /form-group -->
                     <!--This button submits the update action-->
                     @include('layouts.errors')
-                    <button id="submit" type="submit" class="btn btn-primary">Add</button>
+                    <button id="submit" type="submit" class="btn btn-success">Add</button>
                 </form>
             </div>
 

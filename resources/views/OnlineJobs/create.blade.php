@@ -27,28 +27,28 @@
 
                         @if ($errors->has('customer_name'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('customer_name') }}</strong>
-                        </span>
+                                <strong>{{ $errors->first('customer_name') }}</strong>
+                            </span>
                         @endif
-                        <span class="help-block" id="customer_name_error"></span>
+                        <span class="" id="customer_name_error"></span>
                     </div>
                 </div>
 
                 {{--Customer email field--}}
                 <div class="form-group{{ $errors->has('customer_email') ? ' has-error' : '' }}">
-                    <label for="customer_email" class="col-md-4 control-label">Email</label>
+                    <label for="customer_email" class="col-sm-4 control-label">Email</label>
 
-                    <div class="col-md-6">
-                        <input id="customer_email" data-help="customer_email" type="customer_email"
-                               class="form-control" name="customer_email" value="{{ old('customer_email') }}" placeholder="Please input soton email"
-                               required><br>
+                    <div class="col-sm-8">
+                        <input id="customer_email" data-help="customer_email" type="text"
+                               class="form-control" name="customer_email" value="{{ old('customer_email') }}" 
+                               placeholder="Please input soton email" required>
 
                         @if ($errors->has('customer_email'))
                             <span class="help-block">
-                                        <strong>{{ $errors->first('customer_email') }}</strong>
-                                    </span>
+                                <strong>{{ $errors->first('customer_email') }}</strong>
+                            </span>
                         @endif
-                        <span class="help-block" id="customer_email_error"></span>
+                        <span class="" id="customer_email_error"></span>
                     </div>
                 </div>
 
@@ -66,7 +66,7 @@
                             <strong>{{ $errors->first('customer_id') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="customer_id_error"></span>
+                        <span class="" id="customer_id_error"></span>
                     </div>
                 </div>
 
@@ -84,7 +84,7 @@
                             <strong>{{ $errors->first('use_case') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="use_case_error"></span>
+                        <span class="" id="use_case_error"></span>
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                             <strong>{{ $errors->first('budget_holder') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="budget_holder_error"></span>
+                        <span class="" id="budget_holder_error"></span>
                     </div>
                 </div>
 
@@ -118,7 +118,7 @@
                             <strong>{{ $errors->first('claim_id') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="claim_id_error"></span>
+                        <span class="" id="claim_id_error"></span>
                     </div>
                 </div>
 
@@ -135,7 +135,7 @@
                             <strong>{{ $errors->first('claim_passcode') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="claim_passcode_error"></span>
+                        <span class="" id="claim_passcode_error"></span>
                     </div>
                 </div>
 
@@ -152,14 +152,14 @@
                             <strong>{{ $errors->first('job_title') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="job_title_error"></span>
+                        <span class="" id="job_title_error"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-8 text-right">
-                        <button id="submit" type="submit" class="btn btn-primary">Submit</button>
-                        <a href="/" class="btn btn-danger">Go back</a>
+                        <button id="submit" type="submit" class="btn btn-success">Submit</button>
+                        <a href="/" class="btn btn-danger">Cancel</a>
                     </div>
                 </div>
                 

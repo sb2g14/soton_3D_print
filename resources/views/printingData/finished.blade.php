@@ -80,7 +80,7 @@
                         </td>
                         <td data-th="Restart">
                             @if($job->status == 'Failed')
-                            <a href="/printingData/restart/{{$job->id}}" class="btn btn-primary">Restart</a>
+                            <a href="/printingData/restart/{{$job->id}}" class="btn btn-success">Restart</a>
                             @endif
                         </td>
                     </tr>

@@ -126,7 +126,7 @@
 
                     </p>
                     <!-- <p>Days out of Order</p> -->
-                    <a href="/printers/index" class="btn btn-lg btn-info">View all printers</a>
+                    <a href="/printers/index" class="btn btn-primary">View all printers</a>
                 </div>
             </div>
         </div>

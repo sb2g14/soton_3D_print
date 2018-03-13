@@ -15,6 +15,9 @@
     </div>
 
     <div class="container">
+        <a href="/costCodes/create" type="button" class="btn pull-right btn-success">
+            Add cost code
+        </a>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -43,7 +46,7 @@
                             <td data-th="Member of Staff Approved">{{ $cost_code->aproving_member_of_staff }}</td>
                             <td data-th="Expiry Date">{{ $cost_code->expires }} </td>
                             <td data-th="Holder"> {{ $cost_code->holder }}</td>
-                            <td data-th="Update"><a href="/costCodes/update/{{  $cost_code->id }}" class="btn btn-primary">Update</a></td>
+                            <td data-th="Update"><a href="/costCodes/update/{{  $cost_code->id }}" class="btn btn-info">Update</a></td>
                         </tr>
 
                 @endforeach

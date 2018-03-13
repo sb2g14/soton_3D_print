@@ -47,9 +47,9 @@
             @endif
             @if($issue->resolved === 0)
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#update">Update</button>
-            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#resolve">Resolve</button>
+            <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#resolve">Resolve</button>
             @endif
-            <a id="buttons" href="/issues/index" class="btn btn-danger">See all issues</a>
+            <a id="buttons" href="/issues/index" class="btn btn-primary">See all issues</a>
 
 
             <div id="update" class="card collapse">

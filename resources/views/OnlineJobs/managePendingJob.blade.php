@@ -22,7 +22,7 @@
                         Job Title: <b>{{ $job->job_title }}</b> <br>
                         Job number: <b>{{$job->id}}</b><br>
                     </p>
-                    <a class="btn btn-danger" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
+                    <a class="btn btn-primary" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
                                                  {{$job->claim_id}}&claimPasscode={{$job->claim_passcode}}
                             &emailAddr=3dprint.soton%40gmail.com">Download .stl files</a>
                 </div>
@@ -78,10 +78,10 @@
             <div class="col-sm-12 text-center">
                 <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="This button calls the
                     window to specify print details.">
-                    <a class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Assign Prints</a>
+                    <a class="btn btn-lg btn-info" data-toggle="modal" data-target="#addPrintModal">Assign Prints</a>
                 </span>
 
-                <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Back</a>
+                <a href="/OnlineJobs/pending" class="btn btn-lg btn-primary">Back</a>
 
 
                 @if($query_in_progress == null)

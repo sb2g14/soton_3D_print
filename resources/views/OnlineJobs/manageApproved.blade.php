@@ -22,7 +22,7 @@
                         Job Title: <b> {{ $job->job_title }} </b> <br>
                         Job number: <b>{{$job->id}}</b><br>
                     </p>
-                    <a class="btn btn-danger" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
+                    <a class="btn btn-primary" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
                                                  {{$job->claim_id}}&claimPasscode={{$job->claim_passcode}}
                             &emailAddr=3dprint.soton%40gmail.com">Download .stl files</a>
                 </div>
@@ -44,7 +44,7 @@
         {{--Job control buttons--}}
         <div class="row">
             <div class="col-sm-12">
-                <a href="/OnlineJobs/approved" class="btn btn-lg btn-info">Back</a>
+                <a href="/OnlineJobs/approved" class="btn btn-lg btn-primary">Back</a>
                 <a href="/OnlineJobs/customerReject/{{$job->id}}" class="btn btn-lg btn-danger">Customer Rejected</a>
                 <a href="/OnlineJobs/customerApproved/{{ $job->id }}" class="btn btn-lg btn-success">Customer Approved</a>
             </div>

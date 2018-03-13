@@ -26,7 +26,7 @@
         <a href="/issues/select" type="button" class="btn pull-right btn-success">
             Raise New
         </a>
-        <a href="/printers/index" type="button" class="btn pull-left btn-danger">
+        <a href="/printers/index" type="button" class="btn pull-left btn-primary">
             View all printers
         </a>
         <table class="table table-hover">

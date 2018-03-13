@@ -8,16 +8,20 @@
 
         <div class="text-center m-b-md">
         <div class="title">Our team</div>
-            @can('staff_manage')
-                <a href="{{ url('/members') }}" type="button" class="btn btn-success">
-                    Add new member
-                </a>
-                <a href="{{ url('/members/former/show') }}" type="button" class="btn btn-primary">
-                    View former members
-                </a>
-            @endcan
+            
         </div>
 
+        <div class="container">
+            @can('staff_manage')
+                <a href="{{ url('/members') }}" type="button" class="btn pull-right btn-success">
+                    Add new member
+                </a>
+                <a href="{{ url('/members/former/show') }}" type="button" class="btn pull-left btn-primary">
+                    View former members
+                </a><br/>
+            <hr>
+            @endcan
+        </div>
         <div class="container">
             @php
                 $memberlist = [];

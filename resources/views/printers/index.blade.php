@@ -59,27 +59,14 @@
                         $printerclass = str_replace(" ","-",$printerclass);
                     @endphp
                     <tr class="text-left {{$printerclass}}">
-                        <td data-th="Printer Number" class="{{$printerclass}}">{{$printer->id}}</td>
-                        <td data-th="Serial Number" class="{{$printerclass}}">{{$printer->serial_no}}</td>
-                        <td data-th="Printer Type" class="{{$printerclass}}">{{$printer->printer_type}}</td>
-                        <td data-th="Status" class="{{$printerclass}}">{{$printerstatus}}</td>
-                        @if ($printer->printer_status == 'Available' && $printer->in_use == 0)
-                            <td data-th="Status" class="available">{{$printer->printer_status}}</td>
-                            @elseif($printer->printer_status == 'Available' && $printer->in_use == 1)
-                                <td data-th="Status" class="in-use">In Use</td>
-                            @elseif ($printer->printer_status == 'Missing')
-                                <td data-th="Status" class="missing">{{$printer->printer_status}}</td>
-                            @elseif ($printer->printer_status == 'Broken')
-                                <td data-th="Status" class="broken">{{$printer->printer_status}}</td>
-                            @elseif ($printer->printer_status == 'On Loan')
-                                <td data-th="Status" class="on-loan">{{$printer->printer_status}}</td>
-                            @elseif ($printer->printer_status == 'Signed out')
-                                <td data-th="Status" class="signed-out">{{$printer->printer_status}}</td>
-                        @endif
+                        <td data-th="Printer Number">{{$printer->id}}</td>
+                        <td data-th="Serial Number">{{$printer->serial_no}}</td>
+                        <td data-th="Printer Type">{{$printer->printer_type}}</td>
+                        <td data-th="Status">{{$printerstatus}}</td>
                         @can('issues_manage')
-                            <td data-th="View History"><a href="/issues/show/{{$printer->id }}" class="btn btn-info">Details</a></td>
+                            <td data-th="View History"><a href="/issues/show/{{$printer->id }}" class="btn btn-primary">Details</a></td>
                             @hasanyrole('administrator')
-                                <td data-th="Update Record"><a href="/printers/update/{{$printer->id }}" class="btn btn-primary">Update</a></td>
+                                <td data-th="Update Record"><a href="/printers/update/{{$printer->id }}" class="btn btn-info">Update</a></td>
                             @endhasanyrole
                         @endcan
                     </tr>
