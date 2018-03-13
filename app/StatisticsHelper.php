@@ -13,7 +13,7 @@ class StatisticsHelper
             ->count();
         return $prints;
     }
-    
+     
     private function getCountPrintsWorkshopBetween($t1str,$t2str){
         $prints = \App\Jobs::where('jobs.requested_online', 0)
             ->join('jobs_prints', 'jobs.id', '=', 'jobs_prints.jobs_id')
@@ -498,6 +498,17 @@ class StatisticsHelper
         $count_material = (int)(0.5+(float)($count_material)/1000);
         $count_material = $count_material." kg";
         return $count_material;
+    }
+    
+    public function getArrayMemberStats($id){
+        /**takes a members database id and returns an array of statistical data for that member**/
+        $stats = [];
+        $member = \App\Staff::where('id',$id)->first();
+        $stats["prints_approved"] = \App\Staff::where('staff.id',$id)->join('jobs', 'jobs.job_approved_by', '=', 'staff.id')->count();
+        $stats["prints_completed"] = \App\Staff::where('staff.id',$id)->join('jobs', 'jobs.job_finished_by', '=', 'staff.id')->count();
+        $stats["issues_raised"] = \App\Staff::where('staff.id',$id)->join('fault_datas', 'fault_datas.staff_id_created_issue', '=', 'staff.id')->count();
+        $stats["issues_closed"] = \App\Staff::where('staff.id',$id)->join('fault_datas', 'fault_datas.staff_id_resolved_issue', '=', 'staff.id')->count();
+        return $stats;
     }
 }
 ?>

@@ -66,13 +66,14 @@
                         $memberlist[] = $member;
                     }
                 }
-                
+                $maxindex = sizeof($memberlist);
+                $blocksize = (int)(sizeof($memberlist)/4+0.99);
             @endphp
             <div class="row">
                 @for($c=0;$c<4;$c++)
                 <div class="col-sm-3">
                     <div class="list-group demonstrator">
-                        @for($i=(int)($c*sizeof($memberlist)/4);$i<(int)(($c+1)*sizeof($memberlist)/4);$i++)
+                        @for($i=(int)($c*$blocksize);$i<min((int)(($c+1)*$blocksize),$maxindex);$i++)
                             @php
                                 $member = $memberlist[$i];
                             @endphp

@@ -745,9 +745,11 @@ body.is-fixed {
   padding-bottom: 20px;
 }
 .demonstrator .list-group-item {
+  background-color: #315765;
   color: #fff;
 }
 .demonstrator .list-group-item:hover {
+  background-color: #5e8493;
   color: #fff;
 }
 .demonstrator .role-header{

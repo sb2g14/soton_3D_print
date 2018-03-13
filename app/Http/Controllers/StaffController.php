@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
 use App\Mail\Invitation;
+use App\StatisticsHelper;
 
 class StaffController extends Controller
 {
@@ -94,7 +95,9 @@ class StaffController extends Controller
     public function show($id)
     {
         $member = staff::find($id);
-        return view('members.show',compact('member'));
+        $sh = new StatisticsHelper;
+        $stats = $sh->getArrayMemberStats($id);
+        return view('members.show',compact('member','stats'));
     }
 
     /**

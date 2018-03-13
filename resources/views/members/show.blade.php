@@ -18,8 +18,9 @@
                     <p><span class="fa fa-fw fa-envelope"></span> {{$member -> email}}</p> 
                 
                 </div>
-                <div class="col-xs-8 col-sm-4 well text-left">
+                
                 @if(strtolower(Auth::user()->email) == strtolower($member->email) || Auth::user()->can('staff_manage'))
+                <div class="col-xs-8 col-sm-4 well text-left">
                     <p><span class="fa fa-fw fa-id-card"></span> ID: {{$member -> student_id}}</p>
                     @if($member->CWP_date)
                         <p><span class="fa fa-fw fa-check-square"></span> Allowed to Work since 00/00/0000 </p>
@@ -35,17 +36,20 @@
                         <p><span class="fa fa-fw fa-check-square"></span> Workshop induction attended on 00/00/0000</p>
                     @else
                         <p><span class="fa fa-fw fa-square"></span> Has not attended the latest workshop induction. </p>
-                    @endif
-                    
-                    
+                    @endif 
+                </div> 
                 @endif
-                </div>
-                <div class="col-xs-8 col-sm-4 well text-left">
-                @if(strtolower(Auth::user()->email) == strtolower($member->email) || Auth::user()->can('staff_view_stats'))
-                    <p>Here is some space to add user specific statistics.</p>
-                @endif
-                </div>
                 
+                @if(strtolower(Auth::user()->email) == strtolower($member->email) || Auth::user()->can('staff_view_stats'))
+                <div class="col-xs-8 col-sm-4 well text-left">
+                    <p><span class="fa fa-fw fa-bullhorn"></span> Activity in demonstration<br/>
+                     Prints approved: {{$stats["prints_approved"]}}<br/>
+                     Prints completed: {{$stats["prints_completed"]}}</p>
+                    <p><span class="fa fa-fw fa-wrench"></span> Activity in maintainance<br/>
+                    Issues raised: {{$stats["issues_raised"]}}<br/>
+                    Issues solved: {{$stats["issues_closed"]}}</p>
+                </div>
+                @endif
                 <div class="col-xs-8 col-sm-12 text-center">
                 <hr>
                 @if(strtolower(Auth::user()->email) == strtolower($member->email) || Auth::user()->can('staff_manage'))
