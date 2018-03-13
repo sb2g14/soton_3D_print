@@ -744,38 +744,68 @@ body.is-fixed {
 .contacts .row-last {
   padding-bottom: 20px;
 }
+.demonstrator .list-group-item {
+  color: #fff;
+}
 .demonstrator .list-group-item:hover {
   color: #fff;
 }
-.demonstrator .demonstrator-lead {
-  background-color: #A5D6A7;
+.demonstrator .role-header{
+  background-color: #f2f2f2;
+  color: #000;
+  border: 0;
 }
-.demonstrator .demonstrator-lead:hover {
-  background-color: #C8E6C9;
+.demonstrator .role-header:hover{
+  background-color: #f2f2f2;
+  color: #000;
 }
-.demonstrator .demonstrator-norm {
-  background-color: #90CAF9;
+.demonstrator .role-lead-demonstrator {
+  background-color: #002e3b;
 }
-.demonstrator .demonstrator-norm:hover {
-  background-color: #BBDEFB;
+.demonstrator .role-lead-demonstrator:hover {
+  background-color: #315765;
 }
-.demonstrator .it-manager {
-  background-color: #9FA8DA;
+.demonstrator .role-demonstrator {
+  background-color: #315765;
 }
-.demonstrator .it-manager:hover {
-  background-color: #C5CAE9;
+.demonstrator .role-demonstrator:hover {
+  background-color: #5e8493;
 }
-.demonstrator .hub-manager {
-  background-color: #FFCC80;
+.demonstrator .role-it-manager {
+  background-color: #002e3b;
 }
-.demonstrator .hub-manager:hover {
-  background-color: #FFE0B2;
+.demonstrator .role-it-manager:hover {
+  background-color: #315765;
 }
-.demonstrator .coordinator {
-  background-color: #EF9A9A;
+.demonstrator .role-it {
+  background-color: #315765;
 }
-.demonstrator .coordinator:hover {
-  background-color: #FFCDD2;
+.demonstrator .role-it:hover {
+  background-color: #5e8493;
+}
+.demonstrator .role-3d-hub-manager {
+  background-color: #315765;
+}
+.demonstrator .role-3d-hub-manager:hover {
+  background-color: #5e8493;
+}
+.demonstrator .role-coordinator {
+  background-color: #002e3b;
+}
+.demonstrator .role-coordinator:hover {
+  background-color: #315765;
+}
+.demonstrator .role-co-coordinator {
+  background-color: #315765;
+}
+.demonstrator .role-co-coordinator:hover {
+  background-color: #5e8493;
+}
+.demonstrator .role-technician {
+  background-color: #002e3b;
+}
+.demonstrator .role-technician:hover {
+  background-color: #315765;
 }
 /* MODAL STYLES */
 .modal-header {

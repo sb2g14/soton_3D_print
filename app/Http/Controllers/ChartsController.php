@@ -8,7 +8,7 @@ use Auth;
 class ChartsController extends Controller
 {
     /* Charts that will be protected to normal users */
-    public $protected_charts = ['admin_dashboard'];
+    public $protected_charts = ['printer_status','printspmpy','printspy','userspy'];
 
     /**
      * Show the chart, made to be displayed in an iframe.
@@ -30,7 +30,7 @@ class ChartsController extends Controller
      */
     public function checkProtected()
     {
-        if(!Auth::user()->admin) {
+        if(!Auth::check()) {
             abort(404);
         }
     }
