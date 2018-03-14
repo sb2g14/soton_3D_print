@@ -30,7 +30,9 @@
             <div class="col-sm-6 text-left">
                 <h3 class="text-center lead">OPEN HOURS</h3>
                 <p>Wednesdays 9:00-18:00, except during University closure.</p>
-                
+                {!! $chart->html() !!}
+                {!! Charts::scripts() !!}
+                {!! $chart->script() !!}  
             </div>
             <div class="col-sm-6 text-left">
                 <h3 class="text-center lead">CONTACTS</h3>
