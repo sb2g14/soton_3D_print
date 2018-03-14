@@ -128,17 +128,17 @@ class IssuesController extends Controller
             if($lastEntry->Description === 'Success'){
                 $history_entry['Class'] = 'alert alert-success';
             }else{
-                $history_entry['Class'] = 'alert alert-warning';
+                $history_entry['Class'] = 'alert alert-failed';
             }
         }
         if($lastEntry->Type === 'Loan'){
-            $history_entry['Class'] = 'alert alert-info';
+            $history_entry['Class'] = 'alert alert-onloan';
         }
         if($lastEntry->Type === 'Broken'){
-            $history_entry['Class'] = 'alert alert-danger';
+            $history_entry['Class'] = 'alert alert-broken';
         }
         if($lastEntry->Type === 'Missing'){
-            $history_entry['Class'] = 'alert alert-danger';
+            $history_entry['Class'] = 'alert alert-missing';
         }
         return $history_entry;
     }
@@ -215,7 +215,7 @@ class IssuesController extends Controller
             ->title('Printer usage')
             ->labels(['Days Printing', 'Days on Loan', 'Days Broken or Missing', 'Days Idle'])
             ->values([$success,$loan,$broken,$idle])
-            ->colors(['#7a8500', '#0097c2', '#ff9900', '#4c8658'])
+            ->colors(['#1E8765', '#56b893', '#E73238', '#9FB1BD'])
             ->dimensions(400,200)
             ->responsive(true);
 

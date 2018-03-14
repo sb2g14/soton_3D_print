@@ -377,6 +377,9 @@ body.is-fixed {
 .p-header.has-active-mob-menu .btn-menu {
   z-index: 6;
 }
+
+
+
 /*WELCOME BLOCK STYLES*/
 .bl-welcome {
   position: absolute;
@@ -768,8 +771,51 @@ body.is-fixed {
 .table-hover > tbody > tr:hover {
   background-color: #ddd;
 }
-.printer-details > .item > .row:hover {
-  background-color: #ddd;
+
+.alert-success {
+    background-color: #1E8765;
+    border-color: #00593b;
+    color: #fff;
+}
+.alert-success:hover {
+    background-color: #56b893;
+    color: #000;
+}
+.alert-onloan {
+    background-color: #56b893;
+    border-color: #1E8765;
+    color: #fff;
+}
+.alert-onloan:hover {
+    background-color: #89ebc3;
+    color: #000;
+}
+.alert-broken {
+    background-color: #E73238;
+    border-color: #ad0011;
+    color: #fff;
+}
+.alert-broken:hover {
+    background-color: #ff6b63;
+    color: #000;
+}
+.alert-failed {
+    background-color: #ff6b63;
+    border-color: #E73238;
+    color: #fff;
+}
+.alert-failed:hover {
+    background-color: #ff9d91;
+    color: #000;
+}
+.alert-missing {
+    background-color: #315765;
+    border-color: #002e3b;
+    color: #fff;
+}
+.alert-missing:hover {
+    background-color: #5e8493;
+    color: #000;
 }
 .contacts .col-left {
   padding-left: 15px;
@@ -973,6 +1019,7 @@ footer .team {
     min-height: 70px;
   }
 }
+
 @media screen and (min-width: 1023px) {
   .bl-welcome {
     top: 200px;

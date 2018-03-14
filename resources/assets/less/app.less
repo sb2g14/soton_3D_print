@@ -514,6 +514,8 @@ body {
         display: flex;
         flex-wrap: wrap;
     }
+    
+    
 
     .cardblock {
         background: #fff;
@@ -721,11 +723,77 @@ body {
 }
 
 //background on hover in printer detail list
-.printer-details>.item>.row:hover {
-    background-color: #ddd;
+.printer-details>.item>.row {
+
+//alert boxes for printer statuses
+    .alert-available {
+       background-color: @printer-available;
+       border-color: @printer-available-dark;
+       color: #fff;
+       &:hover{
+          background-color: @printer-available-light;
+          color: #000;
+       }
+    }
+    .alert-success {
+        background-color: @print-success;
+        border-color: @print-success-dark;
+        color: #fff;
+        &:hover{
+          background-color: @print-success-light;
+          color: #000;
+        }
+    }
+    .alert-failed {
+        background-color: @print-failed;
+        border-color: @print-dark;
+        color: #fff;
+        &:hover{
+          background-color: @print-failed-light;
+          color: #000;
+        }
+    }
+    .alert-onloan {
+        background-color: @printer-onloan;
+        border-color: @printer-onloan-dark;
+        color: #fff;
+        &:hover{
+          background-color: @printer-onloan-light;
+          color: #000;
+        }
+    }
+    .alert-broken {
+        background-color: @printer-broken;
+        border-color: @printer-broken-dark;
+        color: #fff;
+        &:hover{
+          background-color: @printer-broken-light;
+          color: #000;
+          & a{
+            color: #000;
+          }
+        }
+        & a{
+            color: #fff;
+        }
+    }
+    .alert-missing {
+        background-color: @printer-missing;
+        border-color: @printer-missing-dark;
+        color: #fff;
+        &:hover{
+          background-color: @printer-missing-light;
+          color: #000;
+          & a{
+            color: #000;
+          }
+        }
+        & a{
+            color: #fff;
+        }
+    }
+
 }
-
-
 
 .contacts {
     .col-left {
