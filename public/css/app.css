@@ -113,28 +113,28 @@ a:link {
 /* @blue: #266c8e; */
 .btn-primary {
   background-color: #00557b;
-  border-color: #003248;
+  border-color: #00557b;
 }
 .btn-primary:hover {
   background-color: #003248;
 }
 .btn-danger {
   background-color: #e73238;
-  border-color: #ad0011;
+  border-color: #e73238;
 }
 .btn-danger:hover {
   background-color: #ad0011;
 }
 .btn-info {
   background-color: #1278a6;
-  border-color: #0a587b;
+  border-color: #1278a6;
 }
 .btn-info:hover {
   background-color: #0a587b;
 }
 .btn-success {
   background-color: #1e8765;
-  border-color: #00593b;
+  border-color: #1e8765;
 }
 .btn-success:hover {
   background-color: #00593b;
@@ -792,16 +792,16 @@ body.is-fixed {
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 4px;
-  background-color: #1278a6;
-  color: #fff;
+  background-color: #e1e8ec;
+  color: #000000;
 }
 .nav.nav-pills > li > a:hover {
   background-color: #1278a6;
-  color: #fff;
+  color: #ffffff;
 }
 .nav.nav-pills > li.active > a {
   background-color: #00557b;
-  color: #fff;
+  color: #ffffff;
 }
 .nav.nav-pills > li.nav-left > a {
   border-top-right-radius: 0px;

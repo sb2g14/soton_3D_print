@@ -3,7 +3,7 @@
 @import "setup.less";
 
 body {
-    background: #f2f2f2;
+    background: @mainbgcolor;
     color: @c-font;
     font-family: @f-family;
     font-weight: 400;
@@ -107,7 +107,7 @@ body {
            .item {
                .dropdown-bl {
                    display: none;
-                   background: @blue;
+                   background: @navigation-lvl1-inactive;
                    a {
                        .font-size( (16/@fs-base) );
                        display: block;
@@ -135,7 +135,7 @@ body {
                     top: 100%;
                     left: 0;
                     width: 200px;
-                    background: @blue;
+                    background: @navigation-lvl1-inactive;
                     border-radius:0 2.5px 2.5px 2.5px;
                     &.dropdown-login {
                         width: 164px;
@@ -149,7 +149,7 @@ body {
                         border-bottom: 1px solid #00557b;
                         padding: 10px 20px;
                         &:hover {
-                            background: @light-blue;
+                            background: @navigation-lvl1-hover;
                             > a {
                                color: @c-link;
                             }
@@ -164,7 +164,7 @@ body {
                 
                 &:hover {
                     > span {
-                        background: @blue;
+                        background: @navigation-lvl0-hover;
                         color: @c-link;
                         border-radius: 5px 5px 0 0;
                     }
@@ -712,16 +712,16 @@ body {
     margin-left: 10px;
     margin-right: 10px;
     border-radius: 4px;
-    background-color: @navigation-active;
-    color:#fff;
+    background-color: @navigation-pill-inactive;
+    color: contrast(@navigation-pill-inactive);
 }
 .nav.nav-pills > li > a:hover{
-    background-color: @navigation-hover;
-    color:#fff;
+    background-color: @navigation-pill-hover;
+    color: contrast(@navigation-pill-hover);
 }
 .nav.nav-pills > li.active > a{
-    background-color: @navigation-inactive;
-    color:#fff;
+    background-color: @navigation-pill-active;
+    color: contrast(@navigation-pill-active);
 }
 .nav.nav-pills > li.nav-left > a{
     border-top-right-radius: 0px;

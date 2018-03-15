@@ -219,12 +219,18 @@ a:link {
 @a-dark: #ad0011;
 @a: #e73238;
 @a-light: #ff6b63;
-//main header and footer:
+
+//main page colours:
 @headerfooter-mainbg:@uni-prussian;
+@mainbgcolor: #f2f2f2;
 //navigation:
-@navigation-active:#1278a6;
-@navigation-hover:#1278a6;
-@navigation-inactive:#00557B;
+@navigation-lvl0-inactive:@headerfooter-mainbg;
+@navigation-lvl0-hover:#005C85;
+@navigation-lvl1-inactive:#005C85;
+@navigation-lvl1-hover:#1278a6;
+@navigation-pill-inactive:@uni-neutral-light-ii;
+@navigation-pill-active:#005C85;
+@navigation-pill-hover:#1278a6;
 //buttons:
 @button-navigate: #00557B; 
 @button-details: #1278a6; 
@@ -261,8 +267,8 @@ a:link {
 //bootstrap custom colors for buttons and alerts
 .btnformat(@col){
     background-color: @col;
-    .col-dark(@col);
-    border-color: @return;
+    //.col-dark(@col);
+    border-color: @col;
     &:hover {
         .col-dark(@col);
         background-color: @return;
