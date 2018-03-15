@@ -5,6 +5,16 @@
 
 ## Installtion instruction
 ...will be added...
+### Installing NPM
+```sudo apt install npm```
+
+```npm install less```
+
+```sudo apt install node-less```
+
+you can now compile less to css using
+
+```lessc resources/assets/less/app.less > public/css/app.css```
 
 ## Database updates
 ### Linux/MacOS
