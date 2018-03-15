@@ -25,7 +25,7 @@
         <div class="container">
             @php
                 $memberlist = [];
-                $memberlist[] = array( "body"=>"Coordinators");
+                $memberlist[] = array( "body"=>"Coordinators", "class"=>"role-header");
                 foreach($members as $member){
                     if($member->role == 'Coordinator'){
                         $memberlist[] = $member;
@@ -36,13 +36,13 @@
                         $memberlist[] = $member;
                     }
                 }
-                $memberlist[] = array( "body"=>"Managers");
+                $memberlist[] = array( "body"=>"Managers", "class"=>"role-header-managers");
                 foreach($members as $member){
                     if($member->role == 'Technician' || $member->role == 'PR Manager' || $member->role == 'Technical Manager'){
                         $memberlist[] = $member;
                     }
                 }
-                $memberlist[] = array( "body"=>"Demonstrators");
+                $memberlist[] = array( "body"=>"Demonstrators", "class"=>"role-header-demonstrator");
                 foreach($members as $member){
                     if($member->role == 'Lead Demonstrator'){
                         $memberlist[] = $member;
@@ -53,13 +53,13 @@
                         $memberlist[] = $member;
                     }
                 }
-                $memberlist[] = array( "body"=>"Online Managers");
+                $memberlist[] = array( "body"=>"Online Managers" , "class"=>"role-header-online");
                 foreach($members as $member){
                     if($member->role == '3D Hub Manager'){
                         $memberlist[] = $member;
                     }
                 }
-                $memberlist[] = array( "body"=>"IT Support");
+                $memberlist[] = array( "body"=>"IT Support" , "class"=>"role-header-it");
                 foreach($members as $member){
                     if($member->role == 'IT Manager'){
                         $memberlist[] = $member;
@@ -82,7 +82,7 @@
                                 $member = $memberlist[$i];
                             @endphp
                             @if($member["body"])
-                                <span class="list-group-item role-header">{{$member["body"]}}</span>
+                                <span class="list-group-item {{$member['class']}}">{{$member["body"]}}</span>
                             @else
                                 <a href="/members/{{$member->id}}" alt="{{$member->role}}" class="list-group-item role-{{str_replace(' ','-',strtolower($member->role))}}">
                                     {{$member->first_name}} {{$member->last_name}}

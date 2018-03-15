@@ -11,8 +11,8 @@
      <ul class="nav nav-pills nav-justified">
          <li><a href="/OnlineJobs/index">Requests</a></li>
          <li><a href=/OnlineJobs/approved>Approved Jobs</a></li>
-         <li><a href="/OnlineJobs/pending">Pending Jobs</a></li>
-         <li><a href="/OnlineJobs/prints">Prints</a></li>
+         <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs</a></li>
+         <li class="nav-right"><a href="/OnlineJobs/prints">Prints</a></li>
          <li class="active"><a href="#">Completed Jobs</a></li>
     </ul>
 </div>
@@ -47,7 +47,14 @@
             </thead>
             <tbody>
                 @foreach($completed_jobs as $job)
-                    <tr class="text-left">
+                    @php
+                        if($job->status === 'Success'){
+                           $jobclass = "p-success";
+                        }else{
+                           $jobclass = "p-failed";
+                        }
+                    @endphp
+                    <tr class="text-left {{$jobclass}}">
                         <td data-th="ID">{{ $job->id }}</td>
                         {{--<td data-th="Printer Numbers">{{ $print->printers_id }}</td>--}}
                         <td data-th="Name">{{$job->customer_name}}</td>
@@ -59,13 +66,14 @@
                         <td data-th="Last updated on">{{ Carbon\Carbon::parse($job->updated_at)->formatLocalized('%d %b, %H:%M') }}</td>
                         <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>
                         <td data-th="Job Title">{{ $job->job_title }}</td>
-                        @if ($job->status === 'Success')
+                        <td data-th="Status">{{ $job->status }}</td>
+                        {{--@if ($job->status === 'Success')
                             <td data-th="Status" class="success">{{ $job->status }}</td>
                         @elseif ($job->status === 'Failed')
                             <td data-th="Status" class="danger">{{ $job->status }}</td>
                         @else
                             <td data-th="Status" class="info">{{ $job->status }}</td>
-                        @endif
+                        @endif--}}
                         <td data-th="Edit">
                             {{--@hasanyrole('LeadDemonstrator|administrator|OnlineJobsManager')--}}
                             {{--<a href="/printingData/edit/{{$job->id}}" class="btn btn-danger">Review Job</a>--}}

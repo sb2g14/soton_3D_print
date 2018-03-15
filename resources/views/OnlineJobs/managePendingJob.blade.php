@@ -81,7 +81,7 @@
                     <a class="btn btn-lg btn-info" data-toggle="modal" data-target="#addPrintModal">Assign Prints</a>
                 </span>
 
-                <a href="/OnlineJobs/pending" class="btn btn-lg btn-primary">Back</a>
+                <a href="/OnlineJobs/pending" class="btn btn-lg btn-primary">View All Jobs</a>
 
 
                 @if($query_in_progress == null)
@@ -138,6 +138,7 @@
                                     </span>
                                 @endif
                             </div>
+                            <span class="" id="printers_id_error"></span>
                         </div>
 
                         <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
@@ -158,6 +159,7 @@
                                                 </span>
                                 @endif
                             </div>
+                            <span class="" id="time_error"></span>
                         </div>
 
                         <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
@@ -170,7 +172,7 @@
                                     <strong>{{ $errors->first('material_amount') }}</strong>
                                 </div>
                             @endif
-                            <span class="help-block" id="material_amount_error"></span>
+                            <span class="" id="material_amount_error"></span>
                         </div>
 
                         <!-- Select Multiple Jobs to be assigned to the print -->
@@ -183,7 +185,7 @@
                                                     <strong>{{ $errors->first('multipleselect') }}</strong>
                                                 </span>
                                 @endif
-                                <span class="help-block" id="multipleselect"></span>
+                                <span class="" id="multipleselect"></span>
                             </div>
                         </div>
                         {{--Add comment to the print--}}
@@ -196,11 +198,11 @@
                                         <strong>{{ $errors->first('comments') }}</strong>
                                     </span>
                                 @endif
-                                <span class="help-block" id="comment_error"></span>
+                                <span class="" id="comment_error"></span>
                             </div>
                         </div>
 
-                        <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
+                        <button id="submit" type="submit" class="btn btn-lg btn-success">Submit</button>
                     </form>
                 </div>
 

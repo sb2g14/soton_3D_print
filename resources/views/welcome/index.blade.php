@@ -256,7 +256,7 @@
                             <div class="checkbox">
                                 <label><input type="checkbox" name="critical" value="critical">Issue affects printer status</label>
                             </div>
-                            <button id="report_issue" type="submit" class="btn btn-primary">Report Issue</button>
+                            <button id="report_issue" type="submit" class="btn btn-success">Report Issue</button>
                         </form>
                     </div>
                     @if(Auth::check())
@@ -341,7 +341,7 @@
                                     @if(isset($post->printers_id))
                                         <div class="card">
                                             <div class="form-group">
-                                                <a href="/issues/update/{{ $post->id }}#buttons" class="btn btn-primary">Update </a>
+                                                <a href="/issues/update/{{ $post->id }}#buttons" class="btn btn-info">Update </a>
                                             </div>
                                         </div>
                                     @else
@@ -353,7 +353,7 @@
                                                     <span id="message_comment_error" class=""></span>
                                                 </div>
                                                 <div class="form-group">
-                                                    <button id="comment" type="submit" class="btn btn-primary">Comment </button>
+                                                    <button id="comment" type="submit" class="btn btn-success">Comment </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -395,11 +395,11 @@
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="message">New Announcement</label><br>
-                                    <div class="form-text text-muted text-user">Dear Demonstrator</div>
+                                    <div id="helperpreannouncement" class="form-text text-muted text-user">Dear Demonstrator</div>
                                     <textarea id="announcement" name="message" rows="8"
                                         placeholder="Post will appear only for registered users unless you check 'Public announcement"
                                         class="form-control"></textarea>
-                                    <div class="form-text text-muted text-user">Thanks,<br/>&nbsp;&nbsp;{{Auth::user()->staff->first_name}} {{Auth::user()->staff->last_name}}, 3D Printing Workshop Team<br/></div>
+                                    <div  id="helperpostannouncement" class="form-text text-muted text-user">Thanks,<br/>&nbsp;&nbsp;{{Auth::user()->staff->first_name}} {{Auth::user()->staff->last_name}}, 3D Printing Workshop Team<br/></div>
                                     <span id="announcement_error" class=""></span>
                                     <div class="form-text text-muted">Note: This form supports <a href="https://daringfireball.net/projects/markdown/syntax">markdown</a> when sending emails.</div>
                                 </div>
@@ -408,10 +408,10 @@
                                     <label><input type="checkbox" name="public" value="public">Public announcement</label>
                                 </div>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" name="email" value="email">Inform all by email</label>
+                                    <label><input id="chkancmntem" type="checkbox" name="email" value="email">Inform all by email</label>
                                 </div>
                                 @endcan
-                                <button id="post" type="submit" class="btn btn-primary">Post</button>
+                                <button id="post" type="submit" class="btn btn-success">Post</button>
                             </form>
                         </div>
                         @endif
@@ -564,7 +564,27 @@
     <script src="/js/validate_form_issue_create.js"></script>
     <script src="/js/validate_form_issue_comment.js"></script>
     <script src="/js/validate_form_announcement_create.js"></script>
-    
+    {{--Toggle email helper--}}
+    <script>
+        $(function() {
+            if($('#chkancmntem').is(':checked')){
+                $('#helperpreannouncement').show();
+                $('#helperpostannouncement').show();
+            }else{
+                $('#helperpreannouncement').hide();
+                $('#helperpostannouncement').hide();
+            }
+        });
+        $('#chkancmntem').click(function(){
+            if($('#chkancmntem').is(':checked')){
+                $('#helperpreannouncement').show();
+                $('#helperpostannouncement').show();
+            }else{
+                $('#helperpreannouncement').hide();
+                $('#helperpostannouncement').hide();
+            }
+        });
+    </script>
     {{--Adjust Charts--}}
     <script>
     $(function() {

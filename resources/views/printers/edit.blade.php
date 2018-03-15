@@ -50,7 +50,7 @@
                     </div> <!-- /form-group -->
                     @endhasrole
                     @include('layouts.errors')
-                    <button id="submit" type="submit" class="btn btn-primary">Update</button>
+                    <button id="submit" type="submit" class="btn btn-info">Update</button>
                 </form>
             </div>
             <div class="col-sm-3"></div>

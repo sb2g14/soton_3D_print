@@ -65,6 +65,9 @@ a:link {
 @uni-prussian-light: #315765;
 @uni-prussian-light-i: #315765;
 @uni-prussian-light-ii: #5e8493;
+@uni-prussian-dark: #000416;
+@uni-prussian-dark-i: #000416;
+@uni-prussian-dark-ii: #000000;
 @uni-shamrock: #1E8765;
 @uni-shamrock-light: #56b893;
 @uni-shamrock-light-i: #56b893;
@@ -87,77 +90,194 @@ a:link {
 @uni-neutral-dark-i: #495961;
 @uni-neutral-dark-ii: #231F20;
 
+//define function for lighter colour variation:
+.col-light(@a){
+    @bgcol: desaturate(lighten(@a,10%),5%);
+    @return: @bgcol;
+}
+.col-light(@col) when (@col = @uni-prussian){
+    @return: @uni-prussian-light;
+}
+.col-light(@col) when (@col = @uni-prussian-light){
+    @return: @uni-prussian-light-ii;
+}
+.col-light(@col) when (@col = @uni-prussian-dark){
+    @return: @uni-prussian;
+}
+.col-light(@col) when (@col = @uni-prussian-dark-ii){
+    @return: @uni-prussian-dark;
+}
+.col-light(@col) when (@col = @uni-coral){
+    @return: @uni-coral-light;
+}
+.col-light(@col) when (@col = @uni-coral-light){
+    @return: @uni-coral-light-ii;
+}
+.col-light(@col) when (@col = @uni-coral-dark){
+    @return: @uni-coral;
+}
+.col-light(@col) when (@col = @uni-coral-dark-ii){
+    @return: @uni-coral-dark;
+}
+.col-light(@col) when (@col = @uni-shamrock){
+    @return: @uni-shamrock-light;
+}
+.col-light(@col) when (@col = @uni-shamrock-light){
+    @return: @uni-shamrock-light-ii;
+}
+.col-light(@col) when (@col = @uni-shamrock-dark){
+    @return: @uni-shamrock;
+}
+.col-light(@col) when (@col = @uni-shamrock-dark-ii){
+    @return: @uni-shamrock-dark;
+}
+.col-light(@col) when (@col = @uni-neutral){
+    @return: @uni-neutral-light;
+}
+.col-light(@col) when (@col = @uni-neutral-light){
+    @return: @uni-neutral-light-ii;
+}
+.col-light(@col) when (@col = @uni-neutral-dark){
+    @return: @uni-neutral;
+}
+.col-light(@col) when (@col = @uni-neutral-dark-ii){
+    @return: @uni-neutral-dark;
+}
+//define function for darker colour variation:
+.col-dark(@a){
+    @bgcol: saturate(darken(@a,10%),5%);
+    @return: @bgcol;
+}
+.col-dark(@col) when (@col = @uni-prussian){
+    @return: @uni-prussian-dark;
+}
+.col-dark(@col) when (@col = @uni-prussian-dark){
+    @return: @uni-prussian-dark-ii;
+}
+.col-dark(@col) when (@col = @uni-prussian-light){
+    @return: @uni-prussian;
+}
+.col-dark(@col) when (@col = @uni-prussian-light-ii){
+    @return: @uni-prussian-light;
+}
+.col-dark(@col) when (@col = @uni-coral){
+    @return: @uni-coral-dark;
+}
+.col-dark(@col) when (@col = @uni-coral-dark){
+    @return: @uni-coral-dark-ii;
+}
+.col-dark(@col) when (@col = @uni-coral-light){
+    @return: @uni-coral;
+}
+.col-dark(@col) when (@col = @uni-coral-light-ii){
+    @return: @uni-coral-light;
+}
+.col-dark(@col) when (@col = @uni-shamrock){
+    @return: @uni-shamrock-dark;
+}
+.col-dark(@col) when (@col = @uni-shamrock-dark){
+    @return: @uni-shamrock-dark-ii;
+}
+.col-dark(@col) when (@col = @uni-shamrock-light){
+    @return: @uni-shamrock;
+}
+.col-dark(@col) when (@col = @uni-shamrock-light-ii){
+    @return: @uni-shamrock-light;
+}
+.col-dark(@col) when (@col = @uni-neutral){
+    @return: @uni-neutral-dark;
+}
+.col-dark(@col) when (@col = @uni-neutral-dark){
+    @return: @uni-neutral-dark-ii;
+}
+.col-dark(@col) when (@col = @uni-neutral-light){
+    @return: @uni-neutral;
+}
+.col-dark(@col) when (@col = @uni-neutral-light-ii){
+    @return: @uni-neutral-light;
+}
+
 //logo color
 @dark-blue:#002e3b;
 @blue: #005C85;
 @light-blue:#1278a6;
 
+//CENTRAL COLOUR DEFINITIONS
 // Welcome blade custom theme
 // Primary palette
 @p-dark: #002e3b;
 @p: #315765;
 @p-light: #5e8493;
 // Secondary palette
-@s-dark: #006771;
-@s: #30959f;
-@s-light: #68c6d0;
+//@s-dark: #006771;
+//@s: #30959f;
+//@s-light: #68c6d0;
+@s-dark: #00593b;
+@s: #1E8765;
+@s-light: #56b893;
 // Additional palette
 @a-dark: #ad0011;
 @a: #e73238;
 @a-light: #ff6b63;
-
+//navigation:
+@navigation-active:#1278a6;
+@navigation-hover:#1278a6;
+@navigation-inactive:#00557B;
+//buttons:
+@button-navigate: #00557B; 
+@button-details: #1278a6; 
+@button-add: @uni-shamrock; 
+@button-remove: @uni-coral; //btn-danger (use for remove actions)
 //printer status:
-@printer-available-dark: @uni-shamrock-dark;
 @printer-available: @uni-shamrock;
-@printer-available-light: @uni-shamrock-light;
-@printer-inuse-dark: @uni-coral;
-@printer-inuse: @uni-coral-light-i;
-@printer-onloan-dark: @uni-shamrock;
-@printer-onloan: @uni-shamrock-light-i;
-@printer-onloan-light: @uni-shamrock-light-ii;
+@printer-inuse: @uni-coral-light-ii;
+@printer-onloan: @uni-shamrock-light-ii;
 @printer-broken: @uni-coral;
-@printer-broken-dark: @uni-coral-dark;
 @printer-missing: @uni-prussian-light-i;
-@printer-missing-dark: @uni-prussian;
 @printer-signedout: @uni-prussian-light-ii;
-@printer-signedout-dark: @uni-prussian-light-i;
-@printer-idle-dark: @uni-neutral-dark;
 @printer-idle: @uni-neutral;
-@printer-idle-light: @uni-neutral-light;
 //additional print status:
-@print-success-light: @uni-shamrock-light;
-@print-success: @uni-shamrock;
-@print-success-dark: @uni-shamrock-dark;
-@print-failed-dark: @uni-coral;
-@print-failed: @uni-coral-light-i;
-@print-failed-light: @uni-coral-light-ii;
-
+@print-success: @uni-shamrock-light;
+@print-failed: @uni-coral-light;
+//role colors:
+@role-header: @uni-prussian;
+@role-header-managers: @uni-prussian;
+@role-coordinator: @uni-prussian-light;
+@role-co-coordinator: @uni-prussian-light-ii;
+@role-technician: @uni-prussian-light-ii;
+@role-header-demonstrator: @uni-coral;
+@role-lead-demonstrator: @uni-coral-light;
+@role-demonstrator: @uni-coral-light-ii;
+@role-header-online: @uni-coral;
+@role-3d-hub-manager: @uni-coral-light-ii;
+@role-header-it: @uni-shamrock;
+@role-it-manager: @uni-shamrock-light;
+@role-it: @uni-shamrock-light-ii;
+@role-former-member: @uni-neutral-light-ii;
+//END OF CENTRAL COLOUR DEFINITIONS
 
 //bootstrap custom colors for buttons and alerts
-// .btn-primary {
-//   background-color: #002e3b;
-//   &:hover {
-//     background-color: #00465a;
-//   }
-// }
-// .btn-danger {
-//   background-color: #e9454b;
-//   &:hover {
-//     background-color: #ee6b71;
-//   }
-// }
-// .btn-info {
-//   background-color: #0097c2;
-//   &:hover {
-//     background-color: #007697;
-//   }
-// }
-// .btn-success {
-//   background-color: #4c8658;
-//   &:hover {
-//     background-color: #539361;
-//   }
-// }
+.btnformat(@col){
+    background-color: @col;
+    .col-dark(@col);
+    border-color: @return;
+    &:hover {
+        .col-dark(@col);
+        background-color: @return;
+    }
+}
+ .btn-primary {
+   .btnformat(@button-navigate);
+ }
+ .btn-danger {
+   .btnformat(@button-remove);
+ }
+ .btn-info {
+   .btnformat(@button-details);
+ }
+ .btn-success {
+   .btnformat(@button-add);
+ }
 // .btn-warning {
 //   background-color: #ff9900;
 //   &:hover {
@@ -167,48 +287,46 @@ a:link {
 
 //bootstrap custom colors for table background
 
+.trstatus(@col){
+    color: @col;
+    &:hover{
+        background-color: @col;
+        color: #fff;
+    }
+}
+.trstatuslight(@col){
+    color: @col;
+    &:hover{
+        .col-light(@col);
+        background-color: @return;
+        color: #000;
+    }
+}
+
 .table>tbody>tr {
   &.available {
-    color: @printer-available;
-    &:hover{
-        background-color: @printer-available;
-        color: #fff;
-    }
+    .trstatus(@printer-available);
   }
   &.in-use {
-    color: @printer-inuse;
-    &:hover{
-        background-color: @printer-available;
-        color: #fff;
-    }
+    .trstatus(@printer-inuse);
   }
   &.on-loan {
-    color: @printer-onloan;
-    &:hover{
-        background-color: @printer-available;
-        color: #fff;
-    }
+    .trstatus(@printer-onloan);
   }
   &.broken {
-    color: @printer-broken;
-    &:hover{
-        background-color: @printer-available;
-        color: #fff;
-    }
+    .trstatus(@printer-broken);
   }
   &.missing {
-    color: @printer-missing;
-    &:hover{
-        background-color: @printer-available;
-        color: #fff;
-    }
+    .trstatus(@printer-missing);
   }
   &.signed-out {
-    color: @printer-signedout;
-    &:hover{
-        background-color: @printer-available;
-        color: #fff;
-    }
+    .trstatus(@printer-signedout);
+  }
+  &.p-success {
+    .trstatuslight(@print-success);
+  }
+  &.p-failed {
+    .trstatuslight(@print-failed);
   }
 }
 

@@ -39,14 +39,22 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($finished_jobs as $job)
-                    @php list($h, $i, $s) = explode(':', $job->total_duration);
-                    $print = $job->prints->first()
+                @foreach($finished_jobs as $job) 
+                    @php 
+                        list($h, $i, $s) = explode(':', $job->total_duration);
+                        $print = $job->prints->first()
+                    @endphp
+                    @php
+                        if($print->status === 'Success'){
+                           $printclass = "p-success";
+                        }else{
+                           $printclass = "p-failed";
+                        }
                     @endphp
                     {{--Add number of hours job takes to the time when it was approved--}}
                     {{--Add number of minutes job takes--}}
                     @if (Carbon\Carbon::now('Europe/London')->gte(Carbon\Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i)) || $job->status == 'Failed' || $job->status == 'Success')
-                    <tr class="text-left">
+                    <tr class="text-left {{$printclass}}">
                         <td data-th="ID">{{ $job->id }}</td>
                         <td data-th="Printer No"><a href="/issues/show/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
                         <td data-th="Job title">{{ $job->job_title  }}</td>
@@ -62,14 +70,14 @@
                         @else
                             <td data-th="Completed by">{{ $job->staff_finished->first_name }} {{ $job->staff_finished->last_name }}</td>
                         @endif
-
-                        @if ($job->status === 'Success')
+                        <td data-th="Status">{{ $job->status }}</td>
+                        {{--@if ($job->status === 'Success')
                             <td data-th="Status" class="success">{{ $job->status }}</td>
                         @elseif ($job->status === 'Failed')
                             <td data-th="Status" class="danger">{{ $job->status }}</td>
                         @else
                             <td data-th="Status" class="info">{{ $job->status }}</td>
-                        @endif
+                        @endif--}}
                         <td data-th="Edit">
                             {{--@hasanyrole('LeadDemonstrator|administrator|OnlineJobsManager')--}}
                             <a href="/printingData/edit/{{$job->id}}" class="btn btn-danger" data-placement="top"

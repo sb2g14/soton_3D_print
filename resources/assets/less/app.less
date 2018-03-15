@@ -538,7 +538,7 @@ body {
                 background-color: @s-dark;
             }
             &.box-stat {
-                background-color: @p;
+                background-color: @p-dark;
             }
             .caption {
                 display: inline-block;
@@ -567,7 +567,7 @@ body {
                 // }
             }
             &.bg-stat {
-                background-color: @p-light;//#B2DFDB;
+                background-color: @p;//#B2DFDB;
                 // &:hover {
                 //    background-color: #004D40; 
                 //    color: #fff;
@@ -707,11 +707,33 @@ body {
     }
 } // s-request-form
 
-//connected nav styles
-.connected {
-    background-color: #ddd;
+/*connected nav styles*/
+.nav.nav-pills > li > a{
+    margin-left: 10px;
+    margin-right: 10px;
     border-radius: 4px;
+    background-color: @navigation-active;
+    color:#fff;
 }
+.nav.nav-pills > li > a:hover{
+    background-color: @navigation-hover;
+    color:#fff;
+}
+.nav.nav-pills > li.active > a{
+    background-color: @navigation-inactive;
+    color:#fff;
+}
+.nav.nav-pills > li.nav-left > a{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-right: 1px;
+}
+.nav.nav-pills > li.nav-right > a{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    margin-left: 1px;
+}
+
 
 //custom styles for background on hover in nav and table-hover
 .nav>li>a:focus, .nav>li>a:hover {
@@ -723,74 +745,49 @@ body {
 }
 
 //background on hover in printer detail list
-.printer-details>.item>.row {
+.printer-details>.item> {
 
 //alert boxes for printer statuses
-    .alert-available {
-       background-color: @printer-available;
-       border-color: @printer-available-dark;
-       color: #fff;
-       &:hover{
-          background-color: @printer-available-light;
-          color: #000;
+.alert-status(@col) {
+    background-color: @col;
+    .col-dark(@col);
+    border-color: @return;
+    color: contrast(@return);
+    &:hover{
+       .col-light(@col);
+       background-color: @return;
+       color: contrast(@return);
+       & a{
+           color: #000;
+       }
+       & a.btn{
+           color: #fff;
        }
     }
-    .alert-success {
-        background-color: @print-success;
-        border-color: @print-success-dark;
-        color: #fff;
-        &:hover{
-          background-color: @print-success-light;
-          color: #000;
-        }
+    & a{
+        color: contrast(@return);
     }
-    .alert-failed {
-        background-color: @print-failed;
-        border-color: @print-dark;
-        color: #fff;
-        &:hover{
-          background-color: @print-failed-light;
-          color: #000;
-        }
+}
+    .alert-default {
+       .alert-status(@uni-neutral-light);
+    }
+    .alert-available {
+       .alert-status(@printer-available);
+    }
+    .alert-psuccess {
+        .alert-status(@print-success);
+    }
+    .alert-pfailed {
+        .alert-status(@print-failed);
     }
     .alert-onloan {
-        background-color: @printer-onloan;
-        border-color: @printer-onloan-dark;
-        color: #fff;
-        &:hover{
-          background-color: @printer-onloan-light;
-          color: #000;
-        }
+        .alert-status(@printer-onloan);
     }
     .alert-broken {
-        background-color: @printer-broken;
-        border-color: @printer-broken-dark;
-        color: #fff;
-        &:hover{
-          background-color: @printer-broken-light;
-          color: #000;
-          & a{
-            color: #000;
-          }
-        }
-        & a{
-            color: #fff;
-        }
+        .alert-status(@printer-broken);
     }
     .alert-missing {
-        background-color: @printer-missing;
-        border-color: @printer-missing-dark;
-        color: #fff;
-        &:hover{
-          background-color: @printer-missing-light;
-          color: #000;
-          & a{
-            color: #000;
-          }
-        }
-        & a{
-            color: #fff;
-        }
+        .alert-status(@printer-missing);
     }
 
 }
@@ -809,66 +806,68 @@ body {
         background-color: @uni-prussian-light;
         color: #fff;
         &:hover{
-            background-color: @uni-prussian-light-2;
+            background-color: @uni-prussian-light-ii;
             color: #fff;
         }
     }
-    .role-header{
-        color: #000;
-        background-color: #f2f2f2;
+    .role-headerformat(@col:@role-header){
+        background-color: @col;
+        color: contrast(@col);
         &:hover{
-            background-color: #f2f2f2;
-            color: #000;
+            background-color: @col;
+            color: contrast(@col);
         }
+    }
+    .role-header{
+        .role-headerformat();
+    }
+    .role-header-managers{
+        .role-headerformat(@role-header-managers);
+    }
+    .role-header-demonstrator{
+        .role-headerformat(@role-header-demonstrator);
+    }
+    .role-header-online{
+        .role-headerformat(@role-header-online);
+    }
+    .role-header-it{
+        .role-headerformat(@role-header-it);
     }
 
-    .role-lead-demonstrator {
-        background-color: @uni-prussian;
+    .role-defaultformat(@col){
+        background-color: #fff;
+        color: #000;
         &:hover {
-            background-color: @uni-prussian-light;
+            background-color: @col;
+            color: contrast(@col);
         }
+    }
+    .role-lead-demonstrator {
+        .role-defaultformat(@role-lead-demonstrator);
     }
     .role-demonstrator {
-        background-color: @uni-prussian-light;
-        &:hover {
-            background-color: @uni-prussian-light-2;
-        }
+        .role-defaultformat(@role-demonstrator);
     }
     .role-it-manager {
-        background-color: @uni-prussian;
-        &:hover {
-            background-color: @uni-prussian-light;
-        }
+        .role-defaultformat(@role-it-manager);
     }
     .role-it {
-        background-color: @uni-prussian-light;
-        &:hover {
-            background-color: @uni-prussian-light-2;
-        }
+        .role-defaultformat(@role-it);
     }
     .role-3d-hub-manager {
-        background-color: @uni-prussian-light;
-        &:hover {
-            background-color: @uni-prussian-light-2;
-        }
+        .role-defaultformat(@role-3d-hub-manager);
     }
     .role-coordinator {
-        background-color: @uni-prussian;
-        &:hover {
-            background-color: @uni-prussian-light;
-        }
+        .role-defaultformat(@role-coordinator);
     }
     .role-co-coordinator {
-        background-color: @uni-prussian-light;
-        &:hover {
-            background-color: @uni-prussian-light-2;
-        }
+        .role-defaultformat(@role-co-coordinator);
     }
     .role-technician {
-        background-color: @uni-prussian;
-        &:hover {
-            background-color: @uni-prussian-light;
-        }
+        .role-defaultformat(@role-technician);
+    }
+    .role-former-member {
+        .role-defaultformat(@role-former-member);
     }
 }
 

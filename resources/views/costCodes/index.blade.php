@@ -9,8 +9,8 @@
 
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
-            <li class="active"><a href="#">Active cost codes</a></li>
-            <li class="connected"><a href="/costCodes/expired">Expired cost codes</a></li>
+            <li class="nav-left active"><a href="#">Active cost codes</a></li>
+            <li class="nav-right"><a href="/costCodes/expired">Expired cost codes</a></li>
         </ul>
     </div>
     

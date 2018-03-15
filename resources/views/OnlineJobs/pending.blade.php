@@ -7,8 +7,8 @@
         <ul class="nav nav-pills nav-justified">
             <li><a href="/OnlineJobs/index">Requests</a></li>
             <li><a href=/OnlineJobs/approved>Approved Jobs</a></li>
-            <li class="active"><a href="#">Pending Jobs</a></li>
-            <li class="connected"><a href="/OnlineJobs/prints">Prints</a></li>
+            <li class="nav-left active"><a href="#">Pending Jobs</a></li>
+            <li class="nav-right"><a href="/OnlineJobs/prints">Prints</a></li>
             <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
         </ul>
     </div>

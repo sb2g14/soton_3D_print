@@ -126,9 +126,9 @@ class IssuesController extends Controller
         if($lastEntry->Type == 'Use'){
             $history_entry['Type'] = $entryCounter.' Prints';
             if($lastEntry->Description === 'Success'){
-                $history_entry['Class'] = 'alert alert-success';
+                $history_entry['Class'] = 'alert alert-psuccess';
             }else{
-                $history_entry['Class'] = 'alert alert-failed';
+                $history_entry['Class'] = 'alert alert-pfailed';
             }
         }
         if($lastEntry->Type === 'Loan'){
