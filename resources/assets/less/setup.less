@@ -92,7 +92,7 @@ a:link {
 
 //define function for lighter colour variation:
 .col-light(@a){
-    @bgcol: desaturate(lighten(@a,10%),5%);
+    @bgcol: desaturate(lighten(@a,10%),5%); //this is a guess and further research is needed to find out how materials.io calculates this
     @return: @bgcol;
 }
 .col-light(@col) when (@col = @uni-prussian){
@@ -145,7 +145,7 @@ a:link {
 }
 //define function for darker colour variation:
 .col-dark(@a){
-    @bgcol: saturate(darken(@a,10%),5%);
+    @bgcol: saturate(darken(@a,10%),5%); //this is a guess and further research is needed to find out how materials.io calculates this
     @return: @bgcol;
 }
 .col-dark(@col) when (@col = @uni-prussian){
@@ -219,6 +219,8 @@ a:link {
 @a-dark: #ad0011;
 @a: #e73238;
 @a-light: #ff6b63;
+//main header and footer:
+@headerfooter-mainbg:@uni-prussian;
 //navigation:
 @navigation-active:#1278a6;
 @navigation-hover:#1278a6;
