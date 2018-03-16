@@ -80,6 +80,25 @@ class OrderOnlineController extends Controller
 
     //// WORKFLOW LOGIC GOES HERE ////
     //---------------------------------------------------------------------------------------------------------------//
+    
+    //email the customer and notify the user
+    private function emailandnotify($emailaddress,$email,$notifytitle,$notifymessage){
+        try{
+        // Send an email to customer
+        Mail::to($emailaddress)->queue($email);
+
+        // Notify that the job was rejected
+        notify()->flash($notifytitle, 'success', [
+            'text' => $notifymessage,
+        ]);
+        }catch(\Exception $e){
+            notify()->flash($notifytitle, 'warning', [
+                'text' => 'There has however been an error with our email server. Please send an email to anyone who should be contacted about this.',
+            ]);
+        }
+        
+    }
+    
     // Customer creates a new online job request
     public function create()
     {
@@ -200,16 +219,10 @@ class OrderOnlineController extends Controller
             'job_title' => $online_request['job_title'],
             'budget_holder' => $online_request['budget_holder']
             ));
-
-        // Send an email to the 3d print account
+        
         $email = '3dprint.soton@gmail.com';
-//        $user = User::find(2);
-        \Mail::to($email)->queue(new onlineRequest($job));
-
-        // Notification of request acceptance
-        notify()->flash('Your order request is now being considered!', 'success', [
-            'text' => 'Please wait for our manager to contact you via provided email address',
-        ]);
+        $this->emailandnotify($email,new onlineRequest($job),'Your order request is now being considered!','Please wait for our manager to contact you via provided email address');
+        
         // Redirect to home directory
         return redirect()->home();
     }
@@ -315,14 +328,9 @@ class OrderOnlineController extends Controller
             'total_price' => $job->prints->sum('price'),
             )
         );
-
-        // Send an email to customer
-        Mail::to($job->customer_email)->queue(new jobAccept($job));
-
-        // Notify the manager about successfully accepted job
-        notify()->flash('The job has been approved', 'success', [
-            'text' => 'Please send an email notification to the customer with the job quote',
-        ]);
+        
+        $this->emailandnotify($job->customer_email,new jobAccept($job),'The job has been approved','An email notification has been send to the customer with the job quote');
+        
         return redirect('OnlineJobs/approved');
     }
 
@@ -343,15 +351,8 @@ class OrderOnlineController extends Controller
         }
 
         $job->delete(); // Delete job
-
-        // Send an email to customer
-
-        Mail::to($job->customer_email)->queue(new jobReject($job, $reject_message['comment']));
-
-        // Notify that the job was rejected
-        notify()->flash('The job has been rejected', 'success', [
-            'text' => 'Please explain why the job has been rejected via email',
-        ]);
+        
+        $this->emailandnotify($job->customer_email,new jobReject($job, $reject_message['comment']),'The job has been rejected','An email notification has been send to the customer to explain why the job got rejected.');
 
         return redirect('OnlineJobs/index');
     }
@@ -513,14 +514,8 @@ class OrderOnlineController extends Controller
             'status' => 'Failed',
             'job_finished_by' => Auth::user()->staff->id
         ));
-
-        // Send an email to the customer
-        Mail::to($job->customer_email)->queue(new jobFailed($job, $failed_message['comment']));
-
-        // Notify that the job failed flag was raised and the email sent to customer
-        notify()->flash('The job status has been changed to Failed', 'success', [
-            'text' => 'An email with the notification has been sent to the customer',
-        ]);
+        
+        $this->emailandnotify($job->customer_email,new jobFailed($job, $failed_message['comment']),'The job status has been changed to Failed','An email with the notification has been sent to the customer.');
 
         return redirect("/OnlineJobs/pending");
     }
@@ -535,14 +530,8 @@ class OrderOnlineController extends Controller
             'status' => 'Success',
             'job_finished_by' => Auth::user()->staff->id
         ));
-
-        // Send an email notification to the customer
-        Mail::to($job->customer_email)->queue(new jobSuccess($job));
-
-        // Notify that the job success flag was raised and the email sent to customer
-        notify()->flash('The job status has been changed to Success', 'success', [
-            'text' => 'An email with the notification has been sent to the customer',
-        ]);
+        
+        $this->emailandnotify($job->customer_email,new jobSuccess($job),'The job status has been completed successfully','An email with the notification has been sent to the customer.'); 
 
         return redirect("/OnlineJobs/pending");
     }

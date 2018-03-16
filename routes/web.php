@@ -11,6 +11,9 @@
 |
 */
 
+// This route uses controller to redirect to a personal page of every member
+Route::get('/myprints/{email}','CustomerController@showprints');
+
 // Manage roles blade
 Route::get('/roles', 'RolesManageController@index');
 

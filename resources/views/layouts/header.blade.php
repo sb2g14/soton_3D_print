@@ -8,7 +8,7 @@
        @if (Auth::check())
             <ul class="lsn bl-menu" id="my-menu">
 
-                {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
+                
                 {{--Leading to welcome page--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
                 {{--Pages connected with printers--}}
@@ -41,10 +41,10 @@
                         Printing
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Workshop Jobs</a></li>
+                        <li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Manage Workshop Jobs</a></li>
                         <li><a class="dropdown-ite" href={{ url('/printingData/create') }}>Request to Print in the Workshop</a></li>
                         @can('manage_online_jobs')
-                            <li><a class="dropdown-ite" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
+                            <li><a class="dropdown-ite" href={{ url('/OnlineJobs/index') }}>Manage Online Jobs</a></li>
                         @endcan
                         <li><a class="dropdown-ite"  href="{{ url('/OnlineJobs/create') }}">Order a Print Online</a></li>
                     </ul>
@@ -57,7 +57,7 @@
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our Team</a></li>
                         <li><a class="dropdown-item" href="{{ url('/documents') }}">For Demonstrators</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting paid</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting paid</a></li> 
                     </ul>
                 </li>
                 {{--Other workshop-connected information--}}
@@ -68,10 +68,11 @@
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
                         {{--<li><a class="dropdown-item" href="{{ url('/orderOnline') }}">Order online</a></li>--}}
-                        <li><a class="dropdown-item" href="{{ url('/news') }}">News</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/news') }}">Workshop History</a></li>
                         {{--<li><a class="dropdown-item" href={{ url('/printingData/create') }}>Request a job</a></li>--}}
                         {{--<li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>--}}
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
+                        {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
                         {{--<li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Workshop Jobs</a></li>--}}
                         {{--@can('manage_online_jobs')--}}
                             {{--<li><a class="dropdown-ite" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>--}}
@@ -82,14 +83,14 @@
 
                 {{--Each role has separate red button except for Lead Demonstrator and admin--}}
                 @hasrole('OnlineJobsManager')
-                    <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
+                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
                 @endhasrole
                 {{--Ø--}}
                 @hasrole('Coordinator')
-                    <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href={{ url('/costCodes/index') }}>Cost Codes</a></li>
+                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/costCodes/index') }}>Cost Codes</a></li>
                 @endhasrole
                 @hasrole('Demonstrator')
-                    <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
+                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 @endhasrole
 
                 <li class="item">
@@ -101,6 +102,9 @@
                             <li><a href="/members/{{Auth::user()->staff->id}}">View record</a></li>
                         @endisset
                         <li><a class="dropdown-item" href="{{ url('/roles') }}">Manage account</a></li>
+                        @isset(Auth::user()->staff)
+                            <li><a class="dropdown-ite"  href="/myprints/{{Auth::user()->staff->email}}">Manage your prints</a></li>
+                        @endisset
                         <li><a class="dropdown-item" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
                 </li>
@@ -108,20 +112,26 @@
         @else
            {{--Menu view for unregistered user--}}
             <ul class="lsn bl-menu" id="my-menu">
-                {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
+                
                 {{--Welcome page--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/') }}">Home</a></li>
-                {{--Order print in the workshop--}}
-                {{--Show this button only on Wednesdays--}}
-                @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
-                <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
-                @endif
-                {{--Order print online--}}
-                <li class="item"><a class="btn btn-lg btn-danger no-dropdown" role="button" href="{{ url('/OnlineJobs/create') }}">Request online job!</a></li>
-                {{--Request a loan--}}
-                {{--<li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>--}}
+                {{--Request printing in the workshop and online--}}
+                <li class="item">
+                    <span>
+                        Get Started
+                        <span class="caret"></span></span>
+                    <ul class="dropdown-bl">
+                        <li><a class="dropdown-ite" href="{{ url('/printingData/create') }}">Request to Print in the Workshop</a></li>
+                        <li><a class="dropdown-ite"  href="{{ url('/OnlineJobs/create') }}">Order a Print Online</a></li>
+                        {{--Request a loan--}}
+                        {{--<li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>--}}
+                        {{--<li><a class="dropdown-ite"  href="{{ url('/myprints/USEREMAILVAR') }}">Manage your requests</a></li>--}}
+                    </ul>
+                </li>
+                
                 {{--Page with the information about how to print--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/learn') }}">Learn to 3D print</a></li>
+                {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
                 {{--Other workshop-connected information--}}
                 <li class="item">
                     <span>
@@ -130,10 +140,18 @@
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
                         <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our Team</a></li>
-                        {{--<li><a class="dropdown-item" href="{{ url('/news') }}">News</a></li>--}}
+                        {{--<li><a class="dropdown-item" href="{{ url('/news') }}">Workshop History</a></li>--}}
                         <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
                     </ul>
                 </li>
+                {{--Order print in the workshop--}}
+                {{--Show this button only on Wednesdays--}}
+                @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
+                <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
+                @else
+                {{--Order print online--}}
+                <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/OnlineJobs/create') }}">Request online job!</a></li>
+                @endif
 
 
                 <li class="item">

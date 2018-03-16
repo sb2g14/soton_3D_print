@@ -149,8 +149,12 @@
                                                 <li>Export your file to .stl format and bring it with you to the workshop</li>
                                                 <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOUSELF to the cupboards!</b></li>
                                                 <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
-                                                <li>Request a job...</li>
+                                                <li>Request a job on this website</li>
+                                <li>Ask a demonstrator to come to you to approve the print</li>
+                                <li>Press the print button to start the print <b>after your print has been approved</b></li>
+                                <li>Wait for at least 10 layers to see if there are any errors....</li>
                                             </ol>
+                                            View more...
                                         </p>
                                     </li>
                                 </ul>
@@ -208,11 +212,11 @@
                                 </div>-->
                                 <iframe id="C_workshop_usage" src="{{ route('chart', ['name' => 'workshop_usage', 'height' => $chart_height]) }}" height="{{$chart_height + 150}}" width="100%" style="width:100%; border:none;"></iframe>
                             @endif
-                                <div style="text-align: left; font-size: larger; font-weight: bold"> 
+                                <div style="text-align: left; font-weight: bold"> 
                                     Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[sizeof($count_prints) - 2]}}<br/>
                                     Number of users last year: {{$count_users}}<br/>
-                                    Total material used: {{$count_material}}<br/>
-                                </div><br/>
+                                    Total material used: {{$count_material}}
+                                </div>
                             </div>
                         </div>
                     </div>

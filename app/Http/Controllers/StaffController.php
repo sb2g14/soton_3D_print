@@ -95,8 +95,12 @@ class StaffController extends Controller
     public function show($id)
     {
         $member = staff::find($id);
+        if(!$member){
+           //member not found -> return error
+            abort(404);
+        }
         $sh = new StatisticsHelper;
-        $stats = $sh->getArrayMemberStats($id);
+        $stats = $sh->getArrayMemberStats($member->id);
         return view('members.show',compact('member','stats'));
     }
 

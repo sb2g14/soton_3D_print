@@ -74,9 +74,9 @@ body {
                 display: block;
             }
             .btn {
-                // background: @light-red;
-                color: @c-link;
-                padding: 10px;
+                .font-size( (20/@fs-base) );
+                color: #fff;
+                padding: 5px 10px;
                 // &:hover{
                 //     background: @red;
                 // }
@@ -297,17 +297,31 @@ body {
 /* SLIDER STYLES */
 
 #image-slider_home {
+    @root: "/Images/";
+    /*@cntr: 1;
+    .for-each(@imgname in @carousel-imgs) {
+        .img_@{cntr} {
+            @url: "@{root}@{imgname}";
+            background: url(@url);
+        }
+        @cntr: @cntr + 1;
+    }*/
+    
     .img_1 {
-        background-image: url('/Images/IMG_0517.png');
+        @url: "@{root}@{carousel-img-1}";
+        background-image: url(@url);
     }
     .img_2 {
-        background-image: url('/Images/IMG_0462.png');
+        @url: "@{root}@{carousel-img-2}";
+        background-image: url(@url);
     }
     .img_3 {
-        background-image: url('/Images/lattice.png');
+        @url: "@{root}@{carousel-img-3}";
+        background-image: url(@url);
     }
     .img_4 {
-        background-image: url('/Images/IMG_0497.png')
+        @url: "@{root}@{carousel-img-4}";
+        background-image: url(@url);
     }
 }
 
@@ -907,6 +921,12 @@ footer {
     
     .copyright, .team {
         .font-size( (12/@fs-base) );
+    }
+    a {
+        color: @footerlinks;
+        &:hover{
+            color: @footerlinks-hover;
+        }
     }
 }
 

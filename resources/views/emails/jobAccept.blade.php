@@ -2,8 +2,8 @@
 
 Dear {{$customer_name}},
 
-<h3>The online job you have requested in the 3D printing workshop on {{ $created_at->toDayDateTimeString() }} has
-    been <b style="color: green">approved</b> by Online Jobs Manager.</h3>
+<h3>The online job you have requested from the 3D printing service on {{ $created_at->toDayDateTimeString() }} has
+    been <b style="color: green">approved</b> by us.</h3>
 
 <p>The details of your request were as follows:</p>
 <div class="alert alert-info text-left">
@@ -26,7 +26,7 @@ Dear {{$customer_name}},
 <p style="color: red">The print will not start until you reply to this email expressing your consent to proceed with
 printing your request.</p>
 
-<p>If you need further assistance, please visit the workshop or contact the Online Jobs Manager via replying to this email.</p>
+<p>If you need further assistance, please visit the workshop or contact one of our Online Jobs Manager by replying to this email.</p>
 
 @component('mail::button', ['url' => 'https://3dprint.clients.soton.ac.uk'])
 Go to the website

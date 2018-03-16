@@ -111,6 +111,7 @@ a:link {
   text-decoration: none;
 }
 /* @blue: #266c8e; */
+/*@carousel-imgs: "IMG_0517.png", "IMG_0462.png", "lattice.png", "IMG_0497.png";*/
 .btn-primary {
   background-color: #00557b;
   border-color: #00557b;
@@ -280,8 +281,10 @@ body.is-fixed {
   display: block;
 }
 .p-header .bl-menu li .btn {
-  color: #ffffff;
-  padding: 10px;
+  font-size: 20px;
+  font-size: 1.25rem;
+  color: #fff;
+  padding: 5px 10px;
 }
 .p-header .bl-menu a:hover,
 .p-header .bl-menu li > span:hover {
@@ -463,17 +466,27 @@ body.is-fixed {
   background: #0097A7;
 }
 /* SLIDER STYLES */
+#image-slider_home {
+  /*@cntr: 1;
+    .for-each(@imgname in @carousel-imgs) {
+        .img_@{cntr} {
+            @url: "@{root}@{imgname}";
+            background: url(@url);
+        }
+        @cntr: @cntr + 1;
+    }*/
+}
 #image-slider_home .img_1 {
-  background-image: url('/Images/IMG_0517.png');
+  background-image: url("/Images/IMG_0517.png");
 }
 #image-slider_home .img_2 {
-  background-image: url('/Images/IMG_0462.png');
+  background-image: url("/Images/IMG_0462.png");
 }
 #image-slider_home .img_3 {
-  background-image: url('/Images/lattice.png');
+  background-image: url("/Images/IMG_0531.png");
 }
 #image-slider_home .img_4 {
-  background-image: url('/Images/IMG_0497.png');
+  background-image: url("/Images/IMG_0497.png");
 }
 .image-slider {
   position: relative;
@@ -800,7 +813,7 @@ body.is-fixed {
   color: #ffffff;
 }
 .nav.nav-pills > li.active > a {
-  background-color: #00557b;
+  background-color: #005c85;
   color: #ffffff;
 }
 .nav.nav-pills > li.nav-left > a {
@@ -1113,6 +1126,12 @@ footer .copyright,
 footer .team {
   font-size: 12px;
   font-size: 0.75rem;
+}
+footer a {
+  color: #74c9e5;
+}
+footer a:hover {
+  color: #9fdaed;
 }
 @media screen and (min-width: 450px) {
   .image-slider .item {
