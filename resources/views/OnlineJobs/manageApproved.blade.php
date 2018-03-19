@@ -12,6 +12,8 @@
             <div class="col-sm-6 text-left job-details">
                 <div class="alert alert-info text-left">
                     <p>
+                        Job number: <b>{{$job->id}}</b><br>
+                        Job Title: <b> {{ $job->job_title }} </b> <br>
                         Requested on: <b>{{ $job->created_at->toDayDateTimeString() }}</b><br>
                         Requested by: <b>{{$job->customer_name}}</b><br>
                         Requester id: <b>{{$job->customer_id}}</b><br>
@@ -19,8 +21,8 @@
                         Payment category: <b>{{$job->payment_category}}</b><br>
                         Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> {{$job->cost_code}} @elseif($job->use_case == 'Cost Code - unknown')</b> <b style="color: red"> {{$job->cost_code}} @else <b style="color: forestgreen"> {{$job->use_case}} @endif  </b><br>
                         Budget Holder: <b> {{ $job->budget_holder }} </b> <br>
-                        Job Title: <b> {{ $job->job_title }} </b> <br>
-                        Job number: <b>{{$job->id}}</b><br>
+                        
+                        
                     </p>
                     <a class="btn btn-primary" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
                                                  {{$job->claim_id}}&claimPasscode={{$job->claim_passcode}}
@@ -32,7 +34,7 @@
             <div class="col-sm-6 text-left">
                 <h3>Total job stats</h3>
                 {{-- Calculate total print time --}}
-                <p>Total job duration: <b>{{ $job->total_duration }}</b> <br>
+                <p>Total print duration: <b>{{ $job->total_duration }}</b> <br>
                 Total material amount: <b>{{ $job->total_material_amount }}g</b> <br>
                 Total price: <b>£{{ $job->total_price }}</b>
                 </p>
@@ -44,7 +46,11 @@
         {{--Job control buttons--}}
         <div class="row">
             <div class="col-sm-12">
-                <a href="/OnlineJobs/approved" class="btn btn-lg btn-primary">Back</a>
+                @if(Auth::user()->hasRole(['OnlineManager']))
+                    <a href="/OnlineJobs/approved" class="btn btn-lg btn-primary">Back</a>
+                @else
+                    <a href="/myprints/{{$job->customer_email}}" class="btn btn-lg btn-primary">Back</a>
+                @endif
                 <a href="/OnlineJobs/customerReject/{{$job->id}}" class="btn btn-lg btn-danger">Customer Rejected</a>
                 <a href="/OnlineJobs/customerApproved/{{ $job->id }}" class="btn btn-lg btn-success">Customer Approved</a>
             </div>

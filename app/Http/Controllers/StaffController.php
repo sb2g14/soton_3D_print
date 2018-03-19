@@ -200,7 +200,7 @@ class StaffController extends Controller
     }
     public function former()
     {
-        $members = staff::orderBy('first_name')->where('role','=', 'Former member')->get();
+        $members = staff::orderBy('last_name')->where('role','=', 'Former member')->get();
         return view('members.former', compact('members'));
     }
 

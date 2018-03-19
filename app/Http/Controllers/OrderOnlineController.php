@@ -388,7 +388,11 @@ class OrderOnlineController extends Controller
         notify()->flash('The job has been approved by customer', 'success', [
             'text' => 'Now you can start adding prints',
         ]);
-        return redirect('OnlineJobs/pending');
+        if(Auth::user()->hasRole(['OnlineManager'])){
+            return redirect("/OnlineJobs/pending");
+        }else{
+            return redirect("/myprints/");
+        }
     }
     // Job is rejected by customer
     public function customerReject($id)
@@ -407,8 +411,11 @@ class OrderOnlineController extends Controller
         notify()->flash('The job request was rejected', 'success', [
             'text' => 'The job and all assigned print previews were deleted from the database',
         ]);
-
-        return redirect("/OnlineJobs/index");
+        if(Auth::user()->hasRole(['OnlineManager'])){
+            return redirect("/OnlineJobs/index");
+        }else{
+            return redirect("/myprints/");
+        }
     }
     //// Logic for managing jobs approved both by manager and by customer ////
     //---------------------------------------------------------------------------------------------------------------//
