@@ -23,6 +23,14 @@ use App\Rules\CustomerNameValidation;
 
 class PrintingDataController extends Controller
 {
+    
+    private function checkstatus(){
+        // Check if all current jobs are finished
+        $printers_busy = Printers::where('in_use','=', 1)->get();
+        foreach ($printers_busy as $printer_busy) {
+            $printer_busy->changePrinterStatus($printers_busy);
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -30,11 +38,7 @@ class PrintingDataController extends Controller
      */
     public function index()
     {
-        // Check if all current jobs are finished
-        $printers_busy = Printers::where('in_use','=', 1)->get();
-        foreach ($printers_busy as $printer_busy) {
-            $printer_busy->changePrinterStatus($printers_busy);
-        }
+        $this->checkstatus();
         $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 0)->get();
         return view('printingData.index', compact('jobs'));
     }
@@ -88,11 +92,7 @@ class PrintingDataController extends Controller
 
     public function finished()
     {
-        // Check if all current jobs are finished
-        $printers_busy = Printers::where('in_use','=', 1)->get();
-        foreach ($printers_busy as $printer_busy) {
-            $printer_busy->changePrinterStatus($printers_busy);
-        }
+        $this->checkstatus();
         $finished_jobs = Jobs::where('created_at', '>=', Carbon::now()->subMonth())->orderBy('created_at', 'desc')->where('status','!=', 'Waiting')->where('requested_online', 0)->get();
 
         return view('printingData.finished', compact('finished_jobs'));
@@ -105,15 +105,11 @@ class PrintingDataController extends Controller
      */
     public function create()
     {
-        // Check if all current jobs are finished
-        $printers_busy = Printers::where('in_use','=', 1)->get();
-        foreach ($printers_busy as $printer_busy) {
-            $printer_busy->changePrinterStatus($printers_busy);
-        }
+        $this->checkstatus();
 
     if (Auth::check()) {
         if (Auth::user()->hasRole('OnlineJobsManager')) {
-            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
+            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
         } else {
             $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
         }
@@ -122,7 +118,7 @@ class PrintingDataController extends Controller
         }
         return view('printingData.create',compact('available_printers','member'));
     } else {
-        $available_printers = printers::where('printer_type', 'UP!')->orWhere('printer_type', 'UP Plus 2')->where('printer_status', 'Available')->where('in_use', 0)->pluck('id', 'id')->all();
+        $available_printers = printers::where('isWorkshop', 1)->where('printer_status', 'Available')->where('in_use', 0)->pluck('id', 'id')->all();
         return view('printingData.create',compact('available_printers'));
         }
     }

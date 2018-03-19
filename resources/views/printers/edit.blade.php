@@ -31,6 +31,14 @@
                                 </div>
                         </div> <!-- Class radio -->
                     </div> <!-- /form-group -->
+                    <label for="body">Can this Printer be used by students?: </label> <br>
+                    <!-- Radio list for the printer status -->
+                    <div class="form-group text-left">
+                        <div class="radio">
+                            <input type="radio" name="printer_permission" <?php if ($printer->isWorkshop) echo "checked";?> value="isWorkshop">Yes <br>
+                            <input type="radio" name="printer_permission" <?php if (!$printer->isWorkshop) echo "checked";?> value="isOnline">No <br>
+                        </div> <!-- Class radio -->
+                    </div> <!-- /form-group -->
                     @hasrole('administrator')
                     <label for="body">Printer status: </label> <br>
                     <!-- Radio list for the printer status -->
