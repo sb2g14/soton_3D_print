@@ -23,111 +23,180 @@ use App\Rules\CustomerNameValidation;
 
 class PrintingDataController extends Controller
 {
-    
-    private function checkstatus(){
-        // Check if all current jobs are finished
+    /**
+     * Check printers that are in use if their print has completed and if so change the status
+     */
+    private function autoCompleteFinishedPrints(){
+        //get printers that are in use
         $printers_busy = Printers::where('in_use','=', 1)->get();
         foreach ($printers_busy as $printer_busy) {
+            //complete the prints & jobs and change statuses if prints are completed
             $printer_busy->changePrinterStatus($printers_busy);
         }
     }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * get an array of the printers currently available to print on based on users authentication
+     * @return array
+     */
+    private function getAvailablePrinters(){
+        if (Auth::check()) {
+            // Get the available printers to display in the drop-down.
+            // Available for staff are the printers with status Available or Broken that are not in use.
+            $available_printers = printers::all()
+                ->where('printer_status', '!=', 'Missing')
+                ->where('printer_status', '!=', 'On Loan')
+                ->where('printer_status', '!=', 'Signed out')
+                ->where('in_use', 0)
+                ->pluck('id', 'id')->all();
+        } else {
+            // Get the available printers to display in the drop-down.
+            // Available for customers are the printers with status Available that are not in use and not for staff only.
+            $available_printers = printers::where('isWorkshop', 1)
+                ->where('printer_status', 'Available')
+                ->where('in_use', 0)
+                ->pluck('id', 'id')->all();
+        }
+        return $available_printers;
+    }
+
+    /**
+     * Defines the payment category based on the 9 digit uni id
+     * @param $customer_id string
+     * @return string
+     */
+    private function getPaymentCategory($customer_id){
+        $firstdigit = substr($customer_id, 0, 1);
+        switch ($firstdigit) {
+            case '1':
+                $payment_category = 'staff';
+                break;
+            case '2':
+                $payment_category = 'postgraduate';
+                break;
+            case '3':
+                $payment_category = 'masters';
+                break;
+            default:
+                $payment_category = 'undergraduate';
+                break;
+        }
+        return $payment_category;
+    }
+
+    /**
+     * calculates the price of a job, based on print duration and material amount used
+     * @param $hours int
+     * @param $minutes int
+     * @param $material_amount float
+     * @return float
+     */
+    private function getPriceOfJob($hours,$minutes,$material_amount){
+        // Calculation the job price £3 per h + £5 per 100g
+        $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+        return $price;
+    }
+
+    /**
+     * checks the payment details and returns the corrected details
+     * takes a shortage or costcode as $use_case and the $budget_holder
+     * returns the use_case as shortage or known/unknown cost code,
+     * looks up the shortage/ cost code in the database and returns the
+     * data from the database if found. Returns the provided data otherwise
+     * @param $use_case string
+     * @param $budget_holder string
+     * @return array $cost_code, $use_case, $budget_holder
+     */
+    private function getPaymentDetails($use_case,$budget_holder){
+        // Define a cost code
+        // check the module shortage exists
+        $query = cost_code::all()->where('shortage','=',strtoupper($use_case))->first();
+        if ($query !== null){
+            // If shortage exists, then populate cost code and shortage with the DB data
+            $cost_code = $query->value('cost_code');
+            $use_case = strtoupper($use_case);
+            $budget_holder = $query->holder;
+        } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
+            $query = cost_code::all()->where('cost_code','=',$use_case)->first();
+            $cost_code = $use_case;
+            if ($query !== null){ // The cost code was found. Set a corresponding flag
+                $use_case = 'Cost Code - approved';
+                $budget_holder = $query->holder;
+            } else { // The cost code was not found. Set a corresponding flag
+                $use_case = 'Cost Code - unknown';
+                //$budget_holder = $budget_holder;
+            }
+        }
+        return [$cost_code, $use_case, $budget_holder];
+    }
+
+    /**
+     * Function to display the blade with all pending jobs
+     * Creates variables for blade that displays the Workshop jobs waiting for approval
+     * @blade_address /printingData/index
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        $this->checkstatus();
+        // Check if any non-completed prints exist and autocomplete them
+        $this->autoCompleteFinishedPrints();
+        // Get all the workshop jobs waiting for approval
         $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 0)->get();
         return view('printingData.index', compact('jobs'));
     }
 
-//    public function printingDataExport()
-//    {
-//
-//        // Get all jobs
-//        $jobs = printing_data::select('printers_id','serial_no','created_at','purpose','student_name','student_id','time','material_amount','price','paid','approved_name','payment_category','use_case','cost_code','add_comment','month','id','successful','email')->get();
-//
-//
-//        // Initialize the array which will be passed into the Excel
-//        // generator.
-//        $jobsArray = [];
-//
-//        // Define the Excel spreadsheet headers
-//        $jobsArray[] = ['Printer No Common', 'Printer No','Date','Use/Loan','Student Name','Student ID','Time','Material Amount','Price','Paid','Demonstrator Sign','Payment Category', 'Use Case','Cost Code','Comment','Month','Jobs No','Successful?','Email'];
-//
-//        // Convert each member of the returned collection into an array,
-//        // and append it to the payments array.
-//        foreach ($jobs as $job) {
-//            $jobsArray[] = $job->toArray();
-//        }
-//
-//        // Generate and return the spreadsheet
-//        Excel::create('PrintingData', function($excel) use ($jobsArray) {
-//
-//            // Set the spreadsheet title, creator, and description
-//            $excel->setTitle('printing_data');
-//            $excel->setCreator(Auth::user()->name)->setCompany('3D printing workshop');
-//            $excel->setDescription('Excel file used as a backup for information about printing jobs in the 3D printing workshop at University of Southampton');
-//
-//            // Build the spreadsheet, passing in the payments array
-//            $excel->sheet('sheet1', function($sheet) use ($jobsArray) {
-//                $sheet->fromArray($jobsArray, null, 'A1', false, false);
-//            });
-//
-//        })->download('xlsx');
-//    }
-
+    /**
+     * Return the blade containing all approved (currently printing) workshop jobs
+     * @blade_address /printingData/approved
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function approved()
     {
-        // Check if all current jobs are finished
-        $printers_busy = Printers::where('in_use','=', 1)->get();
-        foreach ($printers_busy as $printer_busy) {
-            $printer_busy->changePrinterStatus($printers_busy);
-        }
+        $this->autoCompleteFinishedPrints();
+        // Get all the approved jobs
         $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 0)->get();
         return view('printingData.approved', compact('approved_jobs'));
     }
 
+    /**
+     * Return the blade containing all the finished (completed) workshop jobs
+     * @blade_address /printingData/finished
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function finished()
     {
-        $this->checkstatus();
+        $this->autoCompleteFinishedPrints();
+        // Get all the completed jobs from the last 30 days
         $finished_jobs = Jobs::where('created_at', '>=', Carbon::now()->subMonth())->orderBy('created_at', 'desc')->where('status','!=', 'Waiting')->where('requested_online', 0)->get();
-
         return view('printingData.finished', compact('finished_jobs'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Return the blade to request a new workshop job
+     * @blade_address /printingData/create
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
-        $this->checkstatus();
-
-    if (Auth::check()) {
-        if (Auth::user()->hasRole('OnlineJobsManager')) {
-            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
-        } else {
-            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
-        }
-        if (!Auth::user()->hasRole('OnlineJobsManager')) {
+        $this->autoCompleteFinishedPrints();
+        // Get the available printers to display in the drop-down.
+        $available_printers = $this->getAvailablePrinters();
+        // Check the user requesting is authenticated
+        if (Auth::check()) {
+            // Retain all the information about a member of staff from the DB to use in prepopulation
             $member = Auth::user()->staff;
-        }
-        return view('printingData.create',compact('available_printers','member'));
-    } else {
-        $available_printers = printers::where('isWorkshop', 1)->where('printer_status', 'Available')->where('in_use', 0)->pluck('id', 'id')->all();
-        return view('printingData.create',compact('available_printers'));
+            return view('printingData.create',compact('available_printers','member'));
+        } else {
+            return view('printingData.create',compact('available_printers'));
         }
     }
 
+
+
     /**
-     * Store a newly created resource in storage.
+     * Function to store the request of a new workshop sent via POST method
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store()
     {
@@ -162,9 +231,7 @@ class PrintingDataController extends Controller
                 new UseCase
             ],
             'budget_holder' => [
-//               'string',
                 'max:100',
-//                new CustomerNameValidation
             ],
             'job_title' => [
                 'required',
@@ -174,107 +241,34 @@ class PrintingDataController extends Controller
             ]
         ]);
 
-        // Store the online request in the database
-        //$job = Jobs::create($workshop_request);
-
         // Define payment category
         $customer_id = $workshop_request['customer_id'];
+        $payment_category = $this->getPaymentCategory($customer_id);
 
-        if (substr($customer_id, 0, 1) == '1') {
-            $payment_category = 'staff';
-        } elseif (substr($customer_id, 0, 1) == '2') {
-            $payment_category = 'postgraduate';
-        } elseif (substr($customer_id, 0, 1) == '3') {
-            $payment_category = 'masters';
-        } else {
-            $payment_category = 'undergraduate';
-        }
-
-        // Define a cost code
-        // check the module shortage exists
-        $query = cost_code::all()->where('shortage','=',strtoupper($workshop_request['use_case']))->first();
-        if ($query !== null){
-            // If shortage exists, then populate cost code and shortage with the DB data
-            $cost_code = $query->value('cost_code');
-            $use_case = strtoupper($workshop_request['use_case']);
-            $budget_holder = $query->holder;
-        } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
-            $query = cost_code::all()->where('cost_code','=',$workshop_request['use_case'])->first();
-            $cost_code = $workshop_request['use_case'];
-            if ($query !== null){ // The cost code was found. Set a corresponding flag
-                $use_case = 'Cost Code - approved';
-                $budget_holder = $query->holder;
-            } else { // The cost code was not found. Set a corresponding flag
-                $use_case = 'Cost Code - unknown';
-                $budget_holder = $workshop_request['budget_holder'];
-            }
-        }
-
-//        $this->validate(request(), [
-//            'student_name' => 'required|string|min:3|max:100|regex:/^[a-z ,.\'-]+$/i',
-//            'email' => 'required|email|min:3|max:30|regex:/^([a-zA-Z0-9_.+-])+\@soton.ac.uk$/',
-//            'student_id' => 'required|numeric|min:8',
-//            'material_amount' => 'required|numeric|regex:/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/',
-//            'use_case' => 'required|min:3'
-//        ]);
-//        if (Auth::check()) {
-//            $shortages = cost_code::all()->pluck('shortage', 'id')->toArray();
-//            $shortages = array_map('strtolower', $shortages);
-//            $cost_codes = cost_code::all()->pluck('cost_code', 'id')->toArray();
-//        } else {
-//            $shortages = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('shortage', 'id')->toArray();
-//            $shortages = array_map('strtolower', $shortages);
-//            $cost_codes = cost_code::where('shortage', '!=', 'Demonstrator')->pluck('cost_code', 'id')->toArray();
-//        }
-//        // $cost_codes = $cost_codes->toArray();
-//        $use_case = strtolower(request('use_case'));
-//        if( in_array($use_case, $shortages)) {
-//
-//            // Update record in staff database in order to link with users database
-//            $shortage_id = array_search($use_case, $shortages);
-//            $cost_code = cost_code::where('id', $shortage_id)->first()->cost_code;
-//
-//        } elseif(preg_match('/^(\d{9,10})$/', $use_case) === 1) {
-//        $cost_code = (int)$use_case;
-//            if (in_array($cost_code, $cost_codes)){
-//            $use_case = 'Cost Code - approved';
-//            } else {
-//                $use_case = 'Cost Code - unknown';
-//            }
-//        } else {
-//            notify()->flash('Error with data provided', 'error', [
-//                'text' => 'Please check the module name or enter a valid cost code',
-//            ]);
-//
-//            return redirect('printingData/create')->withInput();
-//        }
+        // Get payment details checked
+        $temp = $this->getPaymentDetails($workshop_request['use_case'],$workshop_request['budget_holder']);
+        $cost_code = $temp[0];
+        $use_case = $temp[1];
+        $budget_holder = $temp[2];
 
         // Calculating printing time from the dropdown
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
         $time = $hours . ':' . sprintf('%02d', $minutes).':00';
 
-        $material_amount = request('material_amount');
-        // Calculation the job price £3 per h + £5 per 100g
-        $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+        // Get the material amount used
+        $material_amount = $workshop_request['material_amount'];
 
-        // Request id and identify the payment category
-        $student_id = request('customer_id');
-        if (substr($student_id, 0, 1) == '1') {
-            $payment_category = 'staff';
-        } elseif (substr($student_id, 0, 1) == '2') {
-            $payment_category = 'postgraduate';
-        } elseif (substr($student_id, 0, 1) == '3') {
-            $payment_category = 'masters';
-        } else {
-            $payment_category = 'undergraduate';
-        }
-        // Printer requested
+        // Calculate the price for the job
+        $price = $this->getPriceOfJob($hours,$minutes,$material_amount);
+
+
+        // Get the id of the printer requested
         $printers_id = Input::get('printers_id');
 
-        // Submit the data to the database
 
-        // Updating database
+        // Submit the data to the database
+        // Create the Job
         $job = Jobs::create(array(
             'paid'=> 'No',
             'payment_category' => $payment_category,
@@ -287,48 +281,23 @@ class PrintingDataController extends Controller
             'total_material_amount' => $material_amount,
             'total_price' => $price,
             'total_duration' => $time,
-            'customer_id' => $student_id,
+            'customer_id' => $customer_id,
             'customer_name' => $workshop_request['customer_name'],
             'customer_email' => $workshop_request['customer_email']
         ));
-
-//        $job = new Jobs;
-//
-//         $job -> total_material_amount = $material_amount;
-//         $job -> total_price = $price;
-//         $job -> total_duration = $time;
-//         $job -> paid = 'No';
-//         $job -> payment_category = $payment_category;
-//         $job -> cost_code = $cost_code;
-//         $job -> use_case = $use_case;
-//         $job -> customer_id = $student_id;
-//         $job -> customer_name = request('student_name');
-//         $job -> customer_email = request('email');
-//         $job -> requested_online = 0;
-//         $job -> status = 'Waiting';
-//
-//         $job->save();
-
+        //Create the Print
         $print = new Prints;
-
         $print -> printers_id = $printers_id;
         $print -> time = $time;
         $print -> material_amount = $material_amount;
         $print -> purpose = 'Use';
         $print -> price = $price;
-
         $print->save();
 
         // Associate the print with the job
         $job->prints()->attach($print);
 
-//        $job_print = new JobsPrints;
-//
-//        $job_print -> jobs_id = $job->id;
-//        $job_print -> prints_id = $print->id;
-//
-//        $job_print->save();
-
+        // Set printer to be "in use"
         printers::where('id','=', Input::get('printers_id'))->update(array('in_use'=> 1));
 
         // Notification of request acceptance
@@ -341,46 +310,54 @@ class PrintingDataController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Function to display the blade with the job details waiting for staff approval
+     * @blade_address /printingData/show/<id>
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id)
     {
-//        $job = printing_data::find($id);
+        //get the job
         $job = Jobs::findOrFail($id);
+        //get the available printers if staff wants to change the printer number
         $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
+        //return the blade
         return view('printingData.show',compact('job','available_printers'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Function called when the workshop print gets approved by a demonstrator
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update($id)
     {
-        $this -> validate(request(), [
+        // Do PHP validation
+        //TODO: check which one of the two lines below is better
+        //$this -> validate(request(), [
+        $workshop_request = request()->validate([
             'student_name' => 'required|string',
             'student_id' => 'required|numeric',
             'email' => 'required|email',
             'material_amount' => 'required|numeric',
         ]);
-//        $staff_id = Auth::user()->id;
-//        dd(request()->all(), $staff_id, $id);
-//        $data = printing_data::findOrFail($id);
 
+
+        // Calculating printing time from the dropdown
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
-        $time = $hours.':'.sprintf('%02d', $minutes).':00';
-        $material_amount = request('material_amount');
-        $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+        $time = $hours . ':' . sprintf('%02d', $minutes).':00';
 
+        // Get the material amount used
+        $material_amount = $workshop_request['material_amount'];
+
+        // Calculate the price for the job
+        $price = $this->getPriceOfJob($hours,$minutes,$material_amount);
+
+        // Submit the data to the database
         $job = Jobs::findOrFail($id);
         $print_id = $job->prints->first()->id;
+        // Update the Job
         $job->update([
             'customer_name' => request('student_name'),
             'customer_id' => request('student_id'),
@@ -394,6 +371,7 @@ class PrintingDataController extends Controller
             'requested_online' => 0,
             'status' => 'Approved',
         ]);
+        // Update the Print
         $print = Prints::findOrFail($print_id);
         $print->update([
             'printers_id' => Input::get('printers_id'),
@@ -405,47 +383,62 @@ class PrintingDataController extends Controller
             'print_finished_by' => Auth::user()->staff->id,
         ]);
 
+        // Display notification to user
         notify()->flash('The job has been successfully approved!', 'success', [
             'text' => 'The student may start printing now',
         ]);
 
+        // Redirect to Pending Jobs blade
         return redirect('printingData/index');
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Edit the workshop job after it has completed
+     * @blade_address /printingData/edit/<id>
+     * @param $id int
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-
     public function edit($id)
     {
+        // Get the job
         $job = Jobs::findOrFail($id);
+        // Return the blade
         return view('printingData.edit',compact('job'));
     }
 
+    /**
+     * Function that updates the job details
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function review($id)
     {
+        // Do PHP validation
         $this -> validate(request(), [
             'material_amount' => 'required|numeric',
             'successful' => 'required'
         ]);
-        $job = Jobs::findOrFail($id);
-        $print_id = $job->prints->first()->id;
-        $print = Prints::findOrFail($print_id);
 
+        // Calculating printing time from the dropdown
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
-        $time = $hours.':'.sprintf('%02d', $minutes).':00';
-        $material_amount =request('material_amount');
+        $time = $hours . ':' . sprintf('%02d', $minutes).':00';
 
+        // Get the material amount used
+        $material_amount = request('material_amount');
+
+        // Calculate the price for the job
         if (request('successful') == 'Failed') {
             $price = 0;
         } else {
-            $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
+            $price = $this->getPriceOfJob($hours,$minutes,$material_amount);
         }
 
+        // Submit the data to the database
+        $job = Jobs::findOrFail($id);
+        $print_id = $job->prints->first()->id;
+        $print = Prints::findOrFail($print_id);
+        // Update Job
         $job->update([
             'total_duration' => $time,
             'total_material_amount' => $material_amount,
@@ -453,6 +446,7 @@ class PrintingDataController extends Controller
             'status'=> request('successful'),
             'job_finished_by' => Auth::user()->staff->id
         ]);
+        // Update print
         $print->update([
             'time' => $time,
             'material_amount' => $material_amount,
@@ -461,99 +455,162 @@ class PrintingDataController extends Controller
             'print_finished_by' => Auth::user()->staff->id
         ]);
 
+        // Notify user
         notify()->flash('The job details have been updated', 'success', [
             'text' => "If this was unintentional then please change it back :)",
         ]);
+        // Redirect to blade with completed workshop jobs
         return redirect('printingData/finished');
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * marks a job as failed
+     * @blade_address /printingData/abort/<id>
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function abort($id)
-{
-    $job = Jobs::findOrFail($id);
-    $print_id = $job->prints->first()->id;
-    $print = Prints::findOrFail($print_id);
-//    $now = Carbon::now('Europe/London');
-//    $hours = $now->diffInHours($job->created_at);
-//    $minutes = $now->diffInMinutes($job->created_at) - $hours*60;
-//    $new_time = $hours.':'.sprintf('%02d', $minutes);
-    $new_price = 0;
-
-//    Condition to reduce price only for 3Dhubs manager
-//    if (Auth::user()->hasRole('OnlineJobsManager')) {
-//        $new_price = 0;
-//    } else {
-//        $new_price = round(3 * ($hours + $minutes / 60), 2);
-//    }
-    $job->update(['status'=>'Failed',
-//        'total_duration' => $new_time,
-        'total_price' => $new_price,
-        'job_finished_by' => Auth::user()->staff->id
-        ]);
-    $print->update([
-//        'time' => $new_time,
-        'price' => $new_price,
-        'status' => 'Failed',
-        'print_finished_by' => Auth::user()->staff->id
-    ]);
-
-
-    printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
-
-    notify()->flash('The job has been marked as Failed!', 'success', [
-        'text' => "If this was not reported by {$job->customer_name}, please contact the customer via {$job->customer_email}.",
-    ]);
-
-    return redirect('printingData/approved');
-}
-    public function success($id)
     {
-        //Jobs::where('id','=',$id)->update(array('status'=> 'Success'));
+        //Set the price to 0
+        $new_price = 0;
+
+        // Submit the data to the database
         $job = Jobs::findOrFail($id);
         $print_id = $job->prints->first()->id;
         $print = Prints::findOrFail($print_id);
-        printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
-        $job->update(array('job_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
-        $print->update(array('print_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
-
-        notify()->flash('The job has been marked as Success!', 'success', [
-            'text' => "You may continue reviewing other jobs.",
+        // Update Job
+        $job->update([
+            'status'=>'Failed',
+            'total_price' => $new_price,
+            'job_finished_by' => Auth::user()->staff->id
+            ]);
+        // Update Print
+        $print->update([
+            'status' => 'Failed',
+            'price' => $new_price,
+            'print_finished_by' => Auth::user()->staff->id
         ]);
 
+        // Mark printer to be available again
+        printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
+
+        // Notify user
+        notify()->flash('The job has been marked as Failed!', 'success', [
+            'text' => "If this was not reported by {$job->customer_name}, please contact the customer via {$job->customer_email}.",
+        ]);
+
+        // Redirect to blade showing currently printing jobs
         return redirect('printingData/approved');
     }
-    public function destroy($id)
+
+    /**
+     * marks job as successful
+     * @param $id int
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function success($id)
     {
+        //get the job and related print
         $job = Jobs::findOrFail($id);
         $print_id = $job->prints->first()->id;
         $print = Prints::findOrFail($print_id);
+        //need to first check if this job is currently printing or not.
+        if(!$print->status === "Approved" || !$job->status === "Approved"){
+            //notify user in case this was an old job
+            notify()->flash('It looks like someone was faster than you.', 'error', [
+                'text' => "Please refresh the page and continue as normal.",
+            ]);
+        }else {
+            //mark printer as available
+            printers::where('id', '=', $print->printers_id)->update(array('in_use' => 0));
+            //mark job as successful
+            $job->update(array('job_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
+            //mark print as successful
+            $print->update(array('print_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
+            //notify user
+            notify()->flash('The job has been marked as Success!', 'success', [
+                'text' => "You may continue reviewing other jobs.",
+            ]);
+        }
+        //redirect to blade showing currently printing jobs
+        return redirect('printingData/approved');
+    }
+
+    /**
+     * rejects a workshop job before printing started
+     * @param $id int
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function destroy($id)
+    {
+        //get the job and related print
+        $job = Jobs::findOrFail($id);
+        $print_id = $job->prints->first()->id;
+        $print = Prints::findOrFail($print_id);
+        //mark the printer as available again
         printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
+        //delete job-print connection, delete job and delete print
         $job->prints()->detach($print_id);
         $job->delete();
         $print->delete();
-
+        //notify user
         notify()->flash('The job has been rejected!', 'success', [
             'text' => "Please contact the student {$job->customer_name} with printer {$print->printers_id}.",
         ]);
-
+        // redirect to list of newly requested jobs waiting for approval
         return redirect('printingData/index');
     }
+
+    /**
+     * restarts a workshop job by pre-populating the request form
+     * @param $id int
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function restart($id)
     {
+        // Get job data
         $data = Jobs::findOrFail($id);
 
-        if (Auth::user()->hasRole('OnlineJobsManager')) {
-            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
-        } else {
-            $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->where('in_use', 0)->pluck('id', 'id')->all();
-        }
+        // Get the available printers to display in the drop-down.
+        $available_printers = $this->getAvailablePrinters();
 
-
+        // Show request form and pass it the pre-population data
         return view('printingData.create',compact('available_printers','data'));
     }
+
+    //    public function printingDataExport()
+//    {
+//
+//        // Get all jobs
+//        $jobs = printing_data::select('printers_id','serial_no','created_at','purpose','student_name','student_id','time','material_amount','price','paid','approved_name','payment_category','use_case','cost_code','add_comment','month','id','successful','email')->get();
+//
+//
+//        // Initialize the array which will be passed into the Excel
+//        // generator.
+//        $jobsArray = [];
+//
+//        // Define the Excel spreadsheet headers
+//        $jobsArray[] = ['Printer No Common', 'Printer No','Date','Use/Loan','Student Name','Student ID','Time','Material Amount','Price','Paid','Demonstrator Sign','Payment Category', 'Use Case','Cost Code','Comment','Month','Jobs No','Successful?','Email'];
+//
+//        // Convert each member of the returned collection into an array,
+//        // and append it to the payments array.
+//        foreach ($jobs as $job) {
+//            $jobsArray[] = $job->toArray();
+//        }
+//
+//        // Generate and return the spreadsheet
+//        Excel::create('PrintingData', function($excel) use ($jobsArray) {
+//
+//            // Set the spreadsheet title, creator, and description
+//            $excel->setTitle('printing_data');
+//            $excel->setCreator(Auth::user()->name)->setCompany('3D printing workshop');
+//            $excel->setDescription('Excel file used as a backup for information about printing jobs in the 3D printing workshop at University of Southampton');
+//
+//            // Build the spreadsheet, passing in the payments array
+//            $excel->sheet('sheet1', function($sheet) use ($jobsArray) {
+//                $sheet->fromArray($jobsArray, null, 'A1', false, false);
+//            });
+//
+//        })->download('xlsx');
+//    }
 }

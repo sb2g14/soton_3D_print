@@ -22,7 +22,7 @@
                         Job Title: <b> {{ $job->job_title }} </b><br>
                         Job number: <b>{{$job->id}}</b><br>
                     </p>
-                    <a class="btn btn-danger" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
+                    <a class="btn btn-primary" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
                                                  {{$job->claim_id}}&claimPasscode={{$job->claim_passcode}}
                             &emailAddr=3dprint.soton%40gmail.com">Download .stl files</a>
                 </div>
@@ -78,10 +78,10 @@
             <span class="text-justify" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="You should specify at least
             one print-preview in each job. Each print-preview is used to calculate printing cost only and is separate
             entity from the actual print.">
-                <a class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Add print preview</a>
+                <a class="btn btn-lg btn-info" data-toggle="modal" data-target="#addPrintModal">Add print preview</a>
             </span>
 
-            <a href="/OnlineJobs/index" class="btn btn-lg btn-info">Back</a>
+            <a href="/OnlineJobs/index" class="btn btn-lg btn-primary">Back</a>
 
             <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If you think that the requested
             job cannot be printed for some reason, please click on this button and provide an explanation for the customer.">

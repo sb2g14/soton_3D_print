@@ -40,13 +40,22 @@ class printers extends Model
     }
     public function changePrinterStatus()
     {
+            /** @var  $this is the printer */
+            //find last print for this printer
             $print = $this->prints->last();
+            //get the (last) job related to this print
             $job = $print->jobs->last();
+            //get print runtime
             list($h, $i, $s) = explode(':', $print->time);
+            //check if time since print started is greater than print time
             if (Carbon::now('Europe/London')->gte(Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i))) {
+                //don't apply this to online prints
                 if($job->requested_online == 0){
+                    //set this printer to not be used anymore
                     $this->update(array('in_use' => 0));
+                    //set job status to Success & completed by system
                     $job->update(array('status' => 'Success', 'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
+                    //set print status to Success & completed by system
                     $print->update(array('status' => 'Success', 'print_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
                 }
             }

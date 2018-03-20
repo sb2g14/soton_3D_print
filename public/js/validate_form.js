@@ -569,7 +569,7 @@ module.exports = {
         if (message.length < minlength || message.length > maxlength) {
             module.exports.addError(fieldname, "The message must be between " + minlength + " and " + maxlength + " characters long");
             localerror = true;
-        } else if (!message.match(/^[a-z A-Z0-9-.,!?()/']+$/ && message)) {
+        } else if (!message.match(/^[^&</]+$/ && message)) {
             module.exports.addError(fieldname, "No special characters are allowed");
             localerror = true;
         } else {
@@ -786,6 +786,19 @@ $(document).ready(function () {
             check_all_fields();
         }
     });
+
+    //construct to modify the change function for all fields
+    $("input, select, textarea").change(function () {
+        //here we create a variable for the validation function for that field,
+        //passing the field id to it as an argument
+        var fun = funs["#" + $(this).attr('id')];
+        //if that function was in the dictionary, then call it.
+        if (fun) {
+            errors["#" + $(this).attr('id')] = fun("#" + $(this).attr('id'));
+            check_all_fields();
+        }
+    });
+
     //special case "printer type" since this is a group of radio buttons, their id is different/ undefined so we need to select them by name.
     $("input[name='printer_type']").click(function () {
         //this is a special case, where we have radio buttons that have a consistent name, not id.
