@@ -33,7 +33,6 @@
                 {!! $chart->html() !!}
                 {!! Charts::scripts() !!}
                 {!! $chart->script() !!}  
-                @php phpinfo() @endphp
             </div>
             <div class="col-sm-6 text-left">
                 <h3 class="text-center lead">CONTACTS</h3>

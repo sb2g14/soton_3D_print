@@ -229,7 +229,8 @@ class StaffController extends Controller
 
     public function gettingPaid()
     {
-        return view('gettingPaid');
+        $member = Auth::user()->staff()->first();
+        return view('gettingPaid', compact('member'));
     }
 
     public function documents()

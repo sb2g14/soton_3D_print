@@ -48,9 +48,6 @@
         <script src="/js/parsley.min.js"></script>
         <script src="/js/sweetalert.min.js"></script>
         <script src="/js/moment.min.js"></script>
-        {{--<script type="text/javascript" src="/path/to/bootstrap/js/transition.js"></script>
-<script type="text/javascript" src="/path/to/bootstrap/js/collapse.js"></script>
-<script type="text/javascript" src="/path/to/bootstrap/dist/bootstrap.min.js"></script>--}}
         <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
          @yield('scripts')
          
