@@ -62,31 +62,12 @@ class PostsController extends Controller
         // Prints over last 12 months
         $count_prints = $stats->getArrayPrintsLastMonths(12);
         $count_months = $stats->getArrayLastMonths(12);
-        //$chartY1 = $stats->createChartPrintsLastMonths($count_prints,$count_months);
-        
-        // Prints over 12 months for last 4 years
-        //$chartY2 = $stats->createChartPrintsLastYearsPerMonth(5);
-
-        // Total Prints for last 4 years
-        //$chartY3 = $stats->createChartPrintsLastYears(5);
-
-        //Users per Year since 2014
-        //$chartYU = $stats->createChartUsersLastYears();
         
         // Users per year
         $count_users = $stats->getUsersLastYear();
-        
-        // Printer Success Rate
-        //$chartPR = $stats->createChartReliabilityPerPrinterType();
 
         // Material since creation
         $count_material = $stats->getMaterialTotal();
-
-        // Printer Availability
-        //$chart1 = $stats->createChartPrinterAvailability();
-
-        // Workshop Busy Periods
-        //$chartBusy = $stats->createChartWorkshopUsage();
 
         return view('welcome.index', compact('issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material'));
     }

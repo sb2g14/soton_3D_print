@@ -103,7 +103,7 @@
                         @endisset
                         <li><a class="dropdown-item" href="{{ url('/roles') }}">Manage account</a></li>
                         @isset(Auth::user()->staff)
-                            <li><a class="dropdown-ite"  href="/myprints/{{Auth::user()->staff->email}}">Manage your prints</a></li>
+                            <li><a class="dropdown-ite"  href="/myprints">Manage your prints</a></li>
                         @endisset
                         <li><a class="dropdown-item" href={{ route('auth.logout') }}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
@@ -125,7 +125,7 @@
                         <li><a class="dropdown-ite"  href="{{ url('/OnlineJobs/create') }}">Order a Print Online</a></li>
                         {{--Request a loan--}}
                         {{--<li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>--}}
-                        {{--<li><a class="dropdown-ite"  href="{{ url('/myprints/USEREMAILVAR') }}">Manage your requests</a></li>--}}
+                        {{--<li><a class="dropdown-ite"  href="{{ url('/myprints') }}">Manage your requests</a></li>--}}
                     </ul>
                 </li>
                 
