@@ -83,19 +83,19 @@ class OrderOnlineController extends Controller
     
     //email the customer and notify the user
     private function emailandnotify($emailaddress,$email,$notifytitle,$notifymessage){
-        //try{
-        //// Send an email to customer
-        Mail::to($emailaddress)->queue($email);
+        try{
+            // Send an email to customer
+            Mail::to($emailaddress)->queue($email);
 
-        // Notify that the user of success
-        notify()->flash($notifytitle, 'success', [
-            'text' => $notifymessage,
-        ]);
-        //}catch(\Exception $e){
-        //    notify()->flash($notifytitle, 'warning', [
-        //        'text' => 'There has however been an error with our email server. Please send an email to anyone who should be contacted about this.',
-        //    ]);
-        //}
+            // Notify that the user of success
+            notify()->flash($notifytitle, 'success', [
+                'text' => $notifymessage,
+            ]);
+        }catch(\Exception $e){
+            notify()->flash($notifytitle, 'warning', [
+                'text' => 'There has however been an error with our email server. Please send an email to anyone who should be contacted about this.',
+            ]);
+        }
         
     }
     
@@ -388,7 +388,7 @@ class OrderOnlineController extends Controller
         notify()->flash('The job has been approved by customer', 'success', [
             'text' => 'Now you can start adding prints',
         ]);
-        if(Auth::user()->hasRole(['OnlineManager'])){
+        if(Auth::user()->hasRole(['OnlineJobsManager'])){
             return redirect("/OnlineJobs/pending");
         }else{
             return redirect("/myprints/");
@@ -411,7 +411,7 @@ class OrderOnlineController extends Controller
         notify()->flash('The job request was rejected', 'success', [
             'text' => 'The job and all assigned print previews were deleted from the database',
         ]);
-        if(Auth::user()->hasRole(['OnlineManager'])){
+        if(Auth::user()->hasRole(['OnlineJobsManager'])){
             return redirect("/OnlineJobs/index");
         }else{
             return redirect("/myprints/");
