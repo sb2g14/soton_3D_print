@@ -83,19 +83,19 @@ class OrderOnlineController extends Controller
     
     //email the customer and notify the user
     private function emailandnotify($emailaddress,$email,$notifytitle,$notifymessage){
-        try{
-        // Send an email to customer
+        //try{
+        //// Send an email to customer
         Mail::to($emailaddress)->queue($email);
 
-        // Notify that the job was rejected
+        // Notify that the user of success
         notify()->flash($notifytitle, 'success', [
             'text' => $notifymessage,
         ]);
-        }catch(\Exception $e){
-            notify()->flash($notifytitle, 'warning', [
-                'text' => 'There has however been an error with our email server. Please send an email to anyone who should be contacted about this.',
-            ]);
-        }
+        //}catch(\Exception $e){
+        //    notify()->flash($notifytitle, 'warning', [
+        //        'text' => 'There has however been an error with our email server. Please send an email to anyone who should be contacted about this.',
+        //    ]);
+        //}
         
     }
     

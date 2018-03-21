@@ -99,10 +99,13 @@ img {
 .header {
     padding: 25px 0;
     text-align: center;
+    color: white;
+    background-color: #002e3b;
 }
 
 .header a {
-    color: orangered;
+    color: white;
+    background-color: #002e3b;
     font-size: 19px;
     font-weight: bold;
     text-decoration: none;
@@ -148,6 +151,8 @@ img {
 /* Footer */
 
 .footer {
+    background-color: #002e3b;
+    color: #fff;
     margin: 0 auto;
     padding: 0;
     text-align: center;
@@ -158,7 +163,8 @@ img {
 }
 
 .footer p {
-    color: #AEAEAE;
+    background-color: #002e3b;
+    color: #fff;
     font-size: 12px;
     text-align: center;
 }
