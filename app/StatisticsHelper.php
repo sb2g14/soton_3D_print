@@ -88,6 +88,21 @@ class StatisticsHelper
         $count_prints = $this->getArrayOnlinePrintsLastXs($n_years,'Y',"-01-01 00:00:00",12);
         return $count_prints;
     }
+
+    public function getPrintsLastWeeks($n_weeks){
+        $time = new \Carbon\Carbon;
+        $time = $time->subDay();
+        $t1str = $time->format('Y-m-d')." 00:00:00";
+        $t2str = $time->subWeeks($n_weeks)->format('Y-m-d')." 00:00:00";
+        //get all prints excluding online-prints
+        $prints = \App\Jobs::where('jobs.requested_online', 0)
+            ->join('jobs_prints', 'jobs.id', '=', 'jobs_prints.jobs_id')
+            ->join('prints', 'prints.id', '=', 'jobs_prints.prints_id')
+            ->orderBy('prints.created_at', 'desc')
+            ->where('prints.created_at', '>', $t2str)->where('prints.created_at', '<', $t1str)
+            ->select('prints.created_at','prints.updated_at')->get();
+        return $prints;
+    }
     
     private function getArrayLastTimeXs($n,$format,$format2,$months){
         $count = [];
@@ -374,12 +389,36 @@ class StatisticsHelper
             ->responsive(true);
         return $chart1;
     }
+    
+    private function isTimeBetween($ti,$t1,$t2){
+        //need to adjust date, since we only want to compare the time
+        $now = new \Carbon\Carbon;
+        $ti->setDate($now->year,$now->month,$now->day);
+        $t1->setDate($now->year,$now->month,$now->day);
+        $t2->setDate($now->year,$now->month,$now->day);
+        $ans = false;
+        if($ti->between($t1,$t2)){
+            $ans = true;
+        }
+        return $ans;
+    }
+    
+    /**
+     * calculate the overlap of an event from te1 to te2 and an interval from ti1 to ti2 in minutes
+     */
+    private function calcTimeOverlap($te1,$te2,$ti1,$ti2){
+        //calculate overlap as
+        $ovstart = max($te1,$ti1);
+        $ovend = min($te2,$ti2);
+        $overlap = $ovend->diffInMinutes($ovstart);
+        return $overlap;
+    }
 
     public function createChartWorkshopUsage(){
         /***Creates a chart to show how busy the workshop is at specific times and returns it.***/
         // Initiate variables
         $timeinterval = 1; //in hours but gives minutes accuracy
-        $Nweeks = 5; //number of weeks to go into the past to create average
+        $Nweeks = 4; //number of weeks to go into the past to create average
         $open_days = [];
         $printersbusy = [];
         $timesofday = [];
@@ -390,18 +429,8 @@ class StatisticsHelper
             $printersbusy[] = 0;
         }
 
-        // Get the various of prints for the past 4 weeks
-        $time = new \Carbon\Carbon;
-        $time = $time->subDay();
-        $t1str = $time->format('Y-m-d')." 00:00:00";
-        $t2str = $time->subWeeks($Nweeks)->format('Y-m-d')." 00:00:00";
-        //get all prints excluding online-prints
-        $prints = \App\Jobs::where('jobs.requested_online', 0)
-            ->join('jobs_prints', 'jobs.id', '=', 'jobs_prints.jobs_id')
-            ->join('prints', 'prints.id', '=', 'jobs_prints.prints_id')
-            ->orderBy('prints.created_at', 'desc')
-            ->where('prints.created_at', '>', $t2str)->where('prints.created_at', '<', $t1str)
-            ->select('prints.created_at','prints.updated_at')->get();
+        // Get the workshop prints for the past weeks 
+        $prints = $this->getPrintsLastWeeks($Nweeks);
 
         // Count the number of different days and assign prints to time histogram
         foreach ($prints as $print) { //iterate over all the prints
@@ -414,18 +443,14 @@ class StatisticsHelper
                     $open_days[] = $day;
                 }
                 //check if the timestamp falls into the print usage interval
-                $ti = $timesofday[$i];
-                //need to adjust date, since we only want to compare the time
-                $now = new \Carbon\Carbon;
-                $ti->setDate($now->year,$now->month,$now->day);
-                $t1->setDate($now->year,$now->month,$now->day);
-                $t2->setDate($now->year,$now->month,$now->day);
-                //if($t1<=$ti && $ti<=$t2){
-                if($ti->between($t1,$t2)){
+                $ti = new \Carbon\Carbon($timesofday[$i]);
+                if($this->isTimeBetween($ti,$t1,$t2)){
+                    $ti1 = new \Carbon\Carbon($ti);
+                    $ti2 = new \Carbon\Carbon($ti);
+                    $ti1 = $ti1->subMinutes(30*$timeinterval);
+                    $ti2 = $ti2->addMinutes(30*$timeinterval);
                     //calculate overlap as
-                    $ovstart = max($t1,$ti->subMinutes(30*$timeinterval));
-                    $ovend = min($t2,$ti->addMinutes(30*$timeinterval));
-                    $overlap = $ovend->diffInMinutes($ovstart);
+                    $overlap = $this->calcTimeOverlap($t1,$t2,$ti1,$ti2);
                     $printersbusy[$i]+=(float)($overlap)/60;
                     //add 1 to the timestamp busyness
                     //$printersbusy[$i]++;
@@ -434,6 +459,7 @@ class StatisticsHelper
         }
         // Normalise the data
         $Ndays = count($open_days);
+        $Nprints = count($prints);
         if($Ndays == 0){
             $Ndays = 1;
         }
@@ -448,7 +474,7 @@ class StatisticsHelper
         }
         $chart_values = $printersbusy;
         $chart = Charts::create('bar', 'highcharts')
-            ->title('Average number of simultaneous prints during the last '.$Ndays.' sessions')
+            ->title('Average number of simultaneous prints during the last '.$Ndays.' sessions') //from '.$Nprints.' prints.
             ->template('coral-uni')
             ->oneColor(true)
             //->background_color('')
