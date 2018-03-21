@@ -12,7 +12,9 @@ $(document).ready(function() {
     });
     
     $(".card-stat").click(function () {
-        $("#statModal").modal();
+        //$("#statModal").modal();
+        //link to statistics page
+        window.location = "/statistics";
     });
 
     $('[data-toggle="popover"]').popover(); 

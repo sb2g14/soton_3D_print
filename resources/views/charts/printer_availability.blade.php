@@ -1,11 +1,11 @@
 @extends('layouts.charts')
 @php
 /**Number of currently available printers**/
-use App\StatisticsHelper;
-$stats = new StatisticsHelper();
-$thechart = $stats->createChartPrinterAvailability();
+use App\ChartsHelper;
+$chrts = new ChartsHelper();
+$thechart = $chrts->createChartPrinterAvailability($template);
 @endphp
 
 @section('chart')
-    {!! $thechart->template('coral-uni')->oneColor(true)->dimensions(0,$height)->render() !!}
+    {!! $thechart->dimensions(0,$height)->render() !!}
 @endsection

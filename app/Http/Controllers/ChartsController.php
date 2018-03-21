@@ -16,12 +16,12 @@ class ChartsController extends Controller
      * @param int $name
      * @param int $height
      */
-    public function show($name, $height)
+    public function show($name, $color, $height)
     {
         if (in_array($name, $this->protected_charts)) {
             $this->checkProtected();
         }
-        return view("charts.$name", ['height' => $height-100]);
+        return view("charts.$name", ['height' => $height-100, 'template' => $color.'-uni']);
     }
 
     /**

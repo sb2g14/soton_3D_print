@@ -1,9 +1,9 @@
 @extends('layouts.charts')
 @php
 /**PRINTS PER YEAR**/
-use App\StatisticsHelper;
-$stats = new StatisticsHelper();
-$thechart = $stats->createChartPrintsLastYears(5);
+use App\ChartsHelper;
+$chrts = new ChartsHelper();
+$thechart = $chrts->createChartPrintsLastYears(5,$template);
 @endphp
 
 @section('chart')
