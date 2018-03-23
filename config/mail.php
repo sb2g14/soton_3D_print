@@ -57,7 +57,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', '3dprint@soton.ac.uk'),
-        'name' => env('MAIL_FROM_NAME', 'print3d'),
+        'name' => env('MAIL_FROM_NAME', 'FEE 3D Printing Service'),
     ],
 
     /*
@@ -84,7 +84,7 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME'), //print3d
+    'username' => env('MAIL_USERNAME'),
 
     'password' => env('MAIL_PASSWORD'), 
 

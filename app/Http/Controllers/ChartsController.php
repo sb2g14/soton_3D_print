@@ -13,8 +13,9 @@ class ChartsController extends Controller
     /**
      * Show the chart, made to be displayed in an iframe.
      *
-     * @param int $name
-     * @param int $height
+     * @param string $name (name of the chart blade)
+     * @param string $color (template name without '-uni', can beeither of: prussian, shamrock, coral)
+     * @param int $height (height of the iframe, should be at least 300.)
      */
     public function show($name, $color, $height)
     {
