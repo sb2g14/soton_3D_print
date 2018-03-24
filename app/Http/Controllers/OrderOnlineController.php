@@ -28,6 +28,20 @@ use Alert;
 
 class OrderOnlineController extends Controller
 {
+    /**
+     * calculates the price of a job, based on print duration and material amount used
+     * @param $hours int
+     * @param $minutes int
+     * @param $material_amount float
+     * @return float
+     */
+    private function getPriceOfJob($hours,$minutes,$material_amount){
+        // Calculation the job price £3 per h + £5 per 100g
+        $prices = config('prices');
+        $cost = round($prices['time'] * ($hours + $minutes / 60) + $prices['material'] * $material_amount / 100, 2);
+        return $cost;
+    }
+    
     //// MANAGE KEY WORKFLOW BLADES ////
     //---------------------------------------------------------------------------------------------------------------//
     // Online job manager sees all the online job requests:
@@ -249,8 +263,7 @@ class OrderOnlineController extends Controller
         // create a print from the specified details
         $time = $assigned_print_preview["hours"].':'.sprintf('%02d', $assigned_print_preview["minutes"]).':00'; // Created printing time
         // Create price
-        $price = round(3 * ($assigned_print_preview["hours"] + $assigned_print_preview["minutes"] / 60) +
-            5 * $assigned_print_preview["material_amount"] / 100, 2);
+        $price = $this->getPriceOfJob($assigned_print_preview["hours"],$assigned_print_preview["minutes"],$assigned_print_preview["material_amount"]);
 
         // Store print preview in the Database
         $print = new Prints;
@@ -451,8 +464,7 @@ class OrderOnlineController extends Controller
         // create a print from the specified details
         $time = $assigned_print["hours"].':'.sprintf('%02d', $assigned_print["minutes"]).':00'; // Created printing time
         // Create price
-        $price = round(3 * ($assigned_print["hours"] + $assigned_print["minutes"] / 60) +
-            5 * $assigned_print["material_amount"] / 100, 2);
+        $price = $this->getPriceOfJob($assigned_print["hours"],$assigned_print["minutes"],$assigned_print["material_amount"]);
 
         // Create print in the Database
         $print = Prints::create([
