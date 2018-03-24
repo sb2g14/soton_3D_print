@@ -58,7 +58,8 @@
                     </div> <!-- /form-group -->
                     @endhasrole
                     @include('layouts.errors')
-                    <button id="submit" type="submit" class="btn btn-info">Update</button>
+                    <button id="submit" type="submit" class="btn btn-lg btn-info">Update</button>
+                    <a href="/issues/show/{{$printer->id}}" class="btn btn-lg btn-primary">View printer details</a>
                 </form>
             </div>
             <div class="col-sm-3"></div>
