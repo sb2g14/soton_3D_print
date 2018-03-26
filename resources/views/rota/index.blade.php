@@ -16,7 +16,7 @@
             @can('staff_manage')
                  <a href="/rota/newevent" type="button" class="btn btn-success pull-right">Add Event</a>
                  <div class="pull-right">
-                 <form method="post" action="/rota/newsession/make">
+                 <form method="post" action="/rota/session/new/make">
                     {{ csrf_field() }}
                     <div style="position: relative;"><input type="text" name="newdate" class="" id="newdate" value="{{now()}}" /></div>
                     <button type="submit" class="btn btn-success" style="position: relative;">Add new session</button>
@@ -34,7 +34,7 @@
                         <div class="row">
                             <div class="col-sm-3 text-left">
                                 {{$rota[0]->date()}}<br/>
-                                <a href="/rota/newsession/{{$rota[0]->date()}}" type="button" class="btn btn-info">Edit</a>
+                                <a href="/rota/session/new/{{$rota[0]->date()}}" type="button" class="btn btn-info">Edit</a>
                                 <a href="/rota/assign/{{$rota[0]->date()}}" type="button" class="btn btn-success">Assign Demonstrators</a>
                             </div>
                             <div class="col-sm-9 text-left">
@@ -63,10 +63,14 @@
                                                     @php
                                                         $dems = [];
                                                         foreach($s->staff as $dem){
-                                                            $dems[] = $dem->first_name.' '.$dem->last_name;
+                                                            if($dem->id == $user->id){
+                                                                $dems[] = '<span class="text-danger">'.$dem->first_name.' '.$dem->last_name.'</span>';
+                                                            }else{
+                                                                $dems[] = $dem->first_name.' '.$dem->last_name;
+                                                            }
                                                         }
                                                     @endphp
-                                                    {{implode(", ",$dems)}}
+                                                    {!!implode(", ",$dems)!!}
                                                     </td>
                                                 @else
                                                     <td>({{$s->dem_required}} demonstrators)</td>

@@ -32,7 +32,7 @@ class SessionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating and updating sessions of a day.
      *
      * @return \Illuminate\Http\Response
      */
@@ -63,13 +63,14 @@ class SessionController extends Controller
         return view('rota.newsession', compact('date','sessions','newstarttime','newendtime','events'));
     }
     
+    /** process request for new session display -> gets date from input and redirects to the appropriate session add/edit blade**/
     public function startcreate()
     {
         $this -> validate(request(), [
             'newdate' => 'required'
         ]);
         $date = request('newdate');
-        return redirect('/rota/newsession/'.$date);
+        return redirect('/rota/session/new/'.$date);
     }
 
     /**
@@ -111,7 +112,7 @@ class SessionController extends Controller
          
         session()->flash('message', 'The session has been successfully added to the database!');
 
-        return redirect('/rota/newsession/'.$date);
+        return redirect('/rota/session/new/'.$date);
     }
     
     /** prepare query for sessions for one day **/
@@ -127,16 +128,17 @@ class SessionController extends Controller
         $sessions = $this->querySessionsForDate($date)->orderBy('start_date')->get();
         return $sessions;
     }
-    
+
+    /** get only the last session of a day **/
     private function getLastSessionForDate($date){
         $sessions = $this->querySessionsForDate($date)->orderBy('start_date','desc')->first();
         return $sessions;
     }
     
     /** returns all the staff, that are available for that session and eligible to be assigned to a session **/
-    //TODO: need to order by date of last session asc
-    //TODO: need to split into experienced and new demonstrators
     private function getDemonstratorsForSession($id){
+        //TODO: need to order by date of last session asc
+        //TODO: need to split into experienced and new demonstrators
         $demonstrators = staff::whereHas('availability', function ($query) use ($id) {
                 $query->where('availability', 'available')->where('sessions_id', $id);
                 })
@@ -233,7 +235,8 @@ class SessionController extends Controller
         $date = request('date');
         $start_date = new Carbon($date.' '.request('start_time_'.$id));
         $end_date = new Carbon($date.' '.request('end_time_'.$id));
-
+        
+        //TODO: this check is not yet working
         if(request('public_'.$id)=="isPublic")
         {
             $session_public = true;
@@ -243,13 +246,14 @@ class SessionController extends Controller
         
         
         $session = Sessions::findOrFail($id);
-        //$session->update(request(['first_name', 'last_name', 'email', 'phone','student_id']));
-        Sessions::where('id','=', $id)->update(array('start_date' => $start_date, 'end_date' => $end_date));
-        Sessions::where('id','=', $id)->update(array('dem_required' => request('num_dem_'.$id), 'public' => $session_public));
+        $session->update(array('start_date' => $start_date, 
+                               'end_date' => $end_date, 
+                               'dem_required' => request('num_dem_'.$id), 
+                               'public' => $session_public));
 
         session()->flash('message', 'The session has been successfully updated!');
 
-        return redirect('/rota/newsession/'.$date);
+        return redirect('/rota/session/new/'.$date);
     }
 
     /**

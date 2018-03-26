@@ -289,13 +289,13 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 Route::get('/rota','RotaController@index');
 
 // Open a form to create a new rota sessions
-Route::post('/rota/newsession/make','SessionController@startcreate');
+Route::post('/rota/session/new/make','SessionController@startcreate');
 
 // Open a form to create a new rota sessions
-Route::get('/rota/newsession/{date}','SessionController@create');
+Route::get('/rota/session/new/{date}','SessionController@create');
 
 // Store a new rota session
-Route::post('/rota/newsession','SessionController@store');
+Route::post('/rota/session/new','SessionController@store');
 
 // Update an existing rota session
 Route::post('/rota/updatesession','SessionController@update');

@@ -37,7 +37,7 @@
 
             <div class="col-sm-12 text-left well">
             
-                <form method="post" action="/rota/newsession">
+                <form method="post" action="/rota/session/new">
                     {{--Generate security key --}}
                     {{ csrf_field() }}
                     <input type="text" hidden name="date" id="date" value="{{$date}}" />

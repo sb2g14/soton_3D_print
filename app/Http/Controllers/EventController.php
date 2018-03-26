@@ -91,6 +91,7 @@ class EventController extends Controller
         
     }
     
+    /** get Sessions between now and the near future **/
     private function getFutureSessions(){
         $t1 = new Carbon();
         $t2 = $t1->copy()->addMonths(2); //->where('availabilities.staff_id',$staffid)

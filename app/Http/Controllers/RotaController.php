@@ -51,7 +51,8 @@ class RotaController extends Controller
         ksort($items); 
         return $items;
     }
-
+    
+    /** groups sessions into rotas **/
     private function getRotas($sessions){
         $rotas = [];
         $rota = [];
@@ -78,6 +79,7 @@ class RotaController extends Controller
         return $rotas;
     }
     
+    /** gets closure periods from database and converts them into a string that can be interpreted by the date-time-picker **/
     private function getClosureAsString(){
         // get all closure events
         $closures = Event::where('type','closure')->get();
@@ -113,7 +115,8 @@ class RotaController extends Controller
         
         // Get Closure period and mark as disabled dates
         $closures = $this->getClosureAsString();
+        $user = Auth::user()->staff;
         
-        return view('rota.index', compact('sessions','rotas','items','closures'));
+        return view('rota.index', compact('sessions','user','items','closures'));
     }
 }
