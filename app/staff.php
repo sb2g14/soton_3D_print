@@ -33,4 +33,12 @@ class staff extends BaseModel
     {
         return $this->hasMany(FaultUpdates::class, 'staff_id');
     }
+    public function sessions()
+    {
+        return $this->belongsToMany(FaultUpdates::class, 'sessions');
+    }
+    public function availability()
+    {
+        return $this->hasMany(Availability::class);
+    }
 }

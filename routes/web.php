@@ -282,6 +282,50 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 
 });
 
+// Group of routes for managing the ROTA
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Open a form to display the rota sessions
+Route::get('/rota','RotaController@index');
+
+// Open a form to create a new rota sessions
+Route::post('/rota/newsession/make','SessionController@startcreate');
+
+// Open a form to create a new rota sessions
+Route::get('/rota/newsession/{date}','SessionController@create');
+
+// Store a new rota session
+Route::post('/rota/newsession','SessionController@store');
+
+// Update an existing rota session
+Route::post('/rota/updatesession','SessionController@update');
+
+// Open a form to indicate availability for sessions
+Route::get('/rota/availability','AvailabilityController@edit');
+
+// Update availability for sessions
+Route::post('/rota/availability','AvailabilityController@update');
+
+// Open a form to assign demonstrators to sessions
+Route::get('/rota/assign/{date}','SessionController@showassign');
+
+// Assign demonstrators to sessions
+Route::post('/rota/assign/{date}','SessionController@assign');
+
+// Show blade to create a new event
+Route::get('/rota/newevent','EventController@create');
+
+// Store a new event
+Route::post('/rota/newevent','EventController@store');
+
+// Show blade to update an existing event
+Route::get('/rota/event/update/{id}','EventController@edit');
+
+// Update an existing event
+Route::post('/rota/event/update/{id}','EventController@update');
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 // Open a form to request a job
 Route::get('/printingData/create','PrintingDataController@create');
 

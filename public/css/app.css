@@ -199,6 +199,9 @@ a:link {
 .bootstrap-datetimepicker-widget table td.active {
   background-color: #315765;
 }
+.bootstrap-datetimepicker-widget table td.disabled {
+  color: #E73238;
+}
 .bootstrap-datetimepicker-widget table a {
   color: #315765;
 }
@@ -493,6 +496,34 @@ body.is-fixed {
 }
 #image-slider_home .img_4 {
   background-image: url("/Images/IMG_0497.png");
+}
+.badge-academic {
+  background-color: #005C85;
+}
+.badge-closure {
+  background-color: #E73238;
+}
+.badge-internal {
+  background-color: #1E8765;
+}
+.badge-holidays {
+  background-color: #ff6b63;
+}
+.well.col-academic {
+  background-color: #005C85;
+  color: white;
+}
+.well.col-closure {
+  background-color: #E73238;
+  color: white;
+}
+.well.col-internal {
+  background-color: #1E8765;
+  color: white;
+}
+.well.col-holidays {
+  background-color: #ff6b63;
+  color: white;
 }
 .image-slider {
   position: relative;
