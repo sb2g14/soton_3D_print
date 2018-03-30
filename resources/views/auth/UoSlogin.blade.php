@@ -1,0 +1,1 @@
+{{ Config::get('testglobal.[MELLON_mail]') }}
