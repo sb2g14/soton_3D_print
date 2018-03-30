@@ -11,6 +11,11 @@
                         <form id="login" class="form-horizontal" role="form" method="POST" action="{{ url('login') }}">
                             {{ csrf_field() }}
 
+                            {{-- Add a hidden SAML Request field for SAML authentication --}}
+                            @if(isset($_GET['SAMLRequest']))
+                                <input type="hidden" id="SAMLRequest" name="SAMLRequest" value="{{ $_GET['SAMLRequest'] }}">
+                            @endif
+
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                 <label for="email" class="col-md-4 control-label">Email</label>
 

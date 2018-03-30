@@ -17,7 +17,8 @@
         "laravelcollective/html": "^5.3",
         "maatwebsite/excel": "~2.1.0",
         "spatie/laravel-permission": "^2.2",
-        "uxweb/sweet-alert": "^1.4"
+        "uxweb/sweet-alert": "^1.4",
+        "kingstarter/laravel-saml":"dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
