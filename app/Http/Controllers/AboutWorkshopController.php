@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\staff;
-use App\StatisticsHelper;
+use App\ChartsHelper;
 
 class AboutWorkshopController extends Controller
 {
@@ -21,9 +21,8 @@ class AboutWorkshopController extends Controller
         // Find all the records in the staff database with role 'Lead Demonstrator'
         $lead_demonstrators = staff::where('role','=', 'Lead Demonstrator')->get();
         //get workshop usage chart
-        $stats = new StatisticsHelper();
-        $chart = $stats->createChartWorkshopUsage();
-        $chart = $chart->template('prussian-uni')->oneColor(true);
+        $stats = new ChartsHelper();
+        $chart = $stats->createChartWorkshopUsage('prussian-uni');
         return view('aboutWorkshop.index',compact('coordinators','lead_demonstrators','chart'));
     }
 

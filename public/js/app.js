@@ -98,7 +98,7 @@ $(document).ready(function () {
     });
 
     $(".card-stat").click(function () {
-        $("#statModal").modal();
+        window.location = "/statistics";
     });
 
     $('[data-toggle="popover"]').popover();

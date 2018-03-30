@@ -1,9 +1,9 @@
 @extends('layouts.charts')
 @php
 /**USERS PER YEAR**/
-use App\StatisticsHelper;
-$stats = new StatisticsHelper();
-$thechart = $stats->createChartUsersLastYears();
+use App\ChartsHelper;
+$chrts = new ChartsHelper();
+$thechart = $chrts->createChartUsersLastYears($template);
 @endphp
 
 @section('chart')

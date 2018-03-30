@@ -24,17 +24,17 @@
                 <div class="col-xs-8 col-sm-4 text-left">
                     <p><span class="fa fa-fw fa-id-card"></span> ID: {{$member -> student_id}}</p>
                     @if($member->CWP_date)
-                        <p><span class="fa fa-fw fa-check-square"></span> Allowed to Work since 00/00/0000 </p>
+                        <p><span class="fa fa-fw fa-check-square"></span> Allowed to Work since {{$member->CWP_date}} </p>
                     @else
                         <p><span class="fa fa-fw fa-square"></span> Has not shown the CWP to Andrew Hamilton. </p>
                     @endif
                     @if($member->SMT_date)
-                        <p><span class="fa fa-fw fa-check-square"></span> Specific module training attended on 00/00/0000</p>
+                        <p><span class="fa fa-fw fa-check-square"></span> Specific module training attended on {{$member->SMT_date}}</p>
                     @else
                         <p><span class="fa fa-fw fa-square"></span> Has not attended the latest website training. </p>
                     @endif
                     @if($member->LWI_date)
-                        <p><span class="fa fa-fw fa-check-square"></span> Workshop induction attended on 00/00/0000</p>
+                        <p><span class="fa fa-fw fa-check-square"></span> Workshop induction attended on {{$member->LWI_date}}</p>
                     @else
                         <p><span class="fa fa-fw fa-square"></span> Has not attended the latest workshop induction. </p>
                     @endif 

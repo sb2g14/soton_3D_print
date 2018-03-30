@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 
-        <title>Soton3dprint</title>
+        <title>FEE 3D Printing Service</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -17,10 +17,12 @@
         <link href="/css/hamburgers.css" rel="stylesheet">
         <link href="/css/bootstrap.min.css" rel="stylesheet">
         <link href="/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
         <link href="/css/app.css" rel="stylesheet">
         <link href="/css/parsley.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css" rel="stylesheet">
         <link href="/css/fluid-gallery.css" rel="stylesheet">
+        
         {!! Html::style('/css/sweetalert.css') !!}
 
     </head>
@@ -45,6 +47,8 @@
         <script src="/js/app.js"></script>
         <script src="/js/parsley.min.js"></script>
         <script src="/js/sweetalert.min.js"></script>
+        <script src="/js/moment.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
          @yield('scripts')
          
     </body>

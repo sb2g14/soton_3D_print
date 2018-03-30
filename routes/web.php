@@ -12,7 +12,7 @@
 */
 
 // This route uses controller to redirect to a personal page of every member
-Route::get('/myprints/{email}','CustomerController@showprints');
+Route::get('/myprints/','CustomerController@showprints');
 
 // Manage roles blade
 Route::get('/roles', 'RolesManageController@index');
@@ -67,7 +67,7 @@ Route::get('/members/former/show','StaffController@former');
 Route::get('/printers/index','PrintersController@index');
 
 // display of charts
-Route::get('/charts/{name}/{height}', 'ChartsController@show')->name('chart');
+Route::get('/charts/{name}/{color}/{height}', 'ChartsController@show')->name('chart');
 
 // Group of routes available only to roles administrator, Lead Demonstrator, Demonstrator
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -312,6 +312,8 @@ Route::get('/documents', 'StaffController@documents');
 // Route to FAQ
 
 Route::get('/faq','FAQController@index');
+
+Route::get('/statistics','StatisticsController@show');
 
 // Route::get('/notify', function () {
 //    notify()->flash('Welcome back!', 'success', [

@@ -123,7 +123,7 @@
                             <div class="body bg-stat">
                                 {{--<h3>The number of prints in the last 12 months</h3>--}}
                                 @php $chart_height = 300; @endphp
-                                <iframe id="C_demonstrator_main" src="{{ route('chart', ['name' => 'printspm', 'height' => $chart_height]) }}" height="{{ $chart_height + 150 }}" width="100%" style="width:100%; border:none;"></iframe>
+                                <iframe id="C_demonstrator_main" src="{{ route('chart', ['name' => 'printspm', 'color' => 'prussian', 'height' => $chart_height]) }}" height="{{ $chart_height + 150 }}" width="100%" style="width:100%; border:none;"></iframe>
                             </div>
                         </div>
                     </div>
@@ -201,7 +201,7 @@
                                 
                                 @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
                                     <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
-                                <iframe id="C_printer_availability" src="{{ route('chart', ['name' => 'printer_availability', 'height' => $chart_height]) }}" height="{{$chart_height + 50}}" width="100%" style="width:100%; border:none;"></iframe>
+                                <iframe id="C_printer_availability" src="{{ route('chart', ['name' => 'printer_availability', 'height' => $chart_height, 'color' => 'coral']) }}" height="{{$chart_height + 50}}" width="100%" style="width:100%; border:none;"></iframe>
                             @else
                                 <!--<div style="text-align: center; font-size: larger; font-weight: bold"> 
                                     Opening Hours:  
@@ -210,7 +210,7 @@
                                     Every Wednesday 9am to 6pm during term-time.<br/>
                                     (Live opening hours coming soon)
                                 </div>-->
-                                <iframe id="C_workshop_usage" src="{{ route('chart', ['name' => 'workshop_usage', 'height' => $chart_height]) }}" height="{{$chart_height + 150}}" width="100%" style="width:100%; border:none;"></iframe>
+                                <iframe id="C_workshop_usage" src="{{ route('chart', ['name' => 'workshop_usage', 'height' => $chart_height, 'color' => 'coral']) }}" height="{{$chart_height + 150}}" width="100%" style="width:100%; border:none;"></iframe>
                             @endif
                                 <div style="text-align: left; font-weight: bold"> 
                                     Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[sizeof($count_prints) - 2]}}<br/>
@@ -514,53 +514,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Modal STATISTICS PRIVATE -->
-        <div id="statModal" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-lg">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h3 class="modal-title">STATISTICS</h3>
-                    </div>
-                    <div class="modal-body text-left">
-                        @php 
-                            $chart_height = 300; 
-                            $chart_box_height = $chart_height+150; 
-                        @endphp
-                        <div style="display: inline-block; overflow: none; width:48%;height:{{$chart_box_height}}; float=left;">
-                            <iframe id="DC_printer_availability" src="{{ route('chart', ['name' => 'printer_status', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none;"></iframe>
-                        </div>
-                        <div style="display: inline-block; overflow: none; width:48%;height:{{$chart_box_height}}px; float=left;">
-                            <iframe id="DC_workshop_usage" src="{{ route('chart', ['name' => 'workshop_usage', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none;"></iframe>
-                        </div>
-                        
-
-                        <div style="display: inline-block; overflow: none; width:32%;height:{{$chart_box_height}}; float=left;">
-                            <iframe id="DC_prints_per_month" src="{{ route('chart', ['name' => 'printspmpy', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none; overflow: none;"></iframe>
-                        </div>
-                        <div style="display: inline-block; overflow: none; width:32%;height:{{$chart_box_height}}; float=left;">
-                            <iframe id="DC_prints_peryear" src="{{ route('chart', ['name' => 'printspy', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none; overflow: none;"></iframe>
-                        </div>
-
-                        <div style="display: inline-block; overflow: none; width:32%;height:{{$chart_box_height}}; float=left;">
-                            <iframe id="DC_users_peryear" src="{{ route('chart', ['name' => 'userspy', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none; overflow: none;"></iframe>
-                        </div>
-                        <div style="display: inline-block; overflow: none; width:96%;height:{{$chart_box_height}}; float=left;">
-                            <iframe id="DC_printertype_reliability" src="{{ route('chart', ['name' => 'printertype_reliability', 'height' => $chart_height]) }}" height="{{$chart_box_height}}" width="100%" style="width:100%; border:none;"></iframe>
-                        </div>
-                        
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
      
 @endsection
 @section('scripts')
@@ -590,7 +543,7 @@
         });
     </script>
     {{--Adjust Charts--}}
-    <script>
+    {{--<script>
     $(function() {
         // Your tab id must match with the click element: administration_toggle
         // Change it how you like :)
@@ -610,7 +563,7 @@
             }, 50);
         });
     });
-    </script>
+    </script>--}}
 
 
     {{--Load notification--}}

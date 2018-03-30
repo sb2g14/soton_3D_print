@@ -46,10 +46,10 @@
         {{--Job control buttons--}}
         <div class="row">
             <div class="col-sm-12">
-                @if(Auth::user()->hasRole(['OnlineManager']))
+                @if(Auth::user()->hasRole(['OnlineJobsManager']))
                     <a href="/OnlineJobs/approved" class="btn btn-lg btn-primary">Back</a>
                 @else
-                    <a href="/myprints/{{$job->customer_email}}" class="btn btn-lg btn-primary">Back</a>
+                    <a href="/myprints" class="btn btn-lg btn-primary">Back</a>
                 @endif
                 <a href="/OnlineJobs/customerReject/{{$job->id}}" class="btn btn-lg btn-danger">Customer Rejected</a>
                 <a href="/OnlineJobs/customerApproved/{{ $job->id }}" class="btn btn-lg btn-success">Customer Approved</a>

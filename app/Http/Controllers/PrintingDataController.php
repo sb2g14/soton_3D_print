@@ -21,6 +21,11 @@ use App\Rules\SotonIdMinMax;
 use App\Rules\UseCase;
 use App\Rules\CustomerNameValidation;
 
+/**
+ * This controller manages workshop prints and jobs
+ * in this scenario 1 job = 1 print
+ */
+
 class PrintingDataController extends Controller
 {
     /**
@@ -93,8 +98,9 @@ class PrintingDataController extends Controller
      */
     private function getPriceOfJob($hours,$minutes,$material_amount){
         // Calculation the job price £3 per h + £5 per 100g
-        $price = round(3 * ($hours + $minutes / 60) + 5 * $material_amount / 100, 2);
-        return $price;
+        $prices = config('prices');
+        $cost = round($prices['time'] * ($hours + $minutes / 60) + $prices['material'] * $material_amount / 100, 2);
+        return $cost;
     }
 
     /**
