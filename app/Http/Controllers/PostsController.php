@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Input;
 use App\FaultData;
-use Charts;
+use App\StatisticsHelper;
+
 
 class PostsController extends Controller
 {
@@ -25,6 +26,17 @@ class PostsController extends Controller
 
     }
 
+    private function getIssues(){
+//        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
+//        $posts -> toArray($posts);
+//        $post_last = posts::orderBy('created_at','desc')->first();
+        // Getting post and fault data and combining it
+        $faults = FaultData::select('id', 'title', 'body', 'created_at', 'staff_id_created_issue as staff_id', 'printers_id')
+        ->where('resolved', 0);
+        $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id')->where('resolved', 0);
+        $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
+        return $issues;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -38,78 +50,26 @@ class PostsController extends Controller
             $printer_busy->changePrinterStatus($printers_busy);
         }
 
-//        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
-//        $posts -> toArray($posts);
-//        $post_last = posts::orderBy('created_at','desc')->first();
-        // Getting post and fault data and combining it
-        $faults = FaultData::select('id', 'title', 'body', 'created_at', 'staff_id_created_issue as staff_id', 'printers_id')
-        ->where('resolved', 0);
-        $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id')->where('resolved', 0);
-        $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
+        // Get issues as a combination of printer issues and posts (workshop issues)
+        $issues = $this->getIssues();
 
+        // Get public and internal announcements
         $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
 
-        // Call the prints model to extract statistical data
-        $count_prints = [];
-        $count_months = [];
-        // Count the number of prints since the beginning of the current month
-        $time = new \Carbon\Carbon;
-        $t1str = $time->toDateTimeString();
-        $t2str = $time->format('Y-m')."-01 00:00:00";
-        $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
-            ->where('created_at', '<', $t1str)->count();
-        $count_prints[] = $prints;
-        $count_months[] = new \Carbon\Carbon($t2str);
-        // Count the number of prints for the last year
-        for($i=0; $i<11; $i++){
-            $t1str = $time->format('Y-m')."-01 00:00:00";
-            $time = $time->subMonth();
-            $t2str = $time->format('Y-m')."-01 00:00:00";
-            $prints = \App\Prints::orderBy('created_at', 'desc')->where('created_at', '>', $t2str)
-                ->where('created_at', '<', $t1str)->count();
-            $count_prints[] = $prints;
-            $count_months[] = new \Carbon\Carbon($t2str);
-        }
-        $month_labels = [];
-        foreach ($count_months as $date) {
-             $month_labels[] = $date->format('M y');
-        }
-        $month_labels = array_reverse($month_labels);
-        $count_prints = array_reverse($count_prints);
-        $chart = Charts::create('area', 'highcharts')
-            ->title('Prints per months')
-            ->colors(['#00796B'])
-            //->colors(['#ffffff'])
-            ->template('teal-material')
-            //->background_color('')
-            ->elementLabel('')
-            ->legend('')
-            ->labels($month_labels)
-            ->values($count_prints)
-            ->dimensions(400,300)
-            ->responsive(true);
+        //get Statistics
+        $stats = new StatisticsHelper();
+        
+        // Prints over last 12 months
+        $count_prints = $stats->getArrayPrintsLastMonths(12);
+        $count_months = $stats->getArrayLastMonths(12);
+        
+        // Users per year
+        $count_users = $stats->getUsersLastYear();
 
-        $printers_in_use = printers::where('in_use','1')->where('printer_type','!=','UP BOX')->count();
-        $printers_available = printers::where('printer_status','Available')->where('in_use','0')->where('printer_type','!=','UP BOX')->count();
-        //$unavailable_printers = printers::where('printer_status','!=','Available')->where('printer_status','!=','Signed out')->where('in_use','0')->count();
+        // Material since creation
+        $count_material = $stats->getMaterialTotal();
 
-//        $chart1 = Charts::create('pie', 'highcharts')
-//            ->title('Printers')
-//            ->colors(['#00796B','#C2185B','#005C85'])
-//            ->labels(['Available', 'In use', 'Unavailable'])
-//            ->values([$printers_available,$printers_in_use,$unavailable_printers])
-//            ->dimensions(400,200)
-//            ->responsive(false);
-
-        $chart1 = Charts::create('percentage', 'justgage')
-            ->title(false)
-            ->elementLabel('Available')
-            //->colors(['#C2185B'])
-            ->values([$printers_available,0,$printers_in_use + $printers_available])
-            ->responsive(false)
-            ->height(300)
-            ->width(0);
-        return view('welcome.index', compact('issues','announcements', 'count_prints','count_months', 'chart', 'chart1'));
+        return view('welcome.index', compact('issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material'));
     }
 
     /**
@@ -161,14 +121,20 @@ class PostsController extends Controller
         $critical=Input::get('critical');
         if ($critical == 'critical')
         {
-            $id = $post->id;
+            $title = $post->title;
+            $body = $post->body;
             $printers =  printers::pluck('id','id')->all();
+            $post->delete();
 
             // Redirect to create issue
-            return view('issues/select',compact('id','printers'));
+            return view('issues/select',compact('title','body', 'printers'));
         } else {
 
-        // Return to the homepage:
+        // Notify and Return to the homepage:
+
+            notify()->flash('The post has been created.', 'success', [
+                'text' => "Please go to the posts if you want to add anything else.",
+            ]);
 
         return redirect('/');
         }
@@ -214,9 +180,15 @@ class PostsController extends Controller
      * @param  \App\welcome  $welcome
      * @return \Illuminate\Http\Response
      */
-    public function destroy(posts $posts)
+    public function destroy($id)
     {
-        //
+        $post = posts::findOrFail($id);
+        $post->delete();
+
+        notify()->flash('The post has been deleted.', 'success', [
+            'text' => "The post is removed from the database.",
+        ]);
+        return redirect('/');
     }
     public function resolve($id)
     {

@@ -44,13 +44,14 @@
                    {{--This is a Printer Number dropdown--}}
                     <div class="form-group">
                         {!! Form::label('printers_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
-                        <div class="col-md-6">
+                        <div class="col-sm-6">
                             {!! Form::select('printers_id', array('' => 'Select Available Printer') + $available_printers,  old('printers_id', $printers_id), ['class' => 'form-control','required', 'data-help' => 'printers_id', 'id' => 'printers_id']) !!}
                             @if ($errors->has('printers_id'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('printers_id') }}</strong>
                                 </span>
                             @endif
+                            <span class="" id="printers_id_error"></span>
                         </div>
                     </div>
                 </div>
@@ -66,14 +67,14 @@
                             <strong>{{ $errors->first('customer_name') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="customer_name_error"></span>
+                        <span class="" id="student_name_error"></span>
                     </div>
                 </div>
 
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="customer_email" class="col-md-4 control-label">Email</label>
+                    <label for="customer_email" class="col-sm-4 control-label">Email</label>
 
-                    <div class="col-md-6">
+                    <div class="col-sm-8">
                         <input id="email" data-help="customer_email" type="email" class="form-control" name="customer_email" value="{{ old('customer_email', isset($member)  ? $member->email : $customer_email) }}" placeholder="Please input soton email" required><br>
 
                         @if ($errors->has('customer_email'))
@@ -81,7 +82,7 @@
                                         <strong>{{ $errors->first('customer_email') }}</strong>
                                     </span>
                         @endif
-                        <span class="help-block" id="customer_email_error"></span>
+                        <span class="" id="email_error"></span>
                     </div>
                 </div>
 
@@ -94,30 +95,31 @@
                             <strong>{{ $errors->first('customer_id') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="customer_id_error"></span>
+                        <span class="" id="student_id_error"></span>
                     </div>
                 </div>
 
-                <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
+                <div id="time" class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                     {!! Form::label('hours', 'Printing Time', ['class' => 'col-lg-4 control-label'] )  !!}
                     <div class="col-md-4">
                         {!! Form::select('hours',array('' => 'Hours')+ range(0,59), old('hours', $hours), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
                         @if ($errors->has('hours'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('hours') }}</strong>
-                        </span>
+                                <strong>{{ $errors->first('hours') }}</strong>
+                            </span>
                         @endif
                     </div>
                     <div class="col-md-4">
                         {!! Form::select('minutes',array('' => 'Minutes')+ range(0,59), old('minutes', $minutes), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
                         @if ($errors->has('minutes'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('minutes') }}</strong>
-                        </span>
+                                <strong>{{ $errors->first('minutes') }}</strong>
+                            </span>
                         @endif
                    </div>
+                    <div class="col-sm-4 control-label"></div>
                     <div class="col-sm-8">
-                        <span class="help-block" id="time_error"></span>
+                        <span class="" id="time_error"></span>
                     </div>
                 </div>
 
@@ -127,10 +129,10 @@
                         <input id="material_amount" data-help="material_amount" type="text" class="form-control" name="material_amount" value="{{ old('material_amount', $material_amount) }}" placeholder="Please specify the amount of material requested" required>
                         @if ($errors->has('material_amount'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('material_amount') }}</strong>
-                        </span>
+                                <strong>{{ $errors->first('material_amount') }}</strong>
+                            </span>
                         @endif
-                        <span class="help-block" id="material_amount_error"></span>
+                        <span class="" id="material_amount_error"></span>
                     </div>
                 </div>
 
@@ -143,7 +145,7 @@
                             <strong>{{ $errors->first('use_case') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="use_case_error"></span>
+                        <span class="" id="use_case_error"></span>
                     </div>
                 </div>
 
@@ -160,7 +162,7 @@
                             <strong>{{ $errors->first('budget_holder') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="budget_holder_error"></span>
+                        <span class="" id="budget_holder_error"></span>
                     </div>
                 </div>
 
@@ -177,14 +179,14 @@
                             <strong>{{ $errors->first('job_title') }}</strong>
                         </span>
                         @endif
-                        <span class="help-block" id="job_title_error"></span>
+                        <span class="" id="job_title_error"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-8 text-left">
-                        <button id="submit" type="submit" class="btn btn-primary">Submit</button>
-                        <a href="/" class="btn btn-danger">Home</a>
+                        <button id="submit" type="submit" class="btn btn-success">Submit</button>
+                        <a href="/" class="btn btn-danger">Cancel</a>
                         {{--<a href="{{  url('https://www.3dhubs.com/service/254134') }}" target="_blank" class="btn btn-info">Order online</a>--}}
                     </div>
                 </div>
@@ -282,6 +284,5 @@
             });
         </script>
     @endif
-    <script src="/js/request_job_validation.js"></script>
-    <script src="/js/print_preview_validation.js"></script>
+    <script src="/js/validate_form.js"></script>
 @endsection

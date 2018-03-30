@@ -20,13 +20,16 @@
 
     <div class="text-center m-b-md add-printer-issue">
         <div class="title">Printer Issues</div>
-        <a href="/issues/select" type="button" class="btn btn-lg btn-info">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </a>
     </div>
 
     <div class="container">
-        <table class="table">
+        <a href="/issues/select" type="button" class="btn pull-right btn-success">
+            Raise New
+        </a>
+        <a href="/printers/index" type="button" class="btn pull-left btn-primary">
+            View all printers
+        </a>
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -46,27 +49,41 @@
                 @foreach($issues as $issue)
                     <tr class="text-left">
                         <td data-th="ID">{{ $issue->id }}</td>
-                        <td data-th="Printer Number">{{$issue->printers_id}}</td>
+                        <td data-th="Printer Number"><a href="/issues/show/{{ $issue->printers_id }}"> {{$issue->printers_id}} </a></td>
                         <td data-th="Serial Number">{{$issue->serial_number}}</td>
                         <td data-th="Issue Printer Status">{{ $issue->printer_status }}</td>
                         <td data-th="Created by">{{ $issue->issue_created->first_name}} {{ $issue->issue_created->last_name}}</td>
-                        <td data-th="Created on">{{ $issue->created_at->toDayDateTimeString() }}</td>
+                        <td data-th="Created on">{{ $issue->created_at->formatLocalized('%d/%m/%Y') }}</td>
                         <td data-th="Days out of Order">{{ \Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at) }}</td>
                         <td data-th="Title">{{ isset($issue->title) ? $issue->title : "Issue with printer ".$issue->printers_id }}</td>
                         <td data-th="Message">{{ $issue->body }}</td>
                         <td data-th="Modify"><a href="/issues/update/{{$issue->id}}" class="btn btn-info">
                                 Update/Resolve</a>
                         </td>
-                        {{--<td>--}}{{--@if($issue->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))--}}
-                            {{--<span data-placement="top" data-toggle="popover" data-trigger="hover"--}}
-                                  {{--data-content="Delete this issue if you created it by accident">--}}
-                                                            {{--<a type="button" id="deletePrint" href="/OnlineJobs/DeletePrint/{{$issue->id}}"--}}
-                                                               {{--class="close" style="color: red">&times;</a>--}}
-                                                    {{--</span>--}}
-                            {{--@endif--}}{{--</td>--}}
+                        <td>@if($issue->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                            <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                  data-content="Delete this issue from the database (this option is available only 5 minutes after creation). The printer status will be changed to Available.">
+                                                            <a type="button" id="deleteIssue" href="/issues/delete/{{$issue->id}}"
+                                                               class="close" style="color: red">&times;</a>
+                                                    </span>
+                            @endif</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+@endsection
+@section('scripts')
+
+    {{--Load notification--}}
+    @if (notify()->ready())
+        <script>
+            swal({
+                title: "{!! notify()->message() !!}",
+                text: "{!! notify()->option('text') !!}",
+                type: "{{ notify()->type() }}",
+                showConfirmButton: true
+            });
+        </script>
+    @endif
 @endsection

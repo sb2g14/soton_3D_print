@@ -11,6 +11,9 @@
 |
 */
 
+// This route uses controller to redirect to a personal page of every member
+Route::get('/myprints/','CustomerController@showprints');
+
 // Manage roles blade
 Route::get('/roles', 'RolesManageController@index');
 
@@ -26,8 +29,15 @@ Route::post('/posts','PostsController@store');
 // Here we redirect to the page where we store announcement data
 Route::post('/announcements','AnnouncementsController@store');
 
+// Delete announcements
+
+Route::get('/announcement/delete/{id}','AnnouncementsController@destroy');
+
 // Here we redirect to the controller that would store our comments
 Route::post('/posts/{post}/comments', 'CommentsController@store');
+
+// Delete comments
+Route::get('/comments/delete/{id}', 'CommentsController@destroy');
 
 // This route uses controller to redirect to the 'About Workshop' page
 Route::get('/aboutWorkshop','AboutWorkshopController@index');
@@ -56,12 +66,19 @@ Route::get('/members/former/show','StaffController@former');
 // Here we redirect to the page containing general printer info using controller
 Route::get('/printers/index','PrintersController@index');
 
+// display of charts
+Route::get('/charts/{name}/{color}/{height}', 'ChartsController@show')->name('chart');
+
 // Group of routes available only to roles administrator, Lead Demonstrator, Demonstrator
 /////////////////////////////////////////////////////////////////////////////////////////////
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
 
     // Resolve issues in posts
     Route::get('/posts/resolve/{id}', 'PostsController@resolve');
+
+    // Remove posts
+
+    Route::get('/post/delete/{id}', 'PostsController@destroy');
 
     // Redirect to the view where one can manage issues
 
@@ -99,6 +116,13 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
             'as' => 'issues.export',
             'uses' => 'IssuesController@printersIssuesExport'
         ]);
+
+    // Delete issue if it has been created by accident
+
+    Route::get('/issues/delete/{id}','IssuesController@destroy');
+
+    // Delete issue update
+    Route::get('/issues/delete_update/{id}', 'IssuesController@deleteupdate');
 
     // Show a list of jobs waiting for approval
 
@@ -289,6 +313,8 @@ Route::get('/documents', 'StaffController@documents');
 
 Route::get('/faq','FAQController@index');
 
+Route::get('/statistics','StatisticsController@show');
+
 // Route::get('/notify', function () {
 //    notify()->flash('Welcome back!', 'success', [
 //        'text' => 'It\'s really great to see you again',
@@ -327,3 +353,5 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('users_mass_destroy', ['uses' => 'Admin\UsersController@massDestroy', 'as' => 'users.mass_destroy']);
 
 });
+
+Route::get('/UoSlogin','Auth\UoScontroller@requestAuthenticationFromUoS');

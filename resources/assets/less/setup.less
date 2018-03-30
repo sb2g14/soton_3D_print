@@ -60,12 +60,298 @@ a:link {
 @dark-red: #ab1212;
 @turq: #5dbd9f;
 @dark-turq: #4BB694;   
+//variations:
+@uni-prussian: #002e3b;
+@uni-prussian-light: #315765;
+@uni-prussian-light-i: #315765;
+@uni-prussian-light-ii: #5e8493;
+@uni-prussian-dark: #000416;
+@uni-prussian-dark-i: #000416;
+@uni-prussian-dark-ii: #000000;
+@uni-shamrock: #1E8765;
+@uni-shamrock-light: #56b893;
+@uni-shamrock-light-i: #56b893;
+@uni-shamrock-light-ii: #89ebc3;
+@uni-shamrock-dark: #00593b;
+@uni-shamrock-dark-i: #00593b;
+@uni-shamrock-dark-ii: #002f15;
+@uni-coral: #E73238;
+@uni-coral-light: #ff6b63;
+@uni-coral-light-i: #ff6b63;
+@uni-coral-light-ii: #ff9d91;
+@uni-coral-dark: #ad0011;
+@uni-coral-dark-i: #ad0011;
+@uni-coral-dark-ii: #760000;
+@uni-neutral: #758D9A;
+@uni-neutral-light: #9FB1BD;
+@uni-neutral-light-i: #9FB1BD;
+@uni-neutral-light-ii: #E1E8EC;
+@uni-neutral-dark: #495961;
+@uni-neutral-dark-i: #495961;
+@uni-neutral-dark-ii: #231F20;
+
+//define function for lighter colour variation:
+.col-light(@a){
+    @bgcol: desaturate(lighten(@a,10%),5%); //this is a guess and further research is needed to find out how materials.io calculates this
+    @return: @bgcol;
+}
+.col-light(@col) when (@col = @uni-prussian){
+    @return: @uni-prussian-light;
+}
+.col-light(@col) when (@col = @uni-prussian-light){
+    @return: @uni-prussian-light-ii;
+}
+.col-light(@col) when (@col = @uni-prussian-dark){
+    @return: @uni-prussian;
+}
+.col-light(@col) when (@col = @uni-prussian-dark-ii){
+    @return: @uni-prussian-dark;
+}
+.col-light(@col) when (@col = @uni-coral){
+    @return: @uni-coral-light;
+}
+.col-light(@col) when (@col = @uni-coral-light){
+    @return: @uni-coral-light-ii;
+}
+.col-light(@col) when (@col = @uni-coral-dark){
+    @return: @uni-coral;
+}
+.col-light(@col) when (@col = @uni-coral-dark-ii){
+    @return: @uni-coral-dark;
+}
+.col-light(@col) when (@col = @uni-shamrock){
+    @return: @uni-shamrock-light;
+}
+.col-light(@col) when (@col = @uni-shamrock-light){
+    @return: @uni-shamrock-light-ii;
+}
+.col-light(@col) when (@col = @uni-shamrock-dark){
+    @return: @uni-shamrock;
+}
+.col-light(@col) when (@col = @uni-shamrock-dark-ii){
+    @return: @uni-shamrock-dark;
+}
+.col-light(@col) when (@col = @uni-neutral){
+    @return: @uni-neutral-light;
+}
+.col-light(@col) when (@col = @uni-neutral-light){
+    @return: @uni-neutral-light-ii;
+}
+.col-light(@col) when (@col = @uni-neutral-dark){
+    @return: @uni-neutral;
+}
+.col-light(@col) when (@col = @uni-neutral-dark-ii){
+    @return: @uni-neutral-dark;
+}
+//define function for darker colour variation:
+.col-dark(@a){
+    @bgcol: saturate(darken(@a,10%),5%); //this is a guess and further research is needed to find out how materials.io calculates this
+    @return: @bgcol;
+}
+.col-dark(@col) when (@col = @uni-prussian){
+    @return: @uni-prussian-dark;
+}
+.col-dark(@col) when (@col = @uni-prussian-dark){
+    @return: @uni-prussian-dark-ii;
+}
+.col-dark(@col) when (@col = @uni-prussian-light){
+    @return: @uni-prussian;
+}
+.col-dark(@col) when (@col = @uni-prussian-light-ii){
+    @return: @uni-prussian-light;
+}
+.col-dark(@col) when (@col = @uni-coral){
+    @return: @uni-coral-dark;
+}
+.col-dark(@col) when (@col = @uni-coral-dark){
+    @return: @uni-coral-dark-ii;
+}
+.col-dark(@col) when (@col = @uni-coral-light){
+    @return: @uni-coral;
+}
+.col-dark(@col) when (@col = @uni-coral-light-ii){
+    @return: @uni-coral-light;
+}
+.col-dark(@col) when (@col = @uni-shamrock){
+    @return: @uni-shamrock-dark;
+}
+.col-dark(@col) when (@col = @uni-shamrock-dark){
+    @return: @uni-shamrock-dark-ii;
+}
+.col-dark(@col) when (@col = @uni-shamrock-light){
+    @return: @uni-shamrock;
+}
+.col-dark(@col) when (@col = @uni-shamrock-light-ii){
+    @return: @uni-shamrock-light;
+}
+.col-dark(@col) when (@col = @uni-neutral){
+    @return: @uni-neutral-dark;
+}
+.col-dark(@col) when (@col = @uni-neutral-dark){
+    @return: @uni-neutral-dark-ii;
+}
+.col-dark(@col) when (@col = @uni-neutral-light){
+    @return: @uni-neutral;
+}
+.col-dark(@col) when (@col = @uni-neutral-light-ii){
+    @return: @uni-neutral-light;
+}
 
 //logo color
 @dark-blue:#002e3b;
 @blue: #005C85;
 @light-blue:#1278a6;
 
+//CENTRAL COLOUR DEFINITIONS
+// Welcome blade custom theme
+// Primary palette
+@p-dark: #002e3b;
+@p: #315765;
+@p-light: #5e8493;
+// Secondary palette
+//@s-dark: #006771;
+//@s: #30959f;
+//@s-light: #68c6d0;
+@s-dark: #00593b;
+@s: #1E8765;
+@s-light: #56b893;
+// Additional palette
+@a-dark: #ad0011;
+@a: #e73238;
+@a-light: #ff6b63;
+
+//main page colours:
+@headerfooter-mainbg:@uni-prussian;
+@header-mainbg:@uni-prussian;
+@footer-mainbg:@uni-prussian;
+@footerlinks: #74c9e5;
+@footerlinks-hover: #9fdaed;
+@mainbgcolor: #f2f2f2;
+//navigation:
+@navigation-lvl0-inactive:@headerfooter-mainbg;
+@navigation-lvl0-hover:#005C85;
+@navigation-lvl1-inactive:#005C85;
+@navigation-lvl1-hover:#1278a6;
+@navigation-pill-inactive:@uni-neutral-light-ii;
+@navigation-pill-active:#005C85;
+@navigation-pill-hover:#1278a6;
+//buttons:
+@button-navigate: #00557B; 
+@button-details: #1278a6; 
+@button-add: @uni-shamrock; 
+@button-remove: @uni-coral; //btn-danger (use for remove actions)
+//printer status:
+@printer-available: @uni-shamrock;
+@printer-inuse: @uni-coral-light-ii;
+@printer-onloan: @uni-shamrock-light-ii;
+@printer-broken: @uni-coral;
+@printer-missing: @uni-prussian-light-i;
+@printer-signedout: @uni-prussian-light-ii;
+@printer-idle: @uni-neutral;
+//additional print status:
+@print-success: @uni-shamrock-light;
+@print-failed: @uni-coral-light;
+//role colors:
+@role-header: @uni-prussian;
+@role-header-managers: @uni-prussian-light;
+@role-coordinator: @uni-prussian-light-ii;
+@role-co-coordinator: @uni-prussian-light-ii;
+@role-technician: @uni-prussian-light-ii;
+@role-header-lead-demonstrator: @uni-coral-dark;
+@role-header-demonstrator: @uni-neutral;
+@role-lead-demonstrator: @uni-coral-light;
+@role-demonstrator: @uni-neutral-light-i;
+@role-header-online: @uni-coral-light;
+@role-3d-hub-manager: @uni-coral-light-ii;
+@role-header-it: @uni-shamrock;
+@role-it-manager: @uni-shamrock-light;
+@role-it: @uni-shamrock-light-ii;
+@role-former-member: @uni-neutral-light-ii;
+//END OF CENTRAL COLOUR DEFINITIONS
+
+//OTHER CENTRAL DEFINITIONS
+//images used in carousell on home page
+/*@carousel-imgs: "IMG_0517.png", "IMG_0462.png", "lattice.png", "IMG_0497.png";*/
+@carousel-img-1: "IMG_0517.png";
+@carousel-img-2: "IMG_0462.png";
+@carousel-img-3: "IMG_0531.png";
+@carousel-img-4: "IMG_0497.png";
+//END OF OTHER CENTRAL DEFINITIONS
+
+//bootstrap custom colors for buttons and alerts
+.btnformat(@col){
+    background-color: @col;
+    //.col-dark(@col);
+    border-color: @col;
+    &:hover {
+        .col-dark(@col);
+        background-color: @return;
+    }
+}
+ .btn-primary {
+   .btnformat(@button-navigate);
+ }
+ .btn-danger {
+   .btnformat(@button-remove);
+ }
+ .btn-info {
+   .btnformat(@button-details);
+ }
+ .btn-success {
+   .btnformat(@button-add);
+ }
+ 
+// .btn-warning {
+//   background-color: #ff9900;
+//   &:hover {
+//     background-color: #ffa114;
+//   }
+// }
+
+//bootstrap custom colors for table background
+
+.trstatus(@col){
+    color: @col;
+    &:hover{
+        background-color: @col;
+        color: #fff;
+    }
+}
+.trstatuslight(@col){
+    color: @col;
+    &:hover{
+        .col-light(@col);
+        background-color: @return;
+        color: #000;
+    }
+}
+
+.table>tbody>tr {
+  &.available {
+    .trstatus(@printer-available);
+  }
+  &.in-use {
+    .trstatus(@printer-inuse);
+  }
+  &.on-loan {
+    .trstatus(@printer-onloan);
+  }
+  &.broken {
+    .trstatus(@printer-broken);
+  }
+  &.missing {
+    .trstatus(@printer-missing);
+  }
+  &.signed-out {
+    .trstatus(@printer-signedout);
+  }
+  &.p-success {
+    .trstatuslight(@print-success);
+  }
+  &.p-failed {
+    .trstatuslight(@print-failed);
+  }
+}
 
 //others
 @pth-images : "/Images";

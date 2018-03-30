@@ -126,7 +126,8 @@
 
                     </p>
                     <!-- <p>Days out of Order</p> -->
-                    <a href="/printers/index" class="btn btn-lg btn-info">View all printers</a>
+                    <a href="/printers/update/{{$printer->id}}" class="btn btn-info">Update Record</a>
+                    <a href="/printers/index" class="btn btn-primary">View all printers</a>
                 </div>
             </div>
         </div>
@@ -134,7 +135,7 @@
                       
 
 <ul class="lsn container printer-details">
-    {{-- Printer signed out--}}
+    {{-- Printer signed out --}}
     @if($printer->printer_status === 'Signed out')
     <li class="item">
         <div class="row well">
@@ -143,280 +144,49 @@
         </div>
     </li>
     @endif
-    @php
-        //collect all prints and loans
-        $printdata = $printer->prints()->select('created_at AS StartDate', 'updated_at AS EndDate','purpose AS Type','status AS Description', 'id as EntryID');
-        //collect all issues
-        $issuedata = $printer->fault_data()->select('created_at AS StartDate', 'resolved_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'id as EntryID');
-        //combine them
-        $historydata = $printdata->unionAll($issuedata);
-        //collect all issue updates
-        $issueupdatedata = $printer->fault_data()->orderBy('created_at','desc')->where('resolved',0)->first();
-        if($issueupdatedata){
-            $issueupdatedata = $issueupdatedata->FaultUpdates()->select('created_at AS StartDate', 'updated_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'fault_data_id as EntryID');
-            //combine since there are issues
-            $historydata = $historydata->unionAll($issueupdatedata);
-        }
-        //sort entries
-        $historydata = $historydata->orderBy('StartDate', 'DESC')->get();
-
-    @endphp
-    @php
-        $lastEntry = null;
-        $entryCounter = 1;
-    @endphp
-    @foreach($historydata as $entry)
-        @if($lastEntry)
-            @if($entry->Type === 'Use' && $entry->Type === $lastEntry->Type && $entry->Description === $lastEntry->Description)
-                @php
-                    $entryCounter += 1;
-                    //combine them
-                    $lastEntry->StartDate = $entry->StartDate
-                @endphp
-            @else
-
-                @php
-                    //print last entry
-                    $outStartDate = new \Carbon\Carbon($lastEntry->StartDate);
-                    if(!$lastEntry->EndDate){
-                        $outEndDate = null;
-                    } else {
-                        $outEndDate = new \Carbon\Carbon($lastEntry->EndDate);
-                    }
-                    $outDescription = $lastEntry->Description;
-                    $outType = $lastEntry->Type;
-                    $outClass = '';
-                    if($lastEntry->Type == 'Use'){
-                        $outType = $entryCounter.' Prints';
-                        if($lastEntry->Description === 'Success'){
-                            $outClass = 'alert alert-success';
-                        }else{
-                            $outClass = 'alert alert-warning';
-                        }
-                    }
-                    if($lastEntry->Type === 'Loan'){
-                            $outClass = 'alert alert-info';
-                    }
-                    if($lastEntry->Type === 'Broken'){
-                            $outClass = 'alert alert-danger';
-                    }
-                    if($lastEntry->Type === 'Missing'){
-                            $outClass = 'alert alert-danger';
-                    }
-
-                    $entryCounter = 1;
-                @endphp
-                <li class="item">
-                    <div class=" row {{$outClass}}">
-                        <div class="col-sm-4 text-left"> 
-                            {{$outStartDate->format('d/m/Y')}} -
-                            @if($outEndDate)
-                                {{$outEndDate->format('d/m/Y')}}
-                            @else
-                                Now
-                            @endif
-                        </div>
-                        <div class="col-sm-4 text-justify">{{$outType}}: {{$outDescription}}</div> 
-                        @if($outType === 'Broken' || $outType === 'Missing')
-                            @can('issues_manage')
-                                <div class="col-sm-4">
-                                    @if(!$outEndDate)
-                                        <a href="/issues/update/{{$lastEntry->EntryID}}" class="btn btn-info">View/Update or Resolve</a>
-                                    @else
-                                        <a href="/issues/update/{{$lastEntry->EntryID}}">View details...</a>
-                                    @endif
-                                </div>
-                            @endcan
-                        @endif
-                    </div>
-                </li>
-                @php
-                    $lastEntry = $entry;
-                @endphp
-            @endif
-        @else
-            @php
-                $lastEntry = $entry;
-            @endphp
-        @endif
-    @endforeach
-
-    @if($lastEntry)
-        @php
-            //print very last entry
-            $outStartDate = new \Carbon\Carbon($lastEntry->StartDate);
-            if(!$lastEntry->EndDate){
-                $outEndDate = null;
-            } else {
-                $outEndDate = new \Carbon\Carbon($lastEntry->EndDate);
-            }
-            $outDescription = $lastEntry->Description;
-            $outType = $lastEntry->Type;
-            $outClass = '';
-            if($lastEntry->Type == 'Use'){
-                $outType = $entryCounter.' Prints';
-                if($lastEntry->Description === 'Success'){
-                    $outClass = 'alert alert-success';
-                }else{
-                    $outClass = 'alert alert-warning';
-                }
-            }
-            if($lastEntry->Type === 'Loan'){
-                    $outClass = 'alert alert-info';
-            }
-            if($lastEntry->Type === 'Broken'){
-                    $outClass = 'alert alert-danger';
-            }
-            if($lastEntry->Type === 'Missing'){
-                    $outClass = 'alert alert-danger';
-            }
-        @endphp
+    {{-- Prints, Loans and Issues --}}
+    @foreach($historyEntries as $entry)
         <li class="item">
-            <div class=" row {{$outClass}}">
-                 <div class="col-sm-4 text-left"> 
-                    {{$outStartDate->format('d/m/Y')}} -
-                    @if($outEndDate)
-                        {{$outEndDate->format('d/m/Y')}}
+            <div class=" row {{$entry['Class']}}">
+                <div class="col-sm-4 text-left"> 
+                    {{$entry['StartDate']->format('d/m/Y')}} -
+                    @if($entry['EndDate'])
+                        {{$entry['EndDate']->format('d/m/Y')}}
                     @else
                         Now
                     @endif
                 </div>
-                <div class="col-sm-4 text-justify">{{$outType}}: {{$outDescription}}</div>
-                @if($outType === 'Broken' || $outType === 'Missing')
+                <div class="col-sm-4 text-justify">{{$entry['Type']}}: {{$entry['Description']}}</div> 
+                @if($entry['Type'] === 'Broken' || $entry['Type'] === 'Missing')
                     @can('issues_manage')
                         <div class="col-sm-4">
-                            @if(!$outEndDate)
-                                <a href="/issues/update/{{$lastEntry->EntryID}}" class="btn btn-info">View/Update or Resolve</a>
+                            @if(!$entry['EndDate'])
+                                <a href="/issues/update/{{$entry['EntryID']}}" class="btn btn-info">View/Update or Resolve</a>
                             @else
-                                <a href="/issues/update/{{$lastEntry->EntryID}}">View details...</a>
+                                <a href="/issues/update/{{$entry['EntryID']}}">View details...</a>
                             @endif
                         </div>
                     @endcan
                 @endif
+                {{--@if($entry['Type'] === '1 Prints' && $entry['Description'] !== 'Success' && $entry['Description'] !== 'Failed')
+                        <div class="col-sm-4">
+                            @if(!$entry['EndDate'])
+                                <a href="/issues/update/{{$entry['EntryID']}}" class="btn btn-info">View</a>
+                            @else
+                                <a href="/issues/update/{{$entry['EntryID']}}">View details...</a>
+                            @endif
+                        </div>
+                @endif--}}
             </div>
         </li>
-    @endif
-    {{-- Printer created--}}
+    @endforeach
+    {{-- Printer created --}}
     <li class="item">
         <div class="row well">
             <div class="col-sm-4 text-left">{{$printer->created_at->format('d/m/Y')}}:</div>
             <div class="col-sm-4 text-justify">Printer registered with the workshop</div>
         </div>
     </li>
-    {{--@foreach($issues as $issue)
-
-        <li>
-            
-                <div class="alert alert-warning">
-                    <div class="row">
-                        <div class="col-sm-12 text-left"><h3><b>{{ isset($issue->title) ? $issue->title : 'Issue with printer '.$issue->printers_id }}:</b></h3></div>
-                    </div>
-                    <div class="row vdivide">
-                        <div class="col-sm-3 text-left">
-                            <p>Created by</p>
-                            <p><b>{{$issue->issue_created->first_name}} {{$issue->issue_created->last_name}}</b></p>
-                        </div>
-                        <div class="col-sm-3 text-left">
-                            <p>Created on</p>
-                            <p>{{ $issue->created_at->toDayDateTimeString()}}</p>
-                        </div>
-                        <div class="col-sm-3 text-left">
-                            <p>Printer Status</p>
-                            <p style="color:red;"><b>{{$issue->printer_status}}</b></p>
-                        </div>
-                        <div class="col-sm-3 text-left">
-                            <p>Days out of Order</p>
-                            <p style="color:red;"><b>@if($issue->resolved == 0) {{\Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at)}} @else {{  Carbon\Carbon::parse($issue->resolved_at)->diffInDays($issue->created_at)}} @endif</b></p>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-8 text-left">
-                        <p style="font-size: 18px;"><b>Description:</b></p>
-                        <p style="font-size: 18px;">{{ $issue->body }}</p>
-                    </div>
-                    @can('issues_manage')
-                        <div class="col-sm-4">
-                            @if($issue->resolved == 0)
-                                <a href="/issues/update/{{$issue->id}}" class="btn btn-lg btn-info">View/Update or Resolve</a>
-                            @endif
-                        </div>
-                    @endcan
-                </div>
-
-                @if(!empty(array_filter( (array) $issue->FaultUpdates)))
-
-                    <hr>
-                    <div class="text-left">
-                        <h3>ISSUE LOG:</h3>
-                    </div>
-
-                    <ul>
-
-                        @foreach($issue->FaultUpdates as $update)
-
-                            <div class="alert alert-info">
-                                <div class="row">
-                                    <div class="col-sm-12 text-left"><h3><b>Issue update</b></h3></div>
-                                </div>
-                                <div class="row vdivide ">
-                                    <div class="col-sm-4 text-left">
-                                        <p>Created by</p>
-                                        <p><b>{{$update->staff->first_name}} {{$update->staff->last_name}}</b></p>
-                                    </div>
-                                    <div class="col-sm-4 text-left">
-                                        <p>Created on</p>
-                                        <p>{{ $update->created_at->toDayDateTimeString() }}</p>
-                                    </div>
-                                    <div class="col-sm-4 text-left">
-                                        <p>Printer Status</p>
-                                        <p style="color:red;"><b>{{$update->printer_status}}</b></p>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-8 text-left">
-                                        <p style="font-size: 18px;"><b>Description</b></p>
-                                        <p style="font-size: 18px;">{{ $update->body }}</p>
-                                    </div>
-                                    @if($issue->resolved == 1)
-
-
-                                        <div class="alert alert-success">
-                                            <div class="row">
-                                                <div class="col-sm-12 text-left"><h3><b>Issue resolved</b></h3></div>
-                                            </div>
-                                            <div class="row vdivide">
-                                                <div class="col-sm-4 text-left">
-                                                    <p>Created by</p>
-                                                    <p><b>{{$issue->issue_resolved->first_name}} {{$issue->issue_resolved->last_name}}</b></p>
-                                                </div>
-                                                <div class="col-sm-4 text-left">
-                                                    <p>Resolved on</p>
-                                                    <p>{{ Carbon\Carbon::parse($issue->resolved_at)->toDayDateTimeString() }}</p>
-                                                </div>
-                                                <div class="col-sm-4 text-left">
-                                                    <p>Printer Status</p>
-                                                    <p><b>Available</b></p>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-8 text-left">
-                                                    <p style="font-size: 18px;"><b>Resolve message:</b></p>
-                                                    <p style="font-size: 18px;">{{ $issue->message_resolved }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-
-                    </ul>
-            </div>    
-        </li>
-    @endforeach--}}
 </ul>
 @include('layouts.errors')
 @endsection

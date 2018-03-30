@@ -6,8 +6,8 @@ body, body *:not(html):not(style):not(br):not(tr):not(code) {
 }
 
 body {
-    background-color: #F2F4F6;
-    color: #74787E;
+    background-color: #f2f2f2;
+    color: #000;
     height: 100%;
     line-height: 1.4;
     margin: 0;
@@ -24,7 +24,7 @@ blockquote {
 }
 
 a {
-    color: #3869D4;
+    color: #002e3b;
 }
 
 a img {
@@ -34,7 +34,7 @@ a img {
 /* Typography */
 
 h1 {
-    color: #2F3133;
+    color: #002e3b;
     font-size: 19px;
     font-weight: bold;
     margin-top: 0;
@@ -42,7 +42,7 @@ h1 {
 }
 
 h2 {
-    color: #2F3133;
+    color: #002e3b;
     font-size: 16px;
     font-weight: bold;
     margin-top: 0;
@@ -50,7 +50,7 @@ h2 {
 }
 
 h3 {
-    color: #2F3133;
+    color: #002e3b;
     font-size: 14px;
     font-weight: bold;
     margin-top: 0;
@@ -58,7 +58,7 @@ h3 {
 }
 
 p {
-    color: #74787E;
+    color: #000;
     font-size: 16px;
     line-height: 1.5em;
     margin-top: 0;
@@ -76,7 +76,7 @@ img {
 /* Layout */
 
 .wrapper {
-    background-color: #f5f8fa;
+    background-color: #002e3b;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -99,10 +99,13 @@ img {
 .header {
     padding: 25px 0;
     text-align: center;
+    color: white;
+    background-color: #002e3b;
 }
 
 .header a {
-    color: orangered;
+    color: white;
+    background-color: #002e3b;
     font-size: 19px;
     font-weight: bold;
     text-decoration: none;
@@ -148,6 +151,8 @@ img {
 /* Footer */
 
 .footer {
+    background-color: #002e3b;
+    color: #fff;
     margin: 0 auto;
     padding: 0;
     text-align: center;
@@ -158,7 +163,8 @@ img {
 }
 
 .footer p {
-    color: #AEAEAE;
+    background-color: #002e3b;
+    color: #fff;
     font-size: 12px;
     text-align: center;
 }
@@ -179,7 +185,7 @@ img {
 }
 
 .table td {
-    color: #74787E;
+    color: #000;
     font-size: 15px;
     line-height: 18px;
     padding: 10px 0;
@@ -211,27 +217,30 @@ img {
 }
 
 .button-blue {
-    background-color: #3097D1;
-    border-top: 10px solid #3097D1;
-    border-right: 18px solid #3097D1;
-    border-bottom: 10px solid #3097D1;
-    border-left: 18px solid #3097D1;
+    color: #fff;
+    background-color: #005C85;
+    border-top: 10px solid #005C85;
+    border-right: 18px solid #005C85;
+    border-bottom: 10px solid #005C85;
+    border-left: 18px solid #005C85;
 }
 
 .button-green {
-    background-color: #2ab27b;
-    border-top: 10px solid #2ab27b;
-    border-right: 18px solid #2ab27b;
-    border-bottom: 10px solid #2ab27b;
-    border-left: 18px solid #2ab27b;
+    color: #fff;
+    background-color: #1E8765;
+    border-top: 10px solid #1E8765;
+    border-right: 18px solid #1E8765;
+    border-bottom: 10px solid #1E8765;
+    border-left: 18px solid #1E8765;
 }
 
 .button-red {
-    background-color: #bf5329;
-    border-top: 10px solid #bf5329;
-    border-right: 18px solid #bf5329;
-    border-bottom: 10px solid #bf5329;
-    border-left: 18px solid #bf5329;
+    color: #fff;
+    background-color: #E73238;
+    border-top: 10px solid #E73238;
+    border-right: 18px solid #E73238;
+    border-bottom: 10px solid #E73238;
+    border-left: 18px solid #E73238;
 }
 
 /* Panels */

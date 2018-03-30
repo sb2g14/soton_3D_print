@@ -110,6 +110,88 @@ class IssuesController extends Controller
         //
     }
 
+    private function createPrinterHistoryEntry($lastEntry,$entryCounter){
+        //print last entry
+        $history_entry = array();
+        $history_entry['EntryID'] = $lastEntry->EntryID;
+        $history_entry['StartDate'] = new \Carbon\Carbon($lastEntry->StartDate);
+        if(!$lastEntry->EndDate){
+            $history_entry['EndDate'] = null;
+        } else {
+            $history_entry['EndDate'] = new \Carbon\Carbon($lastEntry->EndDate);
+        }
+        $history_entry['Description'] = $lastEntry->Description;
+        $history_entry['Type'] = $lastEntry->Type;
+        $history_entry['Class'] = '';
+        if($lastEntry->Type == 'Use'){
+            $history_entry['Type'] = $entryCounter.' Prints';
+            if($lastEntry->Description === 'Success'){
+                $history_entry['Class'] = 'alert alert-psuccess';
+            }else{
+                $history_entry['Class'] = 'alert alert-pfailed';
+            }
+        }
+        if($lastEntry->Type === 'Loan'){
+            $history_entry['Class'] = 'alert alert-onloan';
+        }
+        if($lastEntry->Type === 'Broken'){
+            $history_entry['Class'] = 'alert alert-broken';
+        }
+        if($lastEntry->Type === 'Missing'){
+            $history_entry['Class'] = 'alert alert-missing';
+        }
+        return $history_entry;
+    }
+
+    private function getPrinterHistory($id){
+        $outEntries = [];
+        $printer = Printers::where('id', $id)->first();
+        //collect all prints and loans
+        $printdata = $printer->prints()->select('created_at AS StartDate', 'updated_at AS EndDate','purpose AS Type','status AS Description', 'id as EntryID');
+        //collect all issues
+        $issuedata = $printer->fault_data()->select('created_at AS StartDate', 'resolved_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'id as EntryID');
+        //combine them
+        $historydata = $printdata->unionAll($issuedata);
+        //collect all issue updates
+        $issueupdatedata = $printer->fault_data()->orderBy('created_at','desc')->where('resolved',0)->first();
+        if($issueupdatedata){
+            $issueupdatedata = $issueupdatedata->FaultUpdates()->select('created_at AS StartDate', 'updated_at AS EndDate', 'printer_status AS Type', 'body AS Description', 'fault_data_id as EntryID');
+            //combine since there are issues
+            $historydata = $historydata->unionAll($issueupdatedata);
+        }
+        //sort entries
+        $historydata = $historydata->orderBy('StartDate', 'DESC')->get();
+        $lastEntry = null;
+        $entryCounter = 1;
+    
+        foreach($historydata as $entry){
+            if($lastEntry){
+                if($entry->Type === 'Use' && $entry->Type === $lastEntry->Type && $entry->Description === $lastEntry->Description){
+                    $entryCounter += 1;
+                    //combine them
+                    $lastEntry->StartDate = $entry->StartDate;
+                }else{
+                    //print last entry
+                    $out = $this->createPrinterHistoryEntry($lastEntry,$entryCounter);
+                    $outEntries[] = $out;
+                    $entryCounter = 1;
+                    //$this->renderHistoryEntryToHTML($out);
+                    $lastEntry = $entry;
+                }
+            }else{
+                $lastEntry = $entry;
+            }
+        }
+
+        if($lastEntry){
+            //print very last entry
+            $out = $this->createPrinterHistoryEntry($lastEntry,$entryCounter);
+            $outEntries[] = $out;
+            //$this->renderHistoryEntryToHTML($out);
+        }
+        return $outEntries;
+    }
+
     /**
      * Display the specified resource.
      *
@@ -133,10 +215,13 @@ class IssuesController extends Controller
             ->title('Printer usage')
             ->labels(['Days Printing', 'Days on Loan', 'Days Broken or Missing', 'Days Idle'])
             ->values([$success,$loan,$broken,$idle])
+            ->colors(['#1E8765', '#56b893', '#E73238', '#9FB1BD'])
             ->dimensions(400,200)
             ->responsive(true);
 
-        return view('issues.show', compact('issues', 'id','printer','chart'));
+        $historyEntries = $this->getPrinterHistory($id);
+
+        return view('issues.show', compact('issues', 'id','printer','chart','historyEntries'));
     }
 
     /**
@@ -194,8 +279,37 @@ class IssuesController extends Controller
      */
     public function destroy($id)
     {
+        $issue = FaultData::findOrFail($id);
 
+        Printers::where('id', $issue->printers_id)->update(array('printer_status' => 'Available'));
+
+        $issue->delete();
+
+        notify()->flash('The issue has been deleted from the database.', 'success', [
+            'text' => "Please proceed further for creating another one.",
+        ]);
+
+        return redirect('/issues/index');
     }
+    public function deleteupdate($id)
+    {
+        $update = FaultUpdates::findOrFail($id);
+        $issue = $update->FaultData;
+        $update->delete();
+        if(!empty(array_filter((array)$issue->FaultUpdates))) {
+            $previous_status = $issue->FaultUpdates()->orderBy('created_at', 'desc')->first()->printer_status;
+        }else{
+            $previous_status = $issue->printer_status;
+        }
+
+        Printers::where('id','=', $issue->printers_id)->update(array('printer_status' => $previous_status));
+        notify()->flash('The issue update has been deleted from the database.', 'success', [
+            'text' => "The printer status is changed to the previous one.",
+        ]);
+
+        return redirect('/issues/index');
+    }
+
     public function select()
     {
         $printers =  printers::pluck('id','id')->all();
@@ -219,12 +333,10 @@ class IssuesController extends Controller
 
             return redirect('issues/index');
         } else {
-            // If the redirection is from welcome get the post id
-            $id = request('id');
-            if ( !empty ( $id ) ) {
-                $post = posts::findOrFail($id);
-                $title = $post->title;
-                $body = $post->body;
+            // If the redirection is from welcome get from the post
+            if ( !empty ( $title ) ) {
+                $title = request('title');
+                $body = request('body');
             } else {
                 $title = '';
                 $body = '';

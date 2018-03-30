@@ -15,13 +15,13 @@
                     {{ csrf_field() }}
 
                     <label for="first_name">First name: </label> <br>
-                        <input type="text" name="first_name" class="form-control" value="{{ old('first_name') }}" /><br>
+                        <input id="first_name" type="text" name="first_name" class="form-control" value="{{ old('first_name') }}" /><br>
                     <label for="last_name">Last name: </label><br>
-                        <input type="text" name="last_name" class="form-control" value="{{ old('last_name') }}"/><br>
+                        <input id="last_name" type="text" name="last_name" class="form-control" value="{{ old('last_name') }}"/><br>
                     {{--<label for="body">Student/staff ID: </label><br>--}}
                         {{--<input type="text" name="student_id" class="form-control"/><br>--}}
                     <label for="email">Email: </label> <br>
-                        <input type="email" name="email" class="form-control" value="{{ old('email') }}"/><br>
+                        <input id="email" type="email" name="email" class="form-control" value="{{ old('email') }}"/><br>
                     {{--<label for="phone">Phone: </label><br>--}}
                         {{--<input type="text" name="phone" class="form-control"/><br>--}}
                     <div class="field-inner">
@@ -32,7 +32,7 @@
                     </div> <!-- /form-group -->
                     <!--This button submits the update action-->
                     @include('layouts.errors')
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button id="submit" type="submit" class="btn btn-success">Add</button>
                 </form>
             </div>
 
@@ -40,3 +40,7 @@
         </div>
     </div>
 @endsection
+@section("scripts")
+    <script src="/js/validate_form.js"></script>
+@endsection
+

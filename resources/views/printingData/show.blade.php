@@ -24,7 +24,7 @@
                         Total estimated price: <b>£{{$job->total_price}}</b><br>
                         {{--Module name or cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> @elseif($job->use_case == 'Cost Code - unknown') <b style="color: red"> @endif {{$job->use_case}} </b><br>--}}
                         Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> {{$job->cost_code}} @elseif($job->use_case == 'Cost Code - unknown')</b> <b style="color: red"> {{$job->cost_code}} @else <b style="color: forestgreen"> {{$job->use_case}} @endif  </b><br>
-                        Budget Holder: <b> {{ $job->budget_holder }} </b>
+                        Budget Holder: <b> {{ $job->budget_holder }} </b><br>
                         Job Title: {{ $job->job_title }} <br>
                         Job number: <b>{{$job->id}}</b><br>
                     </p>
@@ -131,8 +131,8 @@
                         <div class="form-group text-left">
                             <div class="col-md-12">
                                 <label for="comments">Add comments (optional):</label><br>
-                                <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
-                                <span class="help-block" id="message_error"></span>
+                                <textarea rows="4" id="comment" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                <span class="help-block" id="comment_error"></span>
                             </div>
                         </div>
 
@@ -149,7 +149,6 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/approve_job_validation.js"></script>
     @if (notify()->ready())
         <script>
             swal({
@@ -160,6 +159,7 @@
             });
         </script>
     @endif
+    <script src="/js/validate_form.js"></script>
 @endsection
 
 

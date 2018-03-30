@@ -2,8 +2,10 @@
 @import "mixins.less";
 @import "setup.less";
 
+@import "datepicker.less";
+
 body {
-    background: #f2f2f2;
+    background: @mainbgcolor;
     color: @c-font;
     font-family: @f-family;
     font-weight: 400;
@@ -27,7 +29,7 @@ body {
     position: fixed;
     width: 100%;
     height: 48px;
-    background: @dark-blue;
+    background: @header-mainbg;
     right: 0;
     top: 0;
     z-index: 40;
@@ -56,7 +58,7 @@ body {
         position: absolute;
         top: 48px;
         left: 0;
-        background: @dark-blue;
+        background: @headerfooter-mainbg;
         text-align: center;
         padding: 20px 0;
         z-index: 3;
@@ -74,12 +76,12 @@ body {
                 display: block;
             }
             .btn {
-                background: @light-red;
-                color: @c-link;
-                padding: 10px;
-                &:hover{
-                    background: @red;
-                }
+                .font-size( (20/@fs-base) );
+                color: #fff;
+                padding: 5px 10px;
+                // &:hover{
+                //     background: @red;
+                // }
             }
         }
 
@@ -107,7 +109,7 @@ body {
            .item {
                .dropdown-bl {
                    display: none;
-                   background: @blue;
+                   background: @navigation-lvl1-inactive;
                    a {
                        .font-size( (16/@fs-base) );
                        display: block;
@@ -135,7 +137,7 @@ body {
                     top: 100%;
                     left: 0;
                     width: 200px;
-                    background: @blue;
+                    background: @navigation-lvl1-inactive;
                     border-radius:0 2.5px 2.5px 2.5px;
                     &.dropdown-login {
                         width: 164px;
@@ -149,7 +151,7 @@ body {
                         border-bottom: 1px solid #00557b;
                         padding: 10px 20px;
                         &:hover {
-                            background: @light-blue;
+                            background: @navigation-lvl1-hover;
                             > a {
                                color: @c-link;
                             }
@@ -164,7 +166,7 @@ body {
                 
                 &:hover {
                     > span {
-                        background: @blue;
+                        background: @navigation-lvl0-hover;
                         color: @c-link;
                         border-radius: 5px 5px 0 0;
                     }
@@ -255,7 +257,6 @@ body {
 .bl-welcome {
     position: absolute;
     top: 100px;
-    left: 10%;
     z-index: 2;
     color: #fff;
    
@@ -268,19 +269,29 @@ body {
 
     a {
         color: @c-link;
-        .font-size( (20/@fs-base) );
+        /*.font-size( (20/@fs-base) );*/
+        .font-size( (32/@fs-base) );
         display: block;
         padding: 5px 20px;
         text-decoration: none; 
         &:hover{
-            color: @c-link;
+            /*color: @c-link;*/
+            color: #50626e;
         }
     }
     .btn {
-        background: @light-blue;
         padding: 10px;
+    }
+    .btn-online {
+        background: #E91E63;
         &:hover{
-            background: @blue;
+            background: #C2185B;
+        }
+    }
+    .btn-request {
+        background: #00BCD4;
+        &:hover{
+            background: #0097A7;
         }
     }
 }
@@ -288,17 +299,31 @@ body {
 /* SLIDER STYLES */
 
 #image-slider_home {
+    @root: "/Images/";
+    /*@cntr: 1;
+    .for-each(@imgname in @carousel-imgs) {
+        .img_@{cntr} {
+            @url: "@{root}@{imgname}";
+            background: url(@url);
+        }
+        @cntr: @cntr + 1;
+    }*/
+    
     .img_1 {
-        background-image: url('/Images/IMG_0517.png');
+        @url: "@{root}@{carousel-img-1}";
+        background-image: url(@url);
     }
     .img_2 {
-        background-image: url('/Images/IMG_0462.png');
+        @url: "@{root}@{carousel-img-2}";
+        background-image: url(@url);
     }
     .img_3 {
-        background-image: url('/Images/lattice.png');
+        @url: "@{root}@{carousel-img-3}";
+        background-image: url(@url);
     }
     .img_4 {
-        background-image: url('/Images/IMG_0497.png')
+        @url: "@{root}@{carousel-img-4}";
+        background-image: url(@url);
     }
 }
 
@@ -387,6 +412,10 @@ body {
     .title {
         font-family: @f-extra;
         .font-size( (32/@fs-base) );
+    }
+
+    .text-user {
+        font-style: italic;
     }
 
     .m-b-md {
@@ -501,10 +530,11 @@ body {
         display: flex;
         flex-wrap: wrap;
     }
+    
+    
 
     .cardblock {
         background: #fff;
-        height: 95%;
         position: relative;
         margin-bottom: 30px;
         &:hover {
@@ -518,13 +548,13 @@ body {
             overflow: hidden;
             // height: 12%;
             &.box-issue {
-                background-color: #880E4F;   
+                background-color: @a-dark; //#880E4F;
             }
             &.box-announcement {
-                background-color: #006064; 
+                background-color: @s-dark;
             }
             &.box-stat {
-                background-color: #004D40;
+                background-color: @p-dark;
             }
             .caption {
                 display: inline-block;
@@ -538,22 +568,22 @@ body {
             small {
                 color: #fff;
             }
-            &.bg-pink {
-                background-color: #C2185B;// #F8BBD0;
+            &.bg-issue {
+                background-color: @a;//#C2185B;// #F8BBD0;
                 // &:hover {
                 // background-color: #880E4F; 
                 // color: #fff;
                 // }
             }
-            &.bg-cyan {
-                background-color: #0097A7;//#B2EBF2;
+            &.bg-announcement {
+                background-color: @s;//#B2EBF2;
                 // &:hover {
                 //    background-color: #006064; 
                 //    color: #fff;
                 // }
             }
-            &.bg-teal {
-                background-color: #00796B;//#B2DFDB;
+            &.bg-stat {
+                background-color: @p;//#B2DFDB;
                 // &:hover {
                 //    background-color: #004D40; 
                 //    color: #fff;
@@ -693,11 +723,33 @@ body {
     }
 } // s-request-form
 
-//connected nav styles
-.connected {
-    background-color: #ddd;
+/*connected nav styles*/
+.nav.nav-pills > li > a{
+    margin-left: 10px;
+    margin-right: 10px;
     border-radius: 4px;
+    background-color: @navigation-pill-inactive;
+    color: contrast(@navigation-pill-inactive);
 }
+.nav.nav-pills > li > a:hover{
+    background-color: @navigation-pill-hover;
+    color: contrast(@navigation-pill-hover);
+}
+.nav.nav-pills > li.active > a{
+    background-color: @navigation-pill-active;
+    color: contrast(@navigation-pill-active);
+}
+.nav.nav-pills > li.nav-left > a{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-right: 1px;
+}
+.nav.nav-pills > li.nav-right > a{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    margin-left: 1px;
+}
+
 
 //custom styles for background on hover in nav and table-hover
 .nav>li>a:focus, .nav>li>a:hover {
@@ -709,11 +761,52 @@ body {
 }
 
 //background on hover in printer detail list
-.printer-details>.item>.row:hover {
-    background-color: #ddd;
+.printer-details>.item> {
+
+//alert boxes for printer statuses
+.alert-status(@col) {
+    background-color: @col;
+    .col-dark(@col);
+    border-color: @return;
+    color: contrast(@return);
+    &:hover{
+       .col-light(@col);
+       background-color: @return;
+       color: contrast(@return);
+       & a{
+           color: #000;
+       }
+       & a.btn{
+           color: #fff;
+       }
+    }
+    & a{
+        color: contrast(@return);
+    }
 }
+    .alert-default {
+       .alert-status(@uni-neutral-light);
+    }
+    .alert-available {
+       .alert-status(@printer-available);
+    }
+    .alert-psuccess {
+        .alert-status(@print-success);
+    }
+    .alert-pfailed {
+        .alert-status(@print-failed);
+    }
+    .alert-onloan {
+        .alert-status(@printer-onloan);
+    }
+    .alert-broken {
+        .alert-status(@printer-broken);
+    }
+    .alert-missing {
+        .alert-status(@printer-missing);
+    }
 
-
+}
 
 .contacts {
     .col-left {
@@ -726,40 +819,74 @@ body {
 
 .demonstrator {
     .list-group-item {
+        background-color: @uni-prussian-light;
+        color: #fff;
         &:hover{
+            background-color: @uni-prussian-light-ii;
             color: #fff;
         }
     }
+    .role-headerformat(@col:@role-header){
+        background-color: @col;
+        color: contrast(@col);
+        &:hover{
+            background-color: @col;
+            color: contrast(@col);
+        }
+    }
+    .role-header{
+        .role-headerformat();
+    }
+    .role-header-managers{
+        .role-headerformat(@role-header-managers);
+    }
+    .role-header-lead-demonstrators{
+        .role-headerformat(@role-header-lead-demonstrator);
+    }
+    .role-header-demonstrator{
+        .role-headerformat(@role-header-demonstrator);
+    }
+    .role-header-online{
+        .role-headerformat(@role-header-online);
+    }
+    .role-header-it{
+        .role-headerformat(@role-header-it);
+    }
 
-    .demonstrator-lead {
-        background-color: #A5D6A7;
+    .role-defaultformat(@col){
+        background-color: #fff;
+        color: #000;
         &:hover {
-            background-color: #C8E6C9;
+            background-color: @col;
+            color: contrast(@col);
         }
     }
-    .demonstrator-norm {
-        background-color: #90CAF9;
-        &:hover {
-            background-color: #BBDEFB;
-        }
+    .role-lead-demonstrator {
+        .role-defaultformat(@role-lead-demonstrator);
     }
-    .it-manager {
-        background-color: #9FA8DA;
-        &:hover {
-            background-color: #C5CAE9;
-        }
+    .role-demonstrator {
+        .role-defaultformat(@role-demonstrator);
     }
-    .hub-manager {
-        background-color: #FFCC80;
-        &:hover {
-            background-color: #FFE0B2;
-        }
+    .role-it-manager {
+        .role-defaultformat(@role-it-manager);
     }
-    .coordinator {
-        background-color: #EF9A9A;
-        &:hover {
-            background-color: #FFCDD2;
-        }
+    .role-it {
+        .role-defaultformat(@role-it);
+    }
+    .role-3d-hub-manager {
+        .role-defaultformat(@role-3d-hub-manager);
+    }
+    .role-coordinator {
+        .role-defaultformat(@role-coordinator);
+    }
+    .role-co-coordinator {
+        .role-defaultformat(@role-co-coordinator);
+    }
+    .role-technician {
+        .role-defaultformat(@role-technician);
+    }
+    .role-former-member {
+        .role-defaultformat(@role-former-member);
     }
 }
 
@@ -781,7 +908,7 @@ body {
 footer {
     font-weight: 100;
     .font-size( (14/@fs-base) );
-    background: @dark-blue;
+    background: @footer-mainbg;
     color: #fff;
     margin-top: 20px;
     padding: 15px;
@@ -799,6 +926,12 @@ footer {
     
     .copyright, .team {
         .font-size( (12/@fs-base) );
+    }
+    a {
+        color: @footerlinks;
+        &:hover{
+            color: @footerlinks-hover;
+        }
     }
 }
 
@@ -920,6 +1053,13 @@ footer {
             margin-bottom: 10px;
         }
     }
+    .s-welcome {
+        .cardblock {
+            height: 95%;
+        }
+    }
+
+
 }
 
  @media screen and (min-width: 1100px ) {

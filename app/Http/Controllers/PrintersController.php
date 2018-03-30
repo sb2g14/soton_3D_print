@@ -62,24 +62,31 @@ class PrintersController extends Controller
         if ($printer_type=="Other"){
             $printer_type = request('other_printer_type');
         }
+        if(request('printer_permission')=="isWorkshop")
+        {
+            $printer_permission = true;
+        }else{
+            $printer_permission = false;
+        }
         Printers::create([
             'id' => request('id'),
             'serial_no' => request('serial_no'),
             'printer_type' => $printer_type,
-            'printer_status'=> 'Available']);
+            'printer_status'=> 'Available',
+            'isWorkshop' => $printer_permission]);
 
         return redirect('/printers/index');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource. 
      *
      * @param  \App\printers  $printers
      * @return \Illuminate\Http\Response
      */
     public function show()
     {
-
+        //TODO: this function should show the printer history which is currently in the issues controller!
     }
 
     /**
@@ -106,7 +113,8 @@ class PrintersController extends Controller
     {
         $this -> validate(request(), [
             'serial_no' => 'required',
-            'printer_type' => 'required'
+            'printer_type' => 'required',
+            'printer_permission' => 'required'
         ]);
         $printer_type = request('printer_type');
         if ($printer_type=="Other"){
@@ -120,10 +128,18 @@ class PrintersController extends Controller
         }else{
             $printer_status = $printer->printer_status;
         }
+        if(request('printer_permission')=="isWorkshop")
+        {
+            $printer_permission = true;
+        }else{
+            $printer_permission = false;
+        }
+        
         $printer->update([
             'serial_no' => request('serial_no'),
             'printer_type' => $printer_type,
-            'printer_status'=> $printer_status]);
+            'printer_status'=> $printer_status,
+            'isWorkshop' => $printer_permission]);
 
         return redirect('/printers/index');
     }

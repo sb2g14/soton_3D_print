@@ -21,7 +21,7 @@
                         <input id="last_name" type="text" name="last_name" class="form-control" value="{{ $member-> last_name}}"/><br>
                         <td><span class="help-block" id="last_name_error"></span></td>
                     <label for="body">Student/staff ID: </label><br>
-                        <input type="text" name="student_id" class="form-control" value="{{ $member-> student_id}}"/><br>
+                        <input id="student_id" type="text" name="student_id" class="form-control" value="{{ $member-> student_id}}"/><br>
                     <label for="body">Email: </label> <br>
                         <input id="email" type="email" name="email" class="form-control" value="{{ $member-> email}}"/><br>
                         <td><span class="help-block" id="email_error"></span></td>
@@ -36,8 +36,23 @@
                         </div>
                     </div>
                     @endcan
+                    @if(Auth::user()->hasAnyRole(['Coordinator','administrator'])) {{--TODO: change to Coordinator only!--}}
+                    <label for="cwpdate">Date Casual Workers Permit was checked: </label><br>
+                        <input id="cwpdate" type="text" name="cwpdate" class="form-control" value="{{ $member-> CWP_date}}"/><br>
+                        <td><span class="help-block" id="cwpdate_error"></span></td>
+                    @endif
+                    @if(Auth::user()->hasAnyRole(['LeadDemonstrator','administrator'])) {{--TODO: change to Lead Demonstrator and IT only!--}}
+                    <label for="smtdate">Specific module training attended on: </label><br>
+                        <input id="smtdate" type="text" name="smtdate" class="form-control" value="{{ $member-> SMT_date}}"/><br>
+                        <td><span class="help-block" id="smtdate_error"></span></td>
+                    @endif
+                    @if(Auth::user()->hasAnyRole(['LeadDemonstrator','Technician','administrator'])) {{--TODO: change to Technician, Lead Demonstrator, Coordinator only!--}}
+                    <label for="lwidate">Workshop Induction attended on: </label><br>
+                        <input id="lwidate" type="text" name="lwidate" class="form-control" value="{{ $member-> LWI_date}}"/><br>
+                        <td><span class="help-block" id="lwidate_error"></span></td>
+                    @endif
                     @include('layouts.errors')
-                    <button id="update-button" type="submit" class="btn-lg btn-primary">Update</button>
+                    <button id="submit" type="submit" class="btn btn-info">Update</button>
                 </form>
             </div>
 
@@ -46,6 +61,14 @@
     </div>
 @endsection
 
+
 @section("scripts")
-    <script src="/js/update_personal_validation.js"></script>
+    <script type="text/javascript">
+            $(function () {
+                $('#cwpdate').datetimepicker({format:'YYYY-MM-DD',showTodayButton:true,showClear:true,showClose:true});
+                $('#smtdate').datetimepicker({format:'YYYY-MM-DD',showTodayButton:true,showClear:true,showClose:true});
+                $('#lwidate').datetimepicker({format:'YYYY-MM-DD',showTodayButton:true,showClear:true,showClose:true});
+            });
+    </script>
+    <script src="/js/validate_form.js"></script>
 @endsection

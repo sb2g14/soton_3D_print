@@ -11,8 +11,8 @@
      <ul class="nav nav-pills nav-justified">
          <li><a href="/OnlineJobs/index">Requests</a></li>
          <li><a href=/OnlineJobs/approved>Approved Jobs</a></li>
-         <li class="connected"><a href="/OnlineJobs/pending">Pending Jobs</a></li>
-         <li class="active"><a href="#">Prints</a></li>
+         <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs</a></li>
+         <li class="nav-right active"><a href="#">Prints</a></li>
          <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
     </ul>
 </div>
@@ -46,7 +46,7 @@
                             <td data-th="Printer No"><a href="/issues/show/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
                             <td data-th="Printed by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                             <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }}: {{ $job->job_title }} <br> @endforeach</td>
-                            <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%m') }}</td>
+                            <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
                             <td data-th="Time Remain">@if ($time_finish->gte(Carbon\Carbon::now('Europe/London'))) {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60) }} @else  completed @endif </td>
                             <td data-th="Manage">
                                 <a href="/OnlineJobs/printSuccessful/{{ $print->id }}" class="btn btn-success">Print Successful</a>
@@ -80,21 +80,29 @@
             <tbody>
                 @foreach($prints_of_jobs_in_progress as $print)
                     {{--@foreach($job->prints as $print)--}}
+                    @php
+                        if($print->status === 'Success'){
+                           $printclass = "p-success";
+                        }else{
+                           $printclass = "p-failed";
+                        }
+                    @endphp
                         @if($print->status == 'Success' || $print->status == 'Failed')
-                            <tr class="text-left">
+                            <tr class="text-left {{$printclass}}">
                                 <td data-th="ID">{{ $print->id }}</td>
                                 <td data-th="Printer No"><a href="/issues/show/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
-                                <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }} {{ $job->job_title }} <br> @endforeach</td>
+                                <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }} <a href="/OnlineJobs/managePendingJob/{{$job->id}}">{{ $job->job_title }}</a> <br> @endforeach</td>
                                 <td data-th="Started by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
-                                <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%m') }}</td>
+                                <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
                                 <td data-th="Finished by">{{$print->staff_finished->first_name}} {{$print->staff_finished->last_name}}</td>
-                                @if ($print->status === 'Success')
+                                <td data-th="Status">{{ $print->status }}</td>
+                                {{--@if ($print->status === 'Success')
                                     <td data-th="Status" class="success">{{ $print->status }}</td>
                                 @elseif ($print->status === 'Failed')
                                     <td data-th="Status" class="danger">{{ $print->status }}</td>
                                 @else
                                     <td data-th="Status" class="info">{{ $print->status }}</td>
-                                @endif
+                                @endif--}}
                                 <td data-th="Manage">
                                 </td>
                             </tr>

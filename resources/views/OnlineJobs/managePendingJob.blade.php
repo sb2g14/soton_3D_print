@@ -22,7 +22,7 @@
                         Job Title: <b>{{ $job->job_title }}</b> <br>
                         Job number: <b>{{$job->id}}</b><br>
                     </p>
-                    <a class="btn btn-danger" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
+                    <a class="btn btn-primary" href="https://dropoff.soton.ac.uk/pickup.php?claimID=
                                                  {{$job->claim_id}}&claimPasscode={{$job->claim_passcode}}
                             &emailAddr=3dprint.soton%40gmail.com">Download .stl files</a>
                 </div>
@@ -78,10 +78,10 @@
             <div class="col-sm-12 text-center">
                 <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="This button calls the
                     window to specify print details.">
-                    <a class="btn btn-lg btn-warning btn-issue" data-toggle="modal" data-target="#addPrintModal">Assign Prints</a>
+                    <a class="btn btn-lg btn-info" data-toggle="modal" data-target="#addPrintModal">Assign Prints</a>
                 </span>
 
-                <a href="/OnlineJobs/pending" class="btn btn-lg btn-info">Back</a>
+                <a href="/OnlineJobs/pending" class="btn btn-lg btn-primary">View All Jobs</a>
 
 
                 @if($query_in_progress == null)
@@ -138,6 +138,7 @@
                                     </span>
                                 @endif
                             </div>
+                            <span class="" id="printers_id_error"></span>
                         </div>
 
                         <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
@@ -158,6 +159,7 @@
                                                 </span>
                                 @endif
                             </div>
+                            <span class="" id="time_error"></span>
                         </div>
 
                         <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
@@ -170,7 +172,7 @@
                                     <strong>{{ $errors->first('material_amount') }}</strong>
                                 </div>
                             @endif
-                            <span class="help-block" id="material_amount_error"></span>
+                            <span class="" id="material_amount_error"></span>
                         </div>
 
                         <!-- Select Multiple Jobs to be assigned to the print -->
@@ -183,24 +185,24 @@
                                                     <strong>{{ $errors->first('multipleselect') }}</strong>
                                                 </span>
                                 @endif
-                                <span class="help-block" id="multipleselect"></span>
+                                <span class="" id="multipleselect"></span>
                             </div>
                         </div>
                         {{--Add comment to the print--}}
                         <div class="form-group text-left">
                             <div class="col-sm-12">
                                 <label for="comments">Add comments to the print:</label><br>
-                                <textarea rows="4" id="message" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                <textarea rows="4" id="comment" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
                                 @if ($errors->has('comments'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('comments') }}</strong>
                                     </span>
                                 @endif
-                                <span class="help-block" id="message_error"></span>
+                                <span class="" id="comment_error"></span>
                             </div>
                         </div>
 
-                        <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
+                        <button id="submit" type="submit" class="btn btn-lg btn-success">Submit</button>
                     </form>
                 </div>
 
@@ -230,17 +232,17 @@
                         <div class="form-group text-left">
                             <div class="col-sm-12">
                                 <label for="comments">Add comments for the customer:</label><br>
-                                <textarea rows="4" id="message" name="comment" placeholder="Please explain why the job has failed" class="form-control"></textarea>
+                                <textarea rows="4" id="message_long" name="comment" placeholder="Please explain why the job has failed" class="form-control"></textarea>
                                 @if ($errors->has('comments'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('comments') }}</strong>
                                     </span>
                                 @endif
-                                <span class="help-block" id="message_error"></span>
+                                <span class="help-block" id="message_long_error"></span>
                             </div>
                         </div>
 
-                        <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
+                        <button id="reject" type="submit" class="btn btn-lg btn-primary">Submit</button>
                     </form>
                 </div>
 
@@ -263,6 +265,7 @@
             });
         </script>
     @endif
-    <script src="/js/print_preview_validation.js"></script>
+    <script src="/js/validate_form_online_print.js"></script>
+    <script src="/js/validate_form_online_job_reject.js"></script>
 @endsection
 

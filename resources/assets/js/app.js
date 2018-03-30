@@ -10,6 +10,12 @@ $(document).ready(function() {
     $(".card-rules").click(function(){
         $("#rulesModal").modal();
     });
+    
+    $(".card-stat").click(function () {
+        //$("#statModal").modal();
+        //link to statistics page
+        window.location = "/statistics";
+    });
 
     $('[data-toggle="popover"]').popover(); 
 

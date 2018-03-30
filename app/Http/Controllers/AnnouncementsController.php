@@ -125,6 +125,12 @@ class AnnouncementsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $announcement = Announcement::findOrFail($id);
+        $announcement->delete();
+
+        notify()->flash('The announcement has been deleted.', 'success', [
+            'text' => "The announcement is removed from the database.",
+        ]);
+        return redirect('/');
     }
 }

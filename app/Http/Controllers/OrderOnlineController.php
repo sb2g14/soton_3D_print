@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\jobSuccess;
-use App\Rules\Alphanumeric;
 use App\Rules\SotonEmail;
 use App\Rules\SotonID;
-use App\Rules\SotonIdMinMax;
 use App\Rules\UseCase;
 use App\Rules\Printer;
 use App\User;
@@ -30,6 +28,20 @@ use Alert;
 
 class OrderOnlineController extends Controller
 {
+    /**
+     * calculates the price of a job, based on print duration and material amount used
+     * @param $hours int
+     * @param $minutes int
+     * @param $material_amount float
+     * @return float
+     */
+    private function getPriceOfJob($hours,$minutes,$material_amount){
+        // Calculation the job price £3 per h + £5 per 100g
+        $prices = config('prices');
+        $cost = round($prices['time'] * ($hours + $minutes / 60) + $prices['material'] * $material_amount / 100, 2);
+        return $cost;
+    }
+    
     //// MANAGE KEY WORKFLOW BLADES ////
     //---------------------------------------------------------------------------------------------------------------//
     // Online job manager sees all the online job requests:
@@ -82,6 +94,25 @@ class OrderOnlineController extends Controller
 
     //// WORKFLOW LOGIC GOES HERE ////
     //---------------------------------------------------------------------------------------------------------------//
+    
+    //email the customer and notify the user
+    private function emailandnotify($emailaddress,$email,$notifytitle,$notifymessage){
+        try{
+            // Send an email to customer
+            Mail::to($emailaddress)->queue($email);
+
+            // Notify that the user of success
+            notify()->flash($notifytitle, 'success', [
+                'text' => $notifymessage,
+            ]);
+        }catch(\Exception $e){
+            notify()->flash($notifytitle, 'warning', [
+                'text' => 'There has however been an error with our email server. Please send an email to anyone who should be contacted about this.',
+            ]);
+        }
+        
+    }
+    
     // Customer creates a new online job request
     public function create()
     {
@@ -92,8 +123,24 @@ class OrderOnlineController extends Controller
     // The online job request is validated, stored in a DB and the online job manager notified via email
     public function store()
     {
-        // Validate the online request
-        $online_request = request()->validate([
+        // Store an online request
+        $online_request = request();
+
+        // Overwrite the budget holder if known
+        // check the module shortage exists
+        $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
+        if ($query !== null){
+            // If shortage exists, then populate budget holder with the DB data
+            $online_request['budget_holder'] = $query->holder;
+        }
+        // check that cost code exists
+        $query = cost_code::all()->where('cost_code','=',strtoupper($online_request['use_case']))->first();
+        if ($query !== null){
+            // If cost code exists, then populate budget holder with the DB data
+            $online_request['budget_holder'] = $query->holder;
+        }
+
+        $online_request = $online_request->validate([
             'customer_name' => [
                 'required',
                 'string',
@@ -134,10 +181,11 @@ class OrderOnlineController extends Controller
                 'max:64'
             ],
             'budget_holder' => [
-                //'string',
-                //'min:3',
+                'required',
+                'string',
+                'min:3',
                 'max:100',
-                //new CustomerNameValidation
+                new CustomerNameValidation
             ]
         ]);
 
@@ -157,23 +205,20 @@ class OrderOnlineController extends Controller
             $payment_category = 'undergraduate';
         }
 
-        // Define a cost code
+        // Define the use case
         // check the module shortage exists
         $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
         if ($query !== null){
             // If shortage exists, then populate cost code and shortage with the DB data
             $cost_code = $query->value('cost_code');
             $use_case = strtoupper($online_request['use_case']);
-            $budget_holder = $query->holder;
         } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
             $query = cost_code::all()->where('cost_code','=',$online_request['use_case'])->first();
             $cost_code = $online_request['use_case'];
             if ($query !== null){ // The cost code was found. Set a corresponding flag
                 $use_case = 'Cost Code - approved';
-                $budget_holder = $query->holder;
-                } else { // The cost code was not found. Set a corresponding flag
+            } else { // The cost code was not found. Set a corresponding flag
                 $use_case = 'Cost Code - unknown';
-                $budget_holder = $online_request['budget_holder'];
             }
         }
 
@@ -186,18 +231,12 @@ class OrderOnlineController extends Controller
             'requested_online' => 1,
             'status' => 'Waiting',
             'job_title' => $online_request['job_title'],
-            'budget_holder' => $budget_holder
+            'budget_holder' => $online_request['budget_holder']
             ));
-
-        // Send an email to the 3d print account
+        
         $email = '3dprint.soton@gmail.com';
-//        $user = User::find(2);
-        \Mail::to($email)->queue(new onlineRequest($job));
-
-        // Notification of request acceptance
-        notify()->flash('Your order request is now being considered!', 'success', [
-            'text' => 'Please wait for our manager to contact you via provided email address',
-        ]);
+        $this->emailandnotify($email,new onlineRequest($job),'Your order request is now being considered!','Please wait for our manager to contact you via provided email address');
+        
         // Redirect to home directory
         return redirect()->home();
     }
@@ -224,8 +263,7 @@ class OrderOnlineController extends Controller
         // create a print from the specified details
         $time = $assigned_print_preview["hours"].':'.sprintf('%02d', $assigned_print_preview["minutes"]).':00'; // Created printing time
         // Create price
-        $price = round(3 * ($assigned_print_preview["hours"] + $assigned_print_preview["minutes"] / 60) +
-            5 * $assigned_print_preview["material_amount"] / 100, 2);
+        $price = $this->getPriceOfJob($assigned_print_preview["hours"],$assigned_print_preview["minutes"],$assigned_print_preview["material_amount"]);
 
         // Store print preview in the Database
         $print = new Prints;
@@ -303,14 +341,9 @@ class OrderOnlineController extends Controller
             'total_price' => $job->prints->sum('price'),
             )
         );
-
-        // Send an email to customer
-        Mail::to($job->customer_email)->queue(new jobAccept($job));
-
-        // Notify the manager about successfully accepted job
-        notify()->flash('The job has been approved', 'success', [
-            'text' => 'Please send an email notification to the customer with the job quote',
-        ]);
+        
+        $this->emailandnotify($job->customer_email,new jobAccept($job),'The job has been approved','An email notification has been send to the customer with the job quote');
+        
         return redirect('OnlineJobs/approved');
     }
 
@@ -331,15 +364,8 @@ class OrderOnlineController extends Controller
         }
 
         $job->delete(); // Delete job
-
-        // Send an email to customer
-
-        Mail::to($job->customer_email)->queue(new jobReject($job, $reject_message['comment']));
-
-        // Notify that the job was rejected
-        notify()->flash('The job has been rejected', 'success', [
-            'text' => 'Please explain why the job has been rejected via email',
-        ]);
+        
+        $this->emailandnotify($job->customer_email,new jobReject($job, $reject_message['comment']),'The job has been rejected','An email notification has been send to the customer to explain why the job got rejected.');
 
         return redirect('OnlineJobs/index');
     }
@@ -375,7 +401,11 @@ class OrderOnlineController extends Controller
         notify()->flash('The job has been approved by customer', 'success', [
             'text' => 'Now you can start adding prints',
         ]);
-        return redirect('OnlineJobs/pending');
+        if(Auth::user()->hasRole(['OnlineJobsManager'])){
+            return redirect("/OnlineJobs/pending");
+        }else{
+            return redirect("/myprints/");
+        }
     }
     // Job is rejected by customer
     public function customerReject($id)
@@ -394,8 +424,11 @@ class OrderOnlineController extends Controller
         notify()->flash('The job request was rejected', 'success', [
             'text' => 'The job and all assigned print previews were deleted from the database',
         ]);
-
-        return redirect("/OnlineJobs/index");
+        if(Auth::user()->hasRole(['OnlineJobsManager'])){
+            return redirect("/OnlineJobs/index");
+        }else{
+            return redirect("/myprints/");
+        }
     }
     //// Logic for managing jobs approved both by manager and by customer ////
     //---------------------------------------------------------------------------------------------------------------//
@@ -431,8 +464,7 @@ class OrderOnlineController extends Controller
         // create a print from the specified details
         $time = $assigned_print["hours"].':'.sprintf('%02d', $assigned_print["minutes"]).':00'; // Created printing time
         // Create price
-        $price = round(3 * ($assigned_print["hours"] + $assigned_print["minutes"] / 60) +
-            5 * $assigned_print["material_amount"] / 100, 2);
+        $price = $this->getPriceOfJob($assigned_print["hours"],$assigned_print["minutes"],$assigned_print["material_amount"]);
 
         // Create print in the Database
         $print = Prints::create([
@@ -501,14 +533,8 @@ class OrderOnlineController extends Controller
             'status' => 'Failed',
             'job_finished_by' => Auth::user()->staff->id
         ));
-
-        // Send an email to the customer
-        Mail::to($job->customer_email)->queue(new jobFailed($job, $failed_message['comment']));
-
-        // Notify that the job failed flag was raised and the email sent to customer
-        notify()->flash('The job status has been changed to Failed', 'success', [
-            'text' => 'An email with the notification has been sent to the customer',
-        ]);
+        
+        $this->emailandnotify($job->customer_email,new jobFailed($job, $failed_message['comment']),'The job status has been changed to Failed','An email with the notification has been sent to the customer.');
 
         return redirect("/OnlineJobs/pending");
     }
@@ -523,14 +549,8 @@ class OrderOnlineController extends Controller
             'status' => 'Success',
             'job_finished_by' => Auth::user()->staff->id
         ));
-
-        // Send an email notification to the customer
-        Mail::to($job->customer_email)->queue(new jobSuccess($job));
-
-        // Notify that the job success flag was raised and the email sent to customer
-        notify()->flash('The job status has been changed to Success', 'success', [
-            'text' => 'An email with the notification has been sent to the customer',
-        ]);
+        
+        $this->emailandnotify($job->customer_email,new jobSuccess($job),'The job status has been completed successfully','An email with the notification has been sent to the customer.'); 
 
         return redirect("/OnlineJobs/pending");
     }

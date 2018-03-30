@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
 use App\Mail\Invitation;
+use App\StatisticsHelper;
 
 class StaffController extends Controller
 {
     public function __construct()
     {
 
-        $this->middleware('auth');
+        $this->middleware('auth')->except('index');
 
     }
     /**
@@ -23,7 +24,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $members = staff::orderBy('first_name')->where('role','!=', 'Former member')->get();
+        $members = staff::orderBy('last_name')->where('role','!=', 'Former member')->get();
         return view('members.index', compact('members'));
     }
 
@@ -94,7 +95,13 @@ class StaffController extends Controller
     public function show($id)
     {
         $member = staff::find($id);
-        return view('members.show',compact('member'));
+        if(!$member){
+           //member not found -> return error
+            abort(404);
+        }
+        $sh = new StatisticsHelper;
+        $stats = $sh->getArrayMemberStats($member->id);
+        return view('members.show',compact('member','stats'));
     }
 
     /**
@@ -107,6 +114,14 @@ class StaffController extends Controller
     {
         $member = staff::find($id);
         return view('members.edit',compact('member'));
+    }
+    
+    
+    protected function updateTraining($column,$date,$memberId){
+        if($date === ""){
+            $date = null;
+        }
+        staff::where('id','=', $memberId)->update(array($column => $date));
     }
 
     /**
@@ -132,12 +147,27 @@ class StaffController extends Controller
         $member->update(request(['first_name', 'last_name', 'email', 'phone','student_id']));
 
         staff::where('id','=', $member->id)->update(array('student_id'=> $student_id));
-
-
-        if(Auth::user()->hasAnyRole(['administrator','LeadDemonstrator']))
+        
+        // Update training dates
+        if(Auth::user()->hasAnyRole(['administrator','Coordinator'])){
+            $date = Input::get('cwpdate');
+            $this->updateTraining('CWP_date',$date,$id);
+        }
+        if(Auth::user()->hasAnyRole(['administrator','LeadDemonstrator'])){
+            $date = Input::get('smtdate');
+            $this->updateTraining('SMT_date',$date,$id);
+        }
+        if(Auth::user()->hasAnyRole(['administrator','LeadDemonstrator'])){
+            $date = Input::get('lwidate');
+            $this->updateTraining('LWI_date',$date,$id);
+        }
+        // Update members role
+        if(Auth::user()->hasAnyRole(['administrator','Technician']))
         {
+            // Update role for member (staff table) -> used for display
             $role = Input::get('role');
             staff::where('id','=', $id)->update(array('role'=> $role));
+            // Update role for user (user table) -> used for permission handeling
             if(!empty($member->user)) {
                 // Find the record associated with id in users table
                 $user = $member->user;
@@ -146,6 +176,7 @@ class StaffController extends Controller
                     $user->syncRoles(['LeadDemonstrator']);
                 }elseif($role == 'Former member'){
                     $user->syncRoles(['OldDemonstrator']);
+                    staff::where('id','=', $id)->update(array('phone' => 'unknown'));
                 }elseif($role == 'IT Manager' || $role == 'IT'){
                     $user->syncRoles(['administrator']);
                 }elseif($role == '3D Hub Manager'){
@@ -192,13 +223,14 @@ class StaffController extends Controller
     }
     public function former()
     {
-        $members = staff::orderBy('first_name')->where('role','=', 'Former member')->get();
+        $members = staff::orderBy('last_name')->where('role','=', 'Former member')->get();
         return view('members.former', compact('members'));
     }
 
     public function gettingPaid()
     {
-        return view('gettingPaid');
+        $member = Auth::user()->staff()->first();
+        return view('gettingPaid', compact('member'));
     }
 
     public function documents()
