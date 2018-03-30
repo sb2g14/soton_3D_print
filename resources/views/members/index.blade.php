@@ -120,7 +120,7 @@
                     <div class="list-group demonstrator">
                         <span class="list-group-item role-header-it">IT Support</span>
                         @foreach($members as $member)
-                            @if($member->role == 'IT Manager' || $member->role == 'IT')
+                            @if($member->role == 'IT Manager' || $member->role == 'IT' && $member->last_name != "System")
                                 <a href="/members/{{$member->id}}" class="list-group-item role-it">
                                     {{$member->first_name}} {{$member->last_name}}</a>
 
