@@ -98,6 +98,8 @@ $(document).ready(function () {
     });
 
     $(".card-stat").click(function () {
+        //$("#statModal").modal();
+        //link to statistics page
         window.location = "/statistics";
     });
 

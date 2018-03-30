@@ -29,7 +29,7 @@ body {
     position: fixed;
     width: 100%;
     height: 48px;
-    background: @headerfooter-mainbg;
+    background: @header-mainbg;
     right: 0;
     top: 0;
     z-index: 40;
@@ -840,6 +840,9 @@ body {
     .role-header-managers{
         .role-headerformat(@role-header-managers);
     }
+    .role-header-lead-demonstrators{
+        .role-headerformat(@role-header-lead-demonstrator);
+    }
     .role-header-demonstrator{
         .role-headerformat(@role-header-demonstrator);
     }
@@ -905,7 +908,7 @@ body {
 footer {
     font-weight: 100;
     .font-size( (14/@fs-base) );
-    background: @headerfooter-mainbg;
+    background: @footer-mainbg;
     color: #fff;
     margin-top: 20px;
     padding: 15px;

@@ -1,5 +1,4 @@
 <footer>
-    <!--  <div id="copyright text-right" class="text-left"> -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12 col-sm-4">
@@ -9,7 +8,7 @@
                         
                         <span style="font-weight: 500;">&copy; 2017</span>
                         <a href="{{ url('/') }}">Soton3Dprint</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a> - 
-                        <span style="font-weight: 200;"> version 2.3 (dev) </span>
+                        <span style="font-weight: 200;"> version 2.3 (loc) </span>
                 </div>
             </div>
             <div class="col-sm-4 text-left support">
