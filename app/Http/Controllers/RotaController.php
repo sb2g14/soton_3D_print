@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
 use Carbon\Carbon;
+use App\Http\Controllers\SessionController;
 
 class RotaController extends Controller
 {
@@ -118,5 +119,68 @@ class RotaController extends Controller
         $user = Auth::user()->staff;
         
         return view('rota.index', compact('sessions','user','items','closures'));
+    }
+
+    /**
+     * Show the form for creating and updating sessions of a day.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($date)
+    {
+        $sc = new SessionController();
+        $sessions = $sc->getSessionsForDate($date);
+        //approximate start and end time of the next session
+        //logic is: if no session so far for this day, then first session is 9am till 12pm
+        //          otherwise, assume the enxt session starts after the previous one and is as long as the previous session.
+        $latest = $sc->getLastSessionForDate($date);
+        if($latest){
+            $newstarttime = new Carbon($latest->end_date);
+            $newendtime = new Carbon($latest->start_date); 
+            $newendtime = $newstarttime->copy()->addMinutes($newendtime->copy()->diffInMinutes($newstarttime->copy()));
+            $newstarttime = new Carbon($latest->end_date);
+        }else{
+            $newstarttime = new Carbon($date.' 09:00:00');
+            //$newstarttime->hour(9)->minute(0)->second(0);
+            $newendtime = new Carbon($date.' 12:00:00'); 
+            //$newendtime->hour(12)->minute(0)->second(0);
+        }
+        // need to convert to a time, so that the date-time-picker is happy
+        $newstarttime = $newstarttime->format('H:i');
+        $newendtime = $newendtime->format('H:i');
+        // Get the events for this date
+        $events = Event::orderBy('start_date')->where('start_date','<=',$date)->where('end_date','>=',$date)->get();
+        // Finally show the blade...
+        return view('rota.newsession', compact('date','sessions','newstarttime','newendtime','events'));
+    }
+
+    /**
+     * Get a list of dates and times, when the workshop is open
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function openingHours()
+    {
+        // Get future sessions
+        $sessions = $this->getUpcomingSessions();
+        // Remove private sessions
+        $sessions = $sessions->reject(function ($s) {
+            return $s->public == false;
+        });
+        // Combine sessions into opening hours
+        $open = [];
+        $lastend = null;
+        foreach($sessions as $s){
+            if($lastend != $s->start_date){
+                //unconnected session
+                $lastend = $s->end_date;
+                $open[] = [$s->start_date,$lastend];
+            }else{
+                //connected to last session
+                $lastend = $s->end_date;
+                $open[sizeof($open) - 1] = [$open[sizeof($open) - 1][0],$lastend];
+            }
+        }
+        return $open;
     }
 }

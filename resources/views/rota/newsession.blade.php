@@ -1,38 +1,42 @@
 @extends('layouts.layout')
 @section('content')
     <div class="title m-b-md">
-        Add a new session for {{$date}}
+        Add a new session for {{ Carbon\Carbon::parse($date)->format('D, dS \\of M Y') }}
     </div>
 
     <div class="container">
         <div class="row">
             <div class="col-sm-12 well">
+                <!--SHOW EVENTS ON THIS DATE AS BADGES-->
                 @foreach($events as $e)
                     <a href="/rota/event/update/{{$e->id}}" class="badge badge-{{$e->type}}"> {{$e->name}} </a>
                 @endforeach
+                <!--SHOW EXISTING SESSIONS FOR UPDATE-->
                 @foreach($sessions as $s)
                     @php
                         $starttime = str_replace($date.' ',"",$s->start_date);
                         $endtime = str_replace($date.' ',"",$s->end_date);
                         $icon = 'lock';
                         if($s->public){
-                            $icon = 'unlock';
+                            $icon = 'globe';
                         }
                     @endphp
                     <div>
                         <form method="post" action="/rota/updatesession">
                             {{ csrf_field() }}
                             <input type="text" hidden name="date" id="date" value="{{$date}}" />
-                            <input type="checkbox" name="public_{{$s->id}}" @php if($s->public){echo('checked');} @endphp value="{{$s->public}}" id="public_{{$s->id}}"> <span class="fa fa-fw fa-{{$icon}}"></span> 
+                            <input type="checkbox" id="public_{{$s->id}}" name="public_{{$s->id}}" value="{{$s->public}}" alt="if checked, then this session will be shown as public." @php if($s->public){echo('checked');} @endphp  > <span id="public_{{$s->id}}_icn" class="fa fa-fw fa-{{$icon}}"></span> 
                             <input type="text" name="start_time_{{$s->id}}" class="" id="start_time_{{$s->id}}" value="{{$starttime}}" /> -- 
                             <input type="text" name="end_time_{{$s->id}}" class="" id="end_time_{{$s->id}}" value="{{$endtime}}" /> 
                             (<input type="text" name="num_dem_{{$s->id}}" class="" id="num_dem_{{$s->id}}" value="{{$s->dem_required}}"/> demonstrators)
                             <button type="submit" name="btn_update" value="{{$s->id}}" id="submit_{{$s->id}}" class="btn btn-info">Update</button>
+                            <a name="btn_delete" href="/rota/session/delete/{{$s->id}}" class="btn btn-danger">Delete</a>
                         </form>
                     </div>
                 @endforeach
             </div>
         </div>
+        <!--SHOW FORM TO ADD A NEW SESSION-->
         <div class="row">
 
             <div class="col-sm-12 text-left well">
@@ -76,6 +80,20 @@
                 $('#start_time_{{$s->id}}').datetimepicker({format:'HH:mm',showTodayButton:false,showClear:false,showClose:true});
                 $('#end_time_{{$s->id}}').datetimepicker({format:'HH:mm',showTodayButton:false,showClear:false,showClose:true});
             @endforeach
+        });
+        $("input").change(function() {
+            $id = $(this).attr('id');
+            $spanid = "#".concat($id.concat("_icn"));
+            $id = "#".concat($id);
+            console.log($spanid);
+            if($($id).is(":checked")){
+                $($spanid).removeClass("fa-lock");
+                $($spanid).addClass("fa-globe");
+            }else{
+                $($spanid).removeClass("fa-unlock");
+                $($spanid).removeClass("fa-globe");
+                $($spanid).addClass("fa-lock");
+            }
         });
     </script>
     <script src="/js/validate_form.js"></script>

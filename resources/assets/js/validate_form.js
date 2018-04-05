@@ -197,7 +197,7 @@ $(document).ready(function() {
         //errors["#use_case"] = check_cost_code("#use_case","#budget_holder");
         //errors["#budget_holder"] = check_budget_holder("#budget_holder","#use_case");
         //now count the errors
-        console.log("checking number of errors");
+        //console.log("checking number of errors");
         var hasError = false;
         var errCount = 0;
         for (e in errors) {

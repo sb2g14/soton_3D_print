@@ -2,7 +2,7 @@
 
 @section('content')
     <h2 style="margin-bottom: 20px; font-weight: 600;">
-        {{ $member -> first_name }} {{ $member -> last_name }} <br>
+        {{ $member -> first_name }} {{ $member -> last_name }} {{$member->experience()}} {{$member->isExperienced()}}<br>
     </h2>
 
     <div class="container">
@@ -37,13 +37,14 @@
                         <p><span class="fa fa-fw fa-check-square"></span> Workshop induction attended on {{$member->LWI_date}}</p>
                     @else
                         <p><span class="fa fa-fw fa-square"></span> Has not attended the latest workshop induction. </p>
-                    @endif 
+                    @endif  
                 </div> 
                 @endif
                 
                 @if(strtolower(Auth::user()->email) == strtolower($member->email) || Auth::user()->can('staff_view_stats'))
                 <div class="col-xs-8 col-sm-4 text-left">
                     <p><span class="fa fa-fw fa-bullhorn"></span> Activity in demonstration<br/>
+                     Sessions attended: {{$member->experience()}} (last demonstrated on {{$member->lastSession()}})<br/>
                      Prints approved: {{$stats["prints_approved"]}}<br/>
                      Prints completed: {{$stats["prints_completed"]}}</p>
                     <p><span class="fa fa-fw fa-wrench"></span> Activity in maintainance<br/>

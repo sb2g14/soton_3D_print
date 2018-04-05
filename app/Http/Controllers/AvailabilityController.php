@@ -115,7 +115,7 @@ class AvailabilityController extends Controller
         foreach($sessions as $s){
             // Do new Assignments
             $a = new Availability;
-            $a -> availability = request('av_'.$s->id);
+            $a -> status = request('av_'.$s->id);
             $a -> staff_id = $staff->id;
             $a -> sessions_id = $s->id;
             // Submit the data to the database

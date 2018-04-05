@@ -15,7 +15,7 @@
                     {{--Generate security key --}}
                     {{ csrf_field() }}
                     <label for="event_type">Type of Event: </label> <br>
-                    {!! Form::select('event_type', $options, old('$event->type','$event->type'), ['class' => 'form-control','required', 'id' => 'event_type']) !!}
+                    {!! Form::select('event_type', $options, $event->type, ['class' => 'form-control','required', 'id' => 'event_type']) !!}
                     <td><span class="" id="end_date_error"></span> </td> <br>
                     <label for="event_name">Event Name: </label> <br>
                     <input type="text" name="event_name" class="form-control" id="event_name" value="{{$event->name}}"/>

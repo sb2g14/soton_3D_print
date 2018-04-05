@@ -289,13 +289,18 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 Route::get('/rota','RotaController@index');
 
 // Open a form to create a new rota sessions
-Route::post('/rota/session/new/make','SessionController@startcreate');
+Route::post('/rota/session/new/make','SessionController@startcreate'); //OLD
+Route::post('/rota/session/find','SessionController@startcreate');
 
-// Open a form to create a new rota sessions
-Route::get('/rota/session/new/{date}','SessionController@create');
+// Open a form to create a new rota session and update existing ones
+Route::get('/rota/session/new/{date}','RotaController@edit'); //OLD
+Route::get('/rota/session/{date}','RotaController@edit');
 
 // Store a new rota session
 Route::post('/rota/session/new','SessionController@store');
+
+// Delete an existing rota sessions
+Route::get('/rota/session/delete/{id}','SessionController@destroy');
 
 // Update an existing rota session
 Route::post('/rota/updatesession','SessionController@update');

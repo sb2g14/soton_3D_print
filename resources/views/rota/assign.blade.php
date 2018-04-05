@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 @section('content')
     <div class="title m-b-md">
-        Assign Demonstrators for {{$date}}
+        Assign Demonstrators for {{ Carbon\Carbon::parse($date)->format('D, dS \\of M Y') }}
     </div>
 
     <div class="container">
@@ -12,8 +12,8 @@
                     <input type="text" hidden name="date" id="date" value="{{$date}}" />
                     @foreach($sessions as $s)
                         @php
-                            $starttime = str_replace($date.' ',"",$s->start_date);
-                            $endtime = str_replace($date.' ',"",$s->end_date);
+                            $starttime = Carbon\Carbon::parse($s->start_date)->format('G:i');
+                            $endtime = Carbon\Carbon::parse($s->end_date)->format('G:i');
                             $icon = 'lock';
                             if($s->public){
                                 $icon = 'unlock';
@@ -34,7 +34,10 @@
                                         }else{
                                             $x = array('first_name' => '', 'id' => 0);
                                         }
-                                        $options = $demonstrators['session_'.$s->id];
+                                        $options = $demonstrators['session_'.$s->id]['dem1'];
+                                        if($d > 0){
+                                            $options = $demonstrators['session_'.$s->id]['dem2'];
+                                        }
                                         //$options = $demonstratorsX;
                                     @endphp
                                     {!! Form::select('dem_'.$s->id.'_'.$d, $options, old($x['first_name'], $x['id']), ['class' => 'form-control','required', 'id' => 'dem_'.$s->id.'_'.$d]) !!}

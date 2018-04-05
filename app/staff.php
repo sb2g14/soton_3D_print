@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
+use DB;
 
 class staff extends BaseModel
 {
@@ -35,7 +36,11 @@ class staff extends BaseModel
     }
     public function sessions()
     {
-        return $this->belongsToMany(FaultUpdates::class, 'sessions');
+        return $this->belongsToMany(Sessions::class);
+    }
+    public function hasRole($rolename)
+    {
+        return $this->user->hasRole($rolename);
     }
     public function availability()
     {
@@ -47,13 +52,30 @@ class staff extends BaseModel
     }
     public function isExperienced()
     {
-        //TODO: get experience for each staff with role demonstrator
-        $experiences = Staff::hasRole('demonstrator')->join('sessions_staff','sessions_staff.staff_id','staff.id')->groupBy('staff.id')->select('COUNT(sessions_staff.sessions_id)')->get();
-        //TODO: average the experiences
-        $avexp = 2;
-        if($this->experience >= $avexp){
+        //TODO: get experience for each staff with role demonstrator only
+        //$experiences = staff::join('sessions_staff','sessions_staff.staff_id','staff.id')->groupBy('staff.id')->select(DB::raw('COUNT(sessions_staff.sessions_id) as total'))->get(); 
+        $demonstrators = staff::where('role', 'Demonstrator')->get();
+        // Average the experiences
+        $cnt = 0;
+        $avexp = 0;
+        //foreach($experiences as $xp){
+        //    $avexp += $xp->total;
+        //    $cnt++;
+        //}
+        foreach($demonstrators as $dem){
+            $avexp += $dem->experience();
+            $cnt++;
+        }
+        $avexp = $avexp/(float)$cnt;
+        // Check if members experience is above average
+        if($this->experience() >= $avexp){
             return true;
         }
         return false;
+    }
+    public function lastSession()
+    {   
+        $t = $this->sessions()->orderBy('start_date','desc')->first();
+        return $t->start_date; //->toDateString();
     }
 }

@@ -11,14 +11,14 @@
                 {{ csrf_field() }}
                 @foreach($sessions as $s)
                     <div>
-                        <div>{{$s->date()}}: {{$s->start_time()}} -- {{$s->end_time()}}</div>
+                        <div>{{ Carbon\Carbon::parse($s->date())->format('D, d/m/Y') }}: {{$s->start_time()}} -- {{$s->end_time()}}</div>
                         @php
                             $x = $s->availability();
                             $x = $x->where('staff_id',$staffid)->first();
                             if(!$x){
                                 $x = "tentative";
                             }else{
-                                $x = $x->availability;
+                                $x = $x->status;
                             }
                         @endphp
                         {!! Form::select('av_'.$s->id, $options, old($x, $x), ['class' => 'form-control','required', 'id' => 'av_'.$s->id]) !!}
