@@ -41,4 +41,19 @@ class staff extends BaseModel
     {
         return $this->hasMany(Availability::class);
     }
+    public function experience()
+    {
+        return $this->sessions->count();
+    }
+    public function isExperienced()
+    {
+        //TODO: get experience for each staff with role demonstrator
+        $experiences = Staff::hasRole('demonstrator')->join('sessions_staff','sessions_staff.staff_id','staff.id')->groupBy('staff.id')->select('COUNT(sessions_staff.sessions_id)')->get();
+        //TODO: average the experiences
+        $avexp = 2;
+        if($this->experience >= $avexp){
+            return true;
+        }
+        return false;
+    }
 }

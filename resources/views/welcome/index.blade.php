@@ -213,7 +213,7 @@
                                 <iframe id="C_workshop_usage" src="{{ route('chart', ['name' => 'workshop_usage', 'height' => $chart_height, 'color' => 'coral']) }}" height="{{$chart_height + 150}}" width="100%" style="width:100%; border:none;"></iframe>
                             @endif
                                 <div style="text-align: left; font-weight: bold"> 
-                                    Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[sizeof($count_prints) - 2]}}<br/>
+                                    Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[1]}}<br/>
                                     Number of users last year: {{$count_users}}<br/>
                                     Total material used: {{$count_material}}
                                 </div>
