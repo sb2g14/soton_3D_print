@@ -63,6 +63,11 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
+        'saml' => [
+            'driver' => 'local',
+            'root' => storage_path().'/saml',
+        ],
+
     ],
 
 ];

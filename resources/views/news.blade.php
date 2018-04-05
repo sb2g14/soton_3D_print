@@ -54,7 +54,7 @@
             [
               'icon' => "cogs",
               'Time' => "July 2017",
-              'Text' => "The recording of prints is moved to a website built by Svitlana Braichenko, Andrii Iakovliev and Illya Khromov under the lead of Lasse Wollatz."
+              'Text' => "The recording of prints is moved to a website built by Svitlana Braichenko, Andrii Iakovliev, Illya Khromov and Lasse Wollatz with the help of Haik Vasilian."
             ],
             [
               'icon' => "user",
