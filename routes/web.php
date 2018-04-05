@@ -288,46 +288,58 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 // Open a form to display the rota sessions
 Route::get('/rota','RotaController@index');
 
-// Open a form to create a new rota sessions
-Route::post('/rota/session/new/make','SessionController@startcreate'); //OLD
-Route::post('/rota/session/find','SessionController@startcreate');
 
-// Open a form to create a new rota session and update existing ones
-Route::get('/rota/session/new/{date}','RotaController@edit'); //OLD
-Route::get('/rota/session/{date}','RotaController@edit');
+Route::group(['middleware' => ['role:,jobs_manage']], function () {
+    // Open a form to indicate availability for sessions
+    Route::get('/rota/availability','AvailabilityController@edit');
 
-// Store a new rota session
-Route::post('/rota/session/new','SessionController@store');
+    // Update availability for sessions
+    Route::post('/rota/availability','AvailabilityController@update');
 
-// Delete an existing rota sessions
-Route::get('/rota/session/delete/{id}','SessionController@destroy');
+});
 
-// Update an existing rota session
-Route::post('/rota/updatesession','SessionController@update');
+Route::group(['middleware' => ['role:,staff_manage']], function () {
 
-// Open a form to indicate availability for sessions
-Route::get('/rota/availability','AvailabilityController@edit');
+    // Open a form to create a new rota sessions
+    //Route::post('/rota/session/new/make','SessionController@startcreate'); //OLD
+    Route::post('/rota/session/find','SessionController@startcreate');
 
-// Update availability for sessions
-Route::post('/rota/availability','AvailabilityController@update');
+    // Open a form to create a new rota session and update existing ones
+    //Route::get('/rota/session/new/{date}','RotaController@edit'); //OLD
+    Route::get('/rota/session/{date}','RotaController@edit');
 
-// Open a form to assign demonstrators to sessions
-Route::get('/rota/assign/{date}','SessionController@showassign');
+    // Store a new rota session
+    Route::post('/rota/session/new','SessionController@store');
 
-// Assign demonstrators to sessions
-Route::post('/rota/assign/{date}','SessionController@assign');
+    // Delete an existing rota sessions
+    Route::get('/rota/session/delete/{id}','SessionController@destroy');
 
-// Show blade to create a new event
-Route::get('/rota/newevent','EventController@create');
+    // Update an existing rota session
+    Route::post('/rota/updatesession','SessionController@update');
 
-// Store a new event
-Route::post('/rota/newevent','EventController@store');
+    // Open a form to assign demonstrators to sessions
+    Route::get('/rota/assign/{date}','SessionController@showassign');
 
-// Show blade to update an existing event
-Route::get('/rota/event/update/{id}','EventController@edit');
+    // Assign demonstrators to sessions
+    Route::post('/rota/assign/{date}','SessionController@assign');
 
-// Update an existing event
-Route::post('/rota/event/update/{id}','EventController@update');
+    // Show blade to create a new event
+    Route::get('/rota/newevent','EventController@create');
+
+    // Store a new event
+    Route::post('/rota/newevent','EventController@store');
+
+    // Show blade to update an existing event
+    Route::get('/rota/event/update/{id}','EventController@edit');
+
+    // Update an existing event
+    Route::post('/rota/event/update/{id}','EventController@update');
+
+});
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

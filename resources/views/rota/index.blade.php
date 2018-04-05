@@ -35,8 +35,10 @@
                         <div class="row">
                             <div class="col-sm-3 text-left">
                                 {{ Carbon\Carbon::parse($rota[0]->date())->format('D, d/m/Y') }} <br/>
-                                <a href="/rota/session/{{$rota[0]->date()}}" type="button" class="btn btn-info">Edit</a>
-                                <a href="/rota/assign/{{$rota[0]->date()}}" type="button" class="btn btn-success">Assign Demonstrators</a>
+                                @can('staff_manage')
+                                    <a href="/rota/session/{{$rota[0]->date()}}" type="button" class="btn btn-info">Edit</a>
+                                    <a href="/rota/assign/{{$rota[0]->date()}}" type="button" class="btn btn-success">Assign Demonstrators</a>
+                                @endcan
                             </div>
                             <div class="col-sm-9 text-left">
                                 <table class="table table-hover">
@@ -56,7 +58,7 @@
                                                 <td>
                                                     @foreach($s->events() as $e)
                                                         <span class="text-justify" data-placement="top" data-toggle="popover"
-                                 data-trigger="hover" data-content="{{$e->name}}: {{ Carbon\Carbon::parse($e->start_date)->format('d/m/Y') }} -- {{ Carbon\Carbon::parse($e->end_date)->format('d/m/Y') }}"><a href="/rota/event/update/{{$e->id}}" class="badge badge-{{$e->type}}"> {{$e->name}} </a></span>
+                                 data-trigger="hover" data-content="{{$e->name}}: {{ Carbon\Carbon::parse($e->start_date)->format('d/m/Y') }} -- {{ Carbon\Carbon::parse($e->end_date)->format('d/m/Y') }}"><a @can('staff_manage') href="/rota/event/update/{{$e->id}}" @endcan class="badge badge-{{$e->type}}"> {{$e->name}} </a></span>
                                                     @endforeach
                                                 </td>
                                                 @if($s->staff()->count()>0)
@@ -86,7 +88,7 @@
                     @else
 <!--DISPLAY EVENT-->
                     <div class="col-sm-12 text-left well col-{{$rota->type}}">
-                        <a href="/rota/event/update/{{$rota->id}}">{{$rota->name}}</a>: {{ Carbon\Carbon::parse($rota->start_date)->format('d/m/Y') }} -- {{ Carbon\Carbon::parse($rota->end_date)->format('d/m/Y') }}
+                        <a @can('staff_manage') href="/rota/event/update/{{$rota->id}}" @endcan>{{$rota->name}}</a>: {{ Carbon\Carbon::parse($rota->start_date)->format('d/m/Y') }} -- {{ Carbon\Carbon::parse($rota->end_date)->format('d/m/Y') }}
                     </div>
                     @endif
                 @endforeach

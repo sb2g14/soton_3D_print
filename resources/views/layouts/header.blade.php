@@ -41,12 +41,13 @@
                         Printing
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Manage Workshop Jobs</a></li>
-                        <li><a class="dropdown-ite" href={{ url('/printingData/create') }}>Request to Print in the Workshop</a></li>
+                        <li><a class="dropdown-item"  href="{{ url('/printingData/index') }}">Manage Workshop Jobs</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/printingData/create') }}">Request to Print in the Workshop</a></li>
                         @can('manage_online_jobs')
-                            <li><a class="dropdown-ite" href={{ url('/OnlineJobs/index') }}>Manage Online Jobs</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/OnlineJobs/index') }}">Manage Online Jobs</a></li>
                         @endcan
-                        <li><a class="dropdown-ite"  href="{{ url('/OnlineJobs/create') }}">Order a Print Online</a></li>
+                        <li><a class="dropdown-item"  href="{{ url('/OnlineJobs/create') }}">Order a Print Online</a></li>
+                        {{--<li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>--}}
                     </ul>
                 </li>
                 {{--Managing staff--}}
@@ -56,7 +57,8 @@
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our Team</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/documents') }}">For Demonstrators</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/rota') }}">Rota</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/documents') }}">Documents and Info</a></li>
                         <li><a class="dropdown-item" href="{{ url('/gettingPaid') }}">Getting paid</a></li> 
                     </ul>
                 </li>
@@ -67,17 +69,10 @@
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
-                        {{--<li><a class="dropdown-item" href="{{ url('/orderOnline') }}">Order online</a></li>--}}
                         <li><a class="dropdown-item" href="{{ url('/news') }}">Workshop History</a></li>
-                        {{--<li><a class="dropdown-item" href={{ url('/printingData/create') }}>Request a job</a></li>--}}
-                        {{--<li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>--}}
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
-                        {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
-                        {{--<li><a class="dropdown-ite"  href="{{ url('/printingData/index') }}">Workshop Jobs</a></li>--}}
-                        {{--@can('manage_online_jobs')--}}
-                            {{--<li><a class="dropdown-ite" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>--}}
-                        {{--@endcan--}}
-                        <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/faq') }}">FAQ</a></li>
+                        <li><a class="dropdown-item"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
                     </ul>
                 </li>
 
@@ -92,6 +87,9 @@
                 @hasrole('Demonstrator')
                     <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
                 @endhasrole
+                @hasrole('LeadDemonstrator')
+                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/rota') }}>Rota</a></li>
+                @endhasrole
 
                 <li class="item">
                     <span>
@@ -102,6 +100,9 @@
                             <li><a href="/members/{{Auth::user()->staff->id}}">View record</a></li>
                         @endisset
                         <li><a class="dropdown-item" href="{{ url('/roles') }}">Manage account</a></li>
+                        @isset(Auth::user()->staff)
+                            <li><a class="dropdown-ite"  href="/rota/availability">Update Availability</a></li>
+                        @endisset
                         @isset(Auth::user()->staff)
                             <li><a class="dropdown-ite"  href="/myprints">Manage your prints</a></li>
                         @endisset
@@ -131,7 +132,6 @@
                 
                 {{--Page with the information about how to print--}}
                 <li class="item"><a class="no-dropdown" href="{{ url('/learn') }}">Learn to 3D print</a></li>
-                {{--<li class="item"><a class="no-dropdown" href={{ url('/faq') }}>FAQ</a></li>--}}
                 {{--Other workshop-connected information--}}
                 <li class="item">
                     <span>
@@ -141,6 +141,7 @@
                         <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
                         <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our Team</a></li>
                         {{--<li><a class="dropdown-item" href="{{ url('/news') }}">Workshop History</a></li>--}}
+                        <li><a class="dropdown-item" href="{{ url('/faq') }}">FAQ</a></li>
                         <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
                     </ul>
                 </li>

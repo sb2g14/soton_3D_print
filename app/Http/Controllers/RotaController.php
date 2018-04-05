@@ -106,16 +106,22 @@ class RotaController extends Controller
      */
     public function index()
     {
+        if(!Auth::check()) {
+            abort(404);
+        }
+        // Get sessions
         $sessions = $this->getUpcomingSessions();
-        //merge sessions into rota groups
+        // Merge sessions into rota groups
         $rotas = $this->getRotas($sessions);
-        // get upcoming events
+        // Get upcoming events
         $events = $this->getUpcomingEvents();
-        // merge rotas and events
+        // Merge rotas and events
         $items = $this->mergeItems($rotas,$events);
         
         // Get Closure period and mark as disabled dates
         $closures = $this->getClosureAsString();
+        
+        // Get current user (for highlight in rotas)
         $user = Auth::user()->staff;
         
         return view('rota.index', compact('sessions','user','items','closures'));
@@ -128,6 +134,10 @@ class RotaController extends Controller
      */
     public function edit($date)
     {
+        if(!Auth::check()) {
+            abort(404);
+        }
+        
         $sc = new SessionController();
         $sessions = $sc->getSessionsForDate($date);
         //approximate start and end time of the next session
