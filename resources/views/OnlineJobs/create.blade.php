@@ -72,7 +72,7 @@
 
                 {{--Cost code field--}}
                 <div class="form-group{{ $errors->has('use_case') ? ' has-error' : '' }}">
-                    <label for="use_case" class="col-sm-4 control-label">Module Name or Cost Code</label>
+                    <label for="use_case" class="col-sm-4 control-label">Project Code or Cost Code</label>
 
                     <div class="col-sm-8">
                         <input id="use_case" data-help="use_case" type="text" class="form-control"
@@ -196,7 +196,7 @@
                 </div>
             </div>
             <div class="hint text-left" data-hint="use_case">
-                <h3 class="text-center lead">Module name or Cost Code</h3>
+                <h3 class="text-center lead">Project Code or Cost Code</h3>
                 <p>If you are a student and your print is part of a project, please input the short abbreviation of your
                     module name or course. Note that course or module abbreviations must be in capital letters. The
                     system will recognise most of the standard modules that are registered with the workshop.</p>

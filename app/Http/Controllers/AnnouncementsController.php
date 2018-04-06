@@ -13,7 +13,10 @@ use App\Mail\Welcome;
 
 class AnnouncementsController extends Controller
 {
-    // This controller manges private announcements
+    /**
+     * AnnouncementsController constructor.
+     * This controller manges private announcements
+     */
     public function __construct()
     {
         // The functions in this controller available only for authenticated users
@@ -64,8 +67,7 @@ class AnnouncementsController extends Controller
         if (Input::get('public', false)) {
             $announcement->public = 1;
         }
-
-        // Submit the data to the database
+        // Write the data to the database
         $announcement->save();
 
         if (Input::get('email', false)) {
@@ -74,11 +76,8 @@ class AnnouncementsController extends Controller
             foreach ($users as $user) {
                 \Mail::to($user)->send(new AnnouncementNew($user,$announcement));
             }
-
         }
-
         // Return to the homepage:
-
         return redirect('/');
 
     }

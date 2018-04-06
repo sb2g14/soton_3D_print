@@ -7,7 +7,7 @@
         <div class="bl-welcome">    
             <div class="row">
                 <div class="col-xs-12">
-                    <p>Welcome to the 3D printing service<br>at the University of Southampton.</p>
+                    <p>Welcome to the 3D printing service<br>at the University of Southampton!</p>
                 </div>
             </div>
             <div class="row">

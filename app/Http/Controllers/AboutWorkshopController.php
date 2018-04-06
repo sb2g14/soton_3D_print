@@ -9,10 +9,9 @@ use App\Http\Controllers\RotaController;
 
 class AboutWorkshopController extends Controller
 {
-    // This is controller to manage AboutWorkshop page
     /**
-     * Display a listing of the resource.
      *
+     * @blade_address /aboutWorkshop
      * @return \Illuminate\Http\Response
      */
     public function index()

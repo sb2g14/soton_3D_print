@@ -353,10 +353,6 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
 
 });
 
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Open a form to request a job
