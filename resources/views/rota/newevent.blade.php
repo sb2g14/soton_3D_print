@@ -1,15 +1,15 @@
 @extends('layouts.layout')
 @section('content')
     <div class="title m-b-md">
-        Add a new event
+        Add a new event<br/>
     </div>
 
     <div class="container">
         <div class="row">
+            
             <div class="col-sm-3"></div>
 
             <div class="col-sm-6 text-left well">
-            
                 <form method="post" action="/rota/newevent">
                     {{--start_date | end_date | name | type--}}
                     {{--Generate security key --}}
@@ -30,6 +30,7 @@
                     <button type="submit" id="submit" class="btn btn-lg btn-success">Add Event</button>
                     <a href="/rota" class="btn btn-lg btn-primary">View all Events</a>
                 </form>
+                (Have a look at the <a href="https://www.southampton.ac.uk/uni-life/key-dates.page">University Key-Dates</a>)
             </div>
             <div class="col-sm-3"></div>
         </div>

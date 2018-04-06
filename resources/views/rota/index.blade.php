@@ -88,7 +88,11 @@
                     @else
 <!--DISPLAY EVENT-->
                     <div class="col-sm-12 text-left well col-{{$rota->type}}">
-                        <a @can('staff_manage') href="/rota/event/update/{{$rota->id}}" @endcan>{{$rota->name}}</a>: {{ Carbon\Carbon::parse($rota->start_date)->format('d/m/Y') }} -- {{ Carbon\Carbon::parse($rota->end_date)->format('d/m/Y') }}
+                        <a @can('staff_manage') href="/rota/event/update/{{$rota->id}}" @endcan>{{$rota->name}}</a>:
+                        {{ Carbon\Carbon::parse($rota->start_date)->format('d/m/Y') }}
+                        @if($rota->start_date != $rota->end_date)
+                            -- {{ Carbon\Carbon::parse($rota->end_date)->format('d/m/Y') }}
+                        @endif
                     </div>
                     @endif
                 @endforeach

@@ -301,11 +301,11 @@ Route::group(['middleware' => ['role:,jobs_manage']], function () {
 Route::group(['middleware' => ['role:,staff_manage']], function () {
 
     // Open a form to create a new rota sessions
-    //Route::post('/rota/session/new/make','SessionController@startcreate'); //OLD
+    //Route::post('/rota/session/new/make','SessionController@startcreate');  //deprecated
     Route::post('/rota/session/find','SessionController@startcreate');
 
     // Open a form to create a new rota session and update existing ones
-    //Route::get('/rota/session/new/{date}','RotaController@edit'); //OLD
+    //Route::get('/rota/session/new/{date}','RotaController@edit');  //deprecated
     Route::get('/rota/session/{date}','RotaController@edit');
 
     // Store a new rota session
@@ -315,7 +315,8 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
     Route::get('/rota/session/delete/{id}','SessionController@destroy');
 
     // Update an existing rota session
-    Route::post('/rota/updatesession','SessionController@update');
+    Route::post('/rota/updatesession','SessionController@update'); //deprecated
+    Route::post('/rota/session/update','SessionController@update');
 
     // Open a form to assign demonstrators to sessions
     Route::get('/rota/assign/{date}','SessionController@showassign');
@@ -324,10 +325,12 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
     Route::post('/rota/assign/{date}','SessionController@assign');
 
     // Show blade to create a new event
-    Route::get('/rota/newevent','EventController@create');
+    Route::get('/rota/newevent','EventController@create'); //deprecated
+    Route::get('/rota/event/new','EventController@create');
 
     // Store a new event
-    Route::post('/rota/newevent','EventController@store');
+    Route::post('/rota/newevent','EventController@store'); //deprecated
+    Route::post('/rota/event/new','EventController@store');
 
     // Show blade to update an existing event
     Route::get('/rota/event/update/{id}','EventController@edit');
