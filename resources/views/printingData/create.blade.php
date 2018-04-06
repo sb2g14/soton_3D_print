@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
                     <label for="customer_email" class="col-sm-4 control-label">Email</label>
 
                     <div class="col-sm-8">

@@ -18,7 +18,7 @@
                  <div class="pull-right">
                  <form method="post" action="/rota/session/find">
                     {{ csrf_field() }}
-                    <div style="position: relative;"><input type="text" name="newdate" class="" id="newdate" value="{{now()}}" /></div>
+                    <div style="position: relative;"><input type="text" name="newdate" class="" id="newdate" value="{{now()}}" required /></div>
                     <button type="submit" class="btn btn-success" style="position: relative;">Add new session</button>
                  </form>
                  </div>

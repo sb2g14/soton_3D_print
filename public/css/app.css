@@ -239,6 +239,21 @@ body.is-fixed {
 .ctr:after {
   clear: both;
 }
+input[type="time"]::-ms-clear {
+  display: none;
+}
+input[type="time"]::-moz-clear-button {
+  display: none;
+}
+input[type="time"]::-moz-clear {
+  display: none;
+}
+input[type="time"]::-webkit-clear-button {
+  display: none;
+}
+::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
 .p-header {
   position: fixed;
   width: 100%;
