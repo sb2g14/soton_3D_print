@@ -6,14 +6,16 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 well">
+            <div class="col-sm-12"> 
                 <!--SHOW EVENTS ON THIS DATE AS BADGES-->
                 @foreach($events as $e)
                     <a href="/rota/event/update/{{$e->id}}" class="badge badge-{{$e->type}}"> {{$e->name}} </a>
                 @endforeach
+                <br/>
             </div>
             <div class="col-sm-12 well">
                 <!--SHOW EXISTING SESSIONS FOR UPDATE-->
+                Sessions this day:<br/>
                 @foreach($sessions as $s)
                     @php
                         $starttime = str_replace($date.' ',"",$s->start_date);
