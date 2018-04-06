@@ -199,8 +199,17 @@ a:link {
 .bootstrap-datetimepicker-widget table td.active {
   background-color: #315765;
 }
+.bootstrap-datetimepicker-widget table td.active:hover {
+  background-color: #5e8493;
+}
+.bootstrap-datetimepicker-widget table td.today::before {
+  border-bottom-color: #1e8765;
+}
 .bootstrap-datetimepicker-widget table td.disabled {
-  color: #e73238;
+  color: #ad0011;
+}
+.bootstrap-datetimepicker-widget table td.weekend {
+  color: #9fb1bd;
 }
 .bootstrap-datetimepicker-widget table a {
   color: #315765;
@@ -1085,7 +1094,7 @@ body.is-fixed {
   color: #000;
 }
 .demonstrator .role-demonstrator:hover {
-  background-color: #ff6b63;
+  background-color: #ff9d91;
   color: #000000;
 }
 .demonstrator .role-it-manager {
@@ -1117,8 +1126,8 @@ body.is-fixed {
   color: #000;
 }
 .demonstrator .role-coordinator:hover {
-  background-color: #5e8493;
-  color: #000000;
+  background-color: #315765;
+  color: #ffffff;
 }
 .demonstrator .role-co-coordinator {
   background-color: #fff;

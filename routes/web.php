@@ -173,7 +173,19 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 // Group of routes available only to roles administrator, Lead Demonstrator
 /////////////////////////////////////////////////////////////////////////////////////////////
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
-
+    
+    //consider using
+    //Route::resource('printers', 'PrintersController');
+    //to replace
+    //Route::get('/printers','PrintersController@index');
+    //Route::get('/printers/create','PrintersController@create');
+    //Route::post('/printers','PrintersController@store');
+    //Route::get('/printers/{id}','PrintersController@show);
+    //Route::get('/printers/{id}/edit','PrintersController@edit');
+    //Route::put('/printers/{id}','PrintersController@update');
+    //Route::delete('/printers/{id}','PrintersController@destroy');
+    //see https://laravel.com/docs/5.1/controllers#restful-resource-controllers for more info on how to control the behaviour
+            
     // Here we redirect users to the add new printer post page
     Route::get('/printers/create','PrintersController@create');
 
@@ -291,7 +303,8 @@ Route::get('/rota','RotaController@index');
 
 Route::group(['middleware' => ['role:,jobs_manage']], function () {
     // Open a form to indicate availability for sessions
-    Route::get('/rota/availability','AvailabilityController@edit');
+    Route::get('/rota/availability','AvailabilityController@edit'); //logical url based on the availability being part of the rota workflow
+    Route::get('/availability','AvailabilityController@edit'); //shortcut to use in email
 
     // Update availability for sessions
     Route::post('/rota/availability','AvailabilityController@update');

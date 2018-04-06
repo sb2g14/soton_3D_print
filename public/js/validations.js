@@ -89,14 +89,20 @@ module.exports = {
         $(errorfield).show();
         $(inputfield).removeClass("parsley-success");
         $(inputfield).addClass("parsley-error");
+        groupfield = errorfield.replace("_error","_group");
+        $(groupfield).removeClass("has-success");
+        $(groupfield).addClass("has-error");
     },
     removeErrorDetail: function removeErrorDetail(inputfield, errorfield) {
         /*hides the error div and sets the input field class to success*/
+        groupfield = errorfield.replace("_error","_group");
         $(errorfield).removeClass("form-text text-danger");
         $(errorfield).addClass("form-text text-muted");
         $(errorfield).hide();
         $(inputfield).removeClass("parsley-error");
-        $(inputfield).addClass("parsley-success");
+        //$(inputfield).addClass("parsley-success");
+        $(groupfield).removeClass("has-error");
+        $(groupfield).addClass("has-success");
     },
     addError: function addError(target, message) {
         /*shows the error div with the specified message 

@@ -16,15 +16,15 @@
                             $endtime = Carbon\Carbon::parse($s->end_date)->format('G:i');
                             $icon = 'lock';
                             if($s->public){
-                                $icon = 'unlock';
+                                $icon = 'globe';
                             }
                         @endphp
                         <div class="form-group">
                             <div class="col-lg-4 control-label">   
                                 <span class="fa fa-fw fa-{{$icon}}"></span> 
-                                {{$starttime}} -- {{$endtime}}
+                                {{$starttime}} &ndash; {{$endtime}}
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 input-group">
                                 @for($d=0;$d<$s->dem_required;$d++)
                                     @php
                                         $x = $s->staff;
