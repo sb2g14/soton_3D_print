@@ -14,18 +14,20 @@ class RoleMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role, $permission=null)
+    public function handle($request, Closure $next, $role=null, $permission=null)
     {
         if (Auth::guest()) {
             return redirect('login');
         }
+        
+        if($role){
+            $role = is_array($role)
+                ? $role
+                : explode('|', $role);
 
-        $role = is_array($role)
-            ? $role
-            : explode('|', $role);
-
-        if (! $request->user()->hasAnyRole($role)) {
-            abort(403);
+            if (! $request->user()->hasAnyRole($role)) {
+                abort(403);
+            }
         }
 
         if ($permission && ! $request->user()->can($permission)) {

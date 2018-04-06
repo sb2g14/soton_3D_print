@@ -6,9 +6,9 @@
                 <hr>
                 <div class="copyright">
                         
-                        <span style="font-weight: 500;">&copy; 2017</span>
-                        <a href="{{ url('/') }}">Soton3Dprint</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a> - 
-                        <span style="font-weight: 200;"> version 2.3 (loc) </span>
+                        <span style="font-weight: 500;">&copy; 2017-2018</span>
+                        <a href="{{ url('/') }}">FEE 3D Printing Service</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a> - 
+                        <span style="font-weight: 200;"> version 3.0 ({{env('APP_ENV')}}) </span>
                 </div>
             </div>
             <div class="col-sm-4 text-left support">
@@ -34,17 +34,11 @@
                         <a href="/aboutWorkshop">Find us on campus</a><br>
                     </div>
                 </div>
-                <!--
-                Please send the feedback to: <br>
-                <a href="mailto:ai1v14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Andrii Iakovliev</a> <br>
-                <a href="mailto:sb2g14@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Svitlana Braichenko</a> <br>
-                <a href="mailto:l.wollatz@soton.ac.uk?Subject=Soton3Dprint" target="_blank">Lasse Wollatz</a>
-                -->
                 
             </div>
             <div class="col-xs-12 col-sm-4 text-center"> 
                 <div class="row">
-                        Connect with us
+                        Find out more
                 </div>
                 <div class="social-media"> 
                     <div class="row">

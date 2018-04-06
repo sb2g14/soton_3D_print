@@ -282,6 +282,67 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 
 });
 
+// Group of routes for managing the ROTA
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Open a form to display the rota sessions
+Route::get('/rota','RotaController@index');
+
+
+Route::group(['middleware' => ['role:,jobs_manage']], function () {
+    // Open a form to indicate availability for sessions
+    Route::get('/rota/availability','AvailabilityController@edit');
+
+    // Update availability for sessions
+    Route::post('/rota/availability','AvailabilityController@update');
+
+});
+
+Route::group(['middleware' => ['role:,staff_manage']], function () {
+
+    // Open a form to create a new rota sessions
+    //Route::post('/rota/session/new/make','SessionController@startcreate'); //OLD
+    Route::post('/rota/session/find','SessionController@startcreate');
+
+    // Open a form to create a new rota session and update existing ones
+    //Route::get('/rota/session/new/{date}','RotaController@edit'); //OLD
+    Route::get('/rota/session/{date}','RotaController@edit');
+
+    // Store a new rota session
+    Route::post('/rota/session/new','SessionController@store');
+
+    // Delete an existing rota sessions
+    Route::get('/rota/session/delete/{id}','SessionController@destroy');
+
+    // Update an existing rota session
+    Route::post('/rota/updatesession','SessionController@update');
+
+    // Open a form to assign demonstrators to sessions
+    Route::get('/rota/assign/{date}','SessionController@showassign');
+
+    // Assign demonstrators to sessions
+    Route::post('/rota/assign/{date}','SessionController@assign');
+
+    // Show blade to create a new event
+    Route::get('/rota/newevent','EventController@create');
+
+    // Store a new event
+    Route::post('/rota/newevent','EventController@store');
+
+    // Show blade to update an existing event
+    Route::get('/rota/event/update/{id}','EventController@edit');
+
+    // Update an existing event
+    Route::post('/rota/event/update/{id}','EventController@update');
+
+});
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 // Open a form to request a job
 Route::get('/printingData/create','PrintingDataController@create');
 

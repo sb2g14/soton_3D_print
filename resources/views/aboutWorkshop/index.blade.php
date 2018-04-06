@@ -28,8 +28,13 @@
     <div class="container well">
         <div class="row vdivide">
             <div class="col-sm-6 text-left">
-                <h3 class="text-center lead">OPEN HOURS</h3>
-                <p>Wednesdays 9:00-18:00, except during University closure.</p>
+                <h3 class="text-center lead">OPENING HOURS</h3>
+                <p>Usually Wednesdays 9:00-18:00, except during University closure.</p>
+                <p>Next Scheduled Sessions are:<br/>
+                    @foreach($open as $o)
+                        {{ Carbon\Carbon::parse($o[0])->format('D, d/m/y g:i a') }} -- {{ Carbon\Carbon::parse($o[1])->format('g:i a') }}<br/>
+                    @endforeach
+                </p>
                 {!! $chart->html() !!}
                 {!! Charts::scripts() !!}
                 {!! $chart->script() !!}  

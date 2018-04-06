@@ -100,7 +100,7 @@
                         <span class="list-group-item role-header">Coordinators</span>
                         @foreach($members as $member)
                             @if($member->role == 'Coordinator' || $member->role == 'Co-Coordinator')
-                                <a href="/members/{{$member->id}}" class="list-group-item role-coordinator">
+                                <a href="/members/{{$member->id}}" class="list-group-item role-{{str_replace(' ','-',strtolower($member->role))}}">
                                     {{$member->first_name}} {{$member->last_name}}</a>
                             @endif
                         @endforeach
@@ -118,18 +118,6 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="list-group demonstrator">
-                        <span class="list-group-item role-header-it">IT Support</span>
-                        @foreach($members as $member)
-                            @if($member->role == 'IT Manager' || $member->role == 'IT')
-                                <a href="/members/{{$member->id}}" class="list-group-item role-it">
-                                    {{$member->first_name}} {{$member->last_name}}</a>
-
-                            @endif
-                        @endforeach
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="list-group demonstrator">
                         <span class="list-group-item role-header-lead-demonstrators">Lead Demonstrators</span>
                         @foreach($members as $member)
                             @if($member->role == 'Lead Demonstrator')
@@ -139,6 +127,17 @@
                         @endforeach
                     </div>
                     <div class="list-group demonstrator">
+                        <span class="list-group-item role-header-demonstrator">Demonstrators</span>
+                        @foreach($members as $member)
+                            @if($member->role == 'Demonstrator' || $member->role == 'New Demonstrator')
+                                <a href="/members/{{$member->id}}" class="list-group-item role-demonstrator">
+                                    {{$member->first_name}} {{$member->last_name}}</a>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                     <div class="list-group demonstrator">
                         <span class="list-group-item role-header-online">Online managers</span>
                         @foreach($members as $member)
                             @if($member->role == '3D Hub Manager')
@@ -150,16 +149,16 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="list-group demonstrator">
-                        <span class="list-group-item role-header-demonstrator">Demonstrators</span>
+                        <span class="list-group-item role-header-it">IT Support</span>
                         @foreach($members as $member)
-                            @if($member->role == 'Demonstrator' || $member->role == 'New Demonstrator')
-                                <a href="/members/{{$member->id}}" class="list-group-item role-demonstrator">
+                            @if($member->role == 'IT Manager' || $member->role == 'IT' && $member->last_name != "System")
+                                <a href="/members/{{$member->id}}" class="list-group-item role-{{str_replace(' ','-',strtolower($member->role))}}">
                                     {{$member->first_name}} {{$member->last_name}}</a>
+
                             @endif
                         @endforeach
                     </div>
                 </div>
-
             </div>
         </div>
 @endsection

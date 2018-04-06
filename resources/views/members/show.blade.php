@@ -2,7 +2,7 @@
 
 @section('content')
     <h2 style="margin-bottom: 20px; font-weight: 600;">
-        {{ $member -> first_name }} {{ $member -> last_name }} <br>
+        {{ $member -> first_name }} {{ $member -> last_name }}<br/>
     </h2>
 
     <div class="container">
@@ -24,26 +24,28 @@
                 <div class="col-xs-8 col-sm-4 text-left">
                     <p><span class="fa fa-fw fa-id-card"></span> ID: {{$member -> student_id}}</p>
                     @if($member->CWP_date)
-                        <p><span class="fa fa-fw fa-check-square"></span> Allowed to Work since {{$member->CWP_date}} </p>
+                        <p><span class="fa fa-fw fa-check-square"></span> Allowed to Work since {{ Carbon\Carbon::parse($member->CWP_date)->format('d/m/Y') }}</p>
                     @else
                         <p><span class="fa fa-fw fa-square"></span> Has not shown the CWP to Andrew Hamilton. </p>
                     @endif
                     @if($member->SMT_date)
-                        <p><span class="fa fa-fw fa-check-square"></span> Specific module training attended on {{$member->SMT_date}}</p>
+                        <p><span class="fa fa-fw fa-check-square"></span> Specific module training attended on {{ Carbon\Carbon::parse($member->SMT_date)->format('d/m/Y') }}</p>
                     @else
                         <p><span class="fa fa-fw fa-square"></span> Has not attended the latest website training. </p>
                     @endif
                     @if($member->LWI_date)
-                        <p><span class="fa fa-fw fa-check-square"></span> Workshop induction attended on {{$member->LWI_date}}</p>
+                        <p><span class="fa fa-fw fa-check-square"></span> Workshop induction attended on {{ Carbon\Carbon::parse($member->LWI_date)->format('d/m/Y') }}</p>
                     @else
                         <p><span class="fa fa-fw fa-square"></span> Has not attended the latest workshop induction. </p>
-                    @endif 
+                    @endif  
                 </div> 
                 @endif
                 
                 @if(strtolower(Auth::user()->email) == strtolower($member->email) || Auth::user()->can('staff_view_stats'))
                 <div class="col-xs-8 col-sm-4 text-left">
                     <p><span class="fa fa-fw fa-bullhorn"></span> Activity in demonstration<br/>
+                     Sessions attended: {{$member->experience()}} <br/>
+                     (last demonstrated on {{ Carbon\Carbon::parse($member->lastSession())->format('d/m/Y') }})<br/>
                      Prints approved: {{$stats["prints_approved"]}}<br/>
                      Prints completed: {{$stats["prints_completed"]}}</p>
                     <p><span class="fa fa-fw fa-wrench"></span> Activity in maintainance<br/>
