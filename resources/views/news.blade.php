@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 @section('content')
     <div class="title m-b-md">
-        Workshop History
+        Workshop History{{----}}
     </div>
     <ul class="lsn container printer-details">
     @php

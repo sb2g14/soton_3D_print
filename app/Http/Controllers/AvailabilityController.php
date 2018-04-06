@@ -15,6 +15,10 @@ use App\Http\Controllers\RotaController;
 
 class AvailabilityController extends Controller
 {
+    /**
+     * AvailabilityController constructor.
+     *
+     */
     public function __construct()
     {
 
@@ -28,7 +32,7 @@ class AvailabilityController extends Controller
      */
     public function index()
     {
-
+    //
     }
 
     /**
