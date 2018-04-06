@@ -76,9 +76,21 @@
         $(function () {
             $('#start_time').datetimepicker({format:'HH:mm',showTodayButton:false,showClear:false,showClose:true});
             $('#end_time').datetimepicker({format:'HH:mm',showTodayButton:false,showClear:false,showClose:true});
+            $("#start_time").on("dp.change", function (e) {
+                $('#end_time').data("DateTimePicker").minDate(e.date);
+            });
+            $("#end_time").on("dp.change", function (e) {
+                $('#start_time').data("DateTimePicker").maxDate(e.date);
+            });
             @foreach($sessions as $s)
                 $('#start_time_{{$s->id}}').datetimepicker({format:'HH:mm',showTodayButton:false,showClear:false,showClose:true});
                 $('#end_time_{{$s->id}}').datetimepicker({format:'HH:mm',showTodayButton:false,showClear:false,showClose:true});
+                $("#start_time_{{$s->id}}").on("dp.change", function (e) {
+                    $('#end_time_{{$s->id}}').data("DateTimePicker").minDate(e.date);
+                });
+                $("#end_time_{{$s->id}}").on("dp.change", function (e) {
+                    $('#start_time_{{$s->id}}').data("DateTimePicker").maxDate(e.date);
+                });
             @endforeach
         });
         $("input").change(function() {

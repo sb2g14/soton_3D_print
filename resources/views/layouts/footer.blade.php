@@ -38,7 +38,7 @@
             </div>
             <div class="col-xs-12 col-sm-4 text-center"> 
                 <div class="row">
-                        Connect with us
+                        Find out more
                 </div>
                 <div class="social-media"> 
                     <div class="row">

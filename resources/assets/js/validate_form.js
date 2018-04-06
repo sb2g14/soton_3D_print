@@ -84,6 +84,7 @@ $(document).ready(function() {
         "#use_case": local_check_cost_code,
         "#budget_holder": local_check_budget_holder,
         "#issue": validations.check_issue_title,
+        "#event_name": validations.check_event_title,
         "#comment": validations.check_comment,
         "#message": validations.check_message_default,
         "#message_last": validations.check_message_default,

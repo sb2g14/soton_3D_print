@@ -65,8 +65,8 @@ class EventController extends Controller
         ]);
 
         $event = new Event;
-        $event -> start_date = request('start_date');
-        $event -> end_date = request('end_date');
+        $event -> start_date = Carbon::createFromFormat('d/m/Y H:i',request('start_date'));
+        $event -> end_date = rCarbon::createFromFormat('d/m/Y H:i',request('end_date'));
         $event -> name = request('event_name');
         $event -> type = request('event_type');
 
@@ -118,7 +118,8 @@ class EventController extends Controller
     
 
     /**
-     * Update the specified resource in storage.
+     * Update an event
+     * Handles post send from rota/event/update/{id}
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\staff  $staff
@@ -133,8 +134,8 @@ class EventController extends Controller
             'end_date' => 'required'
         ]);
 
-        $start_date = request('start_date');
-        $end_date = request('end_date');
+        $start_date = Carbon::createFromFormat('d/m/Y H:i',request('start_date'));
+        $end_date = Carbon::createFromFormat('d/m/Y H:i',request('end_date'));
         $event_type = request('event_type');
         $event_name = request('event_name');
 
