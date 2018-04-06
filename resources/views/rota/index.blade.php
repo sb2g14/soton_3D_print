@@ -14,13 +14,18 @@
             <div>
             <a href="/rota/availability" type="button" class="btn btn-success pull-left">Indicate Availability</a>
             @can('staff_manage')
-                 <a href="/rota/event/new" type="button" class="btn btn-success pull-right">Add Event</a>
-                 <div class="pull-right">
-                 <form method="post" action="/rota/session/find">
-                    {{ csrf_field() }}
-                    <div style="position: relative;"><input type="text" name="newdate" class="" id="newdate" value="{{now()}}" required /></div>
-                    <button type="submit" class="btn btn-success" style="position: relative;">Add new session</button>
-                 </form>
+                 <div class="pull-right"><a href="/rota/event/new" type="button" class="btn btn-success">Add Event</a></div>
+                 <div class="pull-right">&nbsp;</div>
+                 <div class="pull-right">{{--<div style="position: relative;">--}}
+                     <form method="post" action="/rota/session/find">
+                        {{ csrf_field() }}
+                        <div class="input-group">
+                            <input type="text" name="newdate" class="form-control" id="newdate" value="{{now()}}" required />
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-success" style="position: relative;">Add new session</button>
+                            </div>
+                        </div>
+                     </form>
                  </div>
             @endcan
             <hr>

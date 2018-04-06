@@ -28,7 +28,7 @@
                             {{ csrf_field() }}
                             <input type="date" hidden name="date" id="date" value="{{$date}}" />
                             <div class="row form_group">
-                                <div class="col-sm-1">
+                                <div class="col-sm-2">
                                     
                                     <input type="checkbox" id="public_{{$s->id}}" name="public_{{$s->id}}" value="{{$s->public}}" alt="if checked, then this session will be shown as public." @php if($s->public){echo('checked');} @endphp  > 
                                      <span class=""><i id="public_{{$s->id}}_icn" class="fa fa-fw fa-{{$icon}}"></i></span>
@@ -44,19 +44,19 @@
                                         <input type="time" name="end_time_{{$s->id}}" class="form-control input-sm" id="end_time_{{$s->id}}" value="{{$endtime}}" />
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-4">
                                     <div class="input-group">
                                         <span class="input-group-addon">demonstrators:</span>
                                         <input type="number" name="num_dem_{{$s->id}}" class="form-control input-sm col-sm-2" id="num_dem_{{$s->id}}" value="{{$s->dem_required}}"/> 
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-2 btn-group">
                                     <button type="submit" name="btn_update" value="{{$s->id}}" id="submit_{{$s->id}}" class="btn btn-info">Update</button>
                                     <a name="btn_delete" href="/rota/session/delete/{{$s->id}}" class="btn btn-danger">Delete</a>
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    </div><br/>
                 @endforeach
             </div>
         </div>
