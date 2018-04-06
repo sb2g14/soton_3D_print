@@ -17,8 +17,11 @@ module.exports = {
         $(errorfield).removeClass("form-text text-muted");
         $(errorfield).addClass("form-text text-danger");
         $(errorfield).show();
-        $(inputfield).removeClass("parsley-success");
+        //$(inputfield).removeClass("parsley-success");
         $(inputfield).addClass("parsley-error");
+        groupfield = errorfield.replace("_error","_group");
+        //$(groupfield).removeClass("has-success");
+        $(groupfield).addClass("has-error");
     },
     removeErrorDetail: function (inputfield, errorfield) {
         /*hides the error div and sets the input field class to success*/
@@ -26,7 +29,10 @@ module.exports = {
         $(errorfield).addClass("form-text text-muted");
         $(errorfield).hide();
         $(inputfield).removeClass("parsley-error");
-        $(inputfield).addClass("parsley-success");
+        //$(inputfield).addClass("parsley-success");
+        groupfield = errorfield.replace("_error","_group");
+        $(groupfield).removeClass("has-error");
+        //$(groupfield).addClass("has-success");
     },
     addError: function (target, message) {
         /*shows the error div with the specified message 

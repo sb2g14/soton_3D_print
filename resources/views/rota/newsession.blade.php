@@ -11,6 +11,8 @@
                 @foreach($events as $e)
                     <a href="/rota/event/update/{{$e->id}}" class="badge badge-{{$e->type}}"> {{$e->name}} </a>
                 @endforeach
+            </div>
+            <div class="col-sm-12 well">
                 <!--SHOW EXISTING SESSIONS FOR UPDATE-->
                 @foreach($sessions as $s)
                     @php
@@ -24,13 +26,35 @@
                     <div>
                         <form method="post" action="/rota/updatesession">
                             {{ csrf_field() }}
-                            <input type="text" hidden name="date" id="date" value="{{$date}}" />
-                            <input type="checkbox" id="public_{{$s->id}}" name="public_{{$s->id}}" value="{{$s->public}}" alt="if checked, then this session will be shown as public." @php if($s->public){echo('checked');} @endphp  > <span id="public_{{$s->id}}_icn" class="fa fa-fw fa-{{$icon}}"></span> 
-                            <input type="text" name="start_time_{{$s->id}}" class="" id="start_time_{{$s->id}}" value="{{$starttime}}" /> -- 
-                            <input type="text" name="end_time_{{$s->id}}" class="" id="end_time_{{$s->id}}" value="{{$endtime}}" /> 
-                            (<input type="text" name="num_dem_{{$s->id}}" class="" id="num_dem_{{$s->id}}" value="{{$s->dem_required}}"/> demonstrators)
-                            <button type="submit" name="btn_update" value="{{$s->id}}" id="submit_{{$s->id}}" class="btn btn-info">Update</button>
-                            <a name="btn_delete" href="/rota/session/delete/{{$s->id}}" class="btn btn-danger">Delete</a>
+                            <input type="date" hidden name="date" id="date" value="{{$date}}" />
+                            <div class="row form_group">
+                                <div class="col-sm-1">
+                                    
+                                    <input type="checkbox" id="public_{{$s->id}}" name="public_{{$s->id}}" value="{{$s->public}}" alt="if checked, then this session will be shown as public." @php if($s->public){echo('checked');} @endphp  > 
+                                     <span class=""><i id="public_{{$s->id}}_icn" class="fa fa-fw fa-{{$icon}}"></i></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="col-sm-5">
+                                        <input type="time" name="start_time_{{$s->id}}" class="form-control input-sm" id="start_time_{{$s->id}}" value="{{$starttime}}" /> 
+                                    </div> 
+                                    <div class="col-sm-1">
+                                        &ndash;
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="time" name="end_time_{{$s->id}}" class="form-control input-sm" id="end_time_{{$s->id}}" value="{{$endtime}}" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">demonstrators:</span>
+                                        <input type="number" name="num_dem_{{$s->id}}" class="form-control input-sm col-sm-2" id="num_dem_{{$s->id}}" value="{{$s->dem_required}}"/> 
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="submit" name="btn_update" value="{{$s->id}}" id="submit_{{$s->id}}" class="btn btn-info">Update</button>
+                                    <a name="btn_delete" href="/rota/session/delete/{{$s->id}}" class="btn btn-danger">Delete</a>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 @endforeach
@@ -45,24 +69,30 @@
                     {{--Generate security key --}}
                     {{ csrf_field() }}
                     <input type="text" hidden name="date" id="date" value="{{$date}}" />
-                    <label for="start_time">Start of Session: </label> <br>
-                    <input type="text" name="start_time" class="form-control" id="start_time" value="{{$newstarttime}}" />
-                    <td><span class="" id="start_time_error"></span> </td> <br>
-                    <label for="end_time">End of Session: </label> <br>
-                    <input type="text" name="end_time" class="form-control" id="end_time" value="{{$newendtime}}"/>
-                    <td><span class="" id="end_time_error"></span> </td> <br>
-                    <label for="num_dem">Demonstrators required: </label> <br>
-                    <input type="text" name="num_dem" class="form-control" id="num_dem" value="2"/>
-                    <td><span class="" id="num_dem_error"></span> </td> <br>
-                    <label for="body">Can this session be attended by anyone?</label> <br>
-                    <!-- Radio list for the printer status -->
-                    <div class="form-group text-left">
-                        <div class="radio">
-                            <input type="radio" name="session_public" checked value="isPublic">Yes <br>
-                            <input type="radio" name="session_public" value="isPrivate">No <br>
-                        </div> <!-- Class radio -->
-                    </div> <!-- /form-group -->
-                    
+                    <div id="start_time_group">
+                        <label for="start_time">Start of Session: </label> <br/>
+                        <input type="time" name="start_time" class="form-control" id="start_time" value="{{$newstarttime}}" required>
+                        <span class="" id="start_time_error"></span> <br/>
+                    </div>
+                    <div id="end_time_group">
+                        <label for="end_time">End of Session: </label> <br>
+                        <input type="time" name="end_time" class="form-control" id="end_time" value="{{$newendtime}}" required="true"/>
+                        <td><span class="" id="end_time_error"></span> </td> <br>
+                    </div>
+                    <div id="num_dem_group">
+                        <label for="num_dem">Demonstrators required: </label> <br>
+                        <input type="number" name="num_dem" class="form-control" id="num_dem" value="2"/>
+                        <td><span class="" id="num_dem_error"></span> </td> <br>
+                    </div>
+                    <div id="session_public_group">
+                        <label for="body">Can this session be attended by anyone?</label> <br>
+                        <div class="form-group text-left">
+                            <div class="radio">
+                                <input type="radio" name="session_public" checked value="isPublic">Yes <br>
+                                <input type="radio" name="session_public" value="isPrivate">No <br>
+                            </div> <!-- Class radio -->
+                        </div> <!-- /form-group -->
+                    </div>
                     @include('layouts.errors')
                     <button type="submit" id="submit" class="btn btn-lg btn-success">Add Session</button>
                     <a href="/rota" class="btn btn-lg btn-primary">View latest sessions</a>

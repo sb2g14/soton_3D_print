@@ -29,11 +29,32 @@
         <div class="row vdivide">
             <div class="col-sm-6 text-left">
                 <h3 class="text-center lead">OPENING HOURS</h3>
-                <p>Usually Wednesdays 9:00-18:00, except during University closure.</p>
+                <p>Usually Wednesdays 9:00 &ndash; 18:00, except during University closure.</p>
                 <p>Next Scheduled Sessions are:<br/>
+                <table>
                     @foreach($open as $o)
-                        {{ Carbon\Carbon::parse($o[0])->format('D, d/m/y g:i a') }} -- {{ Carbon\Carbon::parse($o[1])->format('g:i a') }}<br/>
+                        <tr>
+                        <td>{{ Carbon\Carbon::parse($o[0][0])->format('D, d/m/y') }}:&emsp;</td>
+                        {{-- TODO: improve formatting --}}
+                        @foreach($o as $s)
+                            @if($s != $o[0])
+                            </tr><tr><td></td>
+                            @endif
+                            <td>{{ Carbon\Carbon::parse($s[0])->format('g:i a') }} &ndash; {{ Carbon\Carbon::parse($s[1])->format('g:i a') }}</td>
+                        @endforeach
+                        </tr>
                     @endforeach
+                </table>
+                </p>
+                <p>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div id="opencal"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="opentimes"></div>
                 </p>
                 {!! $chart->html() !!}
                 {!! Charts::scripts() !!}
@@ -92,6 +113,21 @@
         //    console.log(id);
         //    obj = parentobject.layer[id];
         //    if(!(obj === null)) { obj.openPopup(); }
+        //});
+    </script>
+    <script type="text/javascript">
+        //$(function () {
+        //    $('#opencal').datetimepicker({
+        //        inline: true, 
+        //        format:'DD/MM/YYYY', 
+        //        enabledDates: [@foreach($open as $o)'{{Carbon\Carbon::parse($o[0][0])->format("d/m/Y")}}',@endforeach''], 
+        //        showTodayButton:true, 
+        //        showClear:false, 
+        //        showClose:false
+        //    });
+        //    $("#opencal").on("dp.change", function (e) {
+        //        $('#opentimes').html("Hello World");
+        //    });
         //});
     </script>
     @if (notify()->ready())

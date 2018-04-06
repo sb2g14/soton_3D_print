@@ -200,8 +200,6 @@ class SessionController extends Controller
             $demET = $temp[0];
             $demIT = $temp[1];
             // Create two prioritised lists - one for the first demonstrator in the session, and one for the others.
-            //$demonstrators['session_'.$id]['dem1'] = array_merge($demEA,$demET,$demIA,$demIT); //EA>ET>IA>IT
-            //$demonstrators['session_'.$id]['dem2'] = array_merge($demIA,$demEA,$demIT,$demET); //IA>EA>IT>ET
             $demonstrators['session_'.$id]['dem1'] = $demEA+$demET+$demIA+$demIT; //EA>ET>IA>IT
             $demonstrators['session_'.$id]['dem2'] = $demIA+$demEA+$demIT+$demET; //IA>EA>IT>ET
         }

@@ -14,11 +14,11 @@
             <div>
             <a href="/rota/availability" type="button" class="btn btn-success pull-left">Indicate Availability</a>
             @can('staff_manage')
-                 <a href="/rota/newevent" type="button" class="btn btn-success pull-right">Add Event</a>
+                 <a href="/rota/event/new" type="button" class="btn btn-success pull-right">Add Event</a>
                  <div class="pull-right">
                  <form method="post" action="/rota/session/find">
                     {{ csrf_field() }}
-                    <div style="position: relative;"><input type="text" name="newdate" class="" id="newdate" value="{{now()}}" /></div>
+                    <div style="position: relative;"><input type="text" name="newdate" class="" id="newdate" value="{{now()}}" required /></div>
                     <button type="submit" class="btn btn-success" style="position: relative;">Add new session</button>
                  </form>
                  </div>
@@ -29,21 +29,23 @@
         <div class="container">
             <div class="row">
                 @foreach($items as $rota)
-                    @if($rota[0])
+                    @if($rota['sessions'])
 <!-- DISPLAY ROTA -->
                     <div class="col-sm-12 text-left well">
                         <div class="row">
+                            <!-- SHOW DATE -->
                             <div class="col-sm-3 text-left">
-                                {{ Carbon\Carbon::parse($rota[0]->date())->format('D, d/m/Y') }} <br/>
+                                {{ Carbon\Carbon::parse($rota['date'])->format('D, d/m/Y') }} <br/>
                                 @can('staff_manage')
-                                    <a href="/rota/session/{{$rota[0]->date()}}" type="button" class="btn btn-info">Edit</a>
-                                    <a href="/rota/assign/{{$rota[0]->date()}}" type="button" class="btn btn-success">Assign Demonstrators</a>
+                                    <a href="/rota/session/{{$rota['date']}}" type="button" class="btn btn-info">Edit</a>
+                                    <a href="/rota/assign/{{$rota['date']}}" type="button" class="btn btn-success">Assign Demonstrators</a>
                                 @endcan
                             </div>
+                            <!-- SHOW SESSIONS -->
                             <div class="col-sm-9 text-left">
                                 <table class="table table-hover">
                                     <tbody>
-                                        @foreach($rota as $s)
+                                        @foreach($rota['sessions'] as $s)
                                             @php
                                                 $starttime = $s->start_time();
                                                 $endtime = $s->end_time();
@@ -53,14 +55,18 @@
                                                 }
                                             @endphp
                                             <tr>
+                                                <!-- PUBLIC OR PRIVATE -->
                                                 <td><span class="fa fa-fw fa-{{$icon}}"></span> </td>
-                                                <td>{{$starttime}} -- {{$endtime}}</td> 
+                                                <!-- SESSION TIME -->
+                                                <td>{{$starttime}} &ndash; {{$endtime}}</td> 
+                                                <!-- EVENT BADGES -->
                                                 <td>
                                                     @foreach($s->events() as $e)
                                                         <span class="text-justify" data-placement="top" data-toggle="popover"
-                                 data-trigger="hover" data-content="{{$e->name}}: {{ Carbon\Carbon::parse($e->start_date)->format('d/m/Y') }} -- {{ Carbon\Carbon::parse($e->end_date)->format('d/m/Y') }}"><a @can('staff_manage') href="/rota/event/update/{{$e->id}}" @endcan class="badge badge-{{$e->type}}"> {{$e->name}} </a></span>
+                                 data-trigger="hover" data-content="{{$e->name}}: {{ Carbon\Carbon::parse($e->start_date)->format('d/m/Y') }} &ndash; {{ Carbon\Carbon::parse($e->end_date)->format('d/m/Y') }}"><a @can('staff_manage') href="/rota/event/update/{{$e->id}}" @endcan class="badge badge-{{$e->type}}"> {{$e->name}} </a></span>
                                                     @endforeach
                                                 </td>
+                                                <!-- DEMONSTRATORS -->
                                                 @if($s->staff()->count()>0)
                                                     <td>
                                                     @php
@@ -88,7 +94,11 @@
                     @else
 <!--DISPLAY EVENT-->
                     <div class="col-sm-12 text-left well col-{{$rota->type}}">
-                        <a @can('staff_manage') href="/rota/event/update/{{$rota->id}}" @endcan>{{$rota->name}}</a>: {{ Carbon\Carbon::parse($rota->start_date)->format('d/m/Y') }} -- {{ Carbon\Carbon::parse($rota->end_date)->format('d/m/Y') }}
+                        <a @can('staff_manage') href="/rota/event/update/{{$rota->id}}" @endcan>{{$rota->name}}</a>:
+                        {{ Carbon\Carbon::parse($rota->start_date)->format('d/m/Y') }}
+                        @if($rota->start_date != $rota->end_date)
+                            &ndash; {{ Carbon\Carbon::parse($rota->end_date)->format('d/m/Y') }}
+                        @endif
                     </div>
                     @endif
                 @endforeach

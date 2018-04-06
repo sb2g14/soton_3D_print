@@ -173,7 +173,19 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 // Group of routes available only to roles administrator, Lead Demonstrator
 /////////////////////////////////////////////////////////////////////////////////////////////
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
-
+    
+    //consider using
+    //Route::resource('printers', 'PrintersController');
+    //to replace
+    //Route::get('/printers','PrintersController@index');
+    //Route::get('/printers/create','PrintersController@create');
+    //Route::post('/printers','PrintersController@store');
+    //Route::get('/printers/{id}','PrintersController@show);
+    //Route::get('/printers/{id}/edit','PrintersController@edit');
+    //Route::put('/printers/{id}','PrintersController@update');
+    //Route::delete('/printers/{id}','PrintersController@destroy');
+    //see https://laravel.com/docs/5.1/controllers#restful-resource-controllers for more info on how to control the behaviour
+            
     // Here we redirect users to the add new printer post page
     Route::get('/printers/create','PrintersController@create');
 
@@ -291,7 +303,8 @@ Route::get('/rota','RotaController@index');
 
 Route::group(['middleware' => ['role:,jobs_manage']], function () {
     // Open a form to indicate availability for sessions
-    Route::get('/rota/availability','AvailabilityController@edit');
+    Route::get('/rota/availability','AvailabilityController@edit'); //logical url based on the availability being part of the rota workflow
+    Route::get('/availability','AvailabilityController@edit'); //shortcut to use in email
 
     // Update availability for sessions
     Route::post('/rota/availability','AvailabilityController@update');
@@ -301,11 +314,11 @@ Route::group(['middleware' => ['role:,jobs_manage']], function () {
 Route::group(['middleware' => ['role:,staff_manage']], function () {
 
     // Open a form to create a new rota sessions
-    //Route::post('/rota/session/new/make','SessionController@startcreate'); //OLD
+    //Route::post('/rota/session/new/make','SessionController@startcreate');  //deprecated
     Route::post('/rota/session/find','SessionController@startcreate');
 
     // Open a form to create a new rota session and update existing ones
-    //Route::get('/rota/session/new/{date}','RotaController@edit'); //OLD
+    //Route::get('/rota/session/new/{date}','RotaController@edit');  //deprecated
     Route::get('/rota/session/{date}','RotaController@edit');
 
     // Store a new rota session
@@ -315,7 +328,8 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
     Route::get('/rota/session/delete/{id}','SessionController@destroy');
 
     // Update an existing rota session
-    Route::post('/rota/updatesession','SessionController@update');
+    Route::post('/rota/updatesession','SessionController@update'); //deprecated
+    Route::post('/rota/session/update','SessionController@update');
 
     // Open a form to assign demonstrators to sessions
     Route::get('/rota/assign/{date}','SessionController@showassign');
@@ -324,10 +338,12 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
     Route::post('/rota/assign/{date}','SessionController@assign');
 
     // Show blade to create a new event
-    Route::get('/rota/newevent','EventController@create');
+    Route::get('/rota/newevent','EventController@create'); //deprecated
+    Route::get('/rota/event/new','EventController@create');
 
     // Store a new event
-    Route::post('/rota/newevent','EventController@store');
+    Route::post('/rota/newevent','EventController@store'); //deprecated
+    Route::post('/rota/event/new','EventController@store');
 
     // Show blade to update an existing event
     Route::get('/rota/event/update/{id}','EventController@edit');

@@ -42,7 +42,7 @@ class RotaController extends Controller
     private function mergeItems($rotas,$events){
         $items = [];
         foreach($rotas as $r){
-            $start = $r[0]->start_date;
+            $start = $r['start_date'];
             $items[$start.'r'] = $r;
         }
         foreach($events as $e){
@@ -52,30 +52,48 @@ class RotaController extends Controller
         ksort($items); 
         return $items;
     }
-    
-    /** groups sessions into rotas **/
-    private function getRotas($sessions){
-        $rotas = [];
+
+    /** initiate a new rota from an array of sessions **/
+    private function initRota($sessions){
         $rota = [];
+        // Add the actual sessions
+        $rota['sessions'] = $sessions;
+        // Add metadata
+        $rota['date'] = $sessions[0]->date();
+        $rota['start_date'] = $sessions[0]->start_date;
+        //$rota['end_date'] = $sessions[-1]->end_date;
+        // Group Common Events as Rota Events
+        /*$events = $sessions[0]->events()->toArray();
+        foreach($sessions as $s){
+            $events = array_intersect($events, $s->events()->toArray());
+        }
+        $rota['events'] = $events;*/
+        return $rota;
+    }
+
+    /** groups sessions into rotas **/
+    public function getRotas($sessions){
+        $rotas = [];
+        $rsessions = [];
         $lastdate = "";
         foreach($sessions as $s){
             if($s->date() !== $lastdate){
                 //new rota started
-                if($rota != []){
+                if($rsessions != []){
                     //append old rota
-                    $rotas[] = $rota;
+                    $rotas[] = $this->initRota($rsessions);
                 }
                 //reset variables
-                $rota = [];
+                $rsessions = [];
                 $lastdate = $s->date();
             }
             //append session to rota
-            $rota[] = $s;
+            $rsessions[] = $s;
         }
         //append last rota
-        if($rota != []){
+        if($rsessions != []){
             //append old rota
-            $rotas[] = $rota;
+            $rotas[] = $this->initRota($rsessions);
         }
         return $rotas;
     }
@@ -179,16 +197,18 @@ class RotaController extends Controller
         });
         // Combine sessions into opening hours
         $open = [];
-        $lastend = null;
+        $lastendtime = null;
+        $lastdate = null;
         foreach($sessions as $s){
-            if($lastend != $s->start_date){
+            if($lastendtime != $s->start_date){
                 //unconnected session
-                $lastend = $s->end_date;
-                $open[] = [$s->start_date,$lastend];
+                $lastdate = $s->date();
+                $lastendtime = $s->end_date;
+                $open[$lastdate][] = [$s->start_date,$lastendtime];
             }else{
                 //connected to last session
-                $lastend = $s->end_date;
-                $open[sizeof($open) - 1] = [$open[sizeof($open) - 1][0],$lastend];
+                $lastendtime = $s->end_date;
+                $open[$lastdate][sizeof($open[$lastdate]) - 1] = [$open[$lastdate][sizeof($open[$lastdate]) - 1][0],$lastendtime];
             }
         }
         return $open;

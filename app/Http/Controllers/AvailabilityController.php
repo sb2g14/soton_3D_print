@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Input;
 use Auth;
 use App\StatisticsHelper;
 use Carbon\Carbon;
+use App\Http\Controllers\RotaController;
 
 class AvailabilityController extends Controller
 {
@@ -78,10 +79,7 @@ class AvailabilityController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\staff  $staff
-     * @return \Illuminate\Http\Response
+     * Show the form for editing the availability
      */
     public function edit()
     {
@@ -89,9 +87,11 @@ class AvailabilityController extends Controller
         $sessions = $this->getFutureSessions()->get();
             //->join('availabilities', 'sessions.id', '=', 'availabilities.sessions_id', 'left outer')
             //->get();
+        $rc = new RotaController();
+        $rotas = $rc->getRotas($sessions);
         
         $options = array('available'=>'available','tentative'=>'tentative','busy'=>'busy','away'=>'away');
-        return view('rota.availability', compact('sessions','options','staffid'));
+        return view('rota.availability', compact('rotas','options','staffid'));
     }
     
     
