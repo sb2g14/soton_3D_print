@@ -322,10 +322,10 @@ module.exports = {
         var material = $(fieldname);
 
         if(material.val().length < 1){
-            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams");
+            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams. Weight precision is 0.1 gram");
             localerror = true;
         } else if (!material.val().match(/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/)) {
-            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams");
+            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams. Weight precision is 0.1 gram");
             localerror = true;
         } else {
             module.exports.removeError(fieldname);

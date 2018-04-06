@@ -392,10 +392,10 @@ module.exports = {
         var material = $(fieldname);
 
         if (material.val().length < 1) {
-            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams");
+            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams. Weight precision is 0.1 gram");
             localerror = true;
         } else if (!material.val().match(/^(?!0(\.?0*)?$)\d{0,3}(\.?\d{0,1})?$/)) {
-            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams");
+            module.exports.addError(fieldname, "The value must be between 0.1 and 9999 in grams. Weight precision is 0.1 gram");
             localerror = true;
         } else {
             module.exports.removeError(fieldname);
@@ -516,7 +516,6 @@ module.exports = {
             module.exports.removeError(fieldname);
             localerror = false;
         }
-        //check_all_fields();
         return localerror;
     },
     check_claim_passcode: function check_claim_passcode(fieldname) {
@@ -535,7 +534,6 @@ module.exports = {
             module.exports.removeError(fieldname);
             localerror = false;
         }
-        //check_all_fields();
         return localerror;
     },
     //ISSUE RELATED CHECKS
@@ -543,13 +541,28 @@ module.exports = {
         /*check Issue Title fields if they are correct and returns a boolean
          *also sets the Error on the specified field. The error div needs to have
          *the identical fieldname but with _error appended.*/
+        return module.exports.check_title(fieldname, 8, 180);
+    },
+    //ROTA RELATED CHECKS
+    check_event_title: function check_event_title(fieldname) {
+        /*check Issue Title fields if they are correct and returns a boolean
+         *also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
+        //Note: maximum is 255, but that's too long for display, so we reduce it to 32
+        return module.exports.check_title(fieldname, 5, 32);
+    },
+    //CHECKS RELATED TO GENERAL TEXT BOXES LIKE COMMENTS
+    check_title: function check_title(fieldname, minlength, maxlength) {
+        /*check Title fields if they are correct and returns a boolean
+         *also sets the Error on the specified field. The error div needs to have
+         *the identical fieldname but with _error appended.*/
         var localerror = true;
-        var issue_title = $(fieldname).val();
+        var title = $(fieldname).val();
 
-        if (issue_title.length < 8 || issue_title.length > 180) {
-            module.exports.addError(fieldname, 'The title should be between 8 and 180 characters');
+        if (title.length < minlength || title.length > maxlength) {
+            module.exports.addError(fieldname, 'The title should be between ' + minlength + ' and ' + maxlength + ' characters');
             localerror = true;
-        } else if (!issue_title.match(/^[a-zA-Z0-9 .,!?']+$/)) {
+        } else if (!title.match(/^[a-zA-Z0-9 .,!?']+$/)) {
             module.exports.addError(fieldname, "Only these special characters are allowed: ,.!?'");
             localerror = true;
         } else {
@@ -558,7 +571,6 @@ module.exports = {
         }
         return localerror;
     },
-    //CHECKS RELATED TO GENERAL TEXT BOXES LIKE COMMENTS
     check_message: function check_message(fieldname, minlength, maxlength) {
         /*check message fields if they are correct and returns a boolean
          *also sets the Error on the specified field. The error div needs to have
