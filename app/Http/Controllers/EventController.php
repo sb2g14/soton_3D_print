@@ -66,7 +66,7 @@ class EventController extends Controller
 
         $event = new Event;
         $event -> start_date = Carbon::createFromFormat('d/m/Y H:i',request('start_date'));
-        $event -> end_date = rCarbon::createFromFormat('d/m/Y H:i',request('end_date'));
+        $event -> end_date = Carbon::createFromFormat('d/m/Y H:i',request('end_date'));
         $event -> name = request('event_name');
         $event -> type = request('event_type');
 

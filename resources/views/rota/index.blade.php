@@ -11,12 +11,11 @@
         </div>
 
         <div class="container">
-            <div>
-            <a href="/rota/availability" type="button" class="btn btn-success pull-left">Indicate Availability</a>
+            <a href="/rota/availability" type="button" class="btn btn-info pull-left">Indicate Availability</a>
             @can('staff_manage')
                  <div class="pull-right"><a href="/rota/event/new" type="button" class="btn btn-success">Add Event</a></div>
-                 <div class="pull-right">&nbsp;</div>
-                 <div class="pull-right">{{--<div style="position: relative;">--}}
+                 {{--<div class="pull-right">&nbsp;</div>--}}
+                 <div class="col-lg-4 pull-right">{{--<div style="position: relative;">--}}
                      <form method="post" action="/rota/session/find">
                         {{ csrf_field() }}
                         <div class="input-group">
@@ -26,9 +25,8 @@
                             </div>
                         </div>
                      </form>
-                 </div>
-            @endcan
-            <hr>
+                @endcan
+                 <hr>
             </div>
         </div>
         <div class="container">
