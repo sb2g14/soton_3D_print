@@ -54,11 +54,11 @@
                                 @can('staff_manage')
                                     <span class="text-justify" data-placement="top" data-toggle="popover"
                                         data-trigger="hover" data-content="Edit the sessions for this date.">
-                                        <a href="/rota/session/{{$rota['date']}}" type="button" class="btn btn-info">Edit</a>
+                                        <a href="/rota/session/{{$rota['date']}}" type="button" class="btn btn-info"><i class="fa fa-calendar"></i> Edit</a>
                                     </span>
                                     <span class="text-justify" data-placement="top" data-toggle="popover"
                                         data-trigger="hover" data-content="Edit who is going to demonstrate on this day.">
-                                        <a href="/rota/assign/{{$rota['date']}}" type="button" class="btn btn-success">Assign Demonstrators</a>
+                                        <a href="/rota/assign/{{$rota['date']}}" type="button" class="btn btn-success"><i class="fa fa-user-plus "></i> Assign</a>
                                     </span>
                                 @endcan
                             </div>

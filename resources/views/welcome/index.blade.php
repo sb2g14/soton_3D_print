@@ -266,7 +266,7 @@
                     @if(Auth::check())
                     <div id="all-issues">
                         @foreach($issues as $post)
-                            <li class="list-group-item well {{isset($post->printers_id) ? 'alert alert-info' : 'alert alert-warning'}}">
+                            <li class="list-group-item well {{isset($post->printers_id) ? 'alert alert-info' : 'alert alert-default'}}">
                                 {{--Print title of a post--}}
                                 <h4><b>{{ isset($post->printers_id)  ? 'Printer '.$post->printers_id.':' : '' }} {{ $post->title }}</b></h4>
                                 {{-- Button to delete the issue--}}
@@ -423,9 +423,9 @@
                         <div id="all-announcements">
                             @if(Auth::check())
                                 @foreach($announcements as $announcement)
-                                    <li class="list-group-item well @if($announcement->public === 0) alert alert-info @else alert alert-warning @endif ">
+                                    <li class="list-group-item well @if($announcement->public === 0) alert alert-info @else alert alert-default @endif ">
                                         <!-- <div class="alert alert-info"> -->
-                                        <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
+                                        <h5 class="media-heading"> <i class="fa @if($announcement->public === 0) fa-comment @else fa-bullhorn @endif"></i> {{$announcement->user->name}}  <small><i>
                                                     {{-- Delete the announcement if you have appropriate permissions--}}
                                                     @if( strtolower(Auth::user()->email) == strtolower($announcement->user->email) || Auth::user()->can('delete_announcements'))
                                                         <span data-placement="top" data-toggle="popover" data-trigger="hover"

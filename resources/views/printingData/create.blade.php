@@ -61,7 +61,7 @@
                     <label for="customer_name" class="col-sm-4 control-label">Name</label>
 
                     <div class="col-sm-8">
-                        <input id="student_name" data-help="" type="text" class="form-control" name="customer_name" value="{{ old('customer_name', isset($member)  ? $member->first_name.' '.$member->last_name : $customer_name) }}" placeholder="Please input your First and Last name" required>
+                        <input id="student_name" data-help="" type="text" class="form-control" name="customer_name" value="{{ old('customer_name', isset($member)  ? $member->first_name.' '.$member->last_name : $customer_name) }}" placeholder="Please input your First and Last name" autocomplete="name" required>
                         @if ($errors->has('customer_name'))
                             <span class="help-block">
                             <strong>{{ $errors->first('customer_name') }}</strong>
@@ -75,7 +75,7 @@
                     <label for="customer_email" class="col-sm-4 control-label">Email</label>
 
                     <div class="col-sm-8">
-                        <input id="email" data-help="customer_email" type="email" class="form-control" name="customer_email" value="{{ old('customer_email', isset($member)  ? $member->email : $customer_email) }}" placeholder="Please input soton email" required><br>
+                        <input id="email" data-help="customer_email" type="email" class="form-control" name="customer_email" value="{{ old('customer_email', isset($member)  ? $member->email : $customer_email) }}" placeholder="Please input soton email" autocomplete="work email" required><br>
 
                         @if ($errors->has('customer_email'))
                             <span class="help-block">
@@ -89,7 +89,7 @@
                 <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
                     <label for="customer_id" class="col-sm-4 control-label">Student/Staff ID</label>
                     <div class="col-sm-8">
-                        <input id="student_id" data-help="customer_id" type="text" class="form-control" name="customer_id" value="{{ old('customer_id', isset($member)  ? $member->student_id : $customer_id) }}" placeholder="Please input your university ID number" required>
+                        <input id="student_id" data-help="customer_id" type="text" class="form-control" name="customer_id" value="{{ old('customer_id', isset($member)  ? $member->student_id : $customer_id) }}" placeholder="Please input your university ID number" autocomplete="work id" required>
                         @if ($errors->has('customer_id'))
                             <span class="help-block">
                             <strong>{{ $errors->first('customer_id') }}</strong>
@@ -126,7 +126,7 @@
                 <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
                     <label for="material_amount" class="col-sm-4 control-label">Material Amount (grams) </label>
                     <div class="col-sm-8">
-                        <input id="material_amount" data-help="material_amount" type="text" class="form-control" name="material_amount" value="{{ old('material_amount', $material_amount) }}" placeholder="Please specify the amount of material requested" required>
+                        <input id="material_amount" data-help="material_amount" type="text" class="form-control" name="material_amount" value="{{ old('material_amount', $material_amount) }}" placeholder="Please specify the amount of material requested" autocomplete="off" required>
                         @if ($errors->has('material_amount'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('material_amount') }}</strong>
@@ -139,7 +139,7 @@
                 <div class="form-group{{ $errors->has('use_case') ? ' has-error' : '' }}">
                     <label for="use_case" class="col-sm-4 control-label">Project Code or Cost Code</label>
                     <div class="col-sm-8">
-                        <input id="use_case" data-help="use_case" type="text" class="form-control" name="use_case" value="{{ old('use_case', isset($member)  ? "Demonstrator" : $use_case) }}" placeholder="A 9 digit cost code or module name are allowed" required>
+                        <input id="use_case" data-help="use_case" type="text" class="form-control" name="use_case" value="{{ old('use_case', isset($member)  ? "Demonstrator" : $use_case) }}" placeholder="A 9 digit cost code or module name are allowed" autocomplete="off" required>
                         @if ($errors->has('use_case'))
                             <span class="help-block">
                             <strong>{{ $errors->first('use_case') }}</strong>
@@ -155,7 +155,7 @@
 
                     <div class="col-sm-8">
                         <input id="budget_holder" data-help="budget_holder" type="text" class="form-control"
-                               name="budget_holder" value="{{ old('budget_holder') }}" placeholder="Provide the name of the budget holder of the cost code">
+                               name="budget_holder" value="{{ old('budget_holder') }}" placeholder="Provide the name of the budget holder of the cost code" autocomplete="off" >
 
                         @if ($errors->has('budget_holder'))
                             <span class="help-block">
@@ -172,7 +172,7 @@
 
                     <div class="col-sm-8">
                         <input id="job_title" data-help="job_title" type="text" class="form-control"
-                               name="job_title" value="{{ old('job_title') }}" placeholder="Provide a meaningful name for your request" required>
+                               name="job_title" value="{{ old('job_title') }}" placeholder="Provide a meaningful name for your request" autocomplete="off" required>
 
                         @if ($errors->has('job_title'))
                             <span class="help-block">
@@ -187,7 +187,7 @@
                     <div class="col-sm-offset-4 col-sm-8 text-left">
                         <button id="submit" type="submit" class="btn btn-success">Submit</button>
                         <a href="/" class="btn btn-danger">Cancel</a>
-                        {{--<a href="{{  url('https://www.3dhubs.com/service/254134') }}" target="_blank" class="btn btn-info">Order online</a>--}}
+                        <a href="/OnlineJobs/create" class="btn btn-primary">Order online</a>
                     </div>
                 </div>
                 

@@ -169,7 +169,7 @@
         @endif
         
         <div id="toggle-menu" for="hmt" class="hamburger hamburger--slider btn-menu">
-            <div class="hamburger-box"> "{{ route('auth.logout') }}">
+            <div class="hamburger-box"> {{--"{{ route('auth.logout') }}">--}}
                 <div class="hamburger-inner"></div>
             </div>
         </div>

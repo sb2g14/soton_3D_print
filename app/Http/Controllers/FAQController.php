@@ -35,7 +35,7 @@ class FAQController extends Controller
                       'size' => "250x210x210mm"],
             "Prusa i3 MK3" => ['material' => "Any thermoplastic including Nylon and Polycarbonate",
                       'speed' => "200+ mm/s",
-                      'size' => "250x210x210mm"]
+                      'size' => "250x210x210mm"],
         ];
         // default description is empty (but contains the same keys!)
         $printer_description_def = ['material' =>'', 'speed' => '', 'size' => ''];

@@ -26,7 +26,7 @@
                         <input id="email" type="email" name="email" class="form-control" value="{{ $member-> email}}"/><br>
                         <td><span class="help-block" id="email_error"></span></td>
                     <label for="body">Phone: </label><br>
-                        <input id="phone" type="text" name="phone" class="form-control" value="{{ $member-> phone}}"/><br>
+                        <input id="phone" type="tel" name="phone" class="form-control" value="{{ $member-> phone}}"/><br>
                         <td><span class="help-block" id="phone_error"></span></td>
                     @can('staff_manage')
                     <div class="field-inner">
@@ -52,7 +52,7 @@
                         <td><span class="help-block" id="lwidate_error"></span></td>
                     @endif
                     @include('layouts.errors')
-                    <button id="submit" type="submit" class="btn btn-info">Update</button>
+                    <button id="submit" type="submit" class="btn btn-info"><i class="fa fa-save"></i> Save Changes</button>
                 </form>
             </div>
 

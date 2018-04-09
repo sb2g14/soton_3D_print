@@ -127,9 +127,9 @@ class RotaController extends Controller
 
     
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display all events and sessions from 2 weeks ago until eternity
+     * sessions are grouped into rotas
+     * rotas and events are merged into one list, sorted by start date
      */
     public function index()
     {
@@ -169,7 +169,7 @@ class RotaController extends Controller
         $sessions = $sc->getSessionsForDate($date);
         //approximate start and end time of the next session
         //logic is: if no session so far for this day, then first session is 9am till 12pm
-        //          otherwise, assume the enxt session starts after the previous one and is as long as the previous session.
+        //          otherwise, assume the next session starts after the previous one and is as long as the previous session.
         $latest = $sc->getLastSessionForDate($date);
         if($latest){
             $newstarttime = new Carbon($latest->end_date);
@@ -182,7 +182,7 @@ class RotaController extends Controller
             $newendtime = new Carbon($date.' 12:00:00'); 
             //$newendtime->hour(12)->minute(0)->second(0);
         }
-        // need to convert to a time, so that the date-time-picker is happy
+        // need to convert to the right time format, so that the date-time-picker is happy
         $newstarttime = $newstarttime->format('H:i');
         $newendtime = $newendtime->format('H:i');
         // Get the events for this date
@@ -192,7 +192,7 @@ class RotaController extends Controller
     }
 
      /**
-     * Show the form for creating and updating sessions of a day.
+     * Show the form for sending the email for the rota
      *
      * @return \Illuminate\Http\Response
      */
