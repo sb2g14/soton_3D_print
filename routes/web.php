@@ -225,7 +225,15 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
     // Delete cost code
     Route::get('/costCodes/delete/{id}', 'CostCodesController@destroy');
 
+    // Find blade that shows print by id
+    Route::get('/print/{id}','PrintsController@show');
+    
+    // Find blade that shows job by id
+    Route::get('/job/{id}','JobsController@show');
+
 });
+
+
 
 // Group of routes available to online jobs manager only
 /////////////////////////////////////////////////////////////////////////////////////////////

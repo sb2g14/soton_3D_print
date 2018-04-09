@@ -168,15 +168,15 @@
                         </div>
                     @endcan
                 @endif
-                {{--@if($entry['Type'] === '1 Prints' && $entry['Description'] !== 'Success' && $entry['Description'] !== 'Failed')
+                @if($entry['Type'] === '1 Prints' && $entry['Description'] !== 'Success' && $entry['Description'] !== 'Failed')
                         <div class="col-sm-4">
                             @if(!$entry['EndDate'])
-                                <a href="/issues/update/{{$entry['EntryID']}}" class="btn btn-info">View</a>
+                                <a href="/print/{{$entry['EntryID']}}" class="btn btn-info">View</a>
                             @else
-                                <a href="/issues/update/{{$entry['EntryID']}}">View details...</a>
+                                <a href="/print/{{$entry['EntryID']}}">View details...</a>
                             @endif
                         </div>
-                @endif--}}
+                @endif
             </div>
         </li>
     @endforeach
