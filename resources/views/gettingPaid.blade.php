@@ -26,11 +26,12 @@
                 </ul>
             </li>
             <li><b>Pay Rate</b>: <i>Demonstrator rate</i></li>
-            <li><b>Supporting Comments</b>: Insert &lsquo;<i>3D Printing Workshop; Note: This is not a module but a workshop.</i>&rsquo; (or similar).
+            <li><b>Supporting Comments</b>: Insert &lsquo;<i>3D Printing Service; Note: This is not a module but a workshop.</i>&rsquo; (or similar).
             <li>Fill in your hours worked for each date.</li>
+            <li><b>Name of hiring manager</b>: <i>Andrew Hamilton</i></li>
             <li>Fill in the <b>Job ID number</b> using the &lsquo;assignment ID number&rsquo; that you received via email upon appointment.</li>
             <li>Fill in your training attendance dates under the &lsquo;Demonstrator Training&rsquo; tab.
-                <ul>
+                <ol>
                     @php
                         if($member->SMT_date){
                             $smtdate = Carbon\Carbon::parse($member->SMT_date)->format('d/m/Y');
@@ -43,10 +44,14 @@
                             $lwidate = "--";
                         }
                     @endphp
+                    <li><b>Student ID</b>: <i>{{substr($member->student_id,1,8)}}</i></li>
+                    <li><b>Member of staff you worked for</b>: <i>Andrew Hamilton</i></li>
                     <li><b>Faculty Orientation to Teaching & Demonstrating (OTD)</b>: Please see pgrtracker or gradbook</li>
                     <li><b>Specific Module Training by Module Lead</b>: <i>{{$smtdate}}</i></li>
-                    <li><b>Relevant labratory/workshop induction</b>: <i>{{$lwidate}}</i></li>
-                </ul>
+                    <li><b>Relevant laboratory/workshop induction</b>: <i>{{$lwidate}}</i></li>
+                    <li><b>Description</b>: <i>@if($member->SMT_date) Specific training on how to use the services management system has been attended. @endif  @if($member->LWI_date) Safety induction and training on operating 3D printers has been attended. @endif
+                    </i></li>
+                </ol>
             </li>
             <li>Save file using the filename specified on the lower right side of the hourly timesheet tab.</li>
         </ol> <br>

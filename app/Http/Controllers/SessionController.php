@@ -261,23 +261,18 @@ class SessionController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\staff  $staff
-     * @return \Illuminate\Http\Response
      */
     public function update()
     {
-        //need to get id from submit button...
+        // Need to get id from submit button...
         $id = (int)request('btn_update');
-        echo($id);
+        // Check all fields have been filled
         $this -> validate(request(), [
             'date' => 'required',
             'start_time_'.$id => 'required',
             'end_time_'.$id => 'required',
             'num_dem_'.$id => 'required'
         ]);
-
         // Convert time to date
         $date = request('date');
         $start_date = new Carbon($date.' '.request('start_time_'.$id));
@@ -297,7 +292,8 @@ class SessionController extends Controller
                                'end_date' => $end_date, 
                                'dem_required' => request('num_dem_'.$id), 
                                'public' => $session_public));
-
+        
+        // Give user feedback
         session()->flash('message', 'The session has been successfully updated!');
 
         return redirect('/rota/session/'.$date);
@@ -305,9 +301,6 @@ class SessionController extends Controller
 
     /**
      * Remove the specified session from storage.
-     *
-     * @param  \App\staff  $staff
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
