@@ -19,7 +19,7 @@ class rota extends Model
     public function sessions()
     {
 
-        return $this->hasMany(session::class);
+        //return $this->hasMany(session::class);
 
     }
     public function startDate()

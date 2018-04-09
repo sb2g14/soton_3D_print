@@ -76,6 +76,9 @@ class staff extends BaseModel
     public function lastSession()
     {   
         $t = $this->sessions()->orderBy('start_date','desc')->first();
+        if(!$t){
+            return null;
+        }
         return $t->start_date; //->toDateString();
     }
 }

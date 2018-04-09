@@ -30,9 +30,9 @@
                                         $x = $s->staff;
                                         if(count($x) > $d){
                                             $x = $x[$d];
-                                            $x = array('first_name' => $x->first_name, 'id' => $x->id);
+                                            $x = array('name' => $x->first_name.' '.$x->last_name, 'id' => $x->id);
                                         }else{
-                                            $x = array('first_name' => '', 'id' => 0);
+                                            $x = array('name' => '', 'id' => 0);
                                         }
                                         $options = $demonstrators['session_'.$s->id]['dem1'];
                                         if($d > 0){
@@ -40,7 +40,7 @@
                                         }
                                         //$options = $demonstratorsX;
                                     @endphp
-                                    {!! Form::select('dem_'.$s->id.'_'.$d, $options, old($x['first_name'], $x['id']), ['class' => 'form-control','required', 'id' => 'dem_'.$s->id.'_'.$d]) !!}
+                                    {!! Form::select('dem_'.$s->id.'_'.$d, $options, old($x['name'], $x['id']), ['class' => 'form-control','required', 'id' => 'dem_'.$s->id.'_'.$d]) !!} {{--  --}}
                                 @endfor
                             </div>
                         </div>

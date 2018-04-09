@@ -44,12 +44,18 @@ class SessionController extends Controller
     private function orderByLastSession($demonstrators){
         $temp = [];
         $dems = [];
-        //do the sorting
+        // Prepare array for sorting, by adding a new key
         foreach($demonstrators as $d){
             $lastsession = $d->lastSession();
-            $temp[$lastsession] = $d; //$this->pluckToList($d);
+            $dn = $d;
+            $dn->lastsession = $lastsession;
+            $temp[] = $dn;
         }
-        ksort($temp); 
+        // Do the sorting
+        $temp = collect($temp)->sortBy('lastsession');
+        $temp = $temp->values()->all();
+        // $temp contains the demonstrators sorted by the last session they demonstrated - 
+        // Now need to format for select form
         $dems = $this->pluckToList($temp);
         return $dems;
     }
