@@ -347,6 +347,8 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
     
     // Open form to create email for rota
     Route::get('/rota/email/{date}','RotaController@createmail');
+    // Send rota email
+    Route::post('/rota/email/{date}','RotaController@sendmail');
 
     // Show blade to create a new event
     Route::get('/rota/newevent','EventController@create'); //deprecated

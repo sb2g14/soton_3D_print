@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Rota;
+use App\User;
 use App\Sessions;
 use App\Availability;
 use App\staff;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
 use Carbon\Carbon;
+use App\Mail\RotaMail;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\SessionController;
 
 /**
@@ -68,7 +71,7 @@ class RotaController extends Controller
         $rota['date'] = $sessions[0]->date();
         $rota['start_date'] = $sessions[0]->start_date;
         //$rota['end_date'] = $sessions[-1]->end_date;
-        // Group Common Events as Rota Events
+        // Group Common Events as RotaMail Events
         /*$events = $sessions[0]->events()->toArray();
         foreach($sessions as $s){
             $events = array_intersect($events, $s->events()->toArray());
@@ -200,6 +203,38 @@ class RotaController extends Controller
         $sessions = $sc->getSessionsForDate($date);
         // Finally show the blade...
         return view('rota.mail', compact('date','sessions'));
+    }
+    
+    public function sendmail($date)
+    {
+        $message =   $reject_message = request()->validate([
+            'comment' => 'max:255']);
+        // Get the sessions for this date
+        $sc = new SessionController();
+        $sessions = $sc->getSessionsForDate($date);
+        $message['date'] = $date;
+
+        // Send email
+        try{
+            // Send an email to the 3dprint account an cc all the recipients
+            $recipient = '3dprint.soton@gmail.com';
+            // Only Svitlana and Andrew now for testing purposes
+            $users = User::where('id',1)->orWhere('id',2)->get();
+            Mail::to($recipient)->cc($users)->queue(new RotaMail($sessions, $message));
+
+            // Notify that the user of success
+            notify()->flash('The email has been sent' , 'success', [
+                'text' => 'The rota has been successfully sent to all 3D Printing workshop staff',
+            ]);
+        }catch(\Exception $e){
+            notify()->flash('Error!', 'warning', [
+                'text' => 'There has however been an error with our email server. Please send an email to anyone who should be contacted about this.',
+            ]);
+        }
+
+        return redirect('/rota');
+
+        // Send email with the sessions and input
     }
 
     /**

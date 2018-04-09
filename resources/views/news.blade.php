@@ -218,7 +218,7 @@
             </p>
             <p>If printers break, you can manage them from the 3D Printers->View Printers page.</p>
             <p>
-            I hope the page is self-explanatory for most ways. If you have any questions of how to achieve anything you could do on the spreadsheet before but don’t know how to do now, please let us know and we will try to give a more detailed explanation. Please note that the Availability/Rota spreadsheet will remain on google for now. We do plan to remove it in the long time though so that your Gmail accounts won’t be needed any longer but you can manage all from one page ☺
+            I hope the page is self-explanatory for most ways. If you have any questions of how to achieve anything you could do on the spreadsheet before but don’t know how to do now, please let us know and we will try to give a more detailed explanation. Please note that the Availability/RotaMail spreadsheet will remain on google for now. We do plan to remove it in the long time though so that your Gmail accounts won’t be needed any longer but you can manage all from one page ☺
             </p>
             <p>If there are any major problems while I am absent, please record the prints on a sheet of paper as we used to and I will sort things out once I am back!<br> I hope you have a great start in the weekend and hope that even if this change came without warning to you, you will soon appreciate the advantages of this new system. ☺
             </p>
