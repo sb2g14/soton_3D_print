@@ -27,7 +27,7 @@
                     <input type="text" name="end_date" class="form-control" id="end_date" value="{{Carbon\Carbon::parse($event->end_date)->format('d/m/Y H:i')}}"/>
                     <td><span class="" id="end_date_error"></span> </td> <br>
                     @include('layouts.errors')
-                    <button type="submit" id="submit" class="btn btn-lg btn-success">Update Event</button>
+                    <button type="submit" id="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Save Changes</button>
                     <a href="/rota" class="btn btn-lg btn-primary">View all Sessions</a>
                 </form>
             </div>

@@ -61,11 +61,11 @@
                         Update Record
                     </a>
                     <a href="/members/delete/{{$member->id}}"  class="btn btn-danger" style="margin: 20px 0px;">
-                        Delete Record
+                        <i class="fa fa-user-times"></i> Retire
                     </a>
                 @endif
                 <a href="/members/index" class="btn btn-primary" style="margin: 20px 0px;">
-                    View All
+                    <i class="fa fa-users"></i> View All
                 </a>
                 </div>
             </div>

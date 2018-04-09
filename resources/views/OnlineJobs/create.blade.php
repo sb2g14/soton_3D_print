@@ -23,7 +23,7 @@
                     <div class="col-sm-8">
                         <input id="customer_name" data-help="" type="text"
                                class="form-control" name="customer_name" value="{{ old('customer_name') }}"
-                               placeholder="Please input your First and Last name" required>
+                               placeholder="Please input your First and Last name" autocomplete="name" required>
 
                         @if ($errors->has('customer_name'))
                             <span class="help-block">
@@ -41,7 +41,7 @@
                     <div class="col-sm-8">
                         <input id="customer_email" data-help="customer_email" type="text"
                                class="form-control" name="customer_email" value="{{ old('customer_email') }}" 
-                               placeholder="Please input soton email" required>
+                               placeholder="Please input soton email" autocomplete="work email" required>
 
                         @if ($errors->has('customer_email'))
                             <span class="help-block">
@@ -59,7 +59,7 @@
                     <div class="col-sm-8">
                         <input id="customer_id" data-help="customer_id" type="text"
                                class="form-control" name="customer_id" value="{{ old('customer_id') }}"
-                               placeholder="Please input your university ID number" required>
+                               placeholder="Please input your university ID number" autocomplete="work id" required>
 
                         @if ($errors->has('customer_id'))
                             <span class="help-block">
@@ -77,7 +77,7 @@
                     <div class="col-sm-8">
                         <input id="use_case" data-help="use_case" type="text" class="form-control"
                                name="use_case" value="{{ old('use_case') }}"
-                               placeholder="A 9 digit cost code or module name" required>
+                               placeholder="A 9 digit cost code or module name" autocomplete="off" required>
 
                         @if ($errors->has('use_case'))
                             <span class="help-block">
@@ -94,7 +94,7 @@
 
                     <div class="col-sm-8">
                         <input id="budget_holder" data-help="budget_holder" type="text" class="form-control"
-                               name="budget_holder" value="{{ old('budget_holder') }}" placeholder="Provide the name of the budget holder of the cost code">
+                               name="budget_holder" value="{{ old('budget_holder') }}" placeholder="Provide the name of the budget holder of the cost code" autocomplete="off" >
 
                         @if ($errors->has('budget_holder'))
                             <span class="help-block">
@@ -111,7 +111,7 @@
 
                     <div class="col-sm-8">
                         <input id="claim_id" data-help="claim_id" type="text" class="form-control"
-                               name="claim_id" value="{{ old('claim_id') }}" placeholder="Claim ID" required>
+                               name="claim_id" value="{{ old('claim_id') }}" placeholder="Claim ID" autocomplete="off" required>
 
                         @if ($errors->has('claim_id'))
                             <span class="help-block">
@@ -128,7 +128,7 @@
 
                     <div class="col-sm-8">
                         <input id="claim_passcode" data-help="claim_passcode" type="text" class="form-control"
-                               name="claim_passcode" value="{{ old('claim_passcode') }}" placeholder="Claim Passcode" required>
+                               name="claim_passcode" value="{{ old('claim_passcode') }}" placeholder="Claim Passcode" autocomplete="off" required>
 
                         @if ($errors->has('claim_passcode'))
                             <span class="help-block">
@@ -145,7 +145,7 @@
 
                     <div class="col-sm-8">
                         <input id="job_title" data-help="job_title" type="text" class="form-control"
-                               name="job_title" value="{{ old('job_title') }}" placeholder="Provide a meaningful name for your request" required>
+                               name="job_title" value="{{ old('job_title') }}" placeholder="Provide a meaningful name for your request" autocomplete="off" required>
 
                         @if ($errors->has('job_title'))
                             <span class="help-block">
@@ -157,9 +157,10 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-8 text-right">
+                    <div class="col-sm-offset-4 col-sm-8 text-left">
                         <button id="submit" type="submit" class="btn btn-success">Submit</button>
                         <a href="/" class="btn btn-danger">Cancel</a>
+                        <a href="/printingData/create" class="btn btn-primary">Request a Workshop Print</a>
                     </div>
                 </div>
                 

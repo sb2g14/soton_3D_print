@@ -48,13 +48,13 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="input-group">
-                                        <span class="input-group-addon">demonstrators:</span>
+                                        <span class="input-group-addon"><i class="fa fa-users"></i></span>
                                         <input type="number" name="num_dem_{{$s->id}}" class="form-control input-sm col-sm-2" id="num_dem_{{$s->id}}" value="{{$s->dem_required}}"/> 
                                     </div>
                                 </div>
                                 <div class="col-sm-2 btn-group">
-                                    <button type="submit" name="btn_update" value="{{$s->id}}" id="submit_{{$s->id}}" class="btn btn-info">Update</button>
-                                    <a name="btn_delete" href="/rota/session/delete/{{$s->id}}" class="btn btn-danger">Delete</a>
+                                    <button type="submit" name="btn_update" value="{{$s->id}}" id="submit_{{$s->id}}" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                                    <a name="btn_delete" href="/rota/session/delete/{{$s->id}}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
                                 </div>
                             </div>
                         </form>
