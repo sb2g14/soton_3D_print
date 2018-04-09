@@ -16,6 +16,8 @@
                             </div>
                             <div class="col-sm-8">
                                 @foreach($r['sessions'] as $s)
+                                    <span class="text-justify" data-placement="top" data-toggle="popover"
+                                            data-trigger="hover" data-content="Choose Available, if you want to be selected for this session. If you choose tentative, you will only be selected, in case no one else suits that shift.">
                                     <div class="input-group">
                                         <div class="input-group-addon">{{$s->start_time()}} &ndash; {{$s->end_time()}}</div>
                                         @php
@@ -26,11 +28,10 @@
                                             }else{
                                                 $x = $x->status;
                                             }
-                                        @endphp
-                                        
+                                        @endphp   
                                             {!! Form::select('av_'.$s->id, $options, old($x, $x), ['class' => 'form-control','required', 'id' => 'av_'.$s->id, 'type' => 'text']) !!}    
-                                        
                                     </div>
+                                    </span>
                                 @endforeach
                             </div>
                         </div>

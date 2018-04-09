@@ -45,8 +45,9 @@
                             </div>
                         </div>
                     @endforeach
-                    <button type="submit" name="btn_update" value="{{$date}}" id="submit" class="btn btn-lg btn-info">Update</button>
+                    <button type="submit" name="btn_update" value="{{$date}}" id="submit" class="btn btn-lg btn-info">Save Changes</button>
                     <a href="/rota" type="button" class="btn btn-lg btn-primary">See all Sessions</a>
+                    <a href="/rota/email/{{$date}}" type="button" class="btn btn-lg btn-success"><i class="fa fa-envelope"></i> Create E-Mail</a>
                 </form>
             </div>
         </div>

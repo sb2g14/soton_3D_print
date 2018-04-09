@@ -90,7 +90,7 @@ class AvailabilityController extends Controller
         $rc = new RotaController();
         $rotas = $rc->getRotas($sessions);
         
-        $options = array('available'=>'available','tentative'=>'tentative','busy'=>'busy','away'=>'away');
+        $options = array('available'=>'available (I reserve this time in my calendar)','tentative'=>'tentative (only assign me, if necessary)','busy'=>"busy (I can't do this shift)",'away'=>"away (I can't be contacted during this time)");
         return view('rota.availability', compact('rotas','options','staffid'));
     }
     

@@ -182,6 +182,20 @@ class RotaController extends Controller
         return view('rota.newsession', compact('date','sessions','newstarttime','newendtime','events'));
     }
 
+     /**
+     * Show the form for creating and updating sessions of a day.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createmail($date)
+    {
+        // Get the sessions for this date
+        $sc = new SessionController();
+        $sessions = $sc->getSessionsForDate($date);
+        // Finally show the blade...
+        return view('rota.mail', compact('date','sessions'));
+    }
+
     /**
      * Get a list of dates and times, when the workshop is open
      *
