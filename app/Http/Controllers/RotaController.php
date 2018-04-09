@@ -13,6 +13,12 @@ use Auth;
 use Carbon\Carbon;
 use App\Http\Controllers\SessionController;
 
+/**
+ * This controller handles rotas.
+ * A rota is the collection of sessions for a day.
+ *
+ * This controller has functions to display a group of sessions, and to merge sessions into rotas and open-hours.
+ **/
 class RotaController extends Controller
 {
     public function __construct()

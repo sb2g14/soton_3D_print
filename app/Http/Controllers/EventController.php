@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Rota;
-use App\Sessions;
 use App\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
-use App\StatisticsHelper;
 use Carbon\Carbon;
 
+/**
+ * This controller handles events. 
+ * An event is a special time period that has a start and an end date-time.
+ * Events are independent from sessions and will mostly be public holidays and university key-dates.
+ **/
 class EventController extends Controller
 {
     public function __construct()
@@ -41,11 +43,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        $sessions = $this->getFutureSessions()->get();
-            //->join('availabilities', 'sessions.id', '=', 'availabilities.sessions_id', 'left outer')
-            //->get();
         $options = $this->getEventTypeOptions();
-        return view('rota.newevent', compact('sessions','options'));
+        return view('rota.newevent', compact('options'));
     }
     
 
@@ -79,27 +78,6 @@ class EventController extends Controller
         return redirect('/rota');
     }
     
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        
-    }
-    
-    /** get Sessions between now and the near future **/
-    private function getFutureSessions(){
-        $t1 = new Carbon();
-        $t2 = $t1->copy()->addMonths(2); //->where('availabilities.staff_id',$staffid)
-        $sessions = Sessions::orderBy('start_date')
-            ->where('start_date','>=',$t1->toDateTimeString())
-            ->where('start_date','<=',$t2->toDateTimeString());
-        return $sessions;
-    }
 
     /**
      * Show the form for editing the specified event.

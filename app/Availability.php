@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use phpDocumentor\Reflection\Types\Null_;
 /**
- * one session in the workshop (i.e. Wed,28/03/2018 9am till 12pm)
+ * An Availability is the status of one demonstrator for a particular Session. The status can be available, tentative, busy, or away.
  */
 class availability extends Model
 {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Rota;
 use App\Sessions;
 use App\Availability;
 use App\staff;
@@ -14,6 +13,16 @@ use App\StatisticsHelper;
 use Carbon\Carbon;
 use Alert;
 
+/**
+ * This controller handles sessions when the printing service is open.
+ * Sessions need to be created, updated and deleted. They also require assignment of demonstrators to them.
+ *
+ * A session is the smallest instance of the service work time. It has a start and an end time.
+ * A session can be either public, meaning that anyone can attend it,
+ * or private, meaning that only invited people should attend it.
+ * Each session requires a certain number of demonstrators to run it.
+ * All sessions in one day form a rota (See RotaController).
+ **/
 class SessionController extends Controller
 {
     public function __construct()

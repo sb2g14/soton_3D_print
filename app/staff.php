@@ -52,21 +52,17 @@ class staff extends BaseModel
     }
     public function isExperienced()
     {
-        //TODO: get experience for each staff with role demonstrator only
-        //$experiences = staff::join('sessions_staff','sessions_staff.staff_id','staff.id')->groupBy('staff.id')->select(DB::raw('COUNT(sessions_staff.sessions_id) as total'))->get(); 
+        // Get all demonstrators
         $demonstrators = staff::where('role', 'Demonstrator')->get();
         // Average the experiences
         $cnt = 0;
         $avexp = 0;
-        //foreach($experiences as $xp){
-        //    $avexp += $xp->total;
-        //    $cnt++;
-        //}
         foreach($demonstrators as $dem){
             $avexp += $dem->experience();
             $cnt++;
         }
         $avexp = $avexp/(float)$cnt;
+        
         // Check if members experience is above average
         if($this->experience() >= $avexp){
             return true;
