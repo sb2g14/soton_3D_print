@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Rota;
-use App\User;
+use App\staff;
 use App\Sessions;
 use App\Availability;
-use App\staff;
 use App\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -219,7 +218,7 @@ class RotaController extends Controller
             // Send an email to the 3dprint account an cc all the recipients
             $recipient = '3dprint.soton@gmail.com';
             // Only Svitlana and Andrew now for testing purposes
-            $users = User::where('id',1)->orWhere('id',2)->get();
+            $users = Staff::where('id',1)->orWhere('id',2)->get();
             Mail::to($recipient)->cc($users)->queue(new RotaMail($sessions, $message));
 
             // Notify that the user of success
