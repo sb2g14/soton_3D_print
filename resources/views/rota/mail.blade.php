@@ -46,7 +46,7 @@
                         <span class="" id="comment_error"></span><br/>
                     </div>
                     Kind regards,<br/>
-                        XXX
+                    {{ config('app.name') }}
                 </div>
                 <div class="col-sm-12">    
                     
