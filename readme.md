@@ -10,36 +10,43 @@ Register on the website
 GitHub
   3. Join GitHub repository (please ask a member of team to send you an invitation).
   4. Run ```git clone https://github.com/sb2g14/soton_roles```
-MAMP installation
-  5. Install corresponding stack: WAMP (Windows), LAMP (Linux: https://tecadmin.net/install-laravel-framework-on-ubuntu/), MAMP (Mac     OS). We're currently running Apache 2.0, PhP 7.1 and MySql 5.6, Laravel 5.5 so we recommend you to stick to this versions.
+Stack installation
+  5. You need to install on of the following stacks: 
+  WAMP (Windows) -> Windows, Apache, MySQL, PHP, 
+  LAMP (Linux) -> Linux, Apache, MySQL, PHP. (You can find it here: https://tecadmin.net/install-laravel-framework-on-ubuntu/), 
+  MAMP (Mac OS) -> Mac OS, Apache, MySQL, PHP. (You can find it here: https://www.mamp.info/en/)
+  We're currently running ## Apache 2.0, ## PhP 7.1, ## MySql 5.6 and ## Laravel 5.5 so we recommend you to stick to this versions.
 MySql setup
-  6. Set up the database. Ask a member of team (Svitlana or Andrew) for a latest dump from the database.
+  6. Setup the database. Ask a member of team (Svitlana or Andrew) for a latest dump file containing the database.
   7. Enter MySql: ```mysql -u username -p;```
   8. Create the database: ```CREATE DATABASE 3dprint_workshop; exit;```
   9. Write tables from your dump file: ```mysql -u username -p 3dprint_workshop < dumpfilename.sql```
 Running Laravel
-  10. Go to the soton_roles and open .env.example file, write the relevant mysql and mail server information and rename it to .env
+  10. Go to ```soton_roles``` directory and open ```.env.example``` file, write the relevant mysql and mail server information and rename it to ```.env```. Now run following in your terminal:
   11. ```composer update```
   12. ```php artisan key:generate```
   13. ```php artisan serve```
-  14. If everything is successful you will get the link to your local host. Normally it's http://127.0.0.1:8000 
+  14. If everything is successful the link to your local host will appear in the terminal window. Normally it's http://127.0.0.1:8000 
 If you experience any issues please contact us.
-  Linux error: unable to locate ext-bcmath
-  ```sudo apt install php7.1-bcmath```
-Install JetBrains
-  15. Do to https://www.jetbrains.com/ and install PhPStorm and DataGrip. Use the learning licence.
+
+## Known issues:
+  1. Linux error: unable to locate ext-bcmath. 
+    Just type this ```sudo apt install php7.1-bcmath``` in your terminal
+    
+## We recommend you to use JetBrains intelligent IDEs
+  15. You need to visit https://www.jetbrains.com/ apply for a student license and then install PhPStorm and DataGrip IDEs to work with PHP and SQL languages.
 
 ## Running the project
-Go to the soton_roles
+1. Go to the soton_roles
   ```php artisan serve```
   copy the link which appeared in the browser.
   
-If you experience any issues try:
+2. If you experience any issues try:
   ```composer upadte```
   ```composer dump-autoload```
   
 If you still have errors your database might be outdated
-  Go to 4,7 in installation manual.
+  Go to 4 and 7 of this installation manual.
 
 ### Installing NPM
 ```sudo apt install npm```
