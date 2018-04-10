@@ -147,7 +147,7 @@
                                         <p>
                                             <ol>
                                                 <li>Export your file to .stl format and bring it with you to the workshop</li>
-                                                <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOUSELF to the cupboards!</b></li>
+                                                <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOURSELF to the cupboards!</b></li>
                                                 <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
                                                 <li>Request a job on this website</li>
                                 <li>Ask a demonstrator to come to you to approve the print</li>

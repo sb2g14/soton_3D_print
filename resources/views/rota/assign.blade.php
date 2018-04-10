@@ -6,7 +6,11 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 well">
+            {{--<div class="col-sm-12 well text-left">
+                <pre>{!!print_r($demonstrators);!!}</pre>
+                <pre>{!!print_r($default);!!}</pre>
+            </div>--}}
+            <div class="col-sm-12 well"> 
                 <form method="post" class="form-horizontal" action="/rota/assign/{{$date}}">
                     {{ csrf_field() }}
                     <input type="text" hidden name="date" id="date" value="{{$date}}" />
@@ -27,20 +31,20 @@
                             <div class="col-sm-6 input-group">
                                 @for($d=0;$d<$s->dem_required;$d++)
                                     @php
-                                        $x = $s->staff;
+                                        /*$x = $s->staff;
                                         if(count($x) > $d){
                                             $x = $x[$d];
                                             $x = array('name' => $x->first_name.' '.$x->last_name, 'id' => $x->id);
                                         }else{
                                             $x = array('name' => '', 'id' => 0);
-                                        }
+                                        }*/
+                                        $x = $default['session_'.$s->id]['dem_'.$d];
                                         $options = $demonstrators['session_'.$s->id]['dem1'];
                                         if($d > 0){
                                             $options = $demonstrators['session_'.$s->id]['dem2'];
                                         }
-                                        //$options = $demonstratorsX;
                                     @endphp
-                                    {!! Form::select('dem_'.$s->id.'_'.$d, $options, old($x['name'], $x['id']), ['class' => 'form-control','required', 'id' => 'dem_'.$s->id.'_'.$d]) !!} {{--  --}}
+                                    {!! Form::select('dem_'.$s->id.'_'.$d, $options, old($x['name'], $x['id']), ['class' => 'form-control','required', 'id' => 'dem_'.$s->id.'_'.$d]) !!}
                                 @endfor
                             </div>
                         </div>
