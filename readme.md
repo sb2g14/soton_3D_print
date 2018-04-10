@@ -89,7 +89,7 @@ http://3dprint.clients.soton.ac.uk/printers/index
 
 ## TODO:
 - [ ] Remember to fulfill all license requirements for the pulled packages ASAP...
-- [ ] Add Laravel installation instructions/ link to this readme so future programmers can set up their own environment
+- [x] Add Laravel installation instructions/ link to this readme so future programmers can set up their own environment
 
 ## License
 
