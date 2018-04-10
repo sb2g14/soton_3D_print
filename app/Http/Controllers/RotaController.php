@@ -26,7 +26,7 @@ class RotaController extends Controller
     public function __construct()
     {
 
-        $this->middleware('auth')->except('index');
+        $this->middleware('auth')->except('openingHours');
 
     }
     
@@ -132,12 +132,9 @@ class RotaController extends Controller
      */
     public function index()
     {
-        if(!Auth::check()) {
-            abort(404);
-        }
         // Get sessions
         $sessions = $this->getUpcomingSessions();
-        // Merge sessions into rota groups
+        // Group sessions into rotas
         $rotas = $this->getRotas($sessions);
         // Get upcoming events
         $events = $this->getUpcomingEvents();
