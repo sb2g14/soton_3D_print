@@ -4,7 +4,43 @@
 [![GitHub issues](https://img.shields.io/github/issues/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_roles/issues)
 
 ## Installtion instruction
-...will be added...
+Register on the website
+  1. Ask the team member to add you to the database.
+  2. Register on the website
+GitHub
+  3. Join GitHub repository (please ask a member of team to send you an invitation).
+  4. Run ```git clone https://github.com/sb2g14/soton_roles```
+MAMP installation
+  5. Install corresponding stack: WAMP (Windows), LAMP (Linux: https://tecadmin.net/install-laravel-framework-on-ubuntu/), MAMP (Mac     OS). We're currently running Apache 2.0, PhP 7.1 and MySql 5.6, Laravel 5.5 so we recommend you to stick to this versions.
+MySql setup
+  6. Set up the database. Ask a member of team (Svitlana or Andrew) for a latest dump from the database.
+  7. Enter MySql: ```mysql -u username -p;```
+  8. Create the database: ```CREATE DATABASE 3dprint_workshop; exit;```
+  9. Write tables from your dump file: ```mysql -u username -p 3dprint_workshop < dumpfilename.sql```
+Running Laravel
+  10. Go to the soton_roles and open .env.example file, write the relevant mysql and mail server information and rename it to .env
+  11. ```composer update```
+  12. ```php artisan key:generate```
+  13. ```php artisan serve```
+  14. If everything is successful you will get the link to your local host. Normally it's http://127.0.0.1:8000 
+If you experience any issues please contact us.
+  Linux error: unable to locate ext-bcmath
+  ```sudo apt install php7.1-bcmath```
+Install JetBrains
+  15. Do to https://www.jetbrains.com/ and install PhPStorm and DataGrip. Use the learning licence.
+
+## Running the project
+Go to the soton_roles
+  ```php artisan serve```
+  copy the link which appeared in the browser.
+  
+If you experience any issues try:
+  ```composer upadte```
+  ```composer dump-autoload```
+  
+If you still have errors your database might be outdated
+  Go to 4,7 in installation manual.
+
 ### Installing NPM
 ```sudo apt install npm```
 
@@ -32,7 +68,7 @@ Do the same but you may encounter issues with ">" and "<". Look for substitution
 http://3dprint.clients.soton.ac.uk/printers/index
 
 ## Get Help on Libraries used:
-- *Laravel* as the PHP framework
+- *Laravel 5.5* as the PHP framework (https://laravel.com/docs/5.6)
 - *Bootstrap 3* (https://getbootstrap.com/docs/3.3/) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 - *jQuery* for easy JavaScript (http://jquery.com/) 
 - *Carbon* for PHP DateTime variables (http://carbon.nesbot.com/docs/) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
