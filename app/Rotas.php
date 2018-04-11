@@ -62,4 +62,12 @@ class Rotas
         return $rotas;   
     }
     
+    /** 
+     * find Rota for the given date 
+     * equivalent of find(id) for eloquent models
+     **/
+    public static function find($date){
+        return new Rota($date);
+    }
+    
 }

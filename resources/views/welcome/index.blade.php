@@ -12,8 +12,8 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    {{--Show request job button only on Wednesdays--}}
-                    @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
+                    {{--Show request job button only on TODO: if the workshop is open--}}
+                    @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3) {{--currently only check if it's wednesday--}}
                         {{--<div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
                         {{--<div class="btn-lg btn-request pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>--}}
                         <p><br/><a href="{{ url('/printingData/create') }}">  Start by requesting to print in the workshop now!</a></p>

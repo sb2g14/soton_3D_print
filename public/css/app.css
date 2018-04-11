@@ -523,15 +523,15 @@ input[type="time"]::-webkit-clear-button {
 .bl-welcome a {
   color: #ffffff;
   /*.font-size( (20/@fs-base) );*/
-  font-size: 32px;
-  font-size: 2rem;
+  font-size: 24px;
+  font-size: 1.5rem;
   display: block;
   padding: 5px 20px;
   text-decoration: none;
 }
 .bl-welcome a:hover {
   /*color: @c-link;*/
-  color: #50626e;
+  color: #E1E8EC;
 }
 .bl-welcome .btn {
   padding: 10px;
@@ -1244,6 +1244,10 @@ footer a:hover {
     font-size: 36px;
     font-size: 2.25rem;
   }
+  .bl-welcome a {
+    font-size: 24px;
+    font-size: 1.5rem;
+  }
 }
 /* Tablet and bigger */
 @media screen and (min-width: 768px) {
@@ -1323,6 +1327,10 @@ footer a:hover {
     font-size: 50px;
     font-size: 3.125rem;
     margin-bottom: 10px;
+  }
+  .bl-welcome a {
+    font-size: 36px;
+    font-size: 2.25rem;
   }
   .s-welcome .cardblock {
     height: 95%;

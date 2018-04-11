@@ -16,7 +16,7 @@
 
     <div class="container">
         <div class="col-lg-10 pull-left">
-            <input class="form-control" id="searchInput" type="text" placeholder="Search..">
+            <input class="form-control" id="searchInput" type="text" placeholder="Search.." autocomplete="off">
         </div>
         <div class="col-lg-2 pull-right">
             <a href="/costCodes/create" type="button" class="btn btn-success pull-right">
