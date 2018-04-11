@@ -62,7 +62,7 @@
                                             <strong>{{ $errors->first('student_name') }}</strong>
                                         </span>
                                     @endif
-                                     <span class="help-block" id="student_name_error"></span>
+                                     <span class="" id="student_name_error"></span>
                             </div>
                         </div>
 
@@ -75,7 +75,7 @@
                                         <strong>{{ $errors->first('student_id') }}</strong>
                                     </span>
                                     @endif
-                                <span class="help-block" id="student_id_error"></span>
+                                <span class="" id="student_id_error"></span>
                             </div>
                         </div>
 
@@ -88,7 +88,7 @@
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
-                                <span class="help-block" id="email_error"></span>
+                                <span class="" id="email_error"></span>
                             </div>
                         </div>
 
@@ -124,7 +124,7 @@
                                             <strong>{{ $errors->first('material_amount') }}</strong>
                                         </span>
                                     @endif
-                                <span class="help-block" id="material_amount_error"></span>
+                                <span class="" id="material_amount_error"></span>
                             </div>
                         </div>
 
@@ -132,14 +132,14 @@
                             <div class="col-md-12">
                                 <label for="comments">Add comments (optional):</label><br>
                                 <textarea rows="4" id="comment" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
-                                <span class="help-block" id="comment_error"></span>
+                                <span class="" id="comment_error"></span>
                             </div>
                         </div>
 
                         <div class="col-sm-12 text-left">
                                 <button id="submit" type="submit" class="btn btn-lg btn-success">Accept</button>
                                 <a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>
-                                <a href="/printingData/index" class="btn btn-lg btn-info">Back</a>
+                                <a href="/printingData/index" class="btn btn-lg btn-primary">Back</a>
                         </div>
                     </form>
                 </div>

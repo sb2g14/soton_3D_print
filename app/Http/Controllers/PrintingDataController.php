@@ -320,7 +320,7 @@ class PrintingDataController extends Controller
         printers::where('id','=', Input::get('printers_id'))->update(array('in_use'=> 1));
 
         // Notification of request acceptance
-        notify()->flash('Your job request has been accepted!', 'success', [
+        notify()->flash('Your job request has been recorded!', 'success', [
             'text' => 'Please ask a demonstrator to approve the job before you start the print.',
         ]);
 

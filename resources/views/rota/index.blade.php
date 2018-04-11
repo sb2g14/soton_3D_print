@@ -52,70 +52,78 @@
                             <div class="col-sm-3 text-left">
                                 {{ Carbon\Carbon::parse($rota->date)->format('D, d/m/Y') }} <br/>
                                 @can('staff_manage')
-                                    <div class="btn-group-vertical btn-group-sm">
-                                        <a href="/rota/session/{{$rota->date}}" type="button" class="btn btn-info" 
-                                            data-toggle="tooltip" data-placement="right" title="Edit the sessions for this date.">
-                                            <i class="fa fa-calendar"></i> Edit
-                                        </a>
-                                        <a href="/rota/assign/{{$rota->date}}" type="button" class="btn btn-info" 
-                                            data-toggle="tooltip" data-placement="right" title="Edit who is going to demonstrate on this day.">
-                                            <i class="fa fa-user-plus "></i> Assign
-                                        </a>
+                                    <div class="btn-group btn-group-sm">
+                                        <span class="btn-group text-justify" data-placement="top" data-toggle="popover"
+                            data-trigger="hover" data-content="Edit the sessions for this date.">
+                                            <a href="/rota/session/{{$rota->date}}" type="button" class="btn btn-info" 
+                                                >
+                                                <i class="fa fa-calendar"></i> Edit
+                                            </a>
+                                        </span>
+                                        <span class="btn-group text-justify" data-placement="top" data-toggle="popover"
+                                data-trigger="hover" data-content="Edit who is going to demonstrate on this day.">
+                                            <a href="/rota/assign/{{$rota->date}}" type="button" class="btn btn-info" 
+                                                >
+                                                <i class="fa fa-user-plus "></i> Assign
+                                            </a>
+                                        </span>
                                     </div>
                                 @endcan
                             </div>
                             <!-- SHOW SESSIONS -->
                             <div class="col-sm-9 text-left">
-                                <table class="table table-hover">
-                                    <tbody>
-                                        @foreach($rota->sessions as $s)
-                                            @php
-                                                $icon = 'lock';
-                                                $icondesc = 'private session';
-                                                if($s->public){
-                                                    $icon = 'globe';
-                                                    $icondesc = 'normal, public session';
-                                                }
-                                            @endphp
-                                            <tr>
+                                <ul class="list-group">
+                                    @foreach($rota->sessions as $s)
+                                        @php
+                                            $icon = 'lock';
+                                            $icondesc = 'private session';
+                                            if($s->public){
+                                                $icon = 'globe';
+                                                $icondesc = 'normal, public session';
+                                            }
+                                        @endphp
+                                        <li class="list-group-item">
+                                            <div class="row">
                                                 <!-- PUBLIC OR PRIVATE -->
-                                                <td><span class="text-justify" data-placement="top" data-toggle="popover"
+                                                <div class="col-sm-1">
+                                                    <span class="text-justify" data-placement="top" data-toggle="popover"
                                                         data-trigger="hover" data-content="{{$icondesc}}">
-                                                    <span class="fa fa-fw fa-{{$icon}}"></span>
-                                                </span></td>
+                                                        <span class="fa fa-fw fa-{{$icon}}"></span>
+                                                    </span>
+                                                </div>
                                                 <!-- SESSION TIME -->
-                                                <td>{{$s->timeString()}}</td> 
+                                                <div class="col-sm-2">{{$s->timeString()}}</div> 
                                                 <!-- EVENT BADGES -->
-                                                <td>
+                                                <div class="col-sm-3">
                                                     @foreach($s->events() as $e)
                                                         <span class="text-justify" data-placement="top" data-toggle="popover"
                                                             data-trigger="hover" data-content="{{$e->name}}: {{$e->dateString()}}">
                                                             <a @can('staff_manage') href="/rota/event/update/{{$e->id}}" @endcan class="badge badge-{{$e->type}}"> {{$e->name}} </a>
                                                         </span>
                                                     @endforeach
-                                                </td>
+                                                </div>
                                                 <!-- DEMONSTRATORS -->
-                                                @if($s->staff()->count()>0)
-                                                    <td>
-                                                    @php
-                                                        $dems = [];
-                                                        foreach($s->staff as $dem){
-                                                            if($dem->id == $user->id){
-                                                                $dems[] = '<span class="text-danger">'.$dem->name().'</span>';
-                                                            }else{
-                                                                $dems[] = $dem->name();
+                                                <div class="col-sm-6 text-left">
+                                                    @if($s->staff()->count()>0)
+                                                        @php
+                                                            $dems = [];
+                                                            foreach($s->staff as $dem){
+                                                                if($dem->id == $user->id){
+                                                                    $dems[] = '<span class="text-danger">'.$dem->name().'</span>';
+                                                                }else{
+                                                                    $dems[] = $dem->name();
+                                                                }
                                                             }
-                                                        }
-                                                    @endphp
-                                                    {!!implode(", ",$dems)!!}
-                                                    </td>
-                                                @else
-                                                    <td>({{$s->dem_required}} demonstrators)</td>
-                                                @endif
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                        @endphp
+                                                        {!!implode(", ",$dems)!!}
+                                                    @else
+                                                        ({{$s->dem_required}} demonstrators)
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
                     </div>

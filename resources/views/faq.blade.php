@@ -48,11 +48,11 @@
             <tbody>
                 @foreach($workshop_printers as $printer)
                     <tr>
-                        <td>{{$printer['name']}}</td>
-                        <td>{{$printer['count']}}</td>
-                        <td>{{$printer['material']}}</td>
-                        <td>{{$printer['speed']}}</td>
-                        <td>{{$printer['size']}}</td>
+                        <td data-th="Printer model">{{$printer['name']}}</td>
+                        <td data-th="Number available">{{$printer['count']}}</td>
+                        <td data-th="Printing material">{{$printer['material']}}</td>
+                        <td data-th="Print speed">{{$printer['speed']}}</td>
+                        <td data-th="Print size">{{$printer['size']}}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -74,11 +74,11 @@
                 <tbody>
                     @foreach($online_printers as $printer)
                     <tr>
-                        <td>{{$printer['name']}}</td>
-                        <td>{{$printer['count']}}</td>
-                        <td>{{$printer['material']}}</td>
-                        <td>{{$printer['speed']}}</td>
-                        <td>{{$printer['size']}}</td>
+                        <td data-th="Printer model">{{$printer['name']}}</td>
+                        <td data-th="Number available">{{$printer['count']}}</td>
+                        <td data-th="Printing material">{{$printer['material']}}</td>
+                        <td data-th="Print speed">{{$printer['speed']}}</td>
+                        <td data-th="Print size">{{$printer['size']}}</td>
                     </tr>
                     @endforeach
                 </tbody>
