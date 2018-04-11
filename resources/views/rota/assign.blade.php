@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 @section('content')
     <div class="title m-b-md">
-        Assign Demonstrators for {{ Carbon\Carbon::parse($date)->format('D, dS \\of M Y') }}
+        Assign Demonstrators for {{ Carbon\Carbon::parse($rota->date)->format('D, dS \\of M Y') }}
     </div>
 
     <div class="container">

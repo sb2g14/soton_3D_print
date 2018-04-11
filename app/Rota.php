@@ -2,25 +2,31 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Sessions;
 use Carbon\Carbon;
 use phpDocumentor\Reflection\Types\Null_;
 /**
  * one rota (i.e. Wed,28/03/2018 with 3 sessions from 9am till 6pm)
  */
-class rota extends Model
+class Rota
 {
-//    protected $fillable = [
-//        'serial_no',
-//        'printer_type',
-//        'printer_status'
-//    ];
-    protected $guarded = [];
+
+    public $date;
+    
+    /** contructor initiating the class
+     * takes $date as a string of format yyy-mm-dd
+     **/
+    public function __construct($date){
+        $this->date = $date;
+    }
+    
+    /** return all sessions during this rota**/
     public function sessions()
     {
-
-        //return $this->hasMany(session::class);
-
+        $t1 = new Carbon($this->date.' 0:00:00');
+        $t2 = new Carbon($this->date.' 23:59:59');
+        $sessions = Sessions::where('start_date','>=',$t1)->where('start_date','<=',$t2)->get();
+        return $sessions;
     }
     public function startDate()
     {

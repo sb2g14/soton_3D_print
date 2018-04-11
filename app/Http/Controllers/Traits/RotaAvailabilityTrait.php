@@ -89,6 +89,7 @@ trait RotaAvailabilityTrait
 
     public function getOptions($sessions){
         $demonstrators = array();
+        $demonstratorsForDefs = array();
         // Go through sessions
         foreach($sessions as $s){
             $id = $s->id;
@@ -105,9 +106,12 @@ trait RotaAvailabilityTrait
             $demET = $temp[0];
             $demIT = $temp[1];
             // Create two prioritised lists - one for the first demonstrator in the session, and one for the others.
-            $demonstrators['session_'.$id]['dem1'] = $demEA+$demET+$demIA+$demIT; //EA>ET>IA>IT
-            $demonstrators['session_'.$id]['dem2'] = $demIA+$demEA+$demIT+$demET; //IA>EA>IT>ET
+            $demonstrators['session_'.$id]['dem1'] = array('experienced demonstrators'=>$demEA+$demET, 'inexperienced demonstrators'=>$demIA+$demIT); //EA>ET>IA>IT
+            $demonstrators['session_'.$id]['dem2'] = array('available demonstrators'=>$demIA+$demEA, 'tentatively available demonstrators'=>$demIT+$demET); //IA>EA>IT>ET
+            // Do the same but without the labels for the code choosing the defaults
+            $demonstratorsForDefs['session_'.$id]['dem1'] = $demEA+$demET; //EA>ET>IA>IT
+            $demonstratorsForDefs['session_'.$id]['dem2'] = $demIA+$demEA+$demIT+$demET; //IA>EA>IT>ET
         }
-        return $demonstrators;
+        return [$demonstrators, $demonstratorsForDefs];
     }
 }

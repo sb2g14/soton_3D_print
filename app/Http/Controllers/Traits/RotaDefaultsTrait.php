@@ -16,16 +16,31 @@ trait RotaDefaultsTrait
     private function defaultSelectShortestList($sessions, $demonstrators, $defaults){
         //TODO: not yet done
         // For now: Find first unset default and return
+        $lists = [];
         foreach($sessions as $s){
             $dem_id = 0;
             foreach($defaults['session_'.$s->id] as $def){
+                // Only pick slots I haven't yet made a choice for
                 if($def['id'] <= 0){
-                    return [$s->id, $dem_id];
+                    //get length of options list
+                    if($dem_id <= 0){
+                        $length = sizeOf($demonstrators['session_'.$s->id]['dem1']);
+                    }else{
+                        $length = sizeOf($demonstrators['session_'.$s->id]['dem2']);
+                    }
+                    //combine into array I can sort later
+                    $lists[] = array('session'=>$s->id, 'staff'=>$dem_id, 'length' => $length);
                 }
                 $dem_id++;
             }
         }
-        return null;
+        // Do the sorting
+        $lists = collect($lists)->sortBy('length');
+        $shortestlist = $lists->values()->first();
+        if(!$shortestlist){
+            return null;
+        }
+        return [$shortestlist['session'],$shortestlist['staff']];
     }
     
     /** Pick first option in demonstrator option list for the specified session and demonstrator (Step 2)**/

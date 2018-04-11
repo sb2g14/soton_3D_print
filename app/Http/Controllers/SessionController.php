@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Sessions;
+use App\Rota;
 use App\Availability;
 use App\staff;
 use App\Event;
@@ -46,12 +47,7 @@ class SessionController extends Controller
     }
 
     
-
-    /** get all sessions for one day **/
-    public function getSessionsForDate($date){
-        $sessions = $this->querySessionsForDate($date)->orderBy('start_date')->get();
-        return $sessions;
-    }
+    
 
     /** get only the last session of a day **/
     public function getLastSessionForDate($date){
@@ -130,17 +126,20 @@ class SessionController extends Controller
     /** shows blade that assigns demonstrators to the rota **/
     public function showassign($date)
     {
-        $sessions = $this->getSessionsForDate($date);
-        $demonstrators = $this->getOptions($sessions);
-        //TODO: need to choose default more sophisticated
-        $default = $this->choosedefault($sessions, $demonstrators);
-        return view('rota.assign', compact('date','sessions','demonstrators','default'));
+        $rota = new Rota($date);
+        $sessions = $rota->sessions();
+        $temp = $this->getOptions($sessions);
+        $demonstrators = $temp[0];
+        $lists = $temp[1];
+        $default = $this->choosedefault($sessions, $lists);
+        return view('rota.assign', compact('date','sessions','demonstrators','default','rota'));
     }
 
     /** assigns demonstrators to the rota **/
     public function assign($date)
     {
-        $sessions = $this->getSessionsForDate($date);
+        $rota = new Rota($date);
+        $sessions = $rota->sessions();
         foreach($sessions as $s){
             for($d=0;$d<$s->dem_required;$d++){
                 $this -> validate(request(), [
