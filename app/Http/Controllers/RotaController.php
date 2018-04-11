@@ -34,7 +34,7 @@ class RotaController extends Controller
     /** gets the upcoming sessions from the database**/
     private function getUpcomingSessions(){
         $t1 = new Carbon();
-        $t1 = $t1->subWeeks(2);
+        $t1 = $t1->subWeeks(2)->hour(0)->minute(0)->second(0);
         $sessions = Sessions::with('staff')->orderBy('start_date')->where('start_date','>=',$t1)->get(); 
         return $sessions;   
     }
@@ -42,7 +42,7 @@ class RotaController extends Controller
     /** gets the upcoming events from the database**/
     private function getUpcomingEvents(){
         $t1 = new Carbon();
-        $t1 = $t1->subWeeks(2);
+        $t1 = $t1->subWeeks(2)->hour(0)->minute(0)->second(0);
         $events = Event::orderBy('start_date')->where('end_date','>=',$t1)->get(); 
         return $events;   
     }
@@ -225,7 +225,7 @@ class RotaController extends Controller
     public function openingHours()
     {
         // Get future sessions
-        $sessions = $this->getUpcomingSessions();
+        $sessions = Rotas::getFutureSessions();
         // Remove private sessions
         $sessions = $sessions->reject(function ($s) {
             return $s->public == false;

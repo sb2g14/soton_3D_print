@@ -4,8 +4,8 @@
 
 <div class="container text-center m-b-md">
     <ul class="nav nav-pills nav-justified">
-        <li><a href="/printingData/index">Pending Jobs</a></li>
-        <li class="active"><a href="#">Approved Jobs / Printing</a></li>
+        <li><a href="/printingData/index">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
+        <li class="active"><a href="#">Approved Jobs / Printing <span class="badge">{{$counts['approved']}}</span></a></li>
         <li><a href="/printingData/finished">Completed Jobs</a></li>
     </ul>
 </div>
@@ -42,7 +42,7 @@
                     @endphp
                     {{--Add number of hours job takes to the time when it was approved--}}
                     {{--Add number of minutes job takes--}}
-                    @if (Carbon\Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i)->gte(Carbon\Carbon::now('Europe/London')))
+                    {{--@if (Carbon\Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i)->gte(Carbon\Carbon::now('Europe/London')))--}}
                     <tr class="text-left">
                         <td data-th="ID">{{ $job->id }}</td>
                         <td data-th="Printer No"><a href="/issues/show/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
@@ -56,7 +56,7 @@
                         <td><a href="/printingData/abort/{{$job->id}}" class="btn btn-danger">Job Failed</a><br><br>
                             <a href="/printingData/success/{{$job->id}}" class="btn btn-success">Job Successful</a></td>
                     </tr>
-                    @endif
+                    {{--@endif--}}
                 @endforeach
             </tbody>
         </table>

@@ -13,9 +13,17 @@ class Rotas
 {
     
     /** gets the upcoming sessions from the database**/
-    private static function getUpcomingSessions(){
+    public static function getUpcomingSessions(){
         $t1 = new Carbon();
-        $t1 = $t1->subWeeks(2);
+        $t1 = $t1->subWeeks(2)->hour(0)->minute(0)->second(0);
+        $sessions = Sessions::with('staff')->orderBy('start_date')->where('start_date','>=',$t1)->get(); 
+        return $sessions;   
+    }
+    
+    /** gets future sessions from the database**/
+    public static function getFutureSessions(){
+        $t1 = new Carbon();
+        $t1 = $t1->hour(0)->minute(0)->second(0);
         $sessions = Sessions::with('staff')->orderBy('start_date')->where('start_date','>=',$t1)->get(); 
         return $sessions;   
     }

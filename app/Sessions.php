@@ -66,4 +66,9 @@ class sessions extends Model
 
     }
     
+    public function timeString()
+    {
+        return $this->start_time()." &ndash; ".$this->end_time();
+    }
+    
 }

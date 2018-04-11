@@ -5,8 +5,8 @@
     <div class="container text-center m-b-md">
         {{--<div class="title">Pending Jobs</div>--}}
         <ul class="nav nav-pills nav-justified">
-            <li class="active"><a href="#">Pending Jobs</a></li>
-            <li><a href="/printingData/approved">Approved Jobs / Printing</a></li>
+            <li class="active"><a href="#">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
+            <li><a href="/printingData/approved">Approved Jobs / Printing <span class="badge">{{$counts['approved']}}</span></a></li>
             <li><a href="/printingData/finished">Completed Jobs</a></li>
         </ul>
 
