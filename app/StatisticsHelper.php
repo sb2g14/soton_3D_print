@@ -275,8 +275,7 @@ class StatisticsHelper
      * returns the total material used by all prints since creation in kg as a string with unit
      **/
     public function getMaterialTotal(){
-        // TODO: Should this include only successfull prints? 
-        $count_material = \App\Prints::select('material_amount')->get();
+        $count_material = \App\Prints::where('status','Success')->select('material_amount')->get();
         $count_material = $count_material->sum('material_amount');
         $count_material = (int)(0.5+(float)($count_material)/1000);
         $count_material = $count_material." kg";

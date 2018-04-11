@@ -16,9 +16,14 @@
     
 
     <div class="container">
-        <a href="/costCodes/create" type="button" class="btn pull-right btn-success">
-            Add cost code
-        </a>
+        <div class="col-lg-10 pull-left">
+            <input class="form-control" id="searchInput" type="text" placeholder="Search..">
+        </div>
+        <div class="col-lg-2 pull-right">
+            <a href="/costCodes/create" type="button" class="btn btn-success pull-right">
+                Add cost code
+            </a>
+        </div>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -31,7 +36,7 @@
                     <th>Update</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tableCostCodes">
                 @foreach($cost_codes as $cost_code)
 
                         <tr class="text-left">
@@ -59,6 +64,17 @@
 @endsection
 
 @section('scripts')
+    {{--Make table searchable--}}
+    <script>
+    $(document).ready(function(){
+      $("#searchInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tableCostCodes tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script> 
     {{--Load notification--}}
     @if (notify()->ready())
         <script>
