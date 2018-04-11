@@ -280,6 +280,7 @@ a:link {
 
 //bootstrap custom colors for buttons and alerts
 .btnformat(@col){
+    color: #fff;
     background-color: @col;
     //.col-dark(@col);
     border-color: @col;
@@ -314,8 +315,10 @@ a:link {
     color: @col;
     &:hover{
         background-color: @col;
-        color: #fff;
+        color: contrast(@col);
     }
+    
+    
 }
 .trstatuslight(@col){
     color: @col;
@@ -323,7 +326,11 @@ a:link {
         .col-light(@col);
         background-color: @return;
         color: #000;
+        & a{
+            color: contrast(@return);
+        }
     }
+    
 }
 
 .table>tbody>tr {

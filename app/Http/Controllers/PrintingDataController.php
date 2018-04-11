@@ -139,8 +139,10 @@ class PrintingDataController extends Controller
     /** gets the counts of jobs in the different steps of the workflow**/
     private function getCounts(){
         $counts = [];
-        $counts['pending'] = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 0)->count();
-        $counts['approved'] = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 0)->count();
+        $count = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 0)->count();
+        $counts['pending'] = ($count != 0) ? $count: null;
+        $count = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 0)->count();
+        $counts['approved'] = ($count != 0) ? $count: null;        
         return $counts;
     }
 

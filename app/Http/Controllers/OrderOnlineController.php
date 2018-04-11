@@ -42,29 +42,42 @@ class OrderOnlineController extends Controller
         return $cost;
     }
     
+    /** gets the counts of jobs in the different steps of the workflow**/
+    private function getCounts(){
+        $counts = [];
+        $count = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 1)->count();
+        $counts['requests'] = ($count != 0) ? $count: null;
+        $count = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 1)->count();
+        $counts['approved'] = ($count != 0) ? $count: null;
+        $count = Jobs::orderBy('created_at', 'desc')->where('status','In Progress')->where('requested_online', 1)->count();
+        $counts['pending'] = ($count != 0) ? $count: null;
+        return $counts;
+    }
+    
     //// MANAGE KEY WORKFLOW BLADES ////
     //---------------------------------------------------------------------------------------------------------------//
     // Online job manager sees all the online job requests:
     public function index()
     {
         $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 1)->get();
-        return view('OnlineJobs.index', compact('jobs'));
+        $counts = $this->getCounts();
+        return view('OnlineJobs.index', compact('jobs','counts'));
     }
 
     // Display jobs approved by Jobs Manager
     public function approved()
     {
         $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 1)->get();
-
-        return view('OnlineJobs.approved', compact('approved_jobs'));
+        $counts = $this->getCounts();
+        return view('OnlineJobs.approved', compact('approved_jobs','counts'));
     }
 
     // Display jobs approved by customer
     public function pending()
     {
         $pending_jobs = Jobs::orderBy('created_at', 'desc')->where('status','In Progress')->where('requested_online', 1)->get();
-
-        return view('OnlineJobs.pending', compact('pending_jobs'));
+        $counts = $this->getCounts();
+        return view('OnlineJobs.pending', compact('pending_jobs','counts'));
     }
 
     // Display and manage a list of assigned prints
@@ -80,16 +93,16 @@ class OrderOnlineController extends Controller
            ->distinct()
            ->select('prints.*')
            ->get();
-
-       return view('OnlineJobs.prints',compact('prints','jobs_in_progress','prints_of_jobs_in_progress'));
+       $counts = $this->getCounts();
+       return view('OnlineJobs.prints',compact('prints','jobs_in_progress','prints_of_jobs_in_progress','counts'));
     }
 
     // Display and menage completed jobs
     public function completed()
     {
         $completed_jobs = Jobs::orderBy('created_at','desc')->where('requested_online', 1)->where('status','!=','Waiting')->where('status','!=','Approved')->where('status','!=','In Progress')->get();
-
-        return view('OnlineJobs.completed',compact('completed_jobs'));
+        $counts = $this->getCounts();
+        return view('OnlineJobs.completed',compact('completed_jobs','counts'));
     }
 
     //// WORKFLOW LOGIC GOES HERE ////
