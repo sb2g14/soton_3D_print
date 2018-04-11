@@ -25,7 +25,6 @@ trait RotaAvailabilityTrait
     /**takes a list of demonstrators and orders them by how long it has been since they last demonstrated**/
     private function orderByLastSession($demonstrators){
         $temp = [];
-        $dems = [];
         // Prepare array for sorting, by adding a new key
         foreach($demonstrators as $d){
             $lastsession = $d->lastSession();
@@ -93,7 +92,7 @@ trait RotaAvailabilityTrait
         // Go through sessions
         foreach($sessions as $s){
             $id = $s->id;
-            // Get available and tentatively available demontrators
+            // Get available and tentatively available demonstrators
             $demA = $this->getAvailableDemonstratorsForSession($id);
             $demT = $this->getTentativeDemonstratorsForSession($id);
             // Split the lists depending on the experience and
@@ -110,7 +109,7 @@ trait RotaAvailabilityTrait
             $demonstrators['session_'.$id]['dem2'] = array('available demonstrators'=>$demIA+$demEA, 'tentatively available demonstrators'=>$demIT+$demET); //IA>EA>IT>ET
             // Do the same but without the labels for the code choosing the defaults
             $demonstratorsForDefs['session_'.$id]['dem1'] = $demEA+$demET; //EA>ET>IA>IT
-            $demonstratorsForDefs['session_'.$id]['dem2'] = $demIA+$demEA+$demIT+$demET; //IA>EA>IT>ET
+            $demonstratorsForDefs['session_'.$id]['dem2'] = $demIA+$demEA+$demIT+$demET; //IA>EA>IT>ET 
         }
         return [$demonstrators, $demonstratorsForDefs];
     }

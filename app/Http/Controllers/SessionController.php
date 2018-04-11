@@ -113,6 +113,7 @@ class SessionController extends Controller
         $session->save();
          
         // Show notification
+
         session()->flash('message', 'The session has been successfully added to the database!');
         //notify()->flash('The session has been successfully added to the database!', 'success', [
         //    'text' => 'please add more sessions or update existing sessions for this date.',
