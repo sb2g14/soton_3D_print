@@ -128,7 +128,7 @@ class SessionController extends Controller
     public function showassign($date)
     {
         $rota = new Rota($date);
-        $sessions = $rota->sessions();
+        $sessions = $rota->sessions;
         $temp = $this->getOptions($sessions);
         $demonstrators = $temp[0];
         $lists = $temp[1];
@@ -140,7 +140,7 @@ class SessionController extends Controller
     public function assign($date)
     {
         $rota = new Rota($date);
-        $sessions = $rota->sessions();
+        $sessions = $rota->sessions;
         foreach($sessions as $s){
             for($d=0;$d<$s->dem_required;$d++){
                 $this -> validate(request(), [

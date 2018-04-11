@@ -46,6 +46,11 @@ class staff extends BaseModel
     {
         return $this->hasMany(Availability::class);
     }
+    /**returns the full name of that staff**/
+    public function name()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
     public function experience()
     {
         return $this->sessions->count();

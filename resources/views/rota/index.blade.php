@@ -44,21 +44,21 @@
         <div class="container">
             <div class="row">
                 @foreach($items as $rota)
-                    @if($rota['sessions'])
+                    @if($rota->sessions)
 <!-- DISPLAY ROTA -->
                     <div class="col-sm-12 text-left well">
                         <div class="row">
                             <!-- SHOW DATE -->
                             <div class="col-sm-3 text-left">
-                                {{ Carbon\Carbon::parse($rota['date'])->format('D, d/m/Y') }} <br/>
+                                {{ Carbon\Carbon::parse($rota->date)->format('D, d/m/Y') }} <br/>
                                 @can('staff_manage')
                                     <span class="text-justify" data-placement="top" data-toggle="popover"
                                         data-trigger="hover" data-content="Edit the sessions for this date.">
-                                        <a href="/rota/session/{{$rota['date']}}" type="button" class="btn btn-info"><i class="fa fa-calendar"></i> Edit</a>
+                                        <a href="/rota/session/{{$rota->date}}" type="button" class="btn btn-info"><i class="fa fa-calendar"></i> Edit</a>
                                     </span>
                                     <span class="text-justify" data-placement="top" data-toggle="popover"
                                         data-trigger="hover" data-content="Edit who is going to demonstrate on this day.">
-                                        <a href="/rota/assign/{{$rota['date']}}" type="button" class="btn btn-success"><i class="fa fa-user-plus "></i> Assign</a>
+                                        <a href="/rota/assign/{{$rota->date}}" type="button" class="btn btn-success"><i class="fa fa-user-plus "></i> Assign</a>
                                     </span>
                                 @endcan
                             </div>
@@ -66,7 +66,7 @@
                             <div class="col-sm-9 text-left">
                                 <table class="table table-hover">
                                     <tbody>
-                                        @foreach($rota['sessions'] as $s)
+                                        @foreach($rota->sessions as $s)
                                             @php
                                                 $starttime = $s->start_time();
                                                 $endtime = $s->end_time();

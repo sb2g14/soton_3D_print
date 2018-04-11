@@ -12,28 +12,31 @@ class Rota
 {
 
     public $date;
+    public $start_date;
+    public $sessions;
     
     /** contructor initiating the class
      * takes $date as a string of format yyy-mm-dd
      **/
     public function __construct($date){
         $this->date = $date;
+        $this->sessions = $this->get_sessions();
+        $this->start_date = $this->sessions[0]->start_date;
     }
     
     /** return all sessions during this rota**/
-    public function sessions()
+    private function get_sessions()
     {
         $t1 = new Carbon($this->date.' 0:00:00');
         $t2 = new Carbon($this->date.' 23:59:59');
         $sessions = Sessions::where('start_date','>=',$t1)->where('start_date','<=',$t2)->get();
         return $sessions;
     }
-    public function startDate()
-    {
-        //TODO: get related sessions and select first start date
+    
+    public function getLastSession(){
+        $sessions = $this->sessions; //->orderBy('start_date','desc')->first();
+        $sessions = collect($sessions)->sortByDesc('start_date');
+        return $sessions->values()->first();
     }
-    public function endDate()
-    {
-        //TODO: get related sessions and select last end date
-    }
+    
 }
