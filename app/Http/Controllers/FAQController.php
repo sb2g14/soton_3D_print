@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Printers;
-
+use App\faq;
 class FAQController extends Controller
 {
     
@@ -56,7 +56,7 @@ class FAQController extends Controller
     }
     
     /**
-     * Display FAQ blade
+     * Display faq blade
      */
     public function index()
     {
@@ -81,6 +81,13 @@ class FAQController extends Controller
                 $online_printers[] = $ponline;
             }
         }
-        return view('faq',compact('workshop_printers','online_printers'));
+        $faq = faq::get();
+        return view('faq.index',compact('workshop_printers','online_printers','faq'));
+    }
+
+    public function create()
+    {
+        // This blade is to create the FAQ entry
+        return view('faq.create');
     }
 }

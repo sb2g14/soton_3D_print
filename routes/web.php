@@ -395,7 +395,7 @@ Route::get('/gettingPaid', 'StaffController@gettingPaid');
 // Route to documents page
 Route::get('/documents', 'StaffController@documents');
 
-// Route to FAQ
+// Route to faq
 
 Route::get('/faq','FAQController@index');
 
@@ -441,3 +441,5 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 });
 
 Route::get('/UoSlogin','Auth\UoScontroller@requestAuthenticationFromUoS');
+
+Route::get('/faq/create', 'FAQController@create');
