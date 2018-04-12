@@ -12,14 +12,13 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    {{--Show request job button only on TODO: if the workshop is open--}}
-                    @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3) {{--currently only check if it's wednesday--}}
+                    @if ($workshopIsOpen) 
                         {{--<div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
                         {{--<div class="btn-lg btn-request pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>--}}
                         <p><br/><a href="{{ url('/printingData/create') }}">  Start by requesting to print in the workshop now!</a></p>
                     @else
                         {{--<div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
-                        <p><br/><a style="font-size: 3.125rem;" href="{{ url('/OnlineJobs/create') }}">  Start by ordering a print now!</a></p>
+                        <p><br/><a href="{{ url('/OnlineJobs/create') }}">  Start by ordering a print now!</a></p>
                     @endif
                 </div>
             </div>
@@ -199,7 +198,8 @@
                             <div class="body bg-stat">
                                 @php $chart_height = 300; @endphp
                                 
-                                @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
+                                {{--@if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)--}}
+                                @if ($workshopIsOpen)
                                     <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
                                 <iframe id="C_printer_availability" src="{{ route('chart', ['name' => 'printer_availability', 'height' => $chart_height, 'color' => 'coral']) }}" height="{{$chart_height + 50}}" width="100%" style="width:100%; border:none;"></iframe>
                             @else

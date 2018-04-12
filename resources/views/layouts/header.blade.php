@@ -146,8 +146,12 @@
                     </ul>
                 </li>
                 {{--Order print in the workshop--}}
-                {{--Show this button only on Wednesdays--}}
-                @if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)
+                {{--Show this button only when workshop is open--}}
+                @php
+                    $workshopIsOpen = App\Http\Controllers\Traits\WorkshopTrait::isOpen();
+                @endphp
+                @if ($workshopIsOpen)
+                {{--@if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)--}}
                 <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
                 @else
                 {{--Order print online--}}

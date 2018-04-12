@@ -21,7 +21,11 @@ class Rota
     public function __construct($date){
         $this->date = $date;
         $this->sessions = $this->get_sessions();
-        $this->start_date = $this->sessions[0]->start_date;
+        if(count($this->sessions)>0){
+            $this->start_date = $this->sessions[0]->start_date;
+        }else{
+            $this->start_date = null;
+        }
     }
     
     /** return all sessions during this rota**/
@@ -36,7 +40,10 @@ class Rota
     public function getLastSession(){
         $sessions = $this->sessions; //->orderBy('start_date','desc')->first();
         $sessions = collect($sessions)->sortByDesc('start_date');
-        return $sessions->values()->first();
+        if(count($sessions->values())>0){
+            return $sessions->values()->first();
+        }
+        return null;
     }
     
 }

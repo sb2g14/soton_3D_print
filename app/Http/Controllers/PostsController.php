@@ -8,6 +8,7 @@ use App\Prints;
 use App\Announcement;
 use App\PublicAnnouncements;
 use App\Rules\Printer;
+use App\Http\Controllers\Traits\WorkshopTrait;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Input;
@@ -17,6 +18,7 @@ use App\StatisticsHelper;
 
 class PostsController extends Controller
 {
+    use WorkshopTrait;
     // Specify pages available to an unauthenticated user
 
     public function __construct()
@@ -68,8 +70,11 @@ class PostsController extends Controller
 
         // Material since creation
         $count_material = $stats->getMaterialTotal();
+        
+        // check if workshop is open right now
+        $workshopIsOpen = $this->isOpen();
 
-        return view('welcome.index', compact('issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material'));
+        return view('welcome.index', compact('issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material','workshopIsOpen'));
     }
 
     /**
