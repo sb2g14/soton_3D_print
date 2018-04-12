@@ -84,8 +84,8 @@
                         <td><span class="" id="end_time_error"></span> </td> <br>
                     </div>
                     <div id="num_dem_group">
-                        <label for="num_dem">Demonstrators required: </label> <br>
-                        <input type="number" name="num_dem" class="form-control" id="num_dem" value="2"/>
+                        <label for="number_of_demonstrators">Demonstrators required: </label> <br>
+                        <input type="number" name="number_of_demonstrators" class="form-control" id="num_dem" value="2"/>
                         <td><span class="" id="num_dem_error"></span> </td> <br>
                     </div>
                     <div id="session_public_group">

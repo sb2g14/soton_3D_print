@@ -34,7 +34,7 @@ class SessionController extends Controller
     public function __construct()
     {
 
-        $this->middleware('auth')->except('index');
+        $this->middleware('auth');
 
     }
 
@@ -69,7 +69,7 @@ class SessionController extends Controller
     public function startcreate()
     {
         $this -> validate(request(), [
-            'newdate' => 'required'
+            'newdate' => 'required|date_format:Y-m-d'
         ]);
         $date = request('newdate');
         return redirect('/rota/session/'.$date);
@@ -85,10 +85,10 @@ class SessionController extends Controller
     {
         //dd(request()->all());
         $this -> validate(request(), [
-            'date' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'num_dem' => 'required'
+            'date' => 'required|date_format:Y-m-d',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i',
+            'number_of_demonstrators' => 'required|numeric|min:1|max:20'
         ]);
         //convert time to date
         $date = request('date');
@@ -105,7 +105,7 @@ class SessionController extends Controller
         $session = new sessions;
         $session -> start_date = $start_date;
         $session -> end_date = $end_date;
-        $session -> dem_required = request('num_dem');
+        $session -> dem_required = request('number_of_demonstrators');
         $session->public = $session_public;
 
         // Submit the data to the database
@@ -114,10 +114,10 @@ class SessionController extends Controller
          
         // Show notification
 
-        session()->flash('message', 'The session has been successfully added to the database!');
-        //notify()->flash('The session has been successfully added to the database!', 'success', [
-        //    'text' => 'please add more sessions or update existing sessions for this date.',
-        //]);
+        //session()->flash('message', 'The session has been successfully added to the database!');
+        notify()->flash('The session has been successfully added to the database!', 'success', [
+            'text' => 'please add more sessions or update existing sessions for this date.',
+        ]);
 
         return redirect('/rota/session/'.$date);
     }
@@ -160,10 +160,10 @@ class SessionController extends Controller
         }
         
         // Show notification
-        session()->flash('message', 'Demonstrators have been assigned!');
-        /*notify()->flash('Demonstrators have been assigned!', 'success', [
+        //session()->flash('message', 'Demonstrators have been assigned!');
+       notify()->flash('Demonstrators have been assigned!', 'success', [
             'text' => 'The rota for '.$date.' has been completed. Please review your changes before sending the rota to the demonstrators.',
-        ]);*/
+        ]);
         return redirect('/rota/assign/'.$date);
     }
 
@@ -176,10 +176,10 @@ class SessionController extends Controller
         $id = (int)request('btn_update');
         // Check all fields have been filled
         $this -> validate(request(), [
-            'date' => 'required',
-            'start_time_'.$id => 'required',
-            'end_time_'.$id => 'required',
-            'num_dem_'.$id => 'required'
+            'date' => 'required|date_format:Y-m-d',
+            'start_time_'.$id => 'required|date_format:H:i',
+            'end_time_'.$id => 'required|date_format:H:i',
+            'num_dem_'.$id => 'required|numeric|min:1|max:20'
         ]);
         // Convert time to date
         $date = request('date');
@@ -202,7 +202,7 @@ class SessionController extends Controller
                                'public' => $session_public));
         
         // Give user feedback
-        session()->flash('message', 'The session has been successfully updated!');
+        notify()->flash('The session has been updated!', 'success');
 
         return redirect('/rota/session/'.$date);
     }
@@ -220,6 +220,11 @@ class SessionController extends Controller
         $session->staff()->detach();
         $session->availability()->delete();
         $session->delete();
+
+        // Give user feedback
+        notify()->flash('The session has been deleted!', 'success', [
+             'text' => 'The demonstrators availability for this session has also been removed. So if you deleted this by accident, remember that demonstrators need to sign up again.',
+        ]);
         // redirect
         return redirect('/rota/session/'.$date);
     }
