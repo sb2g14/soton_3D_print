@@ -17,8 +17,8 @@
         {{--FAQ LIST--}}
         <div id="faqlist" class="row">
             <div class="panel panel-default">
-                <div class="panel-heading">3D printing WHAT???</div>
-                <div class="panel-body text-left">
+                <div class="panel-heading" data-toggle="collapse" data-target="#answer-1">3D printing WHAT???</div>
+                <div id="answer-1" class="panel-body text-left collapse">
                     <p>You heard about 3D printing, think that it may be useful to you, but have no idea where to start?
                    Best is, if you drop into one of our sessions and ask one of our demonstrators. If you want to know more about 3D printing before, why not visit our <a href="/learn">introduction to 3D printing</a>?
                     </p>
@@ -26,8 +26,8 @@
             </div>
 
             <div class="panel panel-default">
-                <div class="panel-heading">How do you charge for prints? How much does a print cost?</div>
-                <div class="panel-body text-left">
+                <div class="panel-heading" data-toggle="collapse" data-target="#answer-2">How do you charge for prints? How much does a print cost?</div>
+                <div id="answer-2" class="panel-body text-left collapse">
                     <p>We charge based on the amount of material used and the duration of the print. 
                    The cost is &pound;{{config('prices')['material']}}/100g of material 
                    and &pound;{{config('prices')['time']}}/h of printing time. <br/>
@@ -40,8 +40,8 @@
             </div>
 
             <div class="panel panel-default">
-                <div class="panel-heading">What printers do you have?</div>
-                <div class="panel-body text-left">
+                <div class="panel-heading" data-toggle="collapse" data-target="#answer-3">What printers do you have?</div>
+                <div id="answer-3" class="panel-body text-left collapse">
                    <p>Currently the workshop provides access to the following types of printers:</p>
             
                     <table class="table table-responsive table-hover table-sm">
@@ -95,15 +95,15 @@
             </div>
 
             <div class="panel panel-default">
-                <div class="panel-heading">I want to become a demonstrator, how can I join?</div>
-                <div class="panel-body text-left">
+                <div class="panel-heading" data-toggle="collapse" data-target="#answer-4">I want to become a demonstrator, how can I join?</div>
+                <div id="answer-4" class="panel-body text-left collapse">
                    <p>We are always looking for new demonstrators. Please contact our Lead Demonstrator to arrange for a training session.</p>
                 </div>
             </div>
 
             <div class="panel panel-default">
-                <div class="panel-heading">I had a look at your website and there are a few things I think can be improved...</div>
-                <div class="panel-body text-left">
+                <div class="panel-heading" data-toggle="collapse" data-target="#answer-5">I had a look at your website and there are a few things I think can be improved...</div>
+                <div id="answer-5" class="panel-body text-left collapse">
                    <p>Found a bug? Report it to our IT Manager. <br/>
                    Have an idea what could be improved? Email our IT Manager and we will add it to our list of things to do. <br/>
                    Want to get it done fast and earn some money doing so? Why not join our team! Knowledge in SQL, PHP (Laravel), JavaScript (jQuery, NodeJS), HTML and CSS (LESS) is preferred but not required. You should have some programming experience though. Just email our IT Manager and we are happy to introduce you to the team.</p>
