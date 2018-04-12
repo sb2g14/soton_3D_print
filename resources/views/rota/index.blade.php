@@ -14,7 +14,7 @@
             <div class="pull-right">
                 <span class="text-justify" data-placement="top" data-toggle="popover"
                     data-trigger="hover" data-content="Indicate when you are available, so you can be assigned for a session.">
-                    <a href="/rota/availability" type="button" class="btn btn-success">Indicate Availability</a>
+                    <a href="/rota/availability" type="button" class="btn btn-info">Indicate Availability</a>
                 </span>
             </div>
             @can('staff_manage')

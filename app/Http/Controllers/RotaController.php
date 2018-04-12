@@ -190,7 +190,7 @@ class RotaController extends Controller
         $message =   $reject_message = request()->validate([
             'comment' => 'max:255']);
         // Get the sessions for this date
-        $sc = new Rota($date);
+        $rota = new Rota($date);
         $sessions = $rota->sessions;
         $message['date'] = $date;
 

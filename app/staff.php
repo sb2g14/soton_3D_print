@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use DB;
+use Carbon\Carbon;
 
 class staff extends BaseModel
 {
@@ -74,6 +75,7 @@ class staff extends BaseModel
         }
         return false;
     }
+    
     public function lastSession()
     {   
         $t = $this->sessions()->orderBy('start_date','desc')->first();
@@ -81,5 +83,33 @@ class staff extends BaseModel
             return null;
         }
         return $t->start_date; //->toDateString();
+    }
+    
+    public function workinghours($endmonth)
+    {   
+        $t1 = $endmonth;
+        $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
+        $t2 = $t1->copy()->addMonth();
+        $sessions = $this->sessions()->where('start_date', '>=', $t1)->where('start_date', '<=', $t2)
+            ->orderBy('start_date')->get();
+        $lastdate = $sessions[0]->date();
+        $workhours = [];
+        $minutes = 0;
+        foreach($sessions as $s){
+            if($lastdate != $s->date()){
+                $nicedate = new Carbon($lastdate);
+                $nicedate = $nicedate->format('j M');
+                $workhours[$nicedate] = $minutes;
+                $lastdate = $s->date();
+                $minutes = 0;
+            }
+            $minutes += $s->minutes();
+        }
+        if($lastdate != ""){
+            $nicedate = new Carbon($lastdate);
+            $nicedate = $nicedate->format('j M');
+            $workhours[$nicedate] = $minutes;
+        }
+        return $workhours;
     }
 }

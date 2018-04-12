@@ -228,6 +228,7 @@ class StatisticsHelper
         $ovstart = max($te1,$ti1);
         $ovend = min($te2,$ti2);
         $overlap = $ovend->diffInMinutes($ovstart);
+        //TODO: in charts controller there is afunction using this, but I need to check that it only passes the successfull prints!
         return $overlap;
     }
     

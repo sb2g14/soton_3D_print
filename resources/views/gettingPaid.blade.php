@@ -27,7 +27,7 @@
             </li>
             <li><b>Pay Rate</b>: <i>Demonstrator rate</i></li>
             <li><b>Supporting Comments</b>: Insert &lsquo;<i>3D Printing Service; Note: This is not a module but a workshop.</i>&rsquo; (or similar).
-            <li>Fill in your hours worked for each date.</li>
+            <li>Fill in your hours worked for each date. @if(count($workinghours)>0) You attended the following sessions: @foreach($workinghours as $d => $m) {{$d}}: {{$m}}min, @endforeach .@endif You can also add preperation and training time to this.</li>
             <li><b>Name of hiring manager</b>: <i>Andrew Hamilton</i></li>
             <li>Fill in the <b>Job ID number</b> using the &lsquo;assignment ID number&rsquo; that you received via email upon appointment.</li>
             <li>Fill in your training attendance dates under the &lsquo;Demonstrator Training&rsquo; tab.

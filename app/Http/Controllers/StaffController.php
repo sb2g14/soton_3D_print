@@ -6,6 +6,7 @@ use App\staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
+use Carbon\Carbon;
 use App\Mail\Invitation;
 use App\StatisticsHelper;
 
@@ -230,7 +231,10 @@ class StaffController extends Controller
     public function gettingPaid()
     {
         $member = Auth::user()->staff()->first();
-        return view('gettingPaid', compact('member'));
+        //Get working hours for last month
+        $t1 = new Carbon();
+        $workinghours = $member->workinghours($t1);
+        return view('gettingPaid', compact('member','workinghours'));
     }
 
     public function documents()
