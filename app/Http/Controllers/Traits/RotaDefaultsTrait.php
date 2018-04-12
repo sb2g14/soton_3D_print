@@ -14,8 +14,7 @@ trait RotaDefaultsTrait
 
     /**Finds the shortest option list (Step 1)**/
     private function defaultSelectShortestList($sessions, $demonstrators, $defaults){
-        //TODO: not yet done
-        // For now: Find first unset default and return
+        // Find unset default and return
         $lists = [];
         foreach($sessions as $s){
             $dem_id = 0;
@@ -29,7 +28,9 @@ trait RotaDefaultsTrait
                         $length = sizeOf($demonstrators['session_'.$s->id]['dem2']);
                     }
                     //combine into array I can sort later
-                    $lists[] = array('session'=>$s->id, 'staff'=>$dem_id, 'length' => $length);
+                    if($length>0){ //ignore empty lists to avoid getting stuck
+                        $lists[] = array('session'=>$s->id, 'staff'=>$dem_id, 'length' => $length);
+                    }
                 }
                 $dem_id++;
             }

@@ -218,6 +218,7 @@ class StaffController extends Controller
         }
         // Update record in staff table
         staff::where('id','=', $id)->update(array('role'=> 'Former member', 'phone' => 'unknown'));
+        // TODO: Also delete any remaining entries from the availability table
         session()->flash('message', 'The record has been deleted');
 
         return redirect('/members/index');

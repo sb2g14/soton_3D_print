@@ -84,31 +84,40 @@ class staff extends BaseModel
         }
         return $t->start_date; //->toDateString();
     }
+
+    private function formatWorkinghours($lastdate,$minutes){
+        $nicedate = new Carbon($lastdate);
+        $nicedate = $nicedate->format('j. M');
+        $hours = (int)($minutes/60);
+        $minutes = ($minutes - 60*(int)($minutes/60));
+        $time = sprintf("%d:%02d",$hours,$minutes);
+        $ans = $nicedate.': '.$time;
+        return $ans;
+    }
     
     public function workinghours($endmonth)
     {   
-        $t1 = $endmonth;
-        $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
-        $t2 = $t1->copy()->addMonth();
+        // Get relevant sessions
+        $t2 = $endmonth;
+        $t2 = $t2->day(1)->hour(0)->minute(0)->second(0);
+        $t1 = $t2->copy()->subMonth();
         $sessions = $this->sessions()->where('start_date', '>=', $t1)->where('start_date', '<=', $t2)
             ->orderBy('start_date')->get();
+        // Merge sessions by date
+        if(count($sessions) <= 0){return [];}
         $lastdate = $sessions[0]->date();
         $workhours = [];
         $minutes = 0;
         foreach($sessions as $s){
             if($lastdate != $s->date()){
-                $nicedate = new Carbon($lastdate);
-                $nicedate = $nicedate->format('j M');
-                $workhours[$nicedate] = $minutes;
+                $workhours[] = $this->formatWorkinghours($lastdate,$minutes);
                 $lastdate = $s->date();
                 $minutes = 0;
             }
             $minutes += $s->minutes();
         }
         if($lastdate != ""){
-            $nicedate = new Carbon($lastdate);
-            $nicedate = $nicedate->format('j M');
-            $workhours[$nicedate] = $minutes;
+            $workhours[] = $this->formatWorkinghours($lastdate,$minutes);
         }
         return $workhours;
     }

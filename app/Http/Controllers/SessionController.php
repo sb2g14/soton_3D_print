@@ -217,6 +217,7 @@ class SessionController extends Controller
         $date = new Carbon($session->start_date);
         $date = $date->toDateString();
         // delete related data and then the actual session
+        $session->staff()->detach();
         $session->availability()->delete();
         $session->delete();
         // redirect

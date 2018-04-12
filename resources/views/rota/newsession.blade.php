@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 @section('content')
     <div class="title m-b-md">
-        Add a new session for {{ Carbon\Carbon::parse($date)->format('D, dS \\of M Y') }}
+        Edit rota for {{ Carbon\Carbon::parse($date)->format('D, dS \\of M Y') }}
     </div>
 
     <div class="container">
@@ -13,54 +13,56 @@
                 @endforeach
                 <br/>
             </div>
-            <div class="col-sm-12 well">
-                <!--SHOW EXISTING SESSIONS FOR UPDATE-->
-                Sessions this day:<br/>
-                @foreach($sessions as $s)
-                    @php
-                        $starttime = str_replace($date.' ',"",$s->start_date);
-                        $endtime = str_replace($date.' ',"",$s->end_date);
-                        $icon = 'lock';
-                        if($s->public){
-                            $icon = 'globe';
-                        }
-                    @endphp
-                    <div>
-                        <form method="post" action="/rota/updatesession">
-                            {{ csrf_field() }}
-                            <input type="date" hidden name="date" id="date" value="{{$date}}" />
-                            <div class="row form_group">
-                                <div class="col-sm-2">
-                                    
-                                    <input type="checkbox" id="public_{{$s->id}}" name="public_{{$s->id}}" value="{{$s->public}}" alt="if checked, then this session will be shown as public." @php if($s->public){echo('checked');} @endphp  > 
-                                     <span class=""><i id="public_{{$s->id}}_icn" class="fa fa-fw fa-{{$icon}}"></i></span>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="col-sm-5">
-                                        <input type="time" name="start_time_{{$s->id}}" class="form-control input-sm" id="start_time_{{$s->id}}" value="{{$starttime}}" /> 
-                                    </div> 
-                                    <div class="col-sm-1">
-                                        &ndash;
+            @if(count($sessions)>0)
+                <div class="col-sm-12 well">
+                    <!--SHOW EXISTING SESSIONS FOR UPDATE-->
+                    Sessions this day:<br/>
+                    @foreach($sessions as $s)
+                        @php
+                            $starttime = str_replace($date.' ',"",$s->start_date);
+                            $endtime = str_replace($date.' ',"",$s->end_date);
+                            $icon = 'lock';
+                            if($s->public){
+                                $icon = 'globe';
+                            }
+                        @endphp
+                        <div>
+                            <form method="post" action="/rota/updatesession">
+                                {{ csrf_field() }}
+                                <input type="date" hidden name="date" id="date" value="{{$date}}" />
+                                <div class="row form_group">
+                                    <div class="col-sm-2">
+                                        
+                                        <input type="checkbox" id="public_{{$s->id}}" name="public_{{$s->id}}" value="{{$s->public}}" alt="if checked, then this session will be shown as public." @php if($s->public){echo('checked');} @endphp  > 
+                                         <span class=""><i id="public_{{$s->id}}_icn" class="fa fa-fw fa-{{$icon}}"></i></span>
                                     </div>
-                                    <div class="col-sm-5">
-                                        <input type="time" name="end_time_{{$s->id}}" class="form-control input-sm" id="end_time_{{$s->id}}" value="{{$endtime}}" />
+                                    <div class="col-sm-4">
+                                        <div class="col-sm-5">
+                                            <input type="time" name="start_time_{{$s->id}}" class="form-control input-sm" id="start_time_{{$s->id}}" value="{{$starttime}}" /> 
+                                        </div> 
+                                        <div class="col-sm-1">
+                                            &ndash;
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <input type="time" name="end_time_{{$s->id}}" class="form-control input-sm" id="end_time_{{$s->id}}" value="{{$endtime}}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                                            <input type="number" name="num_dem_{{$s->id}}" class="form-control input-sm col-sm-2" id="num_dem_{{$s->id}}" value="{{$s->dem_required}}"/> 
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 btn-group">
+                                        <button type="submit" name="btn_update" value="{{$s->id}}" id="submit_{{$s->id}}" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                                        <a name="btn_delete" href="/rota/session/delete/{{$s->id}}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-users"></i></span>
-                                        <input type="number" name="num_dem_{{$s->id}}" class="form-control input-sm col-sm-2" id="num_dem_{{$s->id}}" value="{{$s->dem_required}}"/> 
-                                    </div>
-                                </div>
-                                <div class="col-sm-2 btn-group">
-                                    <button type="submit" name="btn_update" value="{{$s->id}}" id="submit_{{$s->id}}" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
-                                    <a name="btn_delete" href="/rota/session/delete/{{$s->id}}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div><br/>
-                @endforeach
-            </div>
+                            </form>
+                        </div><br/>
+                    @endforeach
+                </div>
+            @endif
         </div>
         <!--SHOW FORM TO ADD A NEW SESSION-->
         <div class="row">
@@ -87,11 +89,11 @@
                         <td><span class="" id="num_dem_error"></span> </td> <br>
                     </div>
                     <div id="session_public_group">
-                        <label for="body">Can this session be attended by anyone?</label> <br>
+                        <label for="body">Can this session be attended by any student, or is it a private session (e.g. for training first years)?</label> <br>
                         <div class="form-group text-left">
                             <div class="radio">
-                                <input type="radio" name="session_public" checked value="isPublic">Yes <br>
-                                <input type="radio" name="session_public" value="isPrivate">No <br>
+                                <input type="radio" name="session_public" checked value="isPublic"><i class="fa fa-fw fa-globe"></i> Yes (show this session as an opening time for customers)<br>
+                                <input type="radio" name="session_public" value="isPrivate"><i class="fa fa-fw fa-lock"></i> No (this session is only visible to staff)<br>
                             </div> <!-- Class radio -->
                         </div> <!-- /form-group -->
                     </div>
