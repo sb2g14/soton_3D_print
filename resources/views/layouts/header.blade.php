@@ -5,6 +5,9 @@
                 <img class="logo_mob" src="/Images/uos-brand1.png" alt="3Dprinting">
             </a>
         </div>
+        @php
+            $workshopIsOpen = App\Http\Controllers\Traits\WorkshopTrait::isOpen();
+        @endphp
        @if (Auth::check())
             <ul class="lsn bl-menu" id="my-menu">
 
@@ -31,6 +34,7 @@
                         Finance
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
+                        <li><a class="dropdown-item" href="{{ url('/finance') }}">Jobs</a></li>
                         <li><a class="dropdown-item" href="{{ url('/costCodes/index') }}">Cost codes</a></li>
                     </ul>
                 </li>
@@ -76,19 +80,27 @@
                     </ul>
                 </li>
 
-                {{--Each role has separate red button except for Lead Demonstrator and admin--}}
-                @hasrole('OnlineJobsManager')
-                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
-                @endhasrole
-                {{--Ø--}}
+                {{--Each role has separate red button except for Lead Demonstrator and admin--}} 
                 @hasrole('Coordinator')
-                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/costCodes/index') }}>Cost Codes</a></li>
-                @endhasrole
-                @hasrole('Demonstrator')
-                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/printingData/index') }}>Pending Jobs</a></li>
-                @endhasrole
+                    {{--Manage Finance--}}
+                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/finance') }}>Review Finance</a></li>
+                @endhasrole 
                 @hasrole('LeadDemonstrator')
-                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/rota') }}>Rota</a></li>
+                    {{--Manage Rota--}}
+                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/rota') }}">Rota</a></li>
+                @endhasrole
+                @hasrole('Demonstrator') 
+                    @if ($workshopIsOpen)
+                        {{--Manage Workshop Jobs--}}
+                        <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/printingData/index') }}">Pending Jobs</a></li>
+                    @else
+                        {{--Manage Availability--}}
+                        <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/rota/availability') }}">Indicate Availability</a></li>
+                    @endif
+                @endhasrole
+                @hasrole('OnlineJobsManager')
+                    {{--Manage Online Jobs--}}
+                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
                 @endhasrole
 
                 <li class="item">
@@ -147,9 +159,6 @@
                 </li>
                 {{--Order print in the workshop--}}
                 {{--Show this button only when workshop is open--}}
-                @php
-                    $workshopIsOpen = App\Http\Controllers\Traits\WorkshopTrait::isOpen();
-                @endphp
                 @if ($workshopIsOpen)
                 {{--@if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)--}}
                 <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>

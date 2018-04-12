@@ -368,6 +368,23 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+// Group of routes for managing the FINANCES
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::group(['middleware' => ['role:,manage_cost_codes']], function () {
+    // Show default finance page
+    Route::get('/finance','FinanceController@index');
+
+    // Show page with unclaimed prints
+    Route::get('/finance/jobs/{month}','FinanceController@jobs');
+
+    // Offer Download of Excel Spreadsheet with data
+    Route::get('/finance/jobs/{month}/download','FinanceController@downloadJobs');
+});
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 // Open a form to request a job
 Route::get('/printingData/create','PrintingDataController@create');
 
