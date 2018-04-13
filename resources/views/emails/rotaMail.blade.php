@@ -36,7 +36,7 @@ Please find the rota for <b>{{ Carbon\Carbon::parse($date)->format('D, dS \\of M
 {{ $message }}
 
 <b>Please remember to indicate your availability for the future sessions by clicking on the button below!</b>
-@component('mail::button', ['url' => 'https://3dprint.clients.soton.ac.uk/rota/availability'])
+@component('mail::button', ['url' => 'https://3dprint.clients.soton.ac.uk/availability'])
     Indicate Availability
 @endcomponent
 Kind regards,<br/>

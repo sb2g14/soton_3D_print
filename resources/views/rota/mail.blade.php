@@ -45,8 +45,12 @@
                         <textarea type="text" name="comment" id="comment" class="input-lg col-lg-12" /></textarea>
                         <span class="" id="comment_error"></span><br/>
                     </div>
+                    <b>Please remember to indicate your availability for the future sessions by clicking on the button below!</b><br/>
+                    <a href="/availability" class="btn btn-primary">
+                        Indicate Availability
+                    </a><br/>
                     Kind regards,<br/>
-                    {{ config('app.name') }}
+                      {{ Auth()->user()->staff->name() }}
                 </div>
                 <div class="col-sm-12">    
                     
