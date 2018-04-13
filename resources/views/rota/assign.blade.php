@@ -1,19 +1,22 @@
 @extends('layouts.layout')
 @section('content')
+    {{--TITLE--}}
     <div class="title m-b-md">
         Assign Demonstrators for {{ Carbon\Carbon::parse($rota->date)->format('D, dS \\of M Y') }}
     </div>
-
+    {{--NAVIGATION--}}
+    <div class="container">
+        <div class="pull-left">
+            <a type="button" class="btn btn-primary" href="/rota">View latest sessions</a>
+        </div>
+    </div>
+    {{--CONTENT--}}
     <div class="container">
         <div class="row">
-            {{--<div class="col-sm-12 well text-left">
-                <pre>{!!print_r($demonstrators);!!}</pre>
-                <pre>{!!print_r($default);!!}</pre>
-            </div>--}}
             <div class="col-sm-12 well"> 
-                <form method="post" class="form-horizontal" action="/rota/assign/{{$date}}">
+                <form class="form-horizontal" method="post" action="/rota/assign/{{$date}}">
                     {{ csrf_field() }}
-                    <input type="text" hidden name="date" id="date" value="{{$date}}" />
+                    <input id="date" name="date" type="text" hidden value="{{$date}}" />
                     @foreach($sessions as $s)
                         @php
                             $starttime = Carbon\Carbon::parse($s->start_date)->format('G:i');
@@ -49,9 +52,12 @@
                             </div>
                         </div>
                     @endforeach
-                    <button type="submit" name="btn_update" value="{{$date}}" id="submit" class="btn btn-lg btn-info">Save Changes</button>
-                    <a href="/rota" type="button" class="btn btn-lg btn-primary">See all Sessions</a>
-                    <a href="/rota/email/{{$date}}" type="button" class="btn btn-lg btn-success"><i class="fa fa-envelope"></i> Create E-Mail</a>
+                    <button id="submit" name="btn_update" type="submit" class="btn btn-lg btn-success" value="{{$date}}">
+                        <i class="fa fa-save"></i> Save Changes
+                    </button>
+                    <a type="button" class="btn btn-lg btn-success" href="/rota/email/{{$date}}">
+                        <i class="fa fa-envelope"></i> Create E-Mail
+                    </a>
                 </form>
             </div>
         </div>
