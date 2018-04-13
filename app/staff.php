@@ -52,10 +52,14 @@ class staff extends BaseModel
     {
         return $this->first_name.' '.$this->last_name;
     }
+    /** returns the experience of this staff as a number**/
     public function experience()
     {
         return $this->sessions->count();
     }
+    /** returns a boolean if this staff is experienced or not
+     *  currently any staff with more than average experience is considered to be experienced
+     **/
     public function isExperienced()
     {
         // Get all demonstrators
@@ -85,7 +89,7 @@ class staff extends BaseModel
         return $t->start_date; //->toDateString();
     }
 
-    private function formatWorkinghours($lastdate,$minutes){
+    private function _formatWorkinghours($lastdate,$minutes){
         $nicedate = new Carbon($lastdate);
         $nicedate = $nicedate->format('j. M');
         $hours = (int)($minutes/60);
@@ -97,10 +101,14 @@ class staff extends BaseModel
     
     public function workinghours($endmonth)
     {   
-        // Get relevant sessions
+        // Get start and end of last month
         $t2 = $endmonth;
         $t2 = $t2->day(1)->hour(0)->minute(0)->second(0);
         $t1 = $t2->copy()->subMonth();
+        // Note that university counts in full weeks, so need to go from Monday to Sunday
+        $t1 = $t1->subDays($t1->dayOfWeek-1);
+        $t2 = $t2->subDays($t2->dayOfWeek);
+        // Get relevant sessions
         $sessions = $this->sessions()->where('start_date', '>=', $t1)->where('start_date', '<=', $t2)
             ->orderBy('start_date')->get();
         // Merge sessions by date
@@ -110,14 +118,14 @@ class staff extends BaseModel
         $minutes = 0;
         foreach($sessions as $s){
             if($lastdate != $s->date()){
-                $workhours[] = $this->formatWorkinghours($lastdate,$minutes);
+                $workhours[] = $this->_formatWorkinghours($lastdate,$minutes);
                 $lastdate = $s->date();
                 $minutes = 0;
             }
             $minutes += $s->minutes();
         }
         if($lastdate != ""){
-            $workhours[] = $this->formatWorkinghours($lastdate,$minutes);
+            $workhours[] = $this->_formatWorkinghours($lastdate,$minutes);
         }
         return $workhours;
     }

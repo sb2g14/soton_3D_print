@@ -56,7 +56,7 @@
                         <button id="submit" type="submit" class="btn btn-lg btn-success">Add Event</button>
                         {{--<a class="btn btn-lg btn-primary" href="/rota">View all Events</a>--}}
                         <br/>
-                        (Have a look at the <a href="https://www.southampton.ac.uk/uni-life/key-dates.page">University Key-Dates</a>)
+                        (Have a look at the <a href="https://www.southampton.ac.uk/uni-life/key-dates.page"  target="_blank">University Key-Dates</a>)
                     </div>
                 </form>
                 

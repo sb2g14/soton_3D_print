@@ -9,7 +9,7 @@
             
             <form method="post" class="form-horizontal" action="/rota/email/{{$date}}">
                 {{ csrf_field() }}
-                <input type="text" hidden name="date" id="date" value="{{$date}}" />
+                <input id="date" name="date" type="text" hidden value="{{$date}}" />
                 <div class="col-sm-12 well text-left">
                     Dear Demonstrator,<br/>
                     Please find the rota for <b>{{ Carbon\Carbon::parse($date)->format('D, dS \\of M Y') }}</b> as below.<br/>
@@ -42,8 +42,8 @@
                         </tbody>
                     </table><br/>
                     <div id="comment_group">
-                        <textarea type="text" name="comment" id="comment" class="input-lg col-lg-12" /></textarea>
-                        <span class="" id="comment_error"></span><br/>
+                        <textarea id="comment" name="comment" type="text" class="input-lg col-lg-12" /></textarea>
+                        <span id="comment_error"></span><br/>
                     </div>
                     <b>Please remember to indicate your availability for the future sessions by clicking on the button below!</b><br/>
                     <a href="/availability" class="btn btn-primary">
@@ -53,9 +53,12 @@
                       {{ Auth()->user()->staff->name() }}
                 </div>
                 <div class="col-sm-12">    
-                    
-                    <button type="submit" name="btn_update" value="{{$date}}" id="submit" class="btn btn-lg btn-success"><i class="fa fa-envelope"></i> Send</button>
-                    <a href="/rota/assign/{{$date}}" type="button" class="btn btn-lg btn-danger"><i class="fa fa-times"></i> Cancel</a>
+                    <button id="submit" name="btn_update" type="submit" class="btn btn-lg btn-success" value="{{$date}}">
+                        <i class="fa fa-envelope"></i> Send
+                    </button>
+                    <a type="button" class="btn btn-lg btn-danger" href="/rota/assign/{{$date}}">
+                        <i class="fa fa-times"></i> Cancel
+                    </a>
                 </div>
             </form>
             
