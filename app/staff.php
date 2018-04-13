@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use DB;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 
 class staff extends BaseModel
 {
@@ -91,10 +92,11 @@ class staff extends BaseModel
 
     private function _formatWorkinghours($lastdate,$minutes){
         $nicedate = new Carbon($lastdate);
-        $nicedate = $nicedate->format('j. M');
+        $nicedate = $nicedate->format('j M');
         $hours = (int)($minutes/60);
         $minutes = ($minutes - 60*(int)($minutes/60));
-        $time = sprintf("%d:%02d",$hours,$minutes);
+        $time = sprintf("%dh %02dm",$hours,$minutes);
+        //$time = CarbonInterval::minutes($minutes)->format('h:i');
         $ans = $nicedate.': '.$time;
         return $ans;
     }
@@ -103,11 +105,11 @@ class staff extends BaseModel
     {   
         // Get start and end of last month
         $t2 = $endmonth;
-        $t2 = $t2->day(1)->hour(0)->minute(0)->second(0);
-        $t1 = $t2->copy()->subMonth();
+        $t2 = $t2->day(1)->hour(0)->minute(0)->second(0)->subDay(); // Sat, 31/03/2018
+        $t1 = $t2->copy()->subMonth();                              // Wed, 28/02/2018
         // Note that university counts in full weeks, so need to go from Monday to Sunday
-        $t1 = $t1->subDays($t1->dayOfWeek-1);
-        $t2 = $t2->subDays($t2->dayOfWeek);
+        $t1 = $t1->subDays($t1->dayOfWeek-1);                       // Mon, 26/02/2018
+        $t2 = $t2->subDays($t2->dayOfWeek)->addWeek();              // Sun, 01/04/2018
         // Get relevant sessions
         $sessions = $this->sessions()->where('start_date', '>=', $t1)->where('start_date', '<=', $t2)
             ->orderBy('start_date')->get();

@@ -70,6 +70,13 @@
                                             <i class="fa fa-user-plus "></i> Assign
                                         </a>
                                     </span>
+                                    <span class="btn-group text-justify" data-placement="top" data-toggle="popover"
+                                        data-trigger="hover" data-content="Email the rota to all demonstrators.">
+                                        <a type="button" class="btn btn-info" 
+                                            href="/rota/email/{{$rota->date}}">
+                                            <i class="fa fa-envelope "></i> Email
+                                        </a>
+                                    </span>
                                 </div>
                             @endcan
                         </div>

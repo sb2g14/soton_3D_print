@@ -52,12 +52,14 @@
                             </div>
                         </div>
                     @endforeach
-                    <button id="submit" name="btn_update" type="submit" class="btn btn-lg btn-success" value="{{$date}}">
-                        <i class="fa fa-save"></i> Save Changes
-                    </button>
-                    <a type="button" class="btn btn-lg btn-success" href="/rota/email/{{$date}}">
-                        <i class="fa fa-envelope"></i> Create E-Mail
-                    </a>
+                    <div class="col-sm-12 text-center">
+                        <button id="submit" name="btn_update" type="submit" class="btn btn-lg btn-success" value="{{$date}}">
+                            <i class="fa fa-save"></i> Save Changes
+                        </button>
+                        <a type="button" class="btn btn-lg btn-info" href="/rota/email/{{$date}}">
+                            <i class="fa fa-envelope"></i> Create E-Mail
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>
