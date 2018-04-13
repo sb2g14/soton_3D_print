@@ -56,33 +56,39 @@
                         <div class="form-group{{ $errors->has('student_name') ? ' has-error' : '' }}">
                             <label for="student_name" class="col-md-4 control-label">Requested by:</label>
                             <div class="col-md-6">
-                                <input type="text" id="student_name" name="student_name" value="{{ $job->customer_name }}" class="form-control">
-                                    @if ($errors->has('student_name'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('student_name') }}</strong>
-                                        </span>
-                                    @endif
-                                     <span class="" id="student_name_error"></span>
+                                <input id="student_name" name="student_name" 
+                                    type="text" class="form-control" 
+                                    value="{{ $job->customer_name }}"/>
+                                @if ($errors->has('student_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('student_name') }}</strong>
+                                    </span>
+                                @endif
+                                <span id="student_name_error"></span>
                             </div>
                         </div>
 
                         <div class="form-group{{ $errors->has('student_id') ? ' has-error' : '' }}">
                             <label for="student_id" class="col-md-4 control-label">Requester id:</label>
                             <div class="col-md-6">
-                                <input type="text" id="student_id" name="student_id" value="{{ $job->customer_id }}" class="form-control">
-                                    @if ($errors->has('student_id'))
+                                <input id="student_id" name="student_id" 
+                                    type="text" class="form-control" 
+                                    value="{{ $job->customer_id }}" >
+                                @if ($errors->has('student_id'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('student_id') }}</strong>
                                     </span>
-                                    @endif
-                                <span class="" id="student_id_error"></span>
+                                @endif
+                                <span id="student_id_error"></span>
                             </div>
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">Requester email:</label>
                             <div class="col-md-6">
-                                <input type="text" id="email" name="email" value="{{ $job->customer_email }}" class="form-control">
+                                <input id="email" name="email" 
+                                    type="text" class="form-control" 
+                                    value="{{ $job->customer_email }}" />
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -95,7 +101,7 @@
                        {{--Get numbers of hours and minutes from the requested time--}}
                         @php( list($h, $i, $s) = explode(':', $job->total_duration) )
 
-                        <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
+                        <div id="time" class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                             {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
                             <div class="col-md-2">
                                 {!! Form::select('hours', range(0,59), $h, ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
@@ -118,7 +124,9 @@
                         <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
                             <label for="material_amount" class="col-md-4 control-label">Estimated material amount (grams):</label>
                             <div class="col-md-6">
-                                <input type="text" id="material_amount" name="material_amount" value="{{ $job->total_material_amount }}" class="form-control">
+                                <input id="material_amount" name="material_amount" 
+                                    type="text" class="form-control" 
+                                    value="{{ $job->total_material_amount }}" />
                                     @if ($errors->has('material_amount'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('material_amount') }}</strong>
@@ -131,15 +139,17 @@
                         <div class="form-group text-left">
                             <div class="col-md-12">
                                 <label for="comments">Add comments (optional):</label><br>
-                                <textarea rows="4" id="comment" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
-                                <span class="" id="comment_error"></span>
+                                <textarea id="comment" name="comments" 
+                                    rows="4" class="form-control" 
+                                    placeholder="Please add any comments to this job if relevant" ></textarea> 
+                                <span id="comment_error"></span>
                             </div>
                         </div>
 
                         <div class="col-sm-12 text-left">
                                 <button id="submit" type="submit" class="btn btn-lg btn-success">Accept</button>
-                                <a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>
-                                <a href="/printingData/index" class="btn btn-lg btn-primary">Back</a>
+                                <a class="btn btn-lg btn-danger" href="/printingData/delete/{{$job->id}}">Reject</a>
+                                <a class="btn btn-lg btn-primary" href="/printingData/index">Back</a>
                         </div>
                     </form>
                 </div>
