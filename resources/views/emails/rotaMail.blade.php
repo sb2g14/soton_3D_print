@@ -20,7 +20,7 @@ Please find the rota for <b>{{ Carbon\Carbon::parse($date)->format('D, dS \\of M
                     @php
                         $dems = [];
                         foreach($sess->staff as $dem){
-                            $dems[] = $dem->first_name.' '.$dem->last_name;
+                            $dems[] = $dem->name(); //$dem->first_name.' '.$dem->last_name;
                         }
                     @endphp
                     {!!implode(", ",$dems)!!}

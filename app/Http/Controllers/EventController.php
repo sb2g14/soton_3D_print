@@ -18,7 +18,7 @@ class EventController extends Controller
     public function __construct()
     {
 
-        $this->middleware('auth')->except('index');
+        $this->middleware('auth');
 
     }
     /**
@@ -58,9 +58,9 @@ class EventController extends Controller
     {
         $this -> validate(request(), [
             'event_type' => 'required',
-            'event_name' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required'
+            'event_name' => 'required|min:5|max:32',
+            'start_date' => 'required|date_format:d/m/Y H:i',
+            'end_date' => 'required|date_format:d/m/Y H:i'
         ]);
 
         $event = new Event;
@@ -73,7 +73,8 @@ class EventController extends Controller
 
         $event->save();
          
-        session()->flash('message', 'The event has been successfully added to the database!');
+        // Give user feedback
+        notify()->flash('The event has been successfully added to the database!', 'success');
 
         return redirect('/rota');
     }
@@ -89,6 +90,7 @@ class EventController extends Controller
     {
         $event = Event::findorFail($id);
         $options = $this->getEventTypeOptions();
+
         return view('rota.updateevent', compact('event','options'));
     }
     
@@ -107,9 +109,9 @@ class EventController extends Controller
     {
         $this -> validate(request(), [
             'event_type' => 'required',
-            'event_name' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required'
+            'event_name' => 'required|min:5|max:32',
+            'start_date' => 'required|date_format:d/m/Y H:i',
+            'end_date' => 'required|date_format:d/m/Y H:i'
         ]);
 
         $start_date = Carbon::createFromFormat('d/m/Y H:i',request('start_date'));
@@ -121,8 +123,9 @@ class EventController extends Controller
 
         // Submit the data to the database
         $event->update(array('start_date' => $start_date, 'end_date' => $end_date, 'name' => $event_name, 'type' => $event_type));
-         
-        session()->flash('message', 'The event has been successfully updated!');
+
+        // Give user feedback
+        notify()->flash('The event has been successfully updated!', 'success');
         
         return redirect('/rota');
     }
