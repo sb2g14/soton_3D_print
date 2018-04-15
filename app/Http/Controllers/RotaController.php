@@ -206,11 +206,11 @@ class RotaController extends Controller
 
             // Notify that the user of success
             notify()->flash('The email has been sent' , 'success', [
-                'text' => 'The rota has been successfully sent to all 3D Printing workshop staff',
+                'text' => 'The rota has been successfully sent to all 3D printing service staff. Please remember to update the rota in case people become unavailable!',
             ]);
         }catch(\Exception $e){
             notify()->flash('Error!', 'error', [
-                'text' => 'There has been an error with our email server. Please send an email to anyone who should be contacted about this.',
+                'text' => 'There has been an error with our email server. Please send out the rota manually!',
             ]);
         }
 

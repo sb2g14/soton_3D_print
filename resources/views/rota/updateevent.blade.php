@@ -1,9 +1,20 @@
 @extends('layouts.layout')
 @section('content')
+    {{--TITLE--}}
     <div class="title m-b-md">
         Update Event
     </div>
-
+    {{--NAVIGATION--}}
+    <div class="container">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="pull-left">
+                <a type="button" class="btn btn-primary" href="/rota">View latest events</a>
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+    {{--CONTENT--}}
     <div class="container">
         <div class="row">
             <div class="col-sm-3"></div>
@@ -14,21 +25,39 @@
                     {{--start_date | end_date | name | type--}}
                     {{--Generate security key --}}
                     {{ csrf_field() }}
-                    <label for="event_type">Type of Event: </label> <br>
-                    {!! Form::select('event_type', $options, $event->type, ['class' => 'form-control','required', 'id' => 'event_type']) !!}
-                    <td><span class="" id="end_date_error"></span> </td> <br>
-                    <label for="event_name">Event Name: </label> <br>
-                    <input type="text" name="event_name" class="form-control" id="event_name" value="{{$event->name}}"/>
-                    <td><span class="" id="event_name_error"></span> </td> <br>
-                    <label for="start_date">Start of Event: </label> <br>
-                    <input type="text" name="start_date" class="form-control" id="start_date" value="{{Carbon\Carbon::parse($event->start_date)->format('d/m/Y H:i')}}" />
-                    <td><span class="" id="start_date_error"></span> </td> <br>
-                    <label for="end_date">End of Event: </label> <br>
-                    <input type="text" name="end_date" class="form-control" id="end_date" value="{{Carbon\Carbon::parse($event->end_date)->format('d/m/Y H:i')}}"/>
-                    <td><span class="" id="end_date_error"></span> </td> <br>
+                    <div id="event_type_group">
+                        <label for="event_type">Type of Event: </label> <br/>
+                        {!! Form::select('event_type', $options, $event->type, ['class' => 'form-control','required', 'id' => 'event_type']) !!}
+                        <span id="end_date_error"></span> <br/>
+                    </div>
+                    <div id="event_name_group">
+                        <label for="event_name">Event Name: </label> <br/>
+                        <input id="event_name"name="event_name" 
+                            type="text" class="form-control" 
+                            value="{{$event->name}}" required/>
+                        <span id="event_name_error"></span> <br/>
+                    </div>
+                    <div id="start_date_group">
+                        <label for="start_date">Start of Event: </label> <br/>
+                        <input id="start_date" name="start_date" 
+                            type="datetime" class="form-control" 
+                            value="{{Carbon\Carbon::parse($event->start_date)->format('d/m/Y H:i')}}" required/>
+                        <span id="start_date_error"></span> <br/>
+                    </div>
+                    <div id="end_date_group">
+                        <label for="end_date">End of Event: </label> <br/>
+                        <input id="end_date" name="end_date" 
+                            type="datetime" class="form-control" 
+                            value="{{Carbon\Carbon::parse($event->end_date)->format('d/m/Y H:i')}}" required/>
+                        <span id="end_date_error"></span> <br/>
+                    </div>
                     @include('layouts.errors')
-                    <button type="submit" id="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Save Changes</button>
-                    <a href="/rota" class="btn btn-lg btn-primary">View all Sessions</a>
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" id="submit" class="btn btn-lg btn-success">
+                            <i class="fa fa-save"></i> Save Changes
+                        </button>
+                        {{--<a href="/rota" class="btn btn-lg btn-primary">View all Sessions</a>--}}
+                    </div>
                 </form>
             </div>
             <div class="col-sm-3"></div>

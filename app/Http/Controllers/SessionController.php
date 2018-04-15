@@ -162,7 +162,7 @@ class SessionController extends Controller
         // Show notification
         //session()->flash('message', 'Demonstrators have been assigned!');
        notify()->flash('Demonstrators have been assigned!', 'success', [
-            'text' => 'The rota for '.$date.' has been completed. Please review your changes before sending the rota to the demonstrators.',
+            'text' => 'The rota for '.$date.' has been completed. Please review your changes before sending the rota to the demonstrators. Please remember to update the rota in case people become unavailable!',
         ]);
         return redirect('/rota/assign/'.$date);
     }
