@@ -5,32 +5,36 @@
 
 ## Installation instruction
 
-Register on the website
+### Register on the website
 
   1. Ask the team member to add you to the database.
   2. Register on the website
   
-GitHub
+### GitHub
 
   3. Join GitHub repository (please ask a member of the team to send you an invitation).
   4. Run ```git clone https://github.com/sb2g14/soton_roles```
   
-Stack installation
+### Stack installation
 
   5. You need to install one of the following stacks: 
-  WAMP (Windows) -> Windows, Apache, MySQL, PHP, 
-  LAMP (Linux) -> Linux, Apache, MySQL, PHP. (You can find it here: https://tecadmin.net/install-laravel-framework-on-ubuntu/), 
+  
+  WAMP (Windows) -> Windows, Apache, MySQL, PHP
+  
+  LAMP (Linux) -> Linux, Apache, MySQL, PHP. (You can find it here: https://tecadmin.net/install-laravel-framework-on-ubuntu/)
+  
   MAMP (Mac OS) -> Mac OS, Apache, MySQL, PHP. (You can find it here: https://www.mamp.info/en/)
+  
   We're currently running ## Apache 2.0, ## PhP 7.1, ## MySql 5.6 and ## Laravel 5.5 so we recommend you to stick to this versions.
   
-MySql setup
+### MySql setup
 
   6. Setup the database. Ask a member of the team (Svitlana or Andrew) for the latest dump file containing the database.
   7. Enter MySql: ```mysql -u username -p;```
   8. Create the database: ```CREATE DATABASE 3dprint_workshop; exit;```
   9. Write tables from your dump file: ```mysql -u username -p 3dprint_workshop < dumpfilename.sql```
   
-Running Laravel
+### Running Laravel
 
   10. Go to the ```soton_roles``` directory and open ```.env.example``` file, write the relevant mysql and mail server information and rename it to ```.env```. Now run following in your terminal:
   11. ```composer update```
@@ -80,13 +84,13 @@ So next we present a short instuction what should be done to update the project 
 2. ```ssh server@3dprint.clients.soton.ac.uk```
 3. ```cd /var/soton_roles/```
 4. ```sudo git pull```
-5. ```sudo php composer update```
+5. ```sudo composer update```
 6. ```sudo composer dumpautoload -o```
 7. ```sudo php artisan config:cache```
 8. ```sudo php artisan route:cache```
 9. ```cd ..```
-10. ```chmod +x sync.sh```
-11. ```./sync.sh```
+10. ```sudo chmod +x sync.sh```
+11. ```sudo ./sync.sh```
 12. Check https://3dprint.clients.soton.ac.uk/ if everything works.
 
 ## Database updates
