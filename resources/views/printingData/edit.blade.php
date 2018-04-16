@@ -26,7 +26,7 @@
                         Cost code: @if($job->use_case == 'Cost Code - approved') <b style="color: forestgreen"> {{$job->cost_code}} @elseif($job->use_case == 'Cost Code - unknown')</b> <b style="color: red"> {{$job->cost_code}} @else <b style="color: forestgreen"> {{$job->use_case}} @endif </b><br>
                         Comment: <b>{{$job->job_approved_comment}}</b><br>
                         Job number: <b>{{$job->id}}</b><br>
-                        Job title: <b>{{$job->job_title}}</b>
+                        Job title: <b>{{$job->job_title}}</b><br>
                         Status: <b>{{$job->status}}</b>
                     </p>
                 </div>
@@ -42,7 +42,7 @@
                         @php list($h, $i, $s) = explode(':', $job->total_duration)
                         @endphp
 
-                        <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
+                        <div id="time" class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                             {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
                             <div class="col-md-2">
                                 {!! Form::select('hours', range(0,59), $h, ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
@@ -65,7 +65,9 @@
                         <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
                             <label for="material_amount" class="col-md-4 control-label">Estimated material amount (grams):</label>
                             <div class="col-md-6">
-                                <input type="text" id="material_amount" name="material_amount" value="{{ $job->total_material_amount }}" class="form-control">
+                                <input id="material_amount" name="material_amount" 
+                                    type="text" class="form-control" 
+                                    value="{{ $job->total_material_amount }}" />
                                     @if ($errors->has('material_amount'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('material_amount') }}</strong>

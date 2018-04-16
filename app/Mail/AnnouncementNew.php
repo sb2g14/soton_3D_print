@@ -6,7 +6,6 @@ use App\Announcement;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class AnnouncementNew extends Mailable
@@ -18,11 +17,9 @@ class AnnouncementNew extends Mailable
      *
      * @return void
      */
-    protected $user;
     protected $announcement;
-    public function __construct(User $user, Announcement $announcement)
+    public function __construct($user, Announcement $announcement)
     {
-        $this->user = $user;
         $this->announcement = $announcement;
     }
 
@@ -33,8 +30,7 @@ class AnnouncementNew extends Mailable
      */
     public function build()
     {
-        return $this->subject('New announcement from 3D printing workshop')->markdown('emails.announcementNew')->with([
-            'name' => $this->user->name,
+        return $this->subject('New announcement from 3D printing service')->markdown('emails.announcementNew')->with([
             'message' => $this->announcement->message,
             'from' => $this->announcement->user->name
         ]);

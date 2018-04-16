@@ -23,6 +23,22 @@ body {
     .clearfix;
 }
 
+//don't display small x to learing time fields
+input[type="time"]::-ms-clear {
+    display: none;
+}
+input[type="time"]::-moz-clear-button {
+    display: none;
+}
+input[type="time"]::-moz-clear {
+    display: none;
+}
+input[type="time"]::-webkit-clear-button {
+    display: none;
+}
+::-webkit-search-cancel-button { 
+    -webkit-appearance: none; 
+}
 
 //HEADER STYLES//
 .p-header {
@@ -182,6 +198,47 @@ body {
 
 }// .p-header
 
+//EVENTS FOR ROTA DISPLAY//
+.badge-academic {
+  background-color: @blue;
+}
+.badge-closure {
+  background-color: @uni-coral-dark;
+}
+.badge-internal {
+  background-color: @uni-shamrock;
+}
+.badge-holidays {
+  background-color: @uni-coral;
+}
+.well.col-academic {
+  background-color: @blue;
+  color: white;
+  & a{
+    color: white;
+  }
+}
+.well.col-closure {
+  background-color: @uni-coral-dark;
+  color: white;
+  & a{
+    color: white;
+  }
+}
+.well.col-internal {
+  background-color: @uni-shamrock;
+  color: white;
+  & a{
+    color: white;
+  }
+}
+.well.col-holidays {
+  background-color: @uni-coral;
+  color: white;
+  & a{
+    color: white;
+  }
+}
 
 //HAMBURGER STYLES//
 .hamburger-box {
@@ -254,6 +311,7 @@ body {
 
 /*WELCOME BLOCK STYLES*/
 
+
 .bl-welcome {
     position: absolute;
     top: 100px;
@@ -270,13 +328,13 @@ body {
     a {
         color: @c-link;
         /*.font-size( (20/@fs-base) );*/
-        .font-size( (32/@fs-base) );
+        .font-size( (24/@fs-base) );
         display: block;
         padding: 5px 20px;
         text-decoration: none; 
         &:hover{
             /*color: @c-link;*/
-            color: #50626e;
+            color: #E1E8EC;
         }
     }
     .btn {
@@ -963,6 +1021,9 @@ footer {
         p {
             .font-size( (36/@fs-base) );
         }
+        a {
+            .font-size( (24/@fs-base) );
+        }
     }
 }
 
@@ -1051,6 +1112,9 @@ footer {
         p {
             .font-size( (50/@fs-base) );
             margin-bottom: 10px;
+        }
+        a {
+            .font-size( (36/@fs-base) );
         }
     }
     .s-welcome {

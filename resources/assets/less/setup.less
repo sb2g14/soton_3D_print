@@ -229,23 +229,23 @@ a:link {
 @mainbgcolor: #f2f2f2;
 //navigation:
 @navigation-lvl0-inactive:@headerfooter-mainbg;
-@navigation-lvl0-hover:#005C85;
-@navigation-lvl1-inactive:#005C85;
-@navigation-lvl1-hover:#1278a6;
+@navigation-lvl0-hover:@blue;
+@navigation-lvl1-inactive:@blue;
+@navigation-lvl1-hover:@light-blue;
 @navigation-pill-inactive:@uni-neutral-light-ii;
-@navigation-pill-active:#005C85;
-@navigation-pill-hover:#1278a6;
+@navigation-pill-active:@blue;
+@navigation-pill-hover:@light-blue;
 //buttons:
-@button-navigate: #00557B; 
-@button-details: #1278a6; 
+@button-navigate: @blue; 
+@button-details: @light-blue; 
 @button-add: @uni-shamrock; 
 @button-remove: @uni-coral; //btn-danger (use for remove actions)
 //printer status:
-@printer-available: @uni-shamrock;
-@printer-inuse: @uni-coral-light-ii;
-@printer-onloan: @uni-shamrock-light-ii;
+@printer-available: @uni-shamrock-light;
+@printer-inuse: @uni-coral-light-i;
+@printer-onloan: @uni-shamrock;
 @printer-broken: @uni-coral;
-@printer-missing: @uni-prussian-light-i;
+@printer-missing: @uni-coral-dark;
 @printer-signedout: @uni-prussian-light-ii;
 @printer-idle: @uni-neutral;
 //additional print status:
@@ -254,15 +254,15 @@ a:link {
 //role colors:
 @role-header: @uni-prussian;
 @role-header-managers: @uni-prussian-light;
-@role-coordinator: @uni-prussian-light-ii;
+@role-coordinator: @uni-prussian-light-i;
 @role-co-coordinator: @uni-prussian-light-ii;
 @role-technician: @uni-prussian-light-ii;
 @role-header-lead-demonstrator: @uni-coral-dark;
-@role-header-demonstrator: @uni-neutral;
+@role-header-demonstrator: @uni-coral;
 @role-lead-demonstrator: @uni-coral-light;
-@role-demonstrator: @uni-neutral-light-i;
-@role-header-online: @uni-coral-light;
-@role-3d-hub-manager: @uni-coral-light-ii;
+@role-demonstrator: @uni-coral-light-ii;
+@role-header-online: @uni-neutral;
+@role-3d-hub-manager: @uni-neutral-light;
 @role-header-it: @uni-shamrock;
 @role-it-manager: @uni-shamrock-light;
 @role-it: @uni-shamrock-light-ii;
@@ -280,6 +280,7 @@ a:link {
 
 //bootstrap custom colors for buttons and alerts
 .btnformat(@col){
+    color: #fff;
     background-color: @col;
     //.col-dark(@col);
     border-color: @col;
@@ -314,8 +315,10 @@ a:link {
     color: @col;
     &:hover{
         background-color: @col;
-        color: #fff;
+        color: contrast(@col);
     }
+    
+    
 }
 .trstatuslight(@col){
     color: @col;
@@ -323,7 +326,11 @@ a:link {
         .col-light(@col);
         background-color: @return;
         color: #000;
+        & a{
+            color: contrast(@return);
+        }
     }
+    
 }
 
 .table>tbody>tr {

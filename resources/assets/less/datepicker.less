@@ -2,6 +2,18 @@
     & table {
         & td.active{
             background-color: @p;
+            &:hover{
+                background-color: @p-light;
+            }
+        }
+        & td.today::before{
+            border-bottom-color: @uni-shamrock;
+        }
+        & td.disabled{
+            color: @uni-coral-dark;
+        }
+        & td.weekend{
+            color: @uni-neutral-light;
         }
         & a{
             color: @p;       

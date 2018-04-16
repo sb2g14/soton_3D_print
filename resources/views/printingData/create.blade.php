@@ -40,6 +40,8 @@
             <h1 class="text-center lead">REQUEST A JOB</h1>
             <form id="requestForm" class="form-horizontal" method="POST" action="/printingData">
                 {{ csrf_field() }}
+
+                {{--Printer Number--}}
                 <div class="form-group {{ $errors->has('printers_id') ? ' has-error' : '' }}">
                    {{--This is a Printer Number dropdown--}}
                     <div class="form-group">
@@ -61,44 +63,58 @@
                     <label for="customer_name" class="col-sm-4 control-label">Name</label>
 
                     <div class="col-sm-8">
-                        <input id="student_name" data-help="" type="text" class="form-control" name="customer_name" value="{{ old('customer_name', isset($member)  ? $member->first_name.' '.$member->last_name : $customer_name) }}" placeholder="Please input your First and Last name" required>
+                        <input id="student_name" name="customer_name" 
+                            type="text" class="form-control" 
+                            value="{{ old('customer_name', isset($member)  ? $member->name() : $customer_name) }}" 
+                            autocomplete="name" required
+                            placeholder="Please input your First and Last name" data-help=""/>
                         @if ($errors->has('customer_name'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('customer_name') }}</strong>
-                        </span>
+                                <strong>{{ $errors->first('customer_name') }}</strong>
+                            </span>
                         @endif
-                        <span class="" id="student_name_error"></span>
+                        <span id="student_name_error"></span>
                     </div>
                 </div>
 
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                {{--Email--}}
+                <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
                     <label for="customer_email" class="col-sm-4 control-label">Email</label>
 
                     <div class="col-sm-8">
-                        <input id="email" data-help="customer_email" type="email" class="form-control" name="customer_email" value="{{ old('customer_email', isset($member)  ? $member->email : $customer_email) }}" placeholder="Please input soton email" required><br>
-
+                        <input id="email" name="customer_email" 
+                            type="email" class="form-control" 
+                            value="{{ old('customer_email', isset($member)  ? $member->email : $customer_email) }}" 
+                            autocomplete="work email" required
+                            placeholder="Please input soton email" data-help="customer_email" /><br>
                         @if ($errors->has('customer_email'))
                             <span class="help-block">
-                                        <strong>{{ $errors->first('customer_email') }}</strong>
-                                    </span>
+                                <strong>{{ $errors->first('customer_email') }}</strong>
+                            </span>
                         @endif
-                        <span class="" id="email_error"></span>
+                        <span id="email_error"></span>
                     </div>
                 </div>
 
+                {{--Student ID--}}
                 <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
                     <label for="customer_id" class="col-sm-4 control-label">Student/Staff ID</label>
                     <div class="col-sm-8">
-                        <input id="student_id" data-help="customer_id" type="text" class="form-control" name="customer_id" value="{{ old('customer_id', isset($member)  ? $member->student_id : $customer_id) }}" placeholder="Please input your university ID number" required>
+                        <input id="student_id" name="customer_id" 
+                            type="text" class="form-control" 
+                            value="{{ old('customer_id', isset($member)  ? $member->student_id : $customer_id) }}" 
+                            autocomplete="work id" required 
+                            placeholder="Please input your university ID number" data-help="customer_id" />
                         @if ($errors->has('customer_id'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('customer_id') }}</strong>
-                        </span>
+                                <strong>{{ $errors->first('customer_id') }}</strong>
+                            </span>
                         @endif
-                        <span class="" id="student_id_error"></span>
+                        <span id="student_id_error"></span>
                     </div>
                 </div>
-
+                
+                {{--Printing Time--}}
                 <div id="time" class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                     {!! Form::label('hours', 'Printing Time', ['class' => 'col-lg-4 control-label'] )  !!}
                     <div class="col-md-4">
@@ -116,36 +132,44 @@
                                 <strong>{{ $errors->first('minutes') }}</strong>
                             </span>
                         @endif
-                   </div>
+                    </div>
                     <div class="col-sm-4 control-label"></div>
                     <div class="col-sm-8">
                         <span class="" id="time_error"></span>
                     </div>
                 </div>
-
+                
+                {{--Material Amount--}}
                 <div class="form-group{{ $errors->has('material_amount') ? ' has-error' : '' }}">
                     <label for="material_amount" class="col-sm-4 control-label">Material Amount (grams) </label>
                     <div class="col-sm-8">
-                        <input id="material_amount" data-help="material_amount" type="text" class="form-control" name="material_amount" value="{{ old('material_amount', $material_amount) }}" placeholder="Please specify the amount of material requested" required>
+                        <input id="material_amount" name="material_amount" 
+                            type="text" class="form-control" 
+                            value="{{ old('material_amount', $material_amount) }}" autocomplete="off" required
+                            placeholder="Please specify the amount of material requested" data-help="material_amount" />
                         @if ($errors->has('material_amount'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('material_amount') }}</strong>
                             </span>
                         @endif
-                        <span class="" id="material_amount_error"></span>
+                        <span id="material_amount_error"></span>
                     </div>
                 </div>
-
+                
+                {{--Cost Code--}}
                 <div class="form-group{{ $errors->has('use_case') ? ' has-error' : '' }}">
-                    <label for="use_case" class="col-sm-4 control-label">Module Name (Project) or Cost Code</label>
+                    <label for="use_case" class="col-sm-4 control-label">Project Code or Cost Code</label>
                     <div class="col-sm-8">
-                        <input id="use_case" data-help="use_case" type="text" class="form-control" name="use_case" value="{{ old('use_case', isset($member)  ? "Demonstrator" : $use_case) }}" placeholder="A 9 digit cost code or module name are allowed" required>
+                        <input id="use_case" name="use_case" 
+                            type="text" class="form-control" 
+                            value="{{ old('use_case', isset($member)  ? 'Demonstrator' : $use_case) }}" autocomplete="off" required
+                            placeholder="A 9 digit cost code or module name are allowed" data-help="use_case" />
                         @if ($errors->has('use_case'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('use_case') }}</strong>
-                        </span>
+                                <strong>{{ $errors->first('use_case') }}</strong>
+                            </span>
                         @endif
-                        <span class="" id="use_case_error"></span>
+                        <span id="use_case_error"></span>
                     </div>
                 </div>
 
@@ -154,15 +178,16 @@
                     <label for="budget_holder" class="col-sm-4 control-label">Budget Holder</label>
 
                     <div class="col-sm-8">
-                        <input id="budget_holder" data-help="budget_holder" type="text" class="form-control"
-                               name="budget_holder" value="{{ old('budget_holder') }}" placeholder="Provide the name of the budget holder of the cost code">
-
+                        <input id="budget_holder" name="budget_holder" 
+                            type="text" class="form-control"
+                            value="{{ old('budget_holder') }}" autocomplete="off" 
+                            placeholder="Provide the name of the budget holder of the cost code" data-help="budget_holder" />
                         @if ($errors->has('budget_holder'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('budget_holder') }}</strong>
-                        </span>
+                                <strong>{{ $errors->first('budget_holder') }}</strong>
+                            </span>
                         @endif
-                        <span class="" id="budget_holder_error"></span>
+                        <span id="budget_holder_error"></span>
                     </div>
                 </div>
 
@@ -171,28 +196,31 @@
                     <label for="job_title" class="col-sm-4 control-label">Job title</label>
 
                     <div class="col-sm-8">
-                        <input id="job_title" data-help="job_title" type="text" class="form-control"
-                               name="job_title" value="{{ old('job_title') }}" placeholder="Provide a meaningful name for your request" required>
-
+                        <input id="job_title" name="job_title" 
+                            type="text" class="form-control"
+                            value="{{ old('job_title') }}" autocomplete="off" required 
+                            placeholder="Provide a meaningful name for your request" data-help="job_title" >
                         @if ($errors->has('job_title'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('job_title') }}</strong>
-                        </span>
+                                <strong>{{ $errors->first('job_title') }}</strong>
+                            </span>
                         @endif
-                        <span class="" id="job_title_error"></span>
+                        <span id="job_title_error"></span>
                     </div>
                 </div>
-
+                
+                {{--Buttons--}}
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-8 text-left">
                         <button id="submit" type="submit" class="btn btn-success">Submit</button>
-                        <a href="/" class="btn btn-danger">Cancel</a>
-                        {{--<a href="{{  url('https://www.3dhubs.com/service/254134') }}" target="_blank" class="btn btn-info">Order online</a>--}}
+                        <a class="btn btn-danger" href="/" >Cancel</a>
+                        {{--<a class="btn btn-primary" href="/OnlineJobs/create">Order online</a>--}}
                     </div>
                 </div>
                 
             </form>
         </div>
+<!-- FORM INSTRUCTIONS (triggered by data-help) -->
         <div class="col-sm-6 instructions">
             <div class="hint text-left is-active before-filling" data-hint="general">
                 <h3 class="text-center lead">How to request a 3D print</h3>
@@ -239,7 +267,7 @@
                     estimate the cost of your print to be £  <span id="price" style="color: red;"></span></p>
             </div>
             <div class="hint text-left" data-hint="use_case">
-                <h3 class="text-center lead">Module name or Cost Code</h3>
+                <h3 class="text-center lead">Project Code or Cost Code</h3>
                 <p>If you are a student and your print is part of a project, please input the short abbreviation of your
                     module name or course. Note that course or module abbreviations must be in capital letters. The
                     system will recognise most of the standard modules that are registered with the workshop.</p>
@@ -254,7 +282,8 @@
             </div>
             <div class="hint text-left" data-hint="job_title">
                 <h3 class="text-center lead">Job Title</h3>
-                <p>Please provide a title for your print. This will appear to the module coordinator/ cost code budget holder as the cost of the print is claimed.</p>
+                <p>Please provide a title for your print. This will appear to the module coordinator/ cost code budget holder 
+                    as the cost of the print is claimed.</p>
             </div>
             <div class="hint text-left after-filling" data-hint="final">
                 <h3 class="text-center lead">The estimated cost of the print</h3>

@@ -5,17 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\staff;
 use App\ChartsHelper;
+use App\Http\Controllers\RotaController;
 
 class AboutWorkshopController extends Controller
 {
-    // This is controller to manage AboutWorkshop page
     /**
-     * Display a listing of the resource.
      *
+     * @blade_address /aboutWorkshop
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
+        $rc = new RotaController();
         // Find all the records in the staff database with role 'Coordinator'
         $coordinators = staff::where('role','=', 'Coordinator')->get();
         // Find all the records in the staff database with role 'Lead Demonstrator'
@@ -23,7 +24,9 @@ class AboutWorkshopController extends Controller
         //get workshop usage chart
         $stats = new ChartsHelper();
         $chart = $stats->createChartWorkshopUsage('prussian-uni');
-        return view('aboutWorkshop.index',compact('coordinators','lead_demonstrators','chart'));
+        //get opening hours
+        $open = $rc->openingHours();
+        return view('aboutWorkshop.index',compact('coordinators','lead_demonstrators','chart','open'));
     }
 
     /**

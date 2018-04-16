@@ -4,11 +4,10 @@
 
    
     <div class="container text-center m-b-md">
-        {{--<div class="title">Pending Jobs</div>--}}
         <ul class="nav nav-pills nav-justified">
-            <li><a href="/OnlineJobs/index">Requests</a></li>
-            <li class="active"><a href="#">Approved Jobs</a></li>
-            <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs</a></li>
+            <li><a href="/OnlineJobs/index">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
+            <li class="active"><a href="#">Approved Jobs <span class="badge">{{$counts['approved']}}</span></a></li>
+            <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
             <li class="nav-right"><a href="/OnlineJobs/prints">Prints</a></li>
             <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
         </ul>

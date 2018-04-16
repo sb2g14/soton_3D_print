@@ -266,9 +266,10 @@ class ChartsHelper
 
         // Count the number of different days and assign prints to time histogram
         foreach ($prints as $print) { //iterate over all the prints
-            for($i=0; $i<count($timesofday); $i++){ 
+            for($i=0; $i<count($timesofday); $i++){
+                // get start time and end time of printer usage 
                 $t1 = $print->created_at;
-                $t2 = $print->updated_at;
+                $t2 = $print->updated_at; 
                 //check if date of print is new
                 $day = $t1->format('Y-m-d');
                 if(!in_array($day, $open_days)){

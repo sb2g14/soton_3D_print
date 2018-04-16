@@ -173,7 +173,19 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 // Group of routes available only to roles administrator, Lead Demonstrator
 /////////////////////////////////////////////////////////////////////////////////////////////
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
-
+    
+    //consider using
+    //Route::resource('printers', 'PrintersController');
+    //to replace
+    //Route::get('/printers','PrintersController@index');
+    //Route::get('/printers/create','PrintersController@create');
+    //Route::post('/printers','PrintersController@store');
+    //Route::get('/printers/{id}','PrintersController@show);
+    //Route::get('/printers/{id}/edit','PrintersController@edit');
+    //Route::put('/printers/{id}','PrintersController@update');
+    //Route::delete('/printers/{id}','PrintersController@destroy');
+    //see https://laravel.com/docs/5.1/controllers#restful-resource-controllers for more info on how to control the behaviour
+            
     // Here we redirect users to the add new printer post page
     Route::get('/printers/create','PrintersController@create');
 
@@ -213,7 +225,15 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
     // Delete cost code
     Route::get('/costCodes/delete/{id}', 'CostCodesController@destroy');
 
+    // Find blade that shows print by id
+    Route::get('/print/{id}','PrintsController@show');
+    
+    // Find blade that shows job by id
+    Route::get('/job/{id}','JobsController@show');
+
 });
+
+
 
 // Group of routes available to online jobs manager only
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,6 +301,89 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 
 
 });
+
+// Group of routes for managing the ROTA
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Open a form to display the rota sessions
+Route::get('/rota','RotaController@index');
+
+
+Route::group(['middleware' => ['role:,jobs_manage']], function () {
+    // Open a form to indicate availability for sessions
+    Route::get('/rota/availability','AvailabilityController@edit'); //logical url based on the availability being part of the rota workflow
+    Route::get('/availability','AvailabilityController@edit'); //shortcut to use in email
+
+    // Update availability for sessions
+    Route::post('/rota/availability','AvailabilityController@update');
+
+});
+
+Route::group(['middleware' => ['role:,staff_manage']], function () {
+
+    // Open a form to create a new rota sessions
+    //Route::post('/rota/session/new/make','SessionController@startcreate');  //deprecated
+    Route::post('/rota/session/find','SessionController@startcreate');
+
+    // Open a form to create a new rota session and update existing ones
+    //Route::get('/rota/session/new/{date}','RotaController@edit');  //deprecated
+    Route::get('/rota/session/{date}','RotaController@edit');
+
+    // Store a new rota session
+    Route::post('/rota/session/new','SessionController@store');
+
+    // Delete an existing rota sessions
+    Route::get('/rota/session/delete/{id}','SessionController@destroy');
+
+    // Update an existing rota session
+    Route::post('/rota/updatesession','SessionController@update'); //deprecated
+    Route::post('/rota/session/update','SessionController@update');
+
+    // Open a form to assign demonstrators to sessions
+    Route::get('/rota/assign/{date}','SessionController@showassign');
+
+    // Assign demonstrators to sessions
+    Route::post('/rota/assign/{date}','SessionController@assign');
+    
+    // Open form to create email for rota
+    Route::get('/rota/email/{date}','RotaController@createmail');
+    // Send rota email
+    Route::post('/rota/email/{date}','RotaController@sendmail');
+
+    // Show blade to create a new event
+    Route::get('/rota/newevent','EventController@create'); //deprecated
+    Route::get('/rota/event/new','EventController@create');
+
+    // Store a new event
+    Route::post('/rota/newevent','EventController@store'); //deprecated
+    Route::post('/rota/event/new','EventController@store');
+
+    // Show blade to update an existing event
+    Route::get('/rota/event/update/{id}','EventController@edit');
+
+    // Update an existing event
+    Route::post('/rota/event/update/{id}','EventController@update');
+
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Group of routes for managing the FINANCES
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::group(['middleware' => ['role:,manage_cost_codes']], function () {
+    // Show default finance page
+    Route::get('/finance','FinanceController@index');
+
+    // Show page with unclaimed prints
+    Route::get('/finance/jobs/{month}','FinanceController@jobs');
+
+    // Offer Download of Excel Spreadsheet with data
+    Route::get('/finance/jobs/{month}/download','FinanceController@downloadJobs');
+});
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 // Open a form to request a job
 Route::get('/printingData/create','PrintingDataController@create');

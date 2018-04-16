@@ -6,6 +6,7 @@ use App\staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
+use Carbon\Carbon;
 use App\Mail\Invitation;
 use App\StatisticsHelper;
 
@@ -217,6 +218,7 @@ class StaffController extends Controller
         }
         // Update record in staff table
         staff::where('id','=', $id)->update(array('role'=> 'Former member', 'phone' => 'unknown'));
+        // TODO: Also delete any remaining entries from the availability table
         session()->flash('message', 'The record has been deleted');
 
         return redirect('/members/index');
@@ -230,7 +232,10 @@ class StaffController extends Controller
     public function gettingPaid()
     {
         $member = Auth::user()->staff()->first();
-        return view('gettingPaid', compact('member'));
+        //Get working hours for last month
+        $t1 = new Carbon();
+        $workinghours = $member->workinghours($t1);
+        return view('gettingPaid', compact('member','workinghours'));
     }
 
     public function documents()
