@@ -4,24 +4,34 @@
 [![GitHub issues](https://img.shields.io/github/issues/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_roles/issues)
 
 ## Installation instruction
+
 Register on the website
+
   1. Ask the team member to add you to the database.
   2. Register on the website
+  
 GitHub
+
   3. Join GitHub repository (please ask a member of the team to send you an invitation).
   4. Run ```git clone https://github.com/sb2g14/soton_roles```
+  
 Stack installation
+
   5. You need to install one of the following stacks: 
   WAMP (Windows) -> Windows, Apache, MySQL, PHP, 
   LAMP (Linux) -> Linux, Apache, MySQL, PHP. (You can find it here: https://tecadmin.net/install-laravel-framework-on-ubuntu/), 
   MAMP (Mac OS) -> Mac OS, Apache, MySQL, PHP. (You can find it here: https://www.mamp.info/en/)
   We're currently running ## Apache 2.0, ## PhP 7.1, ## MySql 5.6 and ## Laravel 5.5 so we recommend you to stick to this versions.
+  
 MySql setup
+
   6. Setup the database. Ask a member of the team (Svitlana or Andrew) for the latest dump file containing the database.
   7. Enter MySql: ```mysql -u username -p;```
   8. Create the database: ```CREATE DATABASE 3dprint_workshop; exit;```
   9. Write tables from your dump file: ```mysql -u username -p 3dprint_workshop < dumpfilename.sql```
+  
 Running Laravel
+
   10. Go to the ```soton_roles``` directory and open ```.env.example``` file, write the relevant mysql and mail server information and rename it to ```.env```. Now run following in your terminal:
   11. ```composer update```
   12. ```php artisan key:generate```
@@ -42,11 +52,12 @@ You need to visit https://www.jetbrains.com/ apply for a student license and the
   copy the link which appeared in the browser.
   
 2. If you experience any issues try:
-  ```composer update```
-  ```composer dumpautoload```
+
+   ```composer update```
   
-If you still have errors your database might be outdated
-  Go to 4 and 7 of this installation manual.
+    ```composer dumpautoload```
+  
+    If you still have errors your database might be outdated. Go to 4 and 7 of this installation manual.
 
 ### Installing NPM
 ```sudo apt install npm```
@@ -61,19 +72,22 @@ you can now compile less to css using
 
 ### Deploy the project on the RaspberyPi server
 
+The full instruction can be found on the next link, however, several first steps has been done before 
 https://medium.com/laravel-news/the-simple-guide-to-deploy-laravel-5-application-on-shared-hosting-1a8d0aee923e
 
-1. ```ssh server@3dprint.clients.soton.ac.uk```
-2. ```cd /var/soton_roles/```
-3. ```sudo git pull```
-4. ```sudo php composer update```
-5. ```sudo composer dumpautoload -o```
-6. ```sudo php artisan config:cache```
-7. ```sudo php artisan route:cache```
-8. ```cd ..```
-9. ```chmod +x sync.sh```
-10. ```./sync.sh```
-11. Check https://3dprint.clients.soton.ac.uk/ if everything works.
+So next we present a short instuction what should be done to update the project on server from the github repository
+1. Merge branches ```master``` and ```develop```
+2. ```ssh server@3dprint.clients.soton.ac.uk```
+3. ```cd /var/soton_roles/```
+4. ```sudo git pull```
+5. ```sudo php composer update```
+6. ```sudo composer dumpautoload -o```
+7. ```sudo php artisan config:cache```
+8. ```sudo php artisan route:cache```
+9. ```cd ..```
+10. ```chmod +x sync.sh```
+11. ```./sync.sh```
+12. Check https://3dprint.clients.soton.ac.uk/ if everything works.
 
 ## Database updates
 ### Linux/MacOS
