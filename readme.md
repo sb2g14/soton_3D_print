@@ -80,7 +80,7 @@ So next we present a short instuction what should be done to update the project 
 2. ```ssh server@3dprint.clients.soton.ac.uk```
 3. ```cd /var/soton_roles/```
 4. ```sudo git pull```
-5. ```sudo php composer update```
+5. ```sudo composer update```
 6. ```sudo composer dumpautoload -o```
 7. ```sudo php artisan config:cache```
 8. ```sudo php artisan route:cache```
