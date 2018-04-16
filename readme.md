@@ -18,9 +18,12 @@ GitHub
 Stack installation
 
   5. You need to install one of the following stacks: 
-  WAMP (Windows) -> Windows, Apache, MySQL, PHP, 
-  LAMP (Linux) -> Linux, Apache, MySQL, PHP. (You can find it here: https://tecadmin.net/install-laravel-framework-on-ubuntu/), 
+  WAMP (Windows) -> Windows, Apache, MySQL, PHP
+  
+  LAMP (Linux) -> Linux, Apache, MySQL, PHP. (You can find it here: https://tecadmin.net/install-laravel-framework-on-ubuntu/)
+  
   MAMP (Mac OS) -> Mac OS, Apache, MySQL, PHP. (You can find it here: https://www.mamp.info/en/)
+  
   We're currently running ## Apache 2.0, ## PhP 7.1, ## MySql 5.6 and ## Laravel 5.5 so we recommend you to stick to this versions.
   
 MySql setup
