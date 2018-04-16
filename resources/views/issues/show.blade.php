@@ -139,8 +139,8 @@
     @if($printer->printer_status === 'Signed out')
     <li class="item">
         <div class="row well">
-            <div class="col-sm-4 text-left">{{$printer->updated_at->format('d/m/Y')}}:</div>
-            <div class="col-sm-4 text-justify">Printer signed out from the workshop</div>
+            <div class="col-lg-4 text-left">{{$printer->updated_at->format('d/m/Y')}}:</div>
+            <div class="col-lg-4 text-justify">Printer signed out from the workshop</div>
         </div>
     </li>
     @endif
@@ -148,7 +148,7 @@
     @foreach($historyEntries as $entry)
         <li class="item">
             <div class=" row {{$entry['Class']}}">
-                <div class="col-sm-4 text-left"> 
+                <div class="col-sm-4 text-left">
                     {{$entry['StartDate']->format('d/m/Y')}} -
                     @if($entry['EndDate'])
                         {{$entry['EndDate']->format('d/m/Y')}}
@@ -156,7 +156,7 @@
                         Now
                     @endif
                 </div>
-                <div class="col-sm-4 text-justify">{{$entry['Type']}}: {{$entry['Description']}}</div> 
+                <div class="col-sm-4 text-justify">{{$entry['Type']}}: {{$entry['Description']}}</div>
                 @if($entry['Type'] === 'Broken' || $entry['Type'] === 'Missing')
                     @can('issues_manage')
                         <div class="col-sm-4">

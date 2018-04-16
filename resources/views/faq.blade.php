@@ -5,8 +5,9 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 pull-left">
-                <input class="form-control" id="searchInput" type="text" placeholder="Search.." autocomplete="off">
+            <div class="col-sm-4">
+                <input class="form-control" id="searchInput" type="text" placeholder="Type your question here..." autocomplete="off">
+                <hr>
             </div>
             {{--<div class="col-lg-2 pull-right">
                 <a href="/faq/create" type="button" class="btn btn-success pull-right">
@@ -14,6 +15,7 @@
                 </a>
             </div>--}}
         </div>
+
         {{--FAQ LIST--}}
         <div id="faqlist" class="row">
             <div class="panel panel-default">
