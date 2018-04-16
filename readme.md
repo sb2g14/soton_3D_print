@@ -85,8 +85,8 @@ So next we present a short instuction what should be done to update the project 
 7. ```sudo php artisan config:cache```
 8. ```sudo php artisan route:cache```
 9. ```cd ..```
-10. ```chmod +x sync.sh```
-11. ```./sync.sh```
+10. ```sudo chmod +x sync.sh```
+11. ```sudo ./sync.sh```
 12. Check https://3dprint.clients.soton.ac.uk/ if everything works.
 
 ## Database updates
