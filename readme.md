@@ -3,26 +3,26 @@
 [![GitHub contributers](https://img.shields.io/github/contributors/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_roles/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_roles/issues)
 
-## Installtion instruction
+## Installation instruction
 Register on the website
   1. Ask the team member to add you to the database.
   2. Register on the website
 GitHub
-  3. Join GitHub repository (please ask a member of team to send you an invitation).
+  3. Join GitHub repository (please ask a member of the team to send you an invitation).
   4. Run ```git clone https://github.com/sb2g14/soton_roles```
 Stack installation
-  5. You need to install on of the following stacks: 
+  5. You need to install one of the following stacks: 
   WAMP (Windows) -> Windows, Apache, MySQL, PHP, 
   LAMP (Linux) -> Linux, Apache, MySQL, PHP. (You can find it here: https://tecadmin.net/install-laravel-framework-on-ubuntu/), 
   MAMP (Mac OS) -> Mac OS, Apache, MySQL, PHP. (You can find it here: https://www.mamp.info/en/)
   We're currently running ## Apache 2.0, ## PhP 7.1, ## MySql 5.6 and ## Laravel 5.5 so we recommend you to stick to this versions.
 MySql setup
-  6. Setup the database. Ask a member of team (Svitlana or Andrew) for a latest dump file containing the database.
+  6. Setup the database. Ask a member of the team (Svitlana or Andrew) for the latest dump file containing the database.
   7. Enter MySql: ```mysql -u username -p;```
   8. Create the database: ```CREATE DATABASE 3dprint_workshop; exit;```
   9. Write tables from your dump file: ```mysql -u username -p 3dprint_workshop < dumpfilename.sql```
 Running Laravel
-  10. Go to ```soton_roles``` directory and open ```.env.example``` file, write the relevant mysql and mail server information and rename it to ```.env```. Now run following in your terminal:
+  10. Go to the ```soton_roles``` directory and open ```.env.example``` file, write the relevant mysql and mail server information and rename it to ```.env```. Now run following in your terminal:
   11. ```composer update```
   12. ```php artisan key:generate```
   13. ```php artisan serve```
@@ -30,11 +30,11 @@ Running Laravel
 If you experience any issues please contact us.
 
 ## Known issues:
-  1. Linux error: unable to locate ext-bcmath. 
-    Just type this ```sudo apt install php7.1-bcmath``` in your terminal
+Linux error: unable to locate ext-bcmath. 
+    Just type this ```sudo apt install php7.1-bcmath``` in your terminal. Remember to use the correct version of your php. If you are unsure chek it with ```php -v```.
     
 ## We recommend you to use JetBrains intelligent IDEs
-  15. You need to visit https://www.jetbrains.com/ apply for a student license and then install PhPStorm and DataGrip IDEs to work with PHP and SQL languages.
+You need to visit https://www.jetbrains.com/ apply for a student license and then install PhPStorm and DataGrip IDEs to work with PHP and SQL languages.
 
 ## Running the project
 1. Go to the soton_roles
@@ -42,8 +42,8 @@ If you experience any issues please contact us.
   copy the link which appeared in the browser.
   
 2. If you experience any issues try:
-  ```composer upadte```
-  ```composer dump-autoload```
+  ```composer update```
+  ```composer dumpautoload```
   
 If you still have errors your database might be outdated
   Go to 4 and 7 of this installation manual.
@@ -58,6 +58,22 @@ If you still have errors your database might be outdated
 you can now compile less to css using
 
 ```lessc resources/assets/less/app.less > public/css/app.css```
+
+### Deploy the project on the RaspberyPi server
+
+https://medium.com/laravel-news/the-simple-guide-to-deploy-laravel-5-application-on-shared-hosting-1a8d0aee923e
+
+1. ```ssh server@3dprint.clients.soton.ac.uk```
+2. ```cd /var/soton_roles/```
+3. ```sudo git pull```
+4. ```sudo php composer update```
+5. ```sudo composer dumpautoload -o```
+6. ```sudo php artisan config:cache```
+7. ```sudo php artisan route:cache```
+8. ```cd ..```
+9. ```chmod +x sync.sh```
+10. ```./sync.sh```
+11. Check https://3dprint.clients.soton.ac.uk/ if everything works.
 
 ## Database updates
 ### Linux/MacOS
@@ -88,7 +104,7 @@ http://3dprint.clients.soton.ac.uk/printers/index
 - *Material Design Colours* (https://material.io/color/#!/?view.left=1&view.right=1&primary.color=315765&secondary.color=0097c2)
 
 ## TODO:
-- [ ] Remember to fulfill all license requirements for the pulled packages ASAP...
+- [ ] Remember to fulfil all license requirements for the pulled packages ASAP...
 - [x] Add Laravel installation instructions/ link to this readme so future programmers can set up their own environment
 
 ## License
