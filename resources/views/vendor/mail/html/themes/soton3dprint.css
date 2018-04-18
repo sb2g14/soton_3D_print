@@ -76,7 +76,7 @@ img {
 /* Layout */
 
 .wrapper {
-    background-color: #f5f8fa;
+    background-color: #002e3b;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -215,27 +215,27 @@ img {
 }
 
 .button-blue {
-    background-color: #3097D1;
-    border-top: 10px solid #3097D1;
-    border-right: 18px solid #3097D1;
-    border-bottom: 10px solid #3097D1;
-    border-left: 18px solid #3097D1;
+    background-color: #005C85;
+    border-top: 10px solid #005C85;
+    border-right: 18px solid #005C85;
+    border-bottom: 10px solid #005C85;
+    border-left: 18px solid #005C85;
 }
 
 .button-green {
-    background-color: #2ab27b;
-    border-top: 10px solid #2ab27b;
-    border-right: 18px solid #2ab27b;
-    border-bottom: 10px solid #2ab27b;
-    border-left: 18px solid #2ab27b;
+    background-color: #1E8765;
+    border-top: 10px solid #1E8765;
+    border-right: 18px solid #1E8765;
+    border-bottom: 10px solid #1E8765;
+    border-left: 18px solid #1E8765;
 }
 
 .button-red {
-    background-color: #bf5329;
-    border-top: 10px solid #bf5329;
-    border-right: 18px solid #bf5329;
-    border-bottom: 10px solid #bf5329;
-    border-left: 18px solid #bf5329;
+    background-color: #E73238;
+    border-top: 10px solid #E73238;
+    border-right: 18px solid #E73238;
+    border-bottom: 10px solid #E73238;
+    border-left: 18px solid #E73238;
 }
 
 /* Panels */
