@@ -58,7 +58,7 @@ h3 {
 }
 
 p {
-    color: #74787E;
+    color: #0c0c0c;
     font-size: 16px;
     line-height: 1.5em;
     margin-top: 0;
@@ -100,15 +100,14 @@ img {
     padding: 25px 0;
     text-align: center;
     background-color: #002e3b;
+    width: 570px;
 }
 
 .header a {
     color: #fff;
     background-color: #002e3b;
     font-size: 19px;
-    font-weight: bold;
     text-decoration: none;
-    text-shadow: 0 1px 0 white;
 }
 
 /* Body */
@@ -150,9 +149,9 @@ img {
 /* Footer */
 
 .footer {
-    margin: 0 auto;
     background-color: #002e3b;
     color: #fff;
+    margin: 0 auto;
     padding: 0;
     text-align: center;
     width: 570px;
@@ -162,6 +161,7 @@ img {
 }
 
 .footer p {
+    background-color: #002e3b;
     color: #fff;
     font-size: 12px;
     text-align: center;

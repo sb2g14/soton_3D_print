@@ -199,7 +199,9 @@ class RotaController extends Controller
             // Send an email to the 3dprint account an cc all the recipients
             $recipient = '3dprint.soton@gmail.com';
             // Only Svitlana and Andrew now for testing purposes
-            $users = Staff::where('id',1)->orWhere('id',2)->orWhere('id',7)->pluck('email');
+//            $users = staff::where('id',1)->orWhere('id',2)->orWhere('id',7)->pluck('email');
+            // Send to all except for the Former members
+            $users = staff::where('role','!=','Former member')->pluck('email');
             Mail::to($recipient)->cc($users)->queue(new RotaMail($sessions, $message));
 
             // Notify that the user of success

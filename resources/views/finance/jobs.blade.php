@@ -39,11 +39,11 @@
             <div class="col-lg-10 pull-left">
                 <input class="form-control" id="searchInput" type="text" placeholder="Search.." autocomplete="off">
             </div>
-            <div class="col-lg-2 pull-right">
+            <!-- <div class="col-lg-2 pull-right">
                 <a href="/finance/jobs/{{$t1->toDateString()}}/download" type="button" class="btn btn-info pull-right">
                     Download {{--Download all Jobs for this month (ignores filter)--}}
                 </a>
-            </div>
+            </div> -->
             <div class="col-sm-12">
                 <table class="table table-hover">
                     <thead>

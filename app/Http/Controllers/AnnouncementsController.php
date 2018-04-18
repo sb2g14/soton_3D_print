@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\PublicAnnouncements;
 use Illuminate\Http\Request;
 use App\Announcement;
-use App\User;
 use Auth;
 use Illuminate\Support\Facades\Input;
 use App\Mail\AnnouncementNew;
-use App\Mail\Welcome;
+use App\staff;
+use Illuminate\Support\Facades\Mail;
 
 class AnnouncementsController extends Controller
 {
@@ -72,11 +71,27 @@ class AnnouncementsController extends Controller
 
         if (Input::get('email', false)) {
             // Send the notification to users if the appropriate checkbox is checked
-            $users = User::all();
-            foreach ($users as $user) {
-                \Mail::to($user)->send(new AnnouncementNew($user,$announcement));
+            // $users = User::all();
+            // Only Svitlana and Andrew now for testing purposes
+//            $users = staff::where('id',1)->orWhere('id',2)->pluck('email');
+            // Send to all except for the Former members
+            $users = staff::where('role','!=','Former member')->pluck('email');
+            try{
+                foreach ($users as $user) {
+                    Mail::to($user)->send(new AnnouncementNew($user,$announcement));
+                }
+                // Notify that the user of success
+                notify()->flash('The email has been sent' , 'success', [
+                    'text' => 'The announcement has been successfully sent to all 3D Printing workshop staff',
+                ]);
+            }catch(\Exception $e){
+                notify()->flash('Error!', 'error', [
+                    'text' => 'There has been an error with our email server. Please send an email to anyone who should be contacted about this.',
+                ]);
             }
         }
+
+
         // Return to the homepage:
         return redirect('/');
 

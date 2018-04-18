@@ -8,7 +8,7 @@
                         
                         <span style="font-weight: 500;">&copy; 2017-2018</span>
                         <a href="{{ url('/') }}">FEE 3D Printing Service</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a> - 
-                        <span style="font-weight: 200;"> version 3.0 ({{env('APP_ENV')}}) </span>
+                        <span style="font-weight: 200;"> version 3.0 </span>
                 </div>
             </div>
             @php
