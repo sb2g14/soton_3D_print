@@ -45,7 +45,7 @@
                 <div class="col-xs-8 col-sm-4 text-left">
                     <p><span class="fa fa-fw fa-bullhorn"></span> Activity in demonstration<br/>
                      Sessions attended: {{$member->experience()}} <br/>
-                     (last demonstrated on {{ Carbon\Carbon::parse($member->lastSession())->format('d/m/Y') }})<br/>
+                     @if($member->lastSession())(last demonstrated on {{ Carbon\Carbon::parse($member->lastSession())->format('d/m/Y') }})<br/>@endif
                      Prints approved: {{$stats["prints_approved"]}}<br/>
                      Prints completed: {{$stats["prints_completed"]}}</p>
                     <p><span class="fa fa-fw fa-wrench"></span> Activity in maintainance<br/>

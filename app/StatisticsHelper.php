@@ -228,7 +228,6 @@ class StatisticsHelper
         $ovstart = max($te1,$ti1);
         $ovend = min($te2,$ti2);
         $overlap = $ovend->diffInMinutes($ovstart);
-        //TODO: in charts controller there is afunction using this, but I need to check that it only passes the successfull prints!
         return $overlap;
     }
     
@@ -289,15 +288,15 @@ class StatisticsHelper
     public function getArrayMemberStats($id){
         
         $stats = [];
-        $member = \App\Staff::where('id',$id)->first();
+        $member = \App\staff::where('id',$id)->first();
         // Number of prints approved by this staff
-        $stats["prints_approved"] = \App\Staff::where('staff.id',$id)->join('jobs', 'jobs.job_approved_by', '=', 'staff.id')->count();
+        $stats["prints_approved"] = \App\staff::where('staff.id',$id)->join('jobs', 'jobs.job_approved_by', '=', 'staff.id')->count();
         // Number of prints marked as completed by this staff
-        $stats["prints_completed"] = \App\Staff::where('staff.id',$id)->join('jobs', 'jobs.job_finished_by', '=', 'staff.id')->count();
+        $stats["prints_completed"] = \App\staff::where('staff.id',$id)->join('jobs', 'jobs.job_finished_by', '=', 'staff.id')->count();
         // Number of printer issues raised by this staff
-        $stats["issues_raised"] = \App\Staff::where('staff.id',$id)->join('fault_datas', 'fault_datas.staff_id_created_issue', '=', 'staff.id')->count();
+        $stats["issues_raised"] = \App\staff::where('staff.id',$id)->join('fault_datas', 'fault_datas.staff_id_created_issue', '=', 'staff.id')->count();
         // Number of printer issues resolved by this staff
-        $stats["issues_closed"] = \App\Staff::where('staff.id',$id)->join('fault_datas', 'fault_datas.staff_id_resolved_issue', '=', 'staff.id')->count();
+        $stats["issues_closed"] = \App\staff::where('staff.id',$id)->join('fault_datas', 'fault_datas.staff_id_resolved_issue', '=', 'staff.id')->count();
         return $stats;
     }
 }

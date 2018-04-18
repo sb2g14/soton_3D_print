@@ -107,7 +107,7 @@ img {
     color: white;
     background-color: #002e3b;
     font-size: 19px;
-    font-weight: bold;
+    /*font-weight: bold;*/
     text-decoration: none;
     text-shadow: 0 1px 0 white;
 }

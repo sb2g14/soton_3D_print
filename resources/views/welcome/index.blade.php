@@ -2,7 +2,6 @@
 
 @section('slider')
     {{--Slider --}}
-    
     <div class="container">
         <div class="bl-welcome">    
             <div class="row">
@@ -68,12 +67,18 @@
                                         <li class="list-group-item">
                                             <div class="alert">
                                                 {{--Print title of a post--}}
-                                                 <h4><b> {{ isset($post_last->printers_id)  ? 'Printer '.$post_last->printers_id.':' : '' }} {{ $post_last->title }}</b></h4>
+                                                <h4><b> 
+                                                    {{ isset($post_last->printers_id)  ? 'Printer '.$post_last->printers_id.':' : '' }} 
+                                                    {{ $post_last->title }}
+                                                </b></h4>
                                                 {{--Print name of a user who created a post--}}
-                                                <h5 class="media-heading"> {{App\staff::where('id', $post_last->staff_id)->first()->first_name}}
-                                                                            {{App\staff::where('id', $post_last->staff_id)->first()->last_name}} <small><i>
-                                                {{--Print date and time when a post was created--}}
-                                                Posted {{ $post_last->created_at->diffForHumans() }}:</i></small></h5>
+                                                <h5 class="media-heading"> 
+                                                    {{App\staff::where('id', $post_last->staff_id)->first()->name()}}               
+                                                    {{--Print date and time when a post was created--}}
+                                                    <small><i>
+                                                        Posted {{ $post_last->created_at->diffForHumans() }}:
+                                                    </i></small>
+                                                </h5>
                                                 {{--Print the text of a post--}}
                                                 {{ $post_last->body }}
                                             </div>
@@ -84,7 +89,7 @@
                         </div>
                     </div>
                     <!-- #END# Issues -->
-                    <!-- Announcements -->
+                    <!-- Demonstrator Announcements -->
                     <div class="col-xs-12 col-md-4">
                         <div class="cardblock card-announcement hover-expand-effect">
                             <div class="info-box box-announcement">
@@ -98,21 +103,24 @@
                                             @php
                                                 $announcement_last = $announcements->first();
                                                 $shortmessage = $announcement_last->message;
-                                                $shortmessage = (strlen($shortmessage) > 553) ? substr($shortmessage,0,550).'...' : $shortmessage;
+                                                $shortmessage = (strlen($shortmessage) > 653) ? substr($shortmessage,0,650).'...' : $shortmessage;
                                                 $shortmessage = str_replace("\n","<br/>",$shortmessage);
                                             @endphp
-                                            <h5 class="media-heading"> {{ $announcement_last->user->name}}  <small><i>
-                                                        {{--Print date and time when a post was created--}}
-                                                        Posted {{ $announcement_last->created_at->diffForHumans() }}:</i></small></h5>
-                                            <h5> @php echo $shortmessage @endphp <br/>  (See more)</h5>
+                                            <h5 class="media-heading"> {{ $announcement_last->user->name}}
+                                                {{--Print date and time when a post was created--}}
+                                                <small><i>
+                                                        Posted {{ $announcement_last->created_at->diffForHumans() }}:
+                                                </i></small>
+                                            </h5>
+                                            <h5> {{$shortmessage}} <br/>  (See more)</h5>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <!-- #END# Announcements -->
-                    <!-- Statistics -->
+                    <!-- #END# Demonstrator Announcements -->
+                    <!-- Demonstrator Statistics -->
                     <div class="col-xs-12 col-md-4">
                         <div class="cardblock card-stat hover-expand-effect">
                             <div class="info-box box-stat">
@@ -122,11 +130,22 @@
                             <div class="body bg-stat">
                                 {{--<h3>The number of prints in the last 12 months</h3>--}}
                                 @php $chart_height = 300; @endphp
-                                <iframe id="C_demonstrator_main" src="{{ route('chart', ['name' => 'printspm', 'color' => 'prussian', 'height' => $chart_height]) }}" height="{{ $chart_height + 150 }}" width="100%" style="width:100%; border:none;"></iframe>
+                                <iframe id="C_demonstrator_main" 
+                                    height="{{ $chart_height + 150 }}" width="100%" style="width:100%; border:none;"
+                                    src="{{ route('chart', [
+                                        'name' => 'printspm', 
+                                        'color' => 'prussian', 
+                                        'height' => $chart_height]) }}" >
+                                </iframe>
+                                <div style="text-align: left; font-weight: bold"> 
+                                    Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[1]}}<br/>
+                                    Number of users last year: {{$count_users}}<br/>
+                                    Total material used: {{$count_material}}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- #END# Statistics -->
+                    <!-- #END# Demonstrator Statistics -->
                 </div>
 
                 @else
@@ -146,12 +165,16 @@
                                         <p>
                                             <ol>
                                                 <li>Export your file to .stl format and bring it with you to the workshop</li>
-                                                <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOURSELF to the cupboards!</b></li>
+                                                <li>Talk to a demonstrator to request a printer and printer equipment. 
+                                                    <b>Please DO NOT HELP YOURSELF to the cupboards!</b>
+                                                </li>
                                                 <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
                                                 <li>Request a job on this website</li>
-                                <li>Ask a demonstrator to come to you to approve the print</li>
-                                <li>Press the print button to start the print <b>after your print has been approved</b></li>
-                                <li>Wait for at least 10 layers to see if there are any errors....</li>
+                                                <li>Ask a demonstrator to come to you to approve the print</li>
+                                                <li>Press the print button to start the print 
+                                                    <b>after your print has been approved</b>
+                                                </li>
+                                                <li>Wait for at least 10 layers to see if there are any errors....</li>
                                             </ol>
                                             View more...
                                         </p>
@@ -161,7 +184,7 @@
                         </div>
                     </div>
                     <!-- #END# Rules -->
-                    <!-- Announcements -->
+                    <!-- Customer Announcements -->
                     <div class="col-xs-12 col-md-4">
                         <div class="cardblock card-announcement hover-expand-effect">
                             <div class="info-box box-announcement">
@@ -173,13 +196,17 @@
                                     <li class="list-group-item">
                                         <div class="alert">
                                             @php
-                                            $public_announcement_last = $announcements->where('public', 1)->first();
-                                            $shortmessage = $public_announcement_last->message;
-                                            $shortmessage = (strlen($shortmessage) > 653) ? substr($shortmessage,0,650).'...' : $shortmessage;
+                                                $public_announcement_last = $announcements->where('public', 1)->first();
+                                                $shortmessage = $public_announcement_last->message;
+                                                $shortmessage = (strlen($shortmessage) > 653) ? substr($shortmessage,0,650).'...' : $shortmessage;
                                             @endphp
-                                            <h5 class="media-heading"> {{ $public_announcement_last->user->name}}  <small><i>
-                                                        {{--Print date and time when a post was created--}}
-                                                        Posted {{ $public_announcement_last->created_at->diffForHumans() }}:</i></small></h5>
+                                            <h5 class="media-heading"> 
+                                                {{ $public_announcement_last->user->name}}
+                                                {{--Print date and time when a post was created--}} 
+                                                <small><i>
+                                                        Posted {{ $public_announcement_last->created_at->diffForHumans() }}:
+                                                </i></small>
+                                            </h5>
                                             <h5> {{ $shortmessage }} </h5>
                                         </div>
                                     </li>
@@ -187,8 +214,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- #END# Announcements -->
-                    <!-- Statistics -->
+                    <!-- #END# Customer Announcements -->
+                    <!-- Customer Statistics -->
                     <div class="col-xs-12 col-md-4">
                         <div class="cardblock hover-expand-effect">
                             <div class="info-box box-stat">
@@ -197,21 +224,24 @@
                             </div>
                             <div class="body bg-stat">
                                 @php $chart_height = 300; @endphp
-                                
-                                {{--@if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)--}}
                                 @if ($workshopIsOpen)
                                     <div style="text-align: center; font-size: larger; font-weight: bold"> Printers available </div>
-                                <iframe id="C_printer_availability" src="{{ route('chart', ['name' => 'printer_availability', 'height' => $chart_height, 'color' => 'coral']) }}" height="{{$chart_height + 50}}" width="100%" style="width:100%; border:none;"></iframe>
-                            @else
-                                <!--<div style="text-align: center; font-size: larger; font-weight: bold"> 
-                                    Opening Hours:  
-                                </div>
-                                <div style="text-align: center; font-weight: bold"> 
-                                    Every Wednesday 9am to 6pm during term-time.<br/>
-                                    (Live opening hours coming soon)
-                                </div>-->
-                                <iframe id="C_workshop_usage" src="{{ route('chart', ['name' => 'workshop_usage', 'height' => $chart_height, 'color' => 'coral']) }}" height="{{$chart_height + 150}}" width="100%" style="width:100%; border:none;"></iframe>
-                            @endif
+                                    <iframe id="C_printer_availability" 
+                                        height="{{$chart_height + 50}}" width="100%" style="width:100%; border:none;"
+                                        src="{{ route('chart', [
+                                            'name' => 'printer_availability', 
+                                            'height' => $chart_height, 
+                                            'color' => 'coral']) }}" >
+                                    </iframe>
+                                @else 
+                                    <iframe id="C_workshop_usage" 
+                                        height="{{$chart_height + 150}}" width="100%" style="width:100%; border:none;"
+                                        src="{{ route('chart', [
+                                            'name' => 'workshop_usage', 
+                                            'height' => $chart_height, 
+                                            'color' => 'coral']) }}">
+                                    </iframe>
+                                @endif
                                 <div style="text-align: left; font-weight: bold"> 
                                     Number of prints in {{$count_months[1]->format('F')}}: {{$count_prints[1]}}<br/>
                                     Number of users last year: {{$count_users}}<br/>
@@ -220,7 +250,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- #END# Statistics -->
+                    <!-- #END# Customer Statistics -->
                 </div>
             @endif
         </div>
@@ -240,7 +270,11 @@
                 <div class="modal-body text-left">
                     {{--This is a button to add an issue:--}}
                     @can('add_private_posts_and_announcements')
-                        <button id="add_issue" type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#addIssue">Add new issue</button>
+                        <button id="add_issue" 
+                            type="button" class="btn btn-info btn-block" 
+                            data-toggle="collapse" data-target="#addIssue">
+                            Add new issue
+                        </button>
                     @endcan
                             
                     {{--Form to add issue--}}
@@ -250,12 +284,14 @@
                             <div class="form-group">
                                 <label for="title">Issue Name</label><br>
                                 <input id="issue" name="title" placeholder="Specify issue name" class="form-control" required>
-                                <span id="issue_error" class=""></span>
+                                <span id="issue_error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="body">Message</label><br>
-                                <textarea id="message_issue" name="body" rows="4" placeholder="Describe your issue" class="form-control" required></textarea>
-                                <span id="message_issue_error" class=""></span>
+                                <textarea id="message_issue" name="body" 
+                                    rows="4" class="form-control" 
+                                    required placeholder="Describe your issue" ></textarea>
+                                <span id="message_issue_error"></span>
                             </div>
                             <div class="checkbox">
                                 <label><input type="checkbox" name="critical" value="critical">Issue affects printer status</label>
@@ -264,114 +300,127 @@
                         </form>
                     </div>
                     @if(Auth::check())
-                    <div id="all-issues">
-                        @foreach($issues as $post)
-                            <li class="list-group-item well {{isset($post->printers_id) ? 'alert alert-info' : 'alert alert-default'}}">
-                                {{--Print title of a post--}}
-                                <h4><b>{{ isset($post->printers_id)  ? 'Printer '.$post->printers_id.':' : '' }} {{ $post->title }}</b></h4>
-                                {{-- Button to delete the issue--}}
-                                @if( isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
-                                    <span data-placement="top" data-toggle="popover" data-trigger="hover"
-                                          data-content="Delete this issue from the database (this option is available only first 5 minutes after creation).The printer status will be changed to Available.">
-                                                            <a type="button" id="deleteIssue" href="/issues/delete/{{$post->id}}"
-                                                               class="close" style="color: red">&times;</a>
-                                                    </span>
-                                @endif
-                                {{-- Button to delete post--}}
-                                @if( !isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
-                                    <span data-placement="top" data-toggle="popover" data-trigger="hover"
-                                          data-content="Delete this post from the database (this option is available only first 5 minutes after creation)">
-                                                            <a type="button" id="deletePost" href="/post/delete/{{$post->id}}"
-                                                               class="close" style="color: red">&times;</a>
-                                                    </span>
-                                @endif
-                                {{--Print name of a user who created a post--}}
-                                <h5 class="media-heading"> {{App\staff::where('id', $post->staff_id)->first()->first_name}}
-                                                            {{App\staff::where('id', $post->staff_id)->first()->last_name}}<small><i>
-                                {{--Print date and time when a post was created--}}
-                                Posted {{ $post->created_at->diffForHumans() }}:</i></small></h5>
-                                {{--Print the text of a post--}}
-                                <p>{{ $post->body }}</p>
-                                @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
-                                    <a href="/posts/resolve/{{$post->id}}" class="btn btn-danger">Resolve{{ $post->resolved }}</a>
-                                @endif
-                                <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
+                        {{--Display all issues--}}
+                        <div id="all-issues">
+                            @foreach($issues as $post)
+                                <li class="list-group-item well alert {{isset($post->printers_id) ? 'alert-info' : 'alert-default'}}">
+                                    {{--Print title of a post--}}
+                                    <h4><b>
+                                        {{ isset($post->printers_id)  ? 'Printer '.$post->printers_id.':' : '' }} {{ $post->title }}
+                                    </b></h4>
+                                    {{-- Button to delete the issue--}}
+                                    @if( isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                                        <span data-toggle="popover" data-trigger="hover" data-placement="top" 
+                                            data-content="Delete this issue from the database (this option is available only first 
+                                                5 minutes after creation).The printer status will be changed to Available.">
+                                            <a id="deleteIssue" type="button" class="close" style="color: red" 
+                                               href="/issues/delete/{{$post->id}}">&times;</a>
+                                        </span>
+                                    @endif
+                                    {{-- Button to delete post--}}
+                                    @if( !isset($post->printers_id) && $post->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                                        <span data-toggle="popover" data-trigger="hover" data-placement="top" 
+                                            data-content="Delete this post from the database (this option is available only first 
+                                                5 minutes after creation)">
+                                            <a id="deletePost" type="button" class="close" style="color: red" 
+                                               href="/post/delete/{{$post->id}}">&times;</a>
+                                        </span>
+                                    @endif
+                                    {{--Print name of a user who created a post--}}
+                                    <h5 class="media-heading"> 
+                                        {{App\staff::where('id', $post->staff_id)->first()->first_name}}
+                                        {{App\staff::where('id', $post->staff_id)->first()->last_name}}
+                                        <small><i>
+                                            {{--Print date and time when a post was created--}}
+                                            Posted {{ $post->created_at->diffForHumans() }}:
+                                        </i></small>
+                                    </h5>
+                                    {{--Print the text of a post--}}
+                                    <p>{{ $post->body }}</p>
+                                    {{-- Button to resolve post--}}
+                                    @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
+                                        <a href="/posts/resolve/{{$post->id}}" class="btn btn-danger">Resolve{{ $post->resolved }}</a>
+                                    @endif
+                                    {{-- Button to show/hide comments--}}
+                                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#{{ $post->id}}">
                                         Show comments
-                                </button>
-                                <div id="{{ $post->id}}" class="card collapse">
-                                    {{--Here we show comments to each issue:--}}
-                                    <ul class="lsn">
-                                        @php
-                                        if(isset($post->printers_id)){
-                                        $comments = \App\FaultUpdates::where('fault_data_id', $post->id)->get();
-                                        } else {
-                                        $comments = \App\comments::where('posts_id', $post->id)->get();
-                                        }
-                                        @endphp
-                                        @foreach($comments as $comment)
-                                            <li>
-                                                <div class="media">
-                                                    {{--<div class="media-left">--}}
-                                                        {{--<img src="/Images/img_avatar3.png" class="media-object">--}}
-                                                    {{--</div>--}}
-                                                    <div class="media-body">
-                                                        @if( isset($comment->posts_id) && $comment->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
-                                                            <span data-placement="top" data-toggle="popover" data-trigger="hover"
-                                                                  data-content="Delete this comment from the datable (this option is available only first 5 minutes after creation)">
-                                                            <a type="button" id="deleteComment" href="/comments/delete/{{$comment->id}}"
-                                                               class="close" style="color: red">&times;</a>
-                                                            </span>
-                                                        @endif
-                                                        <h5 class="media-heading"> {{$comment->staff->first_name}} {{$comment->staff->last_name}}
-                                                            <small>
-                                                                <i>Posted {{ $comment->created_at->diffForHumans() }}:</i>
-                                                            </small>
-                                                        </h5>
-                                                        <p>
-                                                            <h5 style="color: red">
-                                                                {{ isset($comment->printer_status) ? 'Printer Status: '.$comment->printer_status : ''}}
+                                    </button>
+                                    <div id="{{ $post->id}}" class="card collapse">
+                                        {{--Here we show comments to each issue:--}}
+                                        <ul class="lsn">
+                                            @php
+                                            if(isset($post->printers_id)){
+                                                $comments = \App\FaultUpdates::where('fault_data_id', $post->id)->get();
+                                            } else {
+                                                $comments = \App\comments::where('posts_id', $post->id)->get();
+                                            }
+                                            @endphp
+                                            @foreach($comments as $comment)
+                                                <li>
+                                                    <div class="media">
+                                                        <div class="media-body">
+                                                            @if( isset($comment->posts_id) && $comment->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                                                                <span data-toggle="popover" data-trigger="hover" data-placement="top" 
+                                                                    data-content="Delete this comment from the datable (this option 
+                                                                        is available only first 5 minutes after creation)">
+                                                                    <a id="deleteComment" type="button" 
+                                                                        class="close" style="color: red"
+                                                                        href="/comments/delete/{{$comment->id}}">&times;</a>
+                                                                </span>
+                                                            @endif
+                                                            <h5 class="media-heading"> 
+                                                                {{$comment->staff->name()}}
+                                                                <small>
+                                                                    <i>Posted {{ $comment->created_at->diffForHumans() }}:</i>
+                                                                </small>
                                                             </h5>
-                                                            {{ $comment->body }}
-                                                        </p>
+                                                            <p>
+                                                                <h5 style="color: red">
+                                                                    {{ isset($comment->printer_status) ? 'Printer Status: '.$comment->printer_status : ''}}
+                                                                </h5>
+                                                                {{ $comment->body }}
+                                                            </p>
 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul><!-- end of issue comments-->
+                                        {{--This is a form to add a comment--}}
+                                        @can('add_private_posts_and_announcements')
+                                            @if(isset($post->printers_id))
+                                                <div class="card">
+                                                    <div class="form-group">
+                                                        <a class="btn btn-info" href="/issues/update/{{ $post->id }}#buttons">Update </a>
                                                     </div>
                                                 </div>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                    {{--This is a form to add a comment--}}
-                                    @can('add_private_posts_and_announcements')
-
-                                    @if(isset($post->printers_id))
-                                        <div class="card">
-                                            <div class="form-group">
-                                                <a href="/issues/update/{{ $post->id }}#buttons" class="btn btn-info">Update </a>
-                                            </div>
-                                        </div>
-                                    @else
-                                        <div id="{{ $post->id }}" class="card">
-                                            <form method="POST" action="/posts/{{ $post->id }}/comments">
-                                                {{ csrf_field() }}
-                                                <div class="form-group">
-                                                    <textarea id="message_comment" name="body" placeholder="Your comment here"  class="form-control" required></textarea>
-                                                    <span id="message_comment_error" class=""></span>
+                                            @else
+                                                <div id="{{ $post->id }}" class="card">
+                                                    <form method="POST" action="/posts/{{ $post->id }}/comments">
+                                                        {{ csrf_field() }}
+                                                        <div class="form-group">
+                                                            <textarea id="message_comment" name="body" 
+                                                                class="form-control" 
+                                                                required placeholder="Your comment here"></textarea>
+                                                            <span id="message_comment_error"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button id="comment" type="submit" class="btn btn-success">Comment </button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <div class="form-group">
-                                                    <button id="comment" type="submit" class="btn btn-success">Comment </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    @endif
-                                    @endcan
-                                </div>
-                            </li>
-                        @endforeach
-                    </div>
+                                            @endif
+                                        @endcan
+                                    </div>
+                                </li>
+                            @endforeach
+                        </div><!-- end of issues list-->
+                    {{--missing endif?--}}
                 </div>
                         
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
 
           </div>
@@ -390,7 +439,11 @@
                     <div class="modal-body text-left">
                         {{--This is a button to create an announcement:--}}
                         @can('add_private_posts_and_announcements')
-                        <button id="add_announcement" type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#addAnnouncement">Add new announcement</button>
+                            <button id="add_announcement" 
+                                type="button" class="btn btn-info btn-block" 
+                                data-toggle="collapse" data-target="#addAnnouncement">
+                                Add new announcement
+                            </button>
                         @endcan
                         
                         {{--Form to add announcement--}}
@@ -400,58 +453,79 @@
                                 <div class="form-group">
                                     <label for="message">New Announcement</label><br>
                                     <div id="helperpreannouncement" class="form-text text-muted text-user">Dear Demonstrator</div>
-                                    <textarea id="announcement" name="message" rows="8"
+                                    <textarea id="announcement" name="message" 
+                                        class="form-control" rows="8"
                                         placeholder="Post will appear only for registered users unless you check 'Public announcement"
-                                        class="form-control"></textarea>
-                                    <div  id="helperpostannouncement" class="form-text text-muted text-user">Thanks,<br/>&nbsp;&nbsp;{{Auth::user()->staff->first_name}} {{Auth::user()->staff->last_name}}, 3D Printing Workshop Team<br/></div>
+                                        ></textarea>
+                                    <div  id="helperpostannouncement" class="form-text text-muted text-user">
+                                        Thanks,<br/>&nbsp;&nbsp;{{Auth::user()->staff->name()}}, 3D Printing Service Team<br/>
+                                    </div>
                                     <span id="announcement_error" class=""></span>
-                                    <div class="form-text text-muted">Note: This form supports <a href="https://daringfireball.net/projects/markdown/syntax">markdown</a> when sending emails.</div>
+                                    <div class="form-text text-muted">
+                                        Note: This form supports 
+                                        <a href="https://daringfireball.net/projects/markdown/syntax">markdown</a> 
+                                        when sending emails.
+                                    </div>
                                 </div>
                                 @can('add_public_posts_and_announcements')
-                                <div class="checkbox">
-                                    <label><input type="checkbox" name="public" value="public">Public announcement</label>
-                                </div>
-                                <div class="checkbox">
-                                    <label><input id="chkancmntem" type="checkbox" name="email" value="email">Inform all by email</label>
-                                </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input name="public" type="checkbox" value="public">
+                                            Public announcement
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="chkancmntem" name="email" type="checkbox" value="email">
+                                            Inform all by email
+                                        </label>
+                                    </div>
                                 @endcan
                                 <button id="post" type="submit" class="btn btn-success">Post</button>
                             </form>
                         </div>
-                        @endif
+                    {{--endif without if?--}}
+                    @endif
 
                         <div id="all-announcements">
                             @if(Auth::check())
                                 @foreach($announcements as $announcement)
-                                    <li class="list-group-item well @if($announcement->public === 0) alert alert-info @else alert alert-default @endif ">
-                                        <!-- <div class="alert alert-info"> -->
-                                        <h5 class="media-heading"> <i class="fa @if($announcement->public === 0) fa-comment @else fa-bullhorn @endif"></i> {{$announcement->user->name}}  <small><i>
-                                                    {{-- Delete the announcement if you have appropriate permissions--}}
-                                                    @if( strtolower(Auth::user()->email) == strtolower($announcement->user->email) || Auth::user()->can('delete_announcements'))
-                                                        <span data-placement="top" data-toggle="popover" data-trigger="hover"
-                                                              data-content="This button is to delete the announcement from the database. Please use it with care.">
-                                                            <a type="button" id="deleteAnnouncement" href="/announcement/delete/{{$announcement->id}}"
-                                                               class="close" style="color: red">&times;</a>
+                                    <li class="list-group-item well alert @if($announcement->public === 0) alert-info @else alert-default @endif ">
+                                        <h5 class="media-heading">
+                                            <i class="fa @if($announcement->public === 0) fa-comment @else fa-bullhorn @endif"></i> 
+                                            {{$announcement->user->name}}
+                                            <small><i>
+                                                {{-- Delete the announcement if you have appropriate permissions--}}
+                                                @if( strtolower(Auth::user()->email) == strtolower($announcement->user->email) || Auth::user()->can('delete_announcements'))
+                                                    <span data-toggle="popover" data-trigger="hover" data-placement="top" 
+                                                        data-content="This button is to delete the announcement from the database. 
+                                                            Please use it with care.">
+                                                        <a id="deleteAnnouncement" 
+                                                            type="button" class="close" style="color: red"
+                                                            href="/announcement/delete/{{$announcement->id}}">&times;</a>
                                                     </span>
-                                                    @endif
-                                                    {{--Print date and time when a post was created--}}
-                                                    Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
+                                                @endif
+                                                {{--Print date and time when a post was created--}}
+                                                Posted {{ $announcement->created_at->diffForHumans() }}:
+                                            </i></small>
+                                        </h5>
                                         <h5> {{ $announcement->message }} </h5>
-                                        <!-- </div> -->
                                     </li>
                                 @endforeach
                             @else
                                 @php
-                                $public_announcements = $announcements->where('public', 1);
+                                    $public_announcements = $announcements->where('public', 1);
                                 @endphp
                                 @foreach($public_announcements as $announcement)
                                     <li class="list-group-item">
-                                        <!-- <div class="alert alert-info"> -->
-                                        <h5 class="media-heading"> {{$announcement->user->name}}  <small><i>
-                                                    Print date and time when a post was created
-                                                    Posted {{ $announcement->created_at->diffForHumans() }}:</i></small></h5>
+                                        <h5 class="media-heading"> 
+                                            {{$announcement->user->name}}
+                                            <small><i>
+                                                {{--Print date and time when a post was created--}}
+                                                Posted {{ $announcement->created_at->diffForHumans() }}:
+                                            </i></small>
+                                        </h5>
                                         <h5> {{ $announcement->message }} </h5>
-                                        <!-- </div> -->
                                     </li>
                                 @endforeach
                             @endif
@@ -478,28 +552,42 @@
                         <p>
                             <ol>
                                 <li>Export your file to .stl format and bring it with you to the workshop</li>
-                                <li>Talk to a demonstrator to request a printer and printer equipment. <b>Please DO NOT HELP YOURSELF to the cupboards!</b></li>
+                                <li>Talk to a demonstrator to request a printer and printer equipment. 
+                                    <b>Please DO NOT HELP YOURSELF to the cupboards!</b>
+                                </li>
                                 <li>Set up the printer and check the print preview. <b>DO NOT PRINT!</b></li>
                                 <li>Request a job
                                     <ol type="a">
-                                        <li>Access the workshop website <a href="https://3dprint.clients.soton.ac.uk/">https://3dprint.clients.soton.ac.uk/</a></li>
-                                        <li>Select <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">Request a job in the workshop!</a></q></li>
+                                        <li>Access the workshop website 
+                                            <a href="https://3dprint.clients.soton.ac.uk/">https://3dprint.clients.soton.ac.uk/</a>
+                                        </li>
+                                        <li>Select <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">
+                                            Request a job in the workshop!</a></q>
+                                        </li>
                                         <li>Fill in all required details</li>
                                         <li>Click submit</li>
                                     </ol>
                                 </li>
                                 <li>Ask a demonstrator to come to you to approve the print</li>
                                 <li>Press the print button to start the print <b>after your print has been approved</b></li>
-                                <li>Wait for at least 10 layers to see if there are any errors. Most errors will happen at this point</li>
+                                <li>Wait for at least 10 layers to see if there are any errors. 
+                                    Most errors will happen at this point
+                                </li>
                                 <li type="disc" style="list-style-type:disc">If there is an error:
                                     <ol type="a">
                                         <li>Stop the print</li>
                                         <li>Tell a demonstrator to mark the print as failed so you don't get charged</li>
                                         <li>Set up the print again. Ask a demonstrator for advice on how to avoid this error</li>
-                                        <li>Go through the same <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">Request a job in the workshop!</a></q> procedure.</li>
+                                        <li>Go through the same <q>
+                                            <a href="https://3dprint.clients.soton.ac.uk/printingData/create">
+                                            Request a job in the workshop!</a></q> procedure.
+                                        </li>
                                     </ol>
                                 </li>
-                                <li type="disc" style="list-style-type:disc">If you need to leave the workshop during your print, leave your contact details on a piece of paper with your expected return time next to your printer</li>
+                                <li type="disc" style="list-style-type:disc">
+                                    If you need to leave the workshop during your print, leave your contact details on a 
+                                    piece of paper with your expected return time next to your printer
+                                </li>
                                 <li value="8">Once your print is finished, tell a demonstrator to mark the print as finished</li>
                                 <li>Remove the print from the platform</li>
                                 <li>Once finished, return all printing materials to the cupboards</li>
@@ -542,40 +630,5 @@
             }
         });
     </script>
-    {{--Adjust Charts--}}
-    {{--<script>
-    $(function() {
-        // Your tab id must match with the click element: administration_toggle
-        // Change it how you like :)
-        $('.card-stat').click(function() {
-            //$('.preloader-wrapper').fadeIn();
-            $('#statModal iframe').css('opacity', 0);
-            setTimeout(function() {
-                $('#statModal iframe').each(function() {
-                    $(this).attr('src', $(this).attr('src'));
-                });
-                //$('.preloader-wrapper').fadeOut();
-                setTimeout(function() {
-                    $('#statModal iframe').animate({
-                        opacity: 1,
-                    }, 1000);
-                }, 500);
-            }, 50);
-        });
-    });
-    </script>--}}
-
-
-    {{--Load notification--}}
-    @if (notify()->ready())
-        <script>
-            swal({
-                title: "{!! notify()->message() !!}",
-                text: "{!! notify()->option('text') !!}",
-                type: "{{ notify()->type() }}",
-                showConfirmButton: true
-            });
-        </script>
-    @endif
 @endsection
 

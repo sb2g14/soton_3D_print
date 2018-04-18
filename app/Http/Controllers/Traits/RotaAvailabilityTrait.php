@@ -69,8 +69,8 @@ trait RotaAvailabilityTrait
                 })
                 ->where('role','!=', 'Former member')
                 ->orderBy('last_name')
+                ->where('LWI_date','!=', NULL)
                 ->get();
-                //->where('SMT_date','!=', NULL)
         return $demonstrators;
     }
     
@@ -81,8 +81,8 @@ trait RotaAvailabilityTrait
                 })
                 ->where('role','!=', 'Former member')
                 ->orderBy('last_name')
+                ->where('LWI_date','!=', NULL)
                 ->get();
-                //->where('SMT_date','!=', NULL)
         return $demonstrators;
     }
 

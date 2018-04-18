@@ -32,7 +32,17 @@ class FinanceController extends Controller
         // TODO: Think about what needs to go on index page
         $t1 = new Carbon();
         $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
-        return redirect('finance/jobs/'.$t1);
+        return redirect('finance/jobs/'.$t1->toDateString());
+    }
+    
+    private function getJobs($month){
+        // Define start and end of month
+        $t1 = new Carbon($month);
+        $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
+        $t2 = $t1->copy()->addMonth();
+        // Get all the completed jobs from the specified month
+        $jobs = Jobs::where('created_at', '>=', $t1)->where('created_at', '<=', $t2)->orderBy('created_at', 'desc')->where('status', 'Success')->get();
+        return $jobs;
     }
 
     /**
@@ -42,12 +52,12 @@ class FinanceController extends Controller
      */
     public function jobs($month)
     {
-        // Define start and end of month
+        // Get start of month
         $t1 = new Carbon($month);
         $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
-        $t2 = $t1->copy()->addMonth();
+        
         // Get all the completed jobs from the specified month
-        $jobs = Jobs::where('created_at', '>=', $t1)->where('created_at', '<=', $t2)->orderBy('created_at', 'desc')->where('status', 'Success')->get();
+        $jobs = $this->getJobs($month);
         
         // get last months
         $stats = new StatisticsHelper();
@@ -62,15 +72,9 @@ class FinanceController extends Controller
      */
     public function downloadJobs($month)
     {
-        // Define start and end of month
-        $t1 = new Carbon($month);
-        $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
-        $t2 = $t1->copy()->addMonth();
         // Get all the completed jobs from the specified month
-        $jobs = Jobs::where('created_at', '>=', $t1)->where('created_at', '<=', $t2)->orderBy('created_at', 'desc')->where('status', 'Success')->get();
+        $jobs = $this->getJobs($month);
         
-        // get last months
-        $stats = new StatisticsHelper();
         $header = ["Job ID" => 'id',
                    "Date Created" => 'created_at',
                    "Customer Name"=> 'customer_name',

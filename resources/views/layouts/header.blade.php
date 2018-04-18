@@ -86,8 +86,13 @@
                     <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/finance') }}>Review Finance</a></li>
                 @endhasrole 
                 @hasrole('LeadDemonstrator')
-                    {{--Manage Rota--}}
-                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/rota') }}">Rota</a></li>
+                    @if ($workshopIsOpen)
+                        {{--Manage Workshop Jobs--}}
+                        <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/printingData/index') }}">Pending Jobs</a></li>
+                    @else
+                        {{--Manage Rota--}}
+                        <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/rota') }}">Rota</a></li>
+                    @endif
                 @endhasrole
                 @hasrole('Demonstrator') 
                     @if ($workshopIsOpen)

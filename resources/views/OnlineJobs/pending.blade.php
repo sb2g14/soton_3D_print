@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('content')
-   
+    {{--NAVIGATION--}}
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
             <li><a href="/OnlineJobs/index">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
@@ -11,7 +11,7 @@
             <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
         </ul>
     </div>
-    
+    {{--CONTENT--}}
     <div class="container">
         <table class="table table-sm table-hover table-responsive">
             <thead>
@@ -40,18 +40,4 @@
             </tbody>
         </table>
     </div>
-@endsection
-
-@section('scripts')
-    {{--Load notification of an approved job--}}
-    @if (notify()->ready())
-        <script>
-            swal({
-                title: "{!! notify()->message() !!}",
-                text: "{!! notify()->option('text') !!}",
-                type: "{{ notify()->type() }}",
-                showConfirmButton: true
-            });
-        </script>
-    @endif
 @endsection

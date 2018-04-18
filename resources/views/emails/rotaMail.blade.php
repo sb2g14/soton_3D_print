@@ -14,7 +14,7 @@ Please find the rota for <b>{{ Carbon\Carbon::parse($date)->format('D, dS \\of M
             </td>
             <td class="text-left">
                 @php
-                $sess = App\Sessions::findOrFail($s['id']);
+                    $sess = App\Sessions::findOrFail($s['id']);
                 @endphp
                 @if($sess->staff()->count()>0)
                     @php
@@ -33,12 +33,12 @@ Please find the rota for <b>{{ Carbon\Carbon::parse($date)->format('D, dS \\of M
     </tbody>
 </table><br/>
 
-{{ $message }}
+{{ $message }}<br/>
 
-<b>Please remember to indicate your availability for the future sessions by clicking on the button below!</b>
-@component('mail::button', ['url' => 'https://3dprint.clients.soton.ac.uk/rota/availability'])
+<b style="color: red">Please remember to indicate your availability for the future sessions by clicking on the button below!</b>
+@component('mail::button', ['url' => 'https://3dprint.clients.soton.ac.uk/availability'])
     Indicate Availability
 @endcomponent
 Kind regards,<br/>
-{{ config('app.name') }}
+{{ Auth()->user()->staff->name() }}
 @endcomponent

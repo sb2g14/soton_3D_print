@@ -1,9 +1,8 @@
 @extends('layouts.layout')
 
 @section('content')
-   
+    {{--NAVIGATION--}}
     <div class="container text-center m-b-md">
-        {{--<div class="title">Pending Jobs</div>--}}
         <ul class="nav nav-pills nav-justified">
             <li class="active"><a href="#">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
             <li><a href="/printingData/approved">Approved Jobs / Printing <span class="badge">{{$counts['approved']}}</span></a></li>
@@ -32,7 +31,7 @@
         ['class' => 'btn btn-lg btn-primary']) !!}
         @endhasanyrole--}}
     </div>
-    
+    {{--CONTENT--}}
     <div class="container">
         
         <div class="row">
@@ -62,16 +61,6 @@
 
 @section('scripts')
     <script src="/js/validate_form.js"></script>
-    @if (notify()->ready())
-        <script>
-            swal({
-                title: "{!! notify()->message() !!}",
-                text: "{!! notify()->option('text') !!}",
-                type: "{{ notify()->type() }}",
-                showConfirmButton: true
-            });
-        </script>
-    @endif
 @endsection
 
 

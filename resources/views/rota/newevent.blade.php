@@ -1,9 +1,20 @@
 @extends('layouts.layout')
 @section('content')
+    {{--TITLE--}}
     <div class="title m-b-md">
         Add a new event<br/>
     </div>
-
+    {{--NAVIGATION--}}
+    <div class="container">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="pull-left">
+                <a type="button" class="btn btn-primary" href="/rota">View latest events</a>
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+    {{--CONTENT--}}
     <div class="container">
         <div class="row">
             
@@ -17,28 +28,38 @@
                     <div id="event_type_group">
                         <label for="event_type">Type of Event: </label> <br/>
                         {!! Form::select('event_type', $options, old('',''), ['class' => 'form-control','required', 'id' => 'event_type']) !!}
-                        <span class="" id="end_date_error"></span> <br/>
+                        <span id="end_date_error"></span> <br/>
                     </div>
                     <div id="event_name_group">
                         <label for="event_name">Event Name: </label> <br/>
-                        <input type="text" name="event_name" class="form-control" id="event_name" required value=""/>
-                        <span class="" id="event_name_error"></span> <br/>
+                        <input id="event_name"name="event_name" 
+                            type="text" class="form-control" 
+                            value="" required/>
+                        <span id="event_name_error"></span> <br/>
                     </div>
                     <div id="start_date_group">
                         <label for="start_date">Start of Event: </label> <br/>
-                        <input type="datetime" name="start_date" class="form-control" id="start_date" required value="{{Carbon\Carbon::now()->format('d/m/Y 0:00')}}" />
-                        <span class="" id="start_date_error"></span> <br/>
+                        <input id="start_date" name="start_date" 
+                            type="datetime" class="form-control" 
+                            value="{{Carbon\Carbon::now()->format('d/m/Y 0:00')}}" required/>
+                        <span id="start_date_error"></span> <br/>
                     </div>
                     <div id="end_date_group">
                         <label for="end_date">End of Event: </label> <br/>
-                        <input type="datetime" name="end_date" class="form-control" id="end_date" required value="{{Carbon\Carbon::now()->format('d/m/Y 23:59')}}"/>
-                        <span class="" id="end_date_error"></span> <br/>
+                        <input id="end_date" name="end_date" 
+                            type="datetime" class="form-control" 
+                            value="{{Carbon\Carbon::now()->format('d/m/Y 23:59')}}" required/>
+                        <span id="end_date_error"></span> <br/>
                     </div>
                     @include('layouts.errors')
-                    <button type="submit" id="submit" class="btn btn-lg btn-success">Add Event</button>
-                    <a href="/rota" class="btn btn-lg btn-primary">View all Events</a>
+                    <div class="col-sm-12 text-center">
+                        <button id="submit" type="submit" class="btn btn-lg btn-success">Add Event</button>
+                        {{--<a class="btn btn-lg btn-primary" href="/rota">View all Events</a>--}}
+                        <br/>
+                        (Have a look at the <a href="https://www.southampton.ac.uk/uni-life/key-dates.page"  target="_blank">University Key-Dates</a>)
+                    </div>
                 </form>
-                (Have a look at the <a href="https://www.southampton.ac.uk/uni-life/key-dates.page">University Key-Dates</a>)
+                
             </div>
             <div class="col-sm-3"></div>
         </div>

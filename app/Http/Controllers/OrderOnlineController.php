@@ -129,7 +129,7 @@ class OrderOnlineController extends Controller
     // Customer creates a new online job request
     public function create()
     {
-        $it = staff::where('role', '=', 'IT')->orWhere('role', '=', 'IT Manager')->get();
+        $it = staff::where('role', '=', 'IT Manager')->get(); //->orWhere('role', '=', 'IT')
         return view('OnlineJobs.create', compact('it'));
     }
 
