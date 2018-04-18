@@ -1,4 +1,5 @@
 <footer>
+    @php $version = config('app'); $version = $version['version']; @endphp 
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12 col-sm-4">
@@ -6,9 +7,9 @@
                 <hr>
                 <div class="copyright">
                         
-                        <span style="font-weight: 500;">&copy; 2017-2018</span>
+                        <span style="font-weight: 500;">&copy; 2017-{{date("Y")}}</span>
                         <a href="{{ url('/') }}">FEE 3D Printing Service</a> and <a href="{{ url('https://www.southampton.ac.uk/') }}" target="_blank">University of Southampton</a> - 
-                        <span style="font-weight: 200;"> version 3.0 </span>
+                        <span style="font-weight: 200;"> version {{$version}}</span>
                 </div>
             </div>
             @php
