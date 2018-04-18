@@ -5,25 +5,28 @@
             height: 140vh;
         }
     </style>
-
+    {{--SESSION FLASH MESSAGE--}}
     @if ($flash=session('message'))
-        <div id="flash_message" class="alert {{ session()->get('alert-class', 'alert-info') }}" role="alert" style="position: relative">
+        <div id="flash_message" class="alert {{ session()->get('alert-class', 'alert-info') }}" style="position: relative" role="alert">
             {{ $flash }}
         </div>
     @endif
-
+    {{--TITLE--}}
     <div class="title m-b-md">
         Summary of Printer {{ $printer->id }}
     </div>
-    <div class="container">
+    {{--CONTENT--}}
+    {{--PRINTER SUMMARY--}}
+    <div class="container"> 
         <div class="well">
             <div class="row vdivide">
+                {{--USAGE CHART--}}
                 <div class="col-sm-6 text-center">
                     {!! $chart->html() !!}
                     {!! Charts::scripts() !!}
                     {!! $chart->script() !!}   
                 </div>
-                               
+                {{--STATISTICAL DATA--}}               
                 <div class="col-sm-6 text-left">
                     <p>Printer type: <b>{{$printer->printer_type}}</b></p>
                     <p>Printer serial number: <b>{{$printer->serial_no}}</b></p>
@@ -133,61 +136,62 @@
         </div>
     </div>
                       
-
-<ul class="lsn container printer-details">
-    {{-- Printer signed out --}}
-    @if($printer->printer_status === 'Signed out')
-    <li class="item">
-        <div class="row well">
-            <div class="col-lg-4 text-left">{{$printer->updated_at->format('d/m/Y')}}:</div>
-            <div class="col-lg-4 text-justify">Printer signed out from the workshop</div>
-        </div>
-    </li>
-    @endif
-    {{-- Prints, Loans and Issues --}}
-    @foreach($historyEntries as $entry)
+    {{--PRINTER HISTORY--}}
+    <ul class="lsn container printer-details">
+        {{-- Printer signed out --}}
+        @if($printer->printer_status === 'Signed out')
         <li class="item">
-            <div class=" row {{$entry['Class']}}">
-                <div class="col-sm-4 text-left">
-                    {{$entry['StartDate']->format('d/m/Y')}} -
-                    @if($entry['EndDate'])
-                        {{$entry['EndDate']->format('d/m/Y')}}
-                    @else
-                        Now
-                    @endif
-                </div>
-                <div class="col-sm-4 text-justify">{{$entry['Type']}}: {{$entry['Description']}}</div>
-                @if($entry['Type'] === 'Broken' || $entry['Type'] === 'Missing')
-                    @can('issues_manage')
-                        <div class="col-sm-4">
-                            @if(!$entry['EndDate'])
-                                <a href="/issues/update/{{$entry['EntryID']}}" class="btn btn-info">View/Update or Resolve</a>
-                            @else
-                                <a href="/issues/update/{{$entry['EntryID']}}">View details...</a>
-                            @endif
-                        </div>
-                    @endcan
-                @endif
-                @if($entry['Type'] === '1 Prints' && $entry['Description'] !== 'Success' && $entry['Description'] !== 'Failed')
-                        <div class="col-sm-4">
-                            @if(!$entry['EndDate'])
-                                <a href="/print/{{$entry['EntryID']}}" class="btn btn-info">View</a>
-                            @else
-                                <a href="/print/{{$entry['EntryID']}}">View details...</a>
-                            @endif
-                        </div>
-                @endif
+            <div class="row well">
+                <div class="col-lg-4 text-left">{{$printer->updated_at->format('d/m/Y')}}:</div>
+                <div class="col-lg-4 text-justify">Printer signed out from the workshop</div>
             </div>
         </li>
-    @endforeach
-    {{-- Printer created --}}
-    <li class="item">
-        <div class="row well">
-            <div class="col-sm-4 text-left">{{$printer->created_at->format('d/m/Y')}}:</div>
-            <div class="col-sm-4 text-justify">Printer registered with the workshop</div>
-        </div>
-    </li>
-</ul>
+        @endif
+        {{-- Prints, Loans and Issues --}}
+        @foreach($historyEntries as $entry)
+            <li class="item">
+                <div class=" row {{$entry['Class']}}">
+                    <div class="col-sm-4 text-left">
+                        {{$entry['StartDate']->format('d/m/Y')}} -
+                        @if($entry['EndDate'])
+                            {{$entry['EndDate']->format('d/m/Y')}}
+                        @else
+                            Now
+                        @endif
+                    </div>
+                    <div class="col-sm-4 text-justify">{{$entry['Type']}}: {{$entry['Description']}}</div>
+                    @if($entry['Type'] === 'Broken' || $entry['Type'] === 'Missing')
+                        @can('issues_manage')
+                            <div class="col-sm-4">
+                                @if(!$entry['EndDate'])
+                                    <a href="/issues/update/{{$entry['EntryID']}}" class="btn btn-info">View/Update or Resolve</a>
+                                @else
+                                    <a href="/issues/update/{{$entry['EntryID']}}">View details...</a>
+                                @endif
+                            </div>
+                        @endcan
+                    @endif
+                    @if($entry['Type'] === '1 Prints' && $entry['Description'] !== 'Success' && $entry['Description'] !== 'Failed')
+                            <div class="col-sm-4">
+                                @if(!$entry['EndDate'])
+                                    <a href="/print/{{$entry['EntryID']}}" class="btn btn-info">View</a>
+                                @else
+                                    <a href="/print/{{$entry['EntryID']}}">View details...</a>
+                                @endif
+                            </div>
+                    @endif
+                </div>
+            </li>
+        @endforeach
+        {{-- Printer created --}}
+        <li class="item">
+            <div class="row well">
+                <div class="col-sm-4 text-left">{{$printer->created_at->format('d/m/Y')}}:</div>
+                <div class="col-sm-4 text-justify">Printer registered with the workshop</div>
+            </div>
+        </li>
+    </ul>
+    
 @include('layouts.errors')
 @endsection
 @section('scripts')

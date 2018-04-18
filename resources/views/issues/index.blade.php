@@ -5,23 +5,17 @@
             height: 140vh;
         }
     </style>
-
+    {{--SESSION NOTIFICATION--}}
     @if ($flash=session('message'))
         <div id="flash_message" class="alert {{ session()->get('alert-class', 'alert-info') }}" role="alert" style="position: relative">
             {{ $flash }}
         </div>
     @endif
-
-    <!-- <div class="row">
-        <div class="col-lg-12">
-            <a href="/issues/select" class="btn btn-lg btn-info pull-left" style="margin-left:10%">Log New Issue</a>
-        </div>
-    </div> -->
-
+    {{--TITLE--}}
     <div class="text-center m-b-md add-printer-issue">
         <div class="title">Printer Issues</div>
     </div>
-
+    {{--NAVIGATION--}}
     <div class="container">
         <a href="/issues/select" type="button" class="btn pull-right btn-success">
             Raise New
@@ -29,6 +23,9 @@
         <a href="/printers/index" type="button" class="btn pull-left btn-primary">
             View all printers
         </a>
+    </div>
+    {{--CONTENT--}}
+    <div class="container">
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -60,30 +57,18 @@
                         <td data-th="Modify"><a href="/issues/update/{{$issue->id}}" class="btn btn-info">
                                 Update/Resolve</a>
                         </td>
-                        <td>@if($issue->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
-                            <span data-placement="top" data-toggle="popover" data-trigger="hover"
-                                  data-content="Delete this issue from the database (this option is available only 5 minutes after creation). The printer status will be changed to Available.">
-                                                            <a type="button" id="deleteIssue" href="/issues/delete/{{$issue->id}}"
-                                                               class="close" style="color: red">&times;</a>
-                                                    </span>
-                            @endif</td>
+                        <td>
+                            @if($issue->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
+                                <span data-placement="top" data-toggle="popover" data-trigger="hover"
+                                      data-content="Delete this issue from the database (this option is available only 5 minutes after creation). The printer status will be changed to Available.">
+                                    <a id="deleteIssue" type="button" class="close" style="color: red"
+                                        href="/issues/delete/{{$issue->id}}">&times;</a>
+                                </span>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-@endsection
-@section('scripts')
-
-    {{--Load notification--}}
-    @if (notify()->ready())
-        <script>
-            swal({
-                title: "{!! notify()->message() !!}",
-                text: "{!! notify()->option('text') !!}",
-                type: "{{ notify()->type() }}",
-                showConfirmButton: true
-            });
-        </script>
-    @endif
 @endsection

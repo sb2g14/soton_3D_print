@@ -20,27 +20,33 @@
                                 <label for="email" class="col-md-4 control-label">Email</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus autocomplete="work email">
+                                    </div>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
                                     @endif
                                     <td><span class="help-block" id="email_error"></span></td>
                                 </div>
                             </div>
 
                             <div class="form-group{{ $errors->has('passwords') ? ' has-error' : '' }}">
+                                
                                 <label for="password" class="col-md-4 control-label">Password</label>
-
+                            
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required>
-
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                        <input id="password" type="password" class="form-control" name="password" required>
+                                    </div>
                                     @if ($errors->has('password'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
                                     @endif
                                     <td><span class="help-block" id="password_error"></span></td>
                                 </div>
