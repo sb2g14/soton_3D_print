@@ -112,7 +112,7 @@
                                                         Posted {{ $announcement_last->created_at->diffForHumans() }}:
                                                 </i></small>
                                             </h5>
-                                            <h5> {{$shortmessage}} <br/>  (See more)</h5>
+                                            <h5> {!! $shortmessage !!} <br/>  (See more)</h5>
                                         </div>
                                     </li>
                                 </ul>
@@ -233,7 +233,7 @@
                                             'height' => $chart_height, 
                                             'color' => 'coral']) }}" >
                                     </iframe>
-                                @else 
+                                @else
                                     <iframe id="C_workshop_usage" 
                                         height="{{$chart_height + 150}}" width="100%" style="width:100%; border:none;"
                                         src="{{ route('chart', [
