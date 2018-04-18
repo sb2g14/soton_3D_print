@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Rota;
-use App\User;
+use App\Rotas;
+use App\staff;
 use App\Sessions;
 use App\Availability;
-use App\staff;
 use App\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -27,14 +27,14 @@ class RotaController extends Controller
     public function __construct()
     {
 
-        $this->middleware('auth')->except('index');
+        $this->middleware('auth')->except('openingHours');
 
     }
     
     /** gets the upcoming sessions from the database**/
     private function getUpcomingSessions(){
         $t1 = new Carbon();
-        $t1 = $t1->subWeeks(2);
+        $t1 = $t1->subWeeks(2)->hour(0)->minute(0)->second(0);
         $sessions = Sessions::with('staff')->orderBy('start_date')->where('start_date','>=',$t1)->get(); 
         return $sessions;   
     }
@@ -42,7 +42,7 @@ class RotaController extends Controller
     /** gets the upcoming events from the database**/
     private function getUpcomingEvents(){
         $t1 = new Carbon();
-        $t1 = $t1->subWeeks(2);
+        $t1 = $t1->subWeeks(2)->hour(0)->minute(0)->second(0);
         $events = Event::orderBy('start_date')->where('end_date','>=',$t1)->get(); 
         return $events;   
     }
@@ -51,7 +51,7 @@ class RotaController extends Controller
     private function mergeItems($rotas,$events){
         $items = [];
         foreach($rotas as $r){
-            $start = $r['start_date'];
+            $start = $r->start_date;
             $items[$start.'r'] = $r;
         }
         foreach($events as $e){
@@ -60,24 +60,6 @@ class RotaController extends Controller
         }
         ksort($items); 
         return $items;
-    }
-
-    /** initiate a new rota from an array of sessions **/
-    private function initRota($sessions){
-        $rota = [];
-        // Add the actual sessions
-        $rota['sessions'] = $sessions;
-        // Add metadata
-        $rota['date'] = $sessions[0]->date();
-        $rota['start_date'] = $sessions[0]->start_date;
-        //$rota['end_date'] = $sessions[-1]->end_date;
-        // Group Common Events as RotaMail Events
-        /*$events = $sessions[0]->events()->toArray();
-        foreach($sessions as $s){
-            $events = array_intersect($events, $s->events()->toArray());
-        }
-        $rota['events'] = $events;*/
-        return $rota;
     }
 
     /** groups sessions into rotas **/
@@ -89,8 +71,8 @@ class RotaController extends Controller
             if($s->date() !== $lastdate){
                 //new rota started
                 if($rsessions != []){
-                    //append old rota
-                    $rotas[] = $this->initRota($rsessions);
+                    //append previous rota
+                    $rotas[] = new Rota($lastdate);
                 }
                 //reset variables
                 $rsessions = [];
@@ -101,8 +83,8 @@ class RotaController extends Controller
         }
         //append last rota
         if($rsessions != []){
-            //append old rota
-            $rotas[] = $this->initRota($rsessions);
+            //append previous rota
+            $rotas[] = new Rota($lastdate);
         }
         return $rotas;
     }
@@ -133,13 +115,11 @@ class RotaController extends Controller
      */
     public function index()
     {
-        if(!Auth::check()) {
-            abort(404);
-        }
         // Get sessions
-        $sessions = $this->getUpcomingSessions();
-        // Merge sessions into rota groups
-        $rotas = $this->getRotas($sessions);
+        //$sessions = $this->getUpcomingSessions();
+        // Group sessions into rotas
+        //$rotas = $this->getRotas($sessions);
+        $rotas = Rotas::getUpcoming();
         // Get upcoming events
         $events = $this->getUpcomingEvents();
         // Merge rotas and events
@@ -165,12 +145,12 @@ class RotaController extends Controller
             abort(404);
         }
         
-        $sc = new SessionController();
-        $sessions = $sc->getSessionsForDate($date);
+        $rota = new Rota($date);
+        $sessions = $rota->sessions;
         //approximate start and end time of the next session
         //logic is: if no session so far for this day, then first session is 9am till 12pm
         //          otherwise, assume the next session starts after the previous one and is as long as the previous session.
-        $latest = $sc->getLastSessionForDate($date);
+        $latest = $rota->getLastSession();
         if($latest){
             $newstarttime = new Carbon($latest->end_date);
             $newendtime = new Carbon($latest->start_date); 
@@ -199,8 +179,8 @@ class RotaController extends Controller
     public function createmail($date)
     {
         // Get the sessions for this date
-        $sc = new SessionController();
-        $sessions = $sc->getSessionsForDate($date);
+        $rota = new Rota($date);
+        $sessions = $rota->sessions;
         // Finally show the blade...
         return view('rota.mail', compact('date','sessions'));
     }
@@ -210,8 +190,8 @@ class RotaController extends Controller
         $message =   $reject_message = request()->validate([
             'comment' => 'max:255']);
         // Get the sessions for this date
-        $sc = new SessionController();
-        $sessions = $sc->getSessionsForDate($date);
+        $rota = new Rota($date);
+        $sessions = $rota->sessions;
         $message['date'] = $date;
 
         // Send email
@@ -219,7 +199,7 @@ class RotaController extends Controller
             // Send an email to the 3dprint account an cc all the recipients
             $recipient = '3dprint.soton@gmail.com';
             // Only Svitlana and Andrew now for testing purposes
-            $users = User::where('id',1)->orWhere('id',2)->get();
+            $users = Staff::where('id',1)->orWhere('id',2)->orWhere('id',7)->pluck('email');
             Mail::to($recipient)->cc($users)->queue(new RotaMail($sessions, $message));
 
             // Notify that the user of success
@@ -227,8 +207,8 @@ class RotaController extends Controller
                 'text' => 'The rota has been successfully sent to all 3D Printing workshop staff',
             ]);
         }catch(\Exception $e){
-            notify()->flash('Error!', 'warning', [
-                'text' => 'There has however been an error with our email server. Please send an email to anyone who should be contacted about this.',
+            notify()->flash('Error!', 'error', [
+                'text' => 'There has been an error with our email server. Please send an email to anyone who should be contacted about this.',
             ]);
         }
 
@@ -245,7 +225,7 @@ class RotaController extends Controller
     public function openingHours()
     {
         // Get future sessions
-        $sessions = $this->getUpcomingSessions();
+        $sessions = Rotas::getFutureSessions();
         // Remove private sessions
         $sessions = $sessions->reject(function ($s) {
             return $s->public == false;

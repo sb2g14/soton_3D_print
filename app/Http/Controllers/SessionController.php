@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Sessions;
+use App\Rota;
 use App\Availability;
 use App\staff;
 use App\Event;
+use App\Http\Controllers\Traits\RotaDefaultsTrait;
+use App\Http\Controllers\Traits\RotaAvailabilityTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -25,10 +28,13 @@ use Alert;
  **/
 class SessionController extends Controller
 {
+    use RotaDefaultsTrait;
+    use RotaAvailabilityTrait;
+    
     public function __construct()
     {
 
-        $this->middleware('auth')->except('index');
+        $this->middleware('auth');
 
     }
 
@@ -40,85 +46,8 @@ class SessionController extends Controller
         return $sessions;
     }
 
-    /**takes a list of demonstrators and converts it into a list for a drop-down input**/
-    private function pluckToList($demonstrators){
-        $dems = [];
-        foreach($demonstrators as $d){
-            $dems[$d->id] = $d->first_name.' '.$d->last_name;
-        }
-        return $dems;
-    }
     
-    /**takes a list of demonstrators and orders them by how long it has been since they last demonstrated**/
-    private function orderByLastSession($demonstrators){
-        $temp = [];
-        $dems = [];
-        // Prepare array for sorting, by adding a new key
-        foreach($demonstrators as $d){
-            $lastsession = $d->lastSession();
-            $dn = $d;
-            $dn->lastsession = $lastsession;
-            $temp[] = $dn;
-        }
-        // Do the sorting
-        $temp = collect($temp)->sortBy('lastsession');
-        $temp = $temp->values()->all();
-        // $temp contains the demonstrators sorted by the last session they demonstrated - 
-        // Now need to format for select form
-        $dems = $this->pluckToList($temp);
-        return $dems;
-    }
     
-    /** takes a list of staff and returns two list of staff,
-        splitted by experience and order by last attended date
-     **/
-    private function splitByExperience($demonstrators){
-        $demE = array();
-        $demI = array();
-        // Split into experienced and new demonstrators
-        foreach($demonstrators as $dem){
-            if($dem->isExperienced()){
-                $demE[] = $dem;
-            }else{
-                $demI[] = $dem;
-            }
-        }
-        // Order by date of last session asc
-        $demE = $this->orderByLastSession($demE);
-        $demI = $this->orderByLastSession($demI);
-        $dems = [$demE,$demI];
-        return $dems;
-    }
-
-    /** returns all the staff, that are tentatively available for that session and eligible to be assigned to a session **/
-    private function getTentativeDemonstratorsForSession($id){
-        $demonstrators = staff::whereHas('availability', function ($query) use ($id) {
-                $query->where('status', 'tentative')->where('sessions_id', $id);
-                })
-                ->where('role','!=', 'Former member')
-                ->orderBy('last_name')
-                ->get();
-                //->where('SMT_date','!=', NULL)
-        return $demonstrators;
-    }
-    
-    /** returns all the staff, that are available for that session and eligible to be assigned to a session **/
-    private function getAvailableDemonstratorsForSession($id){
-        $demonstrators = staff::whereHas('availability', function ($query) use ($id) {
-                $query->where('status', 'available')->where('sessions_id', $id);
-                })
-                ->where('role','!=', 'Former member')
-                ->orderBy('last_name')
-                ->get();
-                //->where('SMT_date','!=', NULL)
-        return $demonstrators;
-    }
-
-    /** get all sessions for one day **/
-    public function getSessionsForDate($date){
-        $sessions = $this->querySessionsForDate($date)->orderBy('start_date')->get();
-        return $sessions;
-    }
 
     /** get only the last session of a day **/
     public function getLastSessionForDate($date){
@@ -140,7 +69,7 @@ class SessionController extends Controller
     public function startcreate()
     {
         $this -> validate(request(), [
-            'newdate' => 'required'
+            'newdate' => 'required|date_format:Y-m-d'
         ]);
         $date = request('newdate');
         return redirect('/rota/session/'.$date);
@@ -156,10 +85,10 @@ class SessionController extends Controller
     {
         //dd(request()->all());
         $this -> validate(request(), [
-            'date' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'num_dem' => 'required'
+            'date' => 'required|date_format:Y-m-d',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i',
+            'number_of_demonstrators' => 'required|numeric|min:1|max:20'
         ]);
         //convert time to date
         $date = request('date');
@@ -176,7 +105,7 @@ class SessionController extends Controller
         $session = new sessions;
         $session -> start_date = $start_date;
         $session -> end_date = $end_date;
-        $session -> dem_required = request('num_dem');
+        $session -> dem_required = request('number_of_demonstrators');
         $session->public = $session_public;
 
         // Submit the data to the database
@@ -184,55 +113,34 @@ class SessionController extends Controller
         $session->save();
          
         // Show notification
-        session()->flash('message', 'The session has been successfully added to the database!');
-        //notify()->flash('The session has been successfully added to the database!', 'success', [
-        //    'text' => 'please add more sessions or update existing sessions for this date.',
-        //]);
+
+        //session()->flash('message', 'The session has been successfully added to the database!');
+        notify()->flash('The session has been successfully added to the database!', 'success', [
+            'text' => 'please add more sessions or update existing sessions for this date.',
+        ]);
 
         return redirect('/rota/session/'.$date);
     }
-    
+
     
     
     /** shows blade that assigns demonstrators to the rota **/
     public function showassign($date)
     {
-        $sessions = $this->getSessionsForDate($date);
-        $demonstrators = array();
-        // Go through sessions
-        foreach($sessions as $s){
-            $id = $s->id;
-            // Get available and tentatively available demontrators
-            $demA = $this->getAvailableDemonstratorsForSession($id);
-            $demT = $this->getTentativeDemonstratorsForSession($id);
-            // Split the lists depending on the experience and
-            // sort them so the ones who have not demonstrated for
-            // a long time appear at the top of the list
-            $temp = $this->splitByExperience($demA);
-            $demEA = $temp[0];
-            $demIA = $temp[1];
-            $temp = $this->splitByExperience($demT);
-            $demET = $temp[0];
-            $demIT = $temp[1];
-            // Create two prioritised lists - one for the first demonstrator in the session, and one for the others.
-            $demonstrators['session_'.$id]['dem1'] = $demEA+$demET+$demIA+$demIT; //EA>ET>IA>IT
-            $demonstrators['session_'.$id]['dem2'] = $demIA+$demEA+$demIT+$demET; //IA>EA>IT>ET
-        }
-        //TODO: need to choose default
-        //idea on how to approach this:
-        //1) select shortest option list, 
-        //2) pick first, 
-        //3) remove that entry from each list for same session, 
-        //4) move the entry to the bottom of every other list
-        //5) mark this list as completed
-        //6) go back to step 1) until all lists are completed
-        return view('rota.assign', compact('date','sessions','demonstrators'));
+        $rota = new Rota($date);
+        $sessions = $rota->sessions;
+        $temp = $this->getOptions($sessions);
+        $demonstrators = $temp[0];
+        $lists = $temp[1];
+        $default = $this->choosedefault($sessions, $lists);
+        return view('rota.assign', compact('date','sessions','demonstrators','default','rota'));
     }
 
     /** assigns demonstrators to the rota **/
     public function assign($date)
     {
-        $sessions = $this->getSessionsForDate($date);
+        $rota = new Rota($date);
+        $sessions = $rota->sessions;
         foreach($sessions as $s){
             for($d=0;$d<$s->dem_required;$d++){
                 $this -> validate(request(), [
@@ -252,10 +160,10 @@ class SessionController extends Controller
         }
         
         // Show notification
-        session()->flash('message', 'Demonstrators have been assigned!');
-        /*notify()->flash('Demonstrators have been assigned!', 'success', [
+        //session()->flash('message', 'Demonstrators have been assigned!');
+       notify()->flash('Demonstrators have been assigned!', 'success', [
             'text' => 'The rota for '.$date.' has been completed. Please review your changes before sending the rota to the demonstrators.',
-        ]);*/
+        ]);
         return redirect('/rota/assign/'.$date);
     }
 
@@ -268,10 +176,10 @@ class SessionController extends Controller
         $id = (int)request('btn_update');
         // Check all fields have been filled
         $this -> validate(request(), [
-            'date' => 'required',
-            'start_time_'.$id => 'required',
-            'end_time_'.$id => 'required',
-            'num_dem_'.$id => 'required'
+            'date' => 'required|date_format:Y-m-d',
+            'start_time_'.$id => 'required|date_format:H:i',
+            'end_time_'.$id => 'required|date_format:H:i',
+            'num_dem_'.$id => 'required|numeric|min:1|max:20'
         ]);
         // Convert time to date
         $date = request('date');
@@ -294,7 +202,7 @@ class SessionController extends Controller
                                'public' => $session_public));
         
         // Give user feedback
-        session()->flash('message', 'The session has been successfully updated!');
+        notify()->flash('The session has been updated!', 'success');
 
         return redirect('/rota/session/'.$date);
     }
@@ -309,8 +217,14 @@ class SessionController extends Controller
         $date = new Carbon($session->start_date);
         $date = $date->toDateString();
         // delete related data and then the actual session
+        $session->staff()->detach();
         $session->availability()->delete();
         $session->delete();
+
+        // Give user feedback
+        notify()->flash('The session has been deleted!', 'success', [
+             'text' => 'The demonstrators availability for this session has also been removed. So if you deleted this by accident, remember that demonstrators need to sign up again.',
+        ]);
         // redirect
         return redirect('/rota/session/'.$date);
     }

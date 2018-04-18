@@ -66,4 +66,16 @@ class sessions extends Model
 
     }
     
+    public function timeString()
+    {
+        return $this->start_time()." &ndash; ".$this->end_time();
+    }
+    
+    public function minutes()
+    {
+        $t1 = new Carbon($this->start_date);
+        $t2 = new Carbon($this->end_date);
+        return $t1->diffInMinutes($t2);
+    }
+    
 }

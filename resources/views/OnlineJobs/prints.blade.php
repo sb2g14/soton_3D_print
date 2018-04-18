@@ -9,9 +9,9 @@
 
  <div class="container text-center m-b-md">
      <ul class="nav nav-pills nav-justified">
-         <li><a href="/OnlineJobs/index">Requests</a></li>
-         <li><a href=/OnlineJobs/approved>Approved Jobs</a></li>
-         <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs</a></li>
+         <li><a href="/OnlineJobs/index">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
+         <li><a href=/OnlineJobs/approved>Approved Jobs <span class="badge">{{$counts['approved']}}</span></a></li>
+         <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
          <li class="nav-right active"><a href="#">Prints</a></li>
          <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
     </ul>
@@ -47,7 +47,7 @@
                             <td data-th="Printed by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                             <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }}: {{ $job->job_title }} <br> @endforeach</td>
                             <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
-                            <td data-th="Time Remain">@if ($time_finish->gte(Carbon\Carbon::now('Europe/London'))) {{ $time_finish->diffInHours(Carbon\Carbon::now('Europe/London')) }}:{{ sprintf('%02d', $time_finish->diffInMinutes(Carbon\Carbon::now('Europe/London'))%60) }} @else  completed @endif </td>
+                            <td data-th="Time Remain">{{ $print->timeRemain() }}</td>
                             <td data-th="Manage">
                                 <a href="/OnlineJobs/printSuccessful/{{ $print->id }}" class="btn btn-success">Print Successful</a>
                                 <a href="/OnlineJobs/printFailed/{{ $print->id }}" class="btn btn-danger">Print Failed</a>

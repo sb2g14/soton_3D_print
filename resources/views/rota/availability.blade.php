@@ -12,10 +12,10 @@
                     <div class="col-sm-12 well">
                         <div class="row">
                             <div class="col-sm-4 control-label">
-                                {{ Carbon\Carbon::parse($r['date'])->format('D, d/m/Y') }}: 
+                                {{ Carbon\Carbon::parse($r->date)->format('D, d/m/Y') }}: 
                             </div>
                             <div class="col-sm-8">
-                                @foreach($r['sessions'] as $s)
+                                @foreach($r->sessions as $s)
                                     <span class="text-justify" data-placement="top" data-toggle="popover"
                                             data-trigger="hover" data-content="Choose Available, if you want to be selected for this session. If you choose tentative, you will only be selected, in case no one else suits that shift.">
                                     <div class="input-group">

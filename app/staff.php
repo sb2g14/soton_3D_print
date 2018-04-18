@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use DB;
+use Carbon\Carbon;
 
 class staff extends BaseModel
 {
@@ -46,6 +47,11 @@ class staff extends BaseModel
     {
         return $this->hasMany(Availability::class);
     }
+    /**returns the full name of that staff**/
+    public function name()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
     public function experience()
     {
         return $this->sessions->count();
@@ -69,6 +75,7 @@ class staff extends BaseModel
         }
         return false;
     }
+    
     public function lastSession()
     {   
         $t = $this->sessions()->orderBy('start_date','desc')->first();
@@ -76,5 +83,42 @@ class staff extends BaseModel
             return null;
         }
         return $t->start_date; //->toDateString();
+    }
+
+    private function formatWorkinghours($lastdate,$minutes){
+        $nicedate = new Carbon($lastdate);
+        $nicedate = $nicedate->format('j. M');
+        $hours = (int)($minutes/60);
+        $minutes = ($minutes - 60*(int)($minutes/60));
+        $time = sprintf("%d:%02d",$hours,$minutes);
+        $ans = $nicedate.': '.$time;
+        return $ans;
+    }
+    
+    public function workinghours($endmonth)
+    {   
+        // Get relevant sessions
+        $t2 = $endmonth;
+        $t2 = $t2->day(1)->hour(0)->minute(0)->second(0);
+        $t1 = $t2->copy()->subMonth();
+        $sessions = $this->sessions()->where('start_date', '>=', $t1)->where('start_date', '<=', $t2)
+            ->orderBy('start_date')->get();
+        // Merge sessions by date
+        if(count($sessions) <= 0){return [];}
+        $lastdate = $sessions[0]->date();
+        $workhours = [];
+        $minutes = 0;
+        foreach($sessions as $s){
+            if($lastdate != $s->date()){
+                $workhours[] = $this->formatWorkinghours($lastdate,$minutes);
+                $lastdate = $s->date();
+                $minutes = 0;
+            }
+            $minutes += $s->minutes();
+        }
+        if($lastdate != ""){
+            $workhours[] = $this->formatWorkinghours($lastdate,$minutes);
+        }
+        return $workhours;
     }
 }
