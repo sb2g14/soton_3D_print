@@ -4,22 +4,21 @@
         Frequently Asked Questions
     </div>
     <div class="container">
-{{--        <div class="row">
-            <div class="col-lg-12 pull-left">
-                <input class="form-control" id="searchInput" type="text" placeholder="Search.." autocomplete="off">
-            </div>
-        </div>
-        <br/>--}}
         <div class="col-sm-12 text-left">
-
             <p>You heard about 3D printing, think that it may be useful to you, but have no idea where to start?
                 Best is to drop into one of our sessions and ask one of our demonstrators. If you want to know more
                 about 3D printing before, why not visit our <a href="/learn">introduction to 3D printing</a>?
             </p>
+        </div><br/>
+        <div class="row">
+            <div class="col-lg-9 pull-left">
+                <input class="form-control" id="searchInput" type="text" placeholder="Search.." autocomplete="off">
+            </div>
+            <div class="pull-right">
+                <a href="/faq/create" class="btn btn-success"  >Add New Question</a>
+            </div>
         </div>
-    <div class="text-center">
-    <a href="/faq/create" class="btn btn-success"  >Add New Question</a>
-    </div>
+        
     </div>
 
     <br/>
@@ -119,23 +118,18 @@
                 </div>
             </div>
 
-            <?php
-            $i = 0;
-            ?>
-
             @foreach($faq as $item)
-                <?php
-                $i++;
-                ?>
                 <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" data-target="#collapse{{$i}}">
-                        {{$item->Question}}
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapse{{$item->ID}}">
+                        {{$item->Question}} 
+                        <div class="pull-right">
+                            <a href="/faq/edit/{{$item->ID}}"><i class="fa fa-edit"></i></a>
+                        </div>
                     </div>
-                    <div id="collapse{{$i}}" class="panel-body text-left collapse">
+                    <div id="collapse{{$item->ID}}" class="panel-body text-left collapse">
                         <p> {{$item->Answer}}</p>
                     </div>
                 </div>
-
             @endforeach
 
 
