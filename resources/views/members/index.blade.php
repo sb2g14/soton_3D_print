@@ -7,8 +7,7 @@
     @endif
 
         <div class="text-center m-b-md">
-        <div class="title">Our team</div>
-            
+            <div class="title">Our team</div> 
         </div>
 
         <div class="container">

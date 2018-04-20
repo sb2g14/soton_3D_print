@@ -374,6 +374,9 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
 Route::group(['middleware' => ['role:,manage_cost_codes']], function () {
     // Show default finance page
     Route::get('/finance','FinanceController@index');
+    
+    // Show page with latest unclaimed prints
+    Route::get('/finance/jobs','FinanceController@jobsNow');
 
     // Show page with unclaimed prints
     Route::get('/finance/jobs/{month}','FinanceController@jobs');

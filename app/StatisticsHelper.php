@@ -1,6 +1,7 @@
 <?php
 namespace App;
 use App\DB;
+use Carbon\Carbon;
 
 /**
 StatisticsHelper is a class providing a variety of functions for different cross-resource statistics
@@ -133,6 +134,54 @@ class StatisticsHelper
             ->where('prints.created_at', '>', $t2str)->where('prints.created_at', '<', $t1str)
             ->select('prints.created_at','prints.updated_at')->get();
         return $prints;
+    }
+    
+    public function getIncomeWorkshop($year){
+        // Define start and end of year
+        $t1 = new Carbon($year);
+        $t1 = $t1->month(1)->day(1)->hour(0)->minute(0)->second(0);
+        $t2 = $t1->copy()->addYear();
+        // Get all the completed jobs from the specified month
+        $codes = Jobs::where('created_at', '>=', $t1)->where('created_at', '<=', $t2)
+            ->where('status', 'Success')
+            ->where('requested_online', 0)
+            ->groupBy('cost_code')
+            ->selectRaw('SUM(total_price) AS Price')
+            ->addSelect('cost_code')
+            ->get();
+        return $codes;
+    }
+    
+    public function getIncomeOnline($year){
+        // Define start and end of year
+        $t1 = new Carbon($year);
+        $t1 = $t1->month(1)->day(1)->hour(0)->minute(0)->second(0);
+        $t2 = $t1->copy()->addYear();
+        // Get all the completed jobs from the specified month
+        $codes = Jobs::where('created_at', '>=', $t1)->where('created_at', '<=', $t2)
+            ->where('status', 'Success')
+            ->where('requested_online', 1)
+            ->groupBy('cost_code')
+            ->selectRaw('SUM(total_price) AS Price')
+            ->addSelect('cost_code')
+            ->get();
+        return $codes;
+    }
+    
+    public function getDemonstratorCost($year){
+        // Define start and end of year
+        $t1 = new Carbon($year);
+        $t1 = $t1->month(1)->day(1)->hour(0)->minute(0)->second(0);
+        $t2 = $t1->copy()->addYear();
+        // Get all the completed jobs from the specified month
+        $sessions = Sessions::where('sessions.start_date', '>=', $t1)->where('sessions.start_date', '<=', $t2)
+            ->join('sessions_staff', function($join) {$join->on('sessions.id', '=', 'sessions_staff.sessions_id');})
+            ->join('staff', function($join) {$join->on('sessions_staff.staff_id', '=', 'staff.id');})
+            ->groupBy('staff.role')
+            ->selectRaw('COUNT(sessions.id) AS Sessions')
+            ->addSelect('staff.role')
+            ->get();
+        return $sessions;
     }
     
     /** Get an Array with the Carbon times for the last $n intervals, where

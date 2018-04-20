@@ -7,8 +7,9 @@ use App\printers;
 use Illuminate\Http\Request;
 use App\Jobs;
 use App\Prints;
-use App\cost_code;
 use App\StatisticsHelper;
+use App\staff;
+use App\cost_code;
 use App\Http\Controllers\Traits\ExcelTrait;
 use Auth;
 use Illuminate\Support\Facades\Input;
@@ -30,9 +31,46 @@ class FinanceController extends Controller
     public function index()
     {
         // TODO: Think about what needs to go on index page
-        $t1 = new Carbon();
-        $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
-        return redirect('finance/jobs/'.$t1->toDateString());
+        
+        $stats = new StatisticsHelper();
+        // Current Month
+        $month = new Carbon();
+        $month = $month->day(1)->hour(0)->minute(0)->second(0);
+        
+        // Get Finance for this year
+        // Get all the completed jobs for this year
+        $WorkshopJobs = $stats->getIncomeWorkshop($month);
+        $OnlineJobs = $stats->getIncomeOnline($month);
+        // Get all the assigned sessions for this year
+        $demonstrators = $stats->getDemonstratorCost($month);
+        
+        // Get Finance for last year
+        $lastyear = $month->copy()->subYear();
+        // Get all the completed jobs for last year
+        $WorkshopJobsPrev = $stats->getIncomeWorkshop($lastyear);
+        $OnlineJobsPrev = $stats->getIncomeOnline($lastyear);
+        // Get all the assigned sessions for last year
+        $demonstratorsPrev = $stats->getDemonstratorCost($lastyear);
+        
+        // Get staff without CWP
+        $nocwp = $this->getNewStaff();
+        $nocwp = $nocwp->map(function ($item) {
+            return ['name' => $item->name()];
+        });
+        $nocwp = $nocwp->implode('name', ', ');
+        return view('finance.index', compact('month','WorkshopJobs','OnlineJobs','demonstrators','WorkshopJobsPrev','OnlineJobsPrev','demonstratorsPrev','nocwp'));
+    }
+    
+    
+    /** get staff that have not yet shown the CWP to coordinator **/
+    private function getNewStaff(){
+        $staff = staff::where('CWP_date', null)
+            ->where('role', '!=', 'Former Member')
+            ->where('role', '!=', 'Coordinator')
+            ->where('role', '!=', 'Co-Coordinator')
+            ->where('role', '!=', 'Technician')
+            ->get();
+        return $staff;
     }
     
     private function getJobs($month){
@@ -44,10 +82,22 @@ class FinanceController extends Controller
         $jobs = Jobs::where('created_at', '>=', $t1)->where('created_at', '<=', $t2)->orderBy('created_at', 'desc')->where('status', 'Success')->get();
         return $jobs;
     }
+    
+    /**
+     * 
+     * @blade_address /finance/jobs
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function jobsNow()
+    {
+        $t1 = new Carbon();
+        $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
+        return redirect('finance/jobs/'.$t1->toDateString());
+    }
 
     /**
      * 
-     * @blade_address /finance/prints/<id>
+     * @blade_address /finance/jobs/<id>
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function jobs($month)
