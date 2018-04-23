@@ -62,42 +62,38 @@
                         @php
                             $moneyin = 0;
                             $moneyout = 0;
-                            $demohour = 15.08; //cost to employ a demonstrator for 1h
-                            $inWorkshopJobs = $WorkshopJobs->sum('Price');
-                            $inOnlineJobs = $OnlineJobs->sum('Price');
+                            //$demohour = 15.08; //cost to employ a demonstrator for 1h
+                            //$inWorkshopJobs = $WorkshopJobs->sum('Price');
+                            //$inOnlineJobs = $OnlineJobs->sum('Price');
                         @endphp
                         <tbody id="tableJobs">
-                            <tr class="text-left">
-                                <td data-th="Label">Workshop Jobs</td>
-                                <td data-th="Money In" class="text-right">&pound;{{ number_format($inWorkshopJobs,2) }}</td>
-                                <td data-th="Money Out" class="text-right"> </td>
-                            </tr>
-                            @php
-                                $moneyin += $inWorkshopJobs;
-                            @endphp
-                            <tr class="text-left">
-                                <td data-th="Label">Online Jobs</td>
-                                <td data-th="Money In" class="text-right">&pound;{{ number_format($inOnlineJobs,2) }}</td>
-                                <td data-th="Money Out" class="text-right"> </td>
-                            </tr>
-                            @php
-                                $moneyin += $inOnlineJobs;
-                            @endphp
-                            @foreach($demonstrators as $demonstrator) 
+                            @foreach($finance[0] as $label => $money)
                                 <tr class="text-left">
-                                    <td data-th="Label">{{ $demonstrator->role }} Payment</td>
-                                    <td data-th="Money In" class="text-right"> </td>
-                                    <td data-th="Money Out" class="text-right">- &pound;{{ number_format(($demonstrator->Sessions)*$demohour,2) }}</td>
+                                    <td data-th="Label">{{$label}}</td>
+                                    @if($money > 0)
+                                        <td data-th="Money In" class="text-right">&pound;{{ number_format($money,2) }}</td>
+                                        <td data-th="Money Out" class="text-right"> </td>
+                                        @php
+                                            $moneyin += $money;
+                                        @endphp
+                                    @elseif($money < 0)
+                                        <td data-th="Money In" class="text-right"></td>
+                                        <td data-th="Money Out" class="text-right">&pound;{{ number_format($money,2) }}</td>
+                                        @php
+                                            $moneyout += $money;
+                                        @endphp
+                                    @else
+                                        <td data-th="Money In" class="text-right"></td>
+                                        <td data-th="Money Out" class="text-right"></td>
+                                    @endif
                                 </tr>
-                                @php
-                                    $moneyout += ($demonstrator->Sessions)*$demohour;
-                                @endphp
+                                
                             @endforeach
                             <tr class="text-left">
                                 <td data-th="Label">TOTAL</td>
                                 <td data-th="Money In" class="text-right">&pound;{{ number_format($moneyin,2) }}</td>
-                                <td data-th="Money Out" class="text-right">- &pound;{{ number_format($moneyout,2) }}</td>
-                                <td data-th="Total" class="text-right"> =&pound;{{ number_format($moneyin - $moneyout,2) }}</td>
+                                <td data-th="Money Out" class="text-right">&pound;{{ number_format($moneyout,2) }}</td>
+                                <td data-th="Total" class="text-right"> =&pound;{{ number_format($moneyin + $moneyout,2) }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -115,48 +111,44 @@
                         @php
                             $moneyin = 0;
                             $moneyout = 0;
-                            $demohour = 15.08; //cost to employ a demonstrator for 1h
-                            $inWorkshopJobs = $WorkshopJobsPrev->sum('Price');
-                            $inOnlineJobs = $OnlineJobsPrev->sum('Price');
                         @endphp
                         <tbody id="tableJobs">
-                            <tr class="text-left">
-                                <td data-th="Label">Workshop Jobs</td>
-                                <td data-th="Money In" class="text-right">&pound;{{ number_format($inWorkshopJobs,2) }}</td>
-                                <td data-th="Money Out" class="text-right"> </td>
-                            </tr>
-                            @php
-                                $moneyin += $inWorkshopJobs;
-                            @endphp
-                            <tr class="text-left">
-                                <td data-th="Label">Online Jobs</td>
-                                <td data-th="Money In" class="text-right">&pound;{{ number_format($inOnlineJobs,2) }}</td>
-                                <td data-th="Money Out" class="text-right"> </td>
-                            </tr>
-                            @php
-                                $moneyin += $inOnlineJobs;
-                            @endphp
-                            @foreach($demonstratorsPrev as $demonstrator) 
+                            @foreach($finance[1] as $label => $money)
                                 <tr class="text-left">
-                                    <td data-th="Label">{{ $demonstrator->role }} Payment</td>
-                                    <td data-th="Money In" class="text-right"> </td>
-                                    <td data-th="Money Out" class="text-right">- &pound;{{ number_format(($demonstrator->Sessions)*$demohour,2) }}</td>
+                                    <td data-th="Label">{{$label}}</td>
+                                    @if($money > 0)
+                                        <td data-th="Money In" class="text-right">&pound;{{ number_format($money,2) }}</td>
+                                        <td data-th="Money Out" class="text-right"> </td>
+                                        @php
+                                            $moneyin += $money;
+                                        @endphp
+                                    @elseif($money < 0)
+                                        <td data-th="Money In" class="text-right"></td>
+                                        <td data-th="Money Out" class="text-right">&pound;{{ number_format($money,2) }}</td>
+                                        @php
+                                            $moneyout += $money;
+                                        @endphp
+                                    @else
+                                        <td data-th="Money In" class="text-right"></td>
+                                        <td data-th="Money Out" class="text-right"></td>
+                                    @endif
                                 </tr>
-                                @php
-                                    $moneyout += ($demonstrator->Sessions)*$demohour;
-                                @endphp
+                                
                             @endforeach
                             <tr class="text-left">
                                 <td data-th="Label">TOTAL</td>
                                 <td data-th="Money In" class="text-right">&pound;{{ number_format($moneyin,2) }}</td>
-                                <td data-th="Money Out" class="text-right">- &pound;{{ number_format($moneyout,2) }}</td>
-                                <td data-th="Total" class="text-right"> =&pound;{{ number_format($moneyin - $moneyout,2) }}</td>
+                                <td data-th="Money Out" class="text-right">&pound;{{ number_format($moneyout,2) }}</td>
+                                <td data-th="Total" class="text-right"> =&pound;{{ number_format($moneyin + $moneyout,2) }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="text-left">
-                    * These numbers do not include money spend on Online Demonstrators, IT, Printers, and Filament. Money spend on demonstrators is an estimate based on the number of sessions assigned online and does not include preperation time, training, or non-demonstrating related duties.
+                    * These numbers do not include money spend on IT, Printers, and Demonstrators management tasks. Several figures are estiamtes only<br/>
+                    ** Numbers are estimated based on the number of sessions and the number of demonstrators assigned to them and does not include preperation time, training, or non-demonstrating related duties.<br/>
+                    *** Numbers are a rough estimate based on the number of online orders and prints done for these.<br/>
+                    **** Material cost is estimated assuming 20% waste material per print, ignoring failed prints.
                 </div>
             </div>
         </div>

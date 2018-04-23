@@ -28,6 +28,25 @@ class FinanceController extends Controller
      * @blade_address /finance
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
+
+    
+    private function onlineDemonstratorCost($onlinePrints,$onlineJobs){
+        $hours = 0;
+        $nPrints = $onlinePrints;
+        $hours += $nPrints*0.75; //45min to set up a print, observe first layers and collect completed print
+        $nJobs = $onlineJobs;
+        $hours += $nJobs*1.5; //1:30hour to communicate with customer, test the files and fill things in online
+        return $hours*15.08;
+    }
+    
+    private function materialCost($year){
+        $stats = new StatisticsHelper();
+        $material = $stats->getMaterial($year->format('Y'));
+        $material = $material*1.2; //assume 20% waste
+        $prices = config('prices');
+        return $material*$prices['material']/100;
+    }
+    
     public function index()
     {
         // TODO: Think about what needs to go on index page
@@ -36,21 +55,39 @@ class FinanceController extends Controller
         // Current Month
         $month = new Carbon();
         $month = $month->day(1)->hour(0)->minute(0)->second(0);
+
+        // Get Online Prints this and last year:
+        $onlinePrints = $stats->getArrayOnlinePrintsLastYears(2);
+        // Get Online Jobs this and last year:
+        $onlineJobs = $stats->getArrayOnlineJobsLastYears(2);
         
+        $finance = [];
         // Get Finance for this year
+        $financeY1 = [];
         // Get all the completed jobs for this year
-        $WorkshopJobs = $stats->getIncomeWorkshop($month);
-        $OnlineJobs = $stats->getIncomeOnline($month);
+        $financeY1['Workshop Jobs'] = $stats->getIncomeWorkshop($month);
+        $financeY1['Online Jobs'] = $stats->getIncomeOnline($month);
         // Get all the assigned sessions for this year
-        $demonstrators = $stats->getDemonstratorCost($month);
+        $financeY1['Workshop Demonstrators**'] = -1*$stats->getDemonstratorHours($month)*15.08;
+        // Estimate the cost of online demonstrators
+        $financeY1['Online Demonstrators***'] = -1*$this->onlineDemonstratorCost($onlinePrints[0],$onlineJobs[0]);
+        //Estimate material used this year
+        $financeY1['Material****'] = -1*$this->materialCost($month);
+        $finance[] = $financeY1;
         
         // Get Finance for last year
+        $financeY2 = [];
         $lastyear = $month->copy()->subYear();
         // Get all the completed jobs for last year
-        $WorkshopJobsPrev = $stats->getIncomeWorkshop($lastyear);
-        $OnlineJobsPrev = $stats->getIncomeOnline($lastyear);
+        $financeY2['Workshop Jobs'] = $stats->getIncomeWorkshop($lastyear);
+        $financeY2['Online Jobs'] = $stats->getIncomeOnline($lastyear);
         // Get all the assigned sessions for last year
-        $demonstratorsPrev = $stats->getDemonstratorCost($lastyear);
+        $financeY2['Workshop Demonstrators**'] = -1*$stats->getDemonstratorHours($lastyear)*15.08;
+        // Estimate the cost of online demonstrators
+        $financeY2['Online Demonstrators***'] = -1*$this->onlineDemonstratorCost($onlinePrints[1],$onlineJobs[1]);
+        //Estimate material used last year
+        $financeY2['Material****'] = -1*$this->materialCost($lastyear);
+        $finance[] = $financeY2;
         
         // Get staff without CWP
         $nocwp = $this->getNewStaff();
@@ -58,7 +95,7 @@ class FinanceController extends Controller
             return ['name' => $item->name()];
         });
         $nocwp = $nocwp->implode('name', ', ');
-        return view('finance.index', compact('month','WorkshopJobs','OnlineJobs','demonstrators','WorkshopJobsPrev','OnlineJobsPrev','demonstratorsPrev','nocwp'));
+        return view('finance.index', compact('month','finance','nocwp'));
     }
     
     

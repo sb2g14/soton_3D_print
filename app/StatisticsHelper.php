@@ -44,6 +44,17 @@ class StatisticsHelper
             ->where('prints.created_at', '>', $t2str)->where('prints.created_at', '<', $t1str)
             ->count();
         return $prints;
+    } 
+    
+    /** Get the number of online Jobs between date-time 1 and date-time 2, 
+     * where t1str and t2str are strings containing a date in database format.
+     **/
+    public function getCountJobsOnlineBetween($t1str,$t2str){
+        $jobs = \App\Jobs::where('requested_online', 1)
+            ->orderBy('created_at', 'desc')
+            ->where('created_at', '>', $t2str)->where('created_at', '<', $t1str)
+            ->count();
+        return $jobs;
     }    
 
     /** Get the number of Prints for the last $n times in intervals of $months, 
@@ -98,6 +109,32 @@ class StatisticsHelper
         return $count_prints;
     }  
     
+    /** Get the number of Jobs done for online orders for the last $n times in intervals of $months, 
+     * $n is the number of intervals to go back,
+     * $format is the Carbon format string to use
+     * $format2 is the fixed formatting string to append (this can be merged into $format)
+     * $months the length of one interval in months (needs to be an integer!)
+     **/
+    private function getArrayOnlineJobsLastXs($n,$format,$format2,$months){
+        // Call the prints model to extract statistical data
+        $count_jobs = [];
+        // Count the number of prints since the beginning of the current month
+        $time = new \Carbon\Carbon;
+        $t1str = $time->toDateTimeString();
+        $t2str = $time->format($format).$format2;
+        $jobs = $this->getCountJobsOnlineBetween($t1str,$t2str);
+        $count_jobs[] = $jobs;
+        // Count the number of prints for the last year
+        for($i=0; $i<$n-1; $i++){
+            $t1str = $time->format($format).$format2;
+            $time = $time->subMonths($months);
+            $t2str = $time->format($format).$format2;
+            $jobs = $this->getCountJobsOnlineBetween($t1str,$t2str);
+            $count_jobs[] = $jobs;
+        }
+        return $count_jobs;
+    }
+    
     /** Get an Array with the number of Prints for the last $n months
      **/
     public function getArrayPrintsLastMonths($n_months){
@@ -117,6 +154,13 @@ class StatisticsHelper
     public function getArrayOnlinePrintsLastYears($n_years){
         $count_prints = $this->getArrayOnlinePrintsLastXs($n_years,'Y',"-01-01 00:00:00",12);
         return $count_prints;
+    }
+    
+    /** Get an Array with the number of Jobs done for online orders for the last $n years
+     **/
+    public function getArrayOnlineJobsLastYears($n_years){
+        $count_jobs = $this->getArrayOnlineJobsLastXs($n_years,'Y',"-01-01 00:00:00",12);
+        return $count_jobs;
     }
     
     /** Get an Array with the number of Prints for the last $n weeks
@@ -149,7 +193,7 @@ class StatisticsHelper
             ->selectRaw('SUM(total_price) AS Price')
             ->addSelect('cost_code')
             ->get();
-        return $codes;
+        return $codes->sum('Price');
     }
     
     public function getIncomeOnline($year){
@@ -165,23 +209,25 @@ class StatisticsHelper
             ->selectRaw('SUM(total_price) AS Price')
             ->addSelect('cost_code')
             ->get();
-        return $codes;
+        return $codes->sum('Price');
     }
     
-    public function getDemonstratorCost($year){
+    public function getDemonstratorHours($year){
         // Define start and end of year
         $t1 = new Carbon($year);
         $t1 = $t1->month(1)->day(1)->hour(0)->minute(0)->second(0);
         $t2 = $t1->copy()->addYear();
-        // Get all the completed jobs from the specified month
-        $sessions = Sessions::where('sessions.start_date', '>=', $t1)->where('sessions.start_date', '<=', $t2)
-            ->join('sessions_staff', function($join) {$join->on('sessions.id', '=', 'sessions_staff.sessions_id');})
-            ->join('staff', function($join) {$join->on('sessions_staff.staff_id', '=', 'staff.id');})
-            ->groupBy('staff.role')
-            ->selectRaw('COUNT(sessions.id) AS Sessions')
-            ->addSelect('staff.role')
-            ->get();
-        return $sessions;
+        // Get all the sessions from the specified month
+        $sessions = Sessions::where('sessions.start_date', '>=', $t1)->where('sessions.start_date', '<=', $t2)->get();
+        $sessionlength = $sessions->map(function ($session) {
+            $end = new Carbon($session->end_date);
+            $start = new Carbon($session->start_date);
+            $hours = $start->diffInHours($end)*$session->dem_required;
+            //$hours = $staff->end_date - $staff->start_date;
+            return $hours;
+        });
+        $hours = $sessionlength->sum(); 
+        return $hours; 
     }
     
     /** Get an Array with the Carbon times for the last $n intervals, where
@@ -318,6 +364,21 @@ class StatisticsHelper
         $year = (int)($time->format('Y'))-1;
         $count_users = $this->getUsersInYear($year);
         return $count_users;
+    }
+    
+    /**
+     * returns the total material used by all prints in the given year in g as a rounded number
+     **/
+    public function getMaterial($year){
+        $t1str = ($year+1)."-01-01 00:00:00";
+        $t2str = $year."-01-01 00:00:00";
+        $count_material = \App\Prints::where('created_at', '>', $t2str)
+            ->where('created_at', '<', $t1str)
+            ->where('status','Success')
+            ->select('material_amount')->get();
+        $count_material = $count_material->sum('material_amount');
+        $count_material = (int)(0.5+(float)$count_material);
+        return $count_material;
     }
     
     /**

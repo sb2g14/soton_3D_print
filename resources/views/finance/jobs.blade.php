@@ -57,15 +57,16 @@
                             <th>Print Time</th>
                             <th>Material Amount</th>
                             <th>Price</th>
+                            <th>Paid?</th>
                         </tr>
                     </thead>
                     <tbody id="tableJobs">
                         @foreach($jobs as $job)
                             @php
-                                if($job->status === 'Success'){
-                                   $jobclass = "p-success";
+                                if($job->paid === 'No'){
+                                   $jobicon = "times";
                                 }else{
-                                   $jobclass = "p-failed";
+                                   $jobicon = "check";
                                 }
                             @endphp
                             <tr class="text-left">
@@ -78,6 +79,7 @@
                                 <td data-th="Time">{{ date("H:i", strtotime($job->total_duration)) }}</td>
                                 <td data-th="Material Amount">{{ $job->total_material_amount }} g</td>
                                 <td data-th="Price">£{{ $job->total_price }}</td>
+                                <td data-th="Paid"><i class="fa fa-{{$jobicon}}"></i></td>
                             </tr>
                         @endforeach
                     </tbody>
