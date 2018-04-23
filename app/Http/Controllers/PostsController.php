@@ -15,35 +15,50 @@ use Illuminate\Support\Facades\Input;
 use App\FaultData;
 use App\StatisticsHelper;
 
-
+/**
+ * This controller manages the homepage
+ **/
 class PostsController extends Controller
 {
     use WorkshopTrait;
-    // Specify pages available to an unauthenticated user
-
-    public function __construct()
-    {
-
-        $this->middleware('auth')->except(['index','show']);
-
-    }
-
-    private function getIssues(){
-//        $posts =  posts::orderBy('created_at', 'desc')->take(20)->get();
-//        $posts -> toArray($posts);
-//        $post_last = posts::orderBy('created_at','desc')->first();
-        // Getting post and fault data and combining it
+    
+    //// PRIVATE (HELPER) FUNCTIONS ////
+    //--------------------------------------------------------------------------------------------------------------
+    
+    /** Getting post and fault data and combining it **/
+    private function _getIssues(){
+        // Get printer related issues
         $faults = FaultData::select('id', 'title', 'body', 'created_at', 'staff_id_created_issue as staff_id', 'printers_id')
         ->where('resolved', 0);
+        // Get generic (non-printer related) issues
         $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id')->where('resolved', 0);
+        // Combine them
         $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
         return $issues;
     }
+    
+    
+    //// GENERIC PUBLIC FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    /** Specify pages available to an unauthenticated user **/
+    public function __construct()
+    {
+
+        $this->middleware('auth')->except(['index']);
+
+    }
+
+    
+    //// CONTROLLER BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
+
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
+     **/
     public function index()
     {
         // Check if all current jobs are finished
@@ -53,7 +68,7 @@ class PostsController extends Controller
         }
 
         // Get issues as a combination of printer issues and posts (workshop issues)
-        $issues = $this->getIssues();
+        $issues = $this->_getIssues();
 
         // Get public and internal announcements
         $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
@@ -77,24 +92,17 @@ class PostsController extends Controller
         return view('welcome.index', compact('issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material','workshopIsOpen'));
     }
 
+
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+
+    
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-        return view('welcome.index');
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created issue in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
+     **/
     public function store()
     {
         // Validate request from the form:
@@ -104,15 +112,7 @@ class PostsController extends Controller
             'body' => 'required|string|max:300|regex:/^[a-z A-Z0-9.,!?]+$/'
         ]);
 
-//        dd(request()->all());
-
-//        auth()->user()->publish(
-//            new welcome(request(['title','body']))
-//
-//        );
-
-//        // Collect data from a post to submit to the database welcome:
-//
+        // Collect data from a post to submit to the database:
         $post = new posts;
         $post -> title = request('title');
         $post -> body = request('body');
@@ -120,7 +120,6 @@ class PostsController extends Controller
         $post -> resolved = 0;
 
         // Submit the data to the database
-
         $post->save();
 
         $critical=Input::get('critical');
@@ -135,56 +134,22 @@ class PostsController extends Controller
             return view('issues/select',compact('title','body', 'printers'));
         } else {
 
-        // Notify and Return to the homepage:
-
+            // Notify and Return to the homepage:
             notify()->flash('The post has been created.', 'success', [
                 'text' => "Please go to the posts if you want to add anything else.",
             ]);
 
-        return redirect('/');
+            return redirect('/');
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\welcome  $welcome
-     * @return \Illuminate\Http\Response
-     */
-    public function show(posts $posts)
-    {
-        //
-    }
 
     /**
-     * Show the form for editing the specified resource.
+     * Remove the specified non-printer related issue from storage.
      *
      * @param  \App\welcome  $welcome
      * @return \Illuminate\Http\Response
-     */
-    public function edit(posts $posts)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\welcome  $welcome
-     * @return \Illuminate\Http\Response
-     */
-//    public function update(Request $request, posts $posts)
-//    {
-//        //
-//    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\welcome  $welcome
-     * @return \Illuminate\Http\Response
-     */
+     **/
     public function destroy($id)
     {
         $post = posts::findOrFail($id);
@@ -195,11 +160,10 @@ class PostsController extends Controller
         ]);
         return redirect('/');
     }
+    
+    /** mark the specified non-printer related issue as resolved **/
     public function resolve($id)
     {
-        //$post = Posts::findOrFail($id);
-        //dd($post->title);
-        //$post->update(['resolved' => 1]);
         Posts::where('id', $id)->update(['resolved' => 1]);
 
         notify()->flash('The issue is resolved', 'success', [

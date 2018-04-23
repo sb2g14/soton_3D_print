@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Traits;
 
 use App\staff;
+use Auth;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
@@ -61,6 +62,14 @@ trait RotaAvailabilityTrait
         $dems = [$demE,$demI];
         return $dems;
     }
+    
+    /** returns all the staff, that are busy, away or have not signed up for a session **/
+    private function getAllDemonstrators(){
+        $demonstrators = staff::where('role','!=', 'Former member')
+                ->orderBy('last_name')
+                ->get();
+        return $demonstrators;
+    }
 
     /** returns all the staff, that are tentatively available for that session and eligible to be assigned to a session **/
     private function getTentativeDemonstratorsForSession($id){
@@ -85,6 +94,14 @@ trait RotaAvailabilityTrait
                 ->get();
         return $demonstrators;
     }
+    
+    /** returns all the staff, that are tentatively available for that session and eligible to be assigned to a session **/
+    private function getOtherDemonstratorsForSession($id,$demA,$demT){
+        $demonstrators = $this->getAllDemonstrators();
+        $demonstrators = $demonstrators->diff($demA);
+        $demonstrators = $demonstrators->diff($demT);
+        return $demonstrators;
+    }
 
     public function getOptions($sessions){
         $demonstrators = array();
@@ -95,6 +112,8 @@ trait RotaAvailabilityTrait
             // Get available and tentatively available demonstrators
             $demA = $this->getAvailableDemonstratorsForSession($id);
             $demT = $this->getTentativeDemonstratorsForSession($id);
+            $demALL = $this->getOtherDemonstratorsForSession($id,$demA,$demT);
+            $demALL = $this->orderByLastSession($demALL);
             // Split the lists depending on the experience and
             // sort them so the ones who have not demonstrated for
             // a long time appear at the top of the list
@@ -105,8 +124,18 @@ trait RotaAvailabilityTrait
             $demET = $temp[0];
             $demIT = $temp[1];
             // Create two prioritised lists - one for the first demonstrator in the session, and one for the others.
-            $demonstrators['session_'.$id]['dem1'] = array('experienced demonstrators'=>$demEA+$demET, 'inexperienced demonstrators'=>$demIA+$demIT); //EA>ET>IA>IT
-            $demonstrators['session_'.$id]['dem2'] = array('available demonstrators'=>$demIA+$demEA, 'tentatively available demonstrators'=>$demIT+$demET); //IA>EA>IT>ET
+            $demonstrators['session_'.$id]['dem1'] = array(
+                'experienced demonstrators'=>$demEA+$demET, 
+                'inexperienced demonstrators'=>$demIA+$demIT
+            ); //EA>ET>IA>IT
+            $demonstrators['session_'.$id]['dem2'] = array(
+                'available demonstrators'=>$demIA+$demEA, 
+                'tentatively available demonstrators'=>$demIT+$demET
+            ); //IA>EA>IT>ET
+            if(Auth::user()->hasAnyRole(['administrator'])){
+                $demonstrators['session_'.$id]['dem1']['Other'] = $demALL;
+                $demonstrators['session_'.$id]['dem2']['Other'] = $demALL;
+            }
             // Do the same but without the labels for the code choosing the defaults
             $demonstratorsForDefs['session_'.$id]['dem1'] = $demEA+$demET; //EA>ET>IA>IT
             $demonstratorsForDefs['session_'.$id]['dem2'] = $demIA+$demEA+$demIT+$demET; //IA>EA>IT>ET 
