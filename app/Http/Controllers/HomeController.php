@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
+/** The functions for this controller are currently in the PostsController **/
 class HomeController extends Controller
 {
     /**

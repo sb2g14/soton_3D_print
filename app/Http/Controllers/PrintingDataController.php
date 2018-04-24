@@ -29,7 +29,7 @@ use App\Rules\CustomerNameValidation;
 class PrintingDataController extends Controller
 {
     //// PRIVATE (HELPER) FUNCTIONS ////
-    //---------------------------------------------------------------------------------------------------------------/
+    //---------------------------------------------------------------------------------------------------------------//
 
     /**
      * Check printers that are in use if their print has completed and if so change the status
@@ -615,40 +615,4 @@ class PrintingDataController extends Controller
         // Show request form and pass it the pre-population data
         return view('printingData.create',compact('available_printers','data'));
     }
-
-    //    public function printingDataExport()
-//    {
-//
-//        // Get all jobs
-//        $jobs = printing_data::select('printers_id','serial_no','created_at','purpose','student_name','student_id','time','material_amount','price','paid','approved_name','payment_category','use_case','cost_code','add_comment','month','id','successful','email')->get();
-//
-//
-//        // Initialize the array which will be passed into the Excel
-//        // generator.
-//        $jobsArray = [];
-//
-//        // Define the Excel spreadsheet headers
-//        $jobsArray[] = ['Printer No Common', 'Printer No','Date','Use/Loan','Student Name','Student ID','Time','Material Amount','Price','Paid','Demonstrator Sign','Payment Category', 'Use Case','Cost Code','Comment','Month','Jobs No','Successful?','Email'];
-//
-//        // Convert each member of the returned collection into an array,
-//        // and append it to the payments array.
-//        foreach ($jobs as $job) {
-//            $jobsArray[] = $job->toArray();
-//        }
-//
-//        // Generate and return the spreadsheet
-//        Excel::create('PrintingData', function($excel) use ($jobsArray) {
-//
-//            // Set the spreadsheet title, creator, and description
-//            $excel->setTitle('printing_data');
-//            $excel->setCreator(Auth::user()->name)->setCompany('3D printing workshop');
-//            $excel->setDescription('Excel file used as a backup for information about printing jobs in the 3D printing workshop at University of Southampton');
-//
-//            // Build the spreadsheet, passing in the payments array
-//            $excel->sheet('sheet1', function($sheet) use ($jobsArray) {
-//                $sheet->fromArray($jobsArray, null, 'A1', false, false);
-//            });
-//
-//        })->download('xlsx');
-//    }
 }

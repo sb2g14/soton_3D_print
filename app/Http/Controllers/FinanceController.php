@@ -23,14 +23,12 @@ use Carbon\Carbon;
 class FinanceController extends Controller
 {
     use ExcelTrait;
-    /**
-     * 
-     * @blade_address /finance
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-
     
-    private function onlineDemonstratorCost($onlinePrints,$onlineJobs){
+
+    //// PRIVATE (HELPER) FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    private function _onlineDemonstratorCost($onlinePrints,$onlineJobs){
         $hours = 0;
         $nPrints = $onlinePrints;
         $hours += $nPrints*0.75; //45min to set up a print, observe first layers and collect completed print
@@ -39,7 +37,7 @@ class FinanceController extends Controller
         return $hours*15.08;
     }
     
-    private function materialCost($year){
+    private function _materialCost($year){
         $stats = new StatisticsHelper();
         $material = $stats->getMaterial($year->format('Y'));
         $material = $material*1.2; //assume 20% waste
@@ -47,6 +45,75 @@ class FinanceController extends Controller
         return $material*$prices['material']/100;
     }
     
+    private function _getFinanceForYear($year){
+        $stats = new StatisticsHelper();
+        $financeY = [];
+        // Get all the completed jobs for this year
+        $financeY['Workshop Jobs'] = $stats->getIncomeWorkshop($year);
+        $financeY['Online Jobs'] = $stats->getIncomeOnline($year);
+        // Get all the assigned sessions for this year
+        $financeY['Workshop Demonstrators**'] = -1*$stats->getDemonstratorHours($year)*15.08;
+        //Estimate material used this year
+        $financeY['Material****'] = -1*$this->_materialCost($year);
+        return $financeY;
+    }
+    
+    private function _getFinanceForPastYears($n){
+        $stats = new StatisticsHelper();
+        // Current Month
+        $month = new Carbon();
+        $month = $month->day(1)->hour(0)->minute(0)->second(0);
+
+        // Get Online Prints this and last year:
+        $onlinePrints = $stats->getArrayOnlinePrintsLastYears($n);
+        // Get Online Jobs this and last year:
+        $onlineJobs = $stats->getArrayOnlineJobsLastYears($n);
+        $year = $month->copy();
+        $finance = [];
+        for($i = 0; $i < $n; $i++){
+            // Get Finance for the year
+            $financeY = $this->_getFinanceForYear($year);
+            // Estimate the cost of online demonstrators
+            $financeY['Online Demonstrators***'] = -1*$this->_onlineDemonstratorCost($onlinePrints[$i],$onlineJobs[$i]);
+            $finance[] = $financeY;
+            //get next year
+            $year = $year->subYear();
+        }
+        return $finance;
+    }
+    
+    /** get staff that have not yet shown the CWP to coordinator **/
+    private function _getNewStaff(){
+        $staff = staff::where('CWP_date', null)
+            ->where('role', '!=', 'Former Member')
+            ->where('role', '!=', 'Coordinator')
+            ->where('role', '!=', 'Co-Coordinator')
+            ->where('role', '!=', 'Technician')
+            ->get();
+        return $staff;
+    }
+    
+    private function _getJobs($month){
+        // Define start and end of month
+        $t1 = new Carbon($month);
+        $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
+        $t2 = $t1->copy()->addMonth();
+        // Get all the completed jobs from the specified month
+        $jobs = Jobs::where('created_at', '>=', $t1)->where('created_at', '<=', $t2)
+            ->orderBy('created_at', 'desc')
+            ->where('status', 'Success')
+            ->get();
+        return $jobs;
+    }
+    
+    //// CONTROLLER BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    /**
+     * 
+     * @blade_address /finance
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         // TODO: Think about what needs to go on index page
@@ -55,42 +122,12 @@ class FinanceController extends Controller
         // Current Month
         $month = new Carbon();
         $month = $month->day(1)->hour(0)->minute(0)->second(0);
-
-        // Get Online Prints this and last year:
-        $onlinePrints = $stats->getArrayOnlinePrintsLastYears(2);
-        // Get Online Jobs this and last year:
-        $onlineJobs = $stats->getArrayOnlineJobsLastYears(2);
         
-        $finance = [];
-        // Get Finance for this year
-        $financeY1 = [];
-        // Get all the completed jobs for this year
-        $financeY1['Workshop Jobs'] = $stats->getIncomeWorkshop($month);
-        $financeY1['Online Jobs'] = $stats->getIncomeOnline($month);
-        // Get all the assigned sessions for this year
-        $financeY1['Workshop Demonstrators**'] = -1*$stats->getDemonstratorHours($month)*15.08;
-        // Estimate the cost of online demonstrators
-        $financeY1['Online Demonstrators***'] = -1*$this->onlineDemonstratorCost($onlinePrints[0],$onlineJobs[0]);
-        //Estimate material used this year
-        $financeY1['Material****'] = -1*$this->materialCost($month);
-        $finance[] = $financeY1;
+        $finance = $this->_getFinanceForPastYears(2);
         
-        // Get Finance for last year
-        $financeY2 = [];
-        $lastyear = $month->copy()->subYear();
-        // Get all the completed jobs for last year
-        $financeY2['Workshop Jobs'] = $stats->getIncomeWorkshop($lastyear);
-        $financeY2['Online Jobs'] = $stats->getIncomeOnline($lastyear);
-        // Get all the assigned sessions for last year
-        $financeY2['Workshop Demonstrators**'] = -1*$stats->getDemonstratorHours($lastyear)*15.08;
-        // Estimate the cost of online demonstrators
-        $financeY2['Online Demonstrators***'] = -1*$this->onlineDemonstratorCost($onlinePrints[1],$onlineJobs[1]);
-        //Estimate material used last year
-        $financeY2['Material****'] = -1*$this->materialCost($lastyear);
-        $finance[] = $financeY2;
         
         // Get staff without CWP
-        $nocwp = $this->getNewStaff();
+        $nocwp = $this->_getNewStaff();
         $nocwp = $nocwp->map(function ($item) {
             return ['name' => $item->name()];
         });
@@ -101,27 +138,33 @@ class FinanceController extends Controller
     }
     
     
-    /** get staff that have not yet shown the CWP to coordinator **/
-    private function getNewStaff(){
-        $staff = staff::where('CWP_date', null)
-            ->where('role', '!=', 'Former Member')
-            ->where('role', '!=', 'Coordinator')
-            ->where('role', '!=', 'Co-Coordinator')
-            ->where('role', '!=', 'Technician')
-            ->get();
-        return $staff;
-    }
     
-    private function getJobs($month){
-        // Define start and end of month
+    
+    
+
+    /**
+     * 
+     * @blade_address /finance/jobs/<date>
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function jobs($month)
+    {
+        // Get start of month
         $t1 = new Carbon($month);
         $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
-        $t2 = $t1->copy()->addMonth();
+        
         // Get all the completed jobs from the specified month
-        $jobs = Jobs::where('created_at', '>=', $t1)->where('created_at', '<=', $t2)->orderBy('created_at', 'desc')->where('status', 'Success')->get();
-        return $jobs;
+        $jobs = $this->_getJobs($month);
+        
+        // get last months
+        $stats = new StatisticsHelper();
+        $pages = $stats->getArrayLastMonths(12);
+        return view('finance.jobs', compact('jobs','t1','pages'));
     }
-    
+
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+        
     /**
      * 
      * @blade_address /finance/jobs
@@ -136,33 +179,13 @@ class FinanceController extends Controller
 
     /**
      * 
-     * @blade_address /finance/jobs/<id>
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function jobs($month)
-    {
-        // Get start of month
-        $t1 = new Carbon($month);
-        $t1 = $t1->day(1)->hour(0)->minute(0)->second(0);
-        
-        // Get all the completed jobs from the specified month
-        $jobs = $this->getJobs($month);
-        
-        // get last months
-        $stats = new StatisticsHelper();
-        $pages = $stats->getArrayLastMonths(12);
-        return view('finance.jobs', compact('jobs','t1','pages'));
-    }
-
-    /**
-     * 
      * @blade_address /finance/prints/<id>
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function downloadJobs($month)
     {
         // Get all the completed jobs from the specified month
-        $jobs = $this->getJobs($month);
+        $jobs = $this->_getJobs($month);
         
         $header = ["Job ID" => 'id',
                    "Date Created" => 'created_at',

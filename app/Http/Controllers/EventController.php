@@ -15,27 +15,29 @@ use Carbon\Carbon;
  **/
 class EventController extends Controller
 {
-    public function __construct()
-    {
-
-        $this->middleware('auth');
-
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-
-    }
+    //// PRIVATE (HELPER) FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
     
+    /** returns an array with the different event types and a description of them **/
     private function getEventTypeOptions(){
-        $options = array('academic'=>'Academic (e.g. semesters, exam periods, etc)','holidays'=>'Student holidays','closure'=>'University closure period','internal'=>'Internal event (e.g. induction for first year students)');
+        $options = array('academic'=>'Academic (e.g. semesters, exam periods, etc)',
+                        'holidays'=>'Student holidays',
+                        'closure'=>'University closure period',
+                        'internal'=>'Internal event (e.g. induction for first year students)');
         return $options;
     }
-
+    
+    //// GENERIC PUBLIC FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    //// CONTROLLER BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -47,39 +49,6 @@ class EventController extends Controller
         return view('rota.newevent', compact('options'));
     }
     
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store()
-    {
-        $this -> validate(request(), [
-            'event_type' => 'required',
-            'event_name' => 'required|min:5|max:32',
-            'start_date' => 'required|date_format:d/m/Y H:i',
-            'end_date' => 'required|date_format:d/m/Y H:i'
-        ]);
-
-        $event = new Event;
-        $event -> start_date = Carbon::createFromFormat('d/m/Y H:i',request('start_date'));
-        $event -> end_date = Carbon::createFromFormat('d/m/Y H:i',request('end_date'));
-        $event -> name = request('event_name');
-        $event -> type = request('event_type');
-
-        // Submit the data to the database
-
-        $event->save();
-         
-        // Give user feedback
-        notify()->flash('The event has been successfully added to the database!', 'success');
-
-        return redirect('/rota');
-    }
-    
-
     /**
      * Show the form for editing the specified event.
      *
@@ -94,8 +63,40 @@ class EventController extends Controller
         return view('rota.updateevent', compact('event','options'));
     }
     
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
     
-    
+    /**
+     * Store a newly created event in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store()
+    {
+        // Do PHP validation of HTML form
+        $this -> validate(request(), [
+            'event_type' => 'required',
+            'event_name' => 'required|min:5|max:32',
+            'start_date' => 'required|date_format:d/m/Y H:i',
+            'end_date' => 'required|date_format:d/m/Y H:i'
+        ]);
+        
+        // Create the Event instance
+        $event = new Event;
+        $event -> start_date = Carbon::createFromFormat('d/m/Y H:i',request('start_date'));
+        $event -> end_date = Carbon::createFromFormat('d/m/Y H:i',request('end_date'));
+        $event -> name = request('event_name');
+        $event -> type = request('event_type');
+
+        // Submit the data to the database
+        $event->save();
+         
+        // Give user feedback
+        notify()->flash('The event has been successfully added to the database!', 'success');
+
+        return redirect('/rota');
+    }
 
     /**
      * Update an event
@@ -131,13 +132,13 @@ class EventController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified event from storage.
      *
      * @param  \App\staff  $staff
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-
+        //TODO: need to create function and button for deleting events
     }
 }

@@ -16,7 +16,8 @@ use App\FaultData;
 use App\StatisticsHelper;
 
 /**
- * This controller manages the homepage
+ * This controller manages the homepage 
+ * TODO: this should be moved into the HomeController! Only keep the actions for posts in this controller!
  **/
 class PostsController extends Controller
 {

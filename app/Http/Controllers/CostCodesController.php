@@ -11,12 +11,19 @@ use Carbon\Carbon;
 
 class CostCodesController extends Controller
 {
+    //// GENERIC PUBLIC FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
     // This controller is created to manage all pages connected with the cost codes
     public function __construct()
     {
         // This controller manages comments to posts (issues)
         $this->middleware('auth');
     }
+    
+    //// CONTROLLER BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
     public function index()
     {
         // Request only active cost codes from the database
@@ -25,6 +32,7 @@ class CostCodesController extends Controller
         $cost_codes = cost_code::where('expires','>',$nowDate)->get();
         return view('costCodes.index',compact('cost_codes'));
     }
+    
     public function indexInactive()
     {
         // Return only the inactive cost codes
@@ -33,10 +41,21 @@ class CostCodesController extends Controller
         $cost_codes = cost_code::where('expires','<',$nowDate)->get();
         return view('costCodes.expired',compact('cost_codes'));
     }
+    
     public function create()
     {
         return view('costCodes.create');
     }
+    
+    public function edit($id)
+    {
+        $cost_code = cost_code::find($id);
+        return view('costCodes.edit',compact('cost_code'));
+    }
+    
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
     public function store()
     {
         // Validate input cost code
@@ -88,11 +107,7 @@ class CostCodesController extends Controller
         ]);
         return redirect('/costCodes/index');
     }
-    public function edit($id)
-    {
-        $cost_code = cost_code::find($id);
-        return view('costCodes.edit',compact('cost_code'));
-    }
+    
     public function update($id)
     {
         $cost_code_request = request()->validate([
@@ -137,6 +152,7 @@ class CostCodesController extends Controller
         ]);
         return redirect('/costCodes/index');
     }
+    
     public function destroy($id)
     {
         $cost_code = cost_code::findOrFail($id);

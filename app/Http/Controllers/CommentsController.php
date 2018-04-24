@@ -6,15 +6,23 @@ use App\posts;
 use App\comments;
 use Auth;
 
+// This controller manages comments to posts (issues)
 class CommentsController extends Controller
 {
-    // This controller manages comments to posts (issues)
+    //// GENERIC PUBLIC FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
     public function __construct()
     {
         // The functions in this controller available only for authenticated users
         $this->middleware('auth');
 
     }
+
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    /**saves a comment**/
     public function store(posts $post){
 
         // Validate requests:
@@ -33,6 +41,8 @@ class CommentsController extends Controller
 
         return redirect()->home();
     }
+    
+    /**deletes a comment**/
     public function destroy($id){
         $comment = comments::findOrFail($id);
         $comment->delete();
