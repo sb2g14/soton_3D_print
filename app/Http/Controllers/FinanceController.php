@@ -95,6 +95,8 @@ class FinanceController extends Controller
             return ['name' => $item->name()];
         });
         $nocwp = $nocwp->implode('name', ', ');
+
+        
         return view('finance.index', compact('month','finance','nocwp'));
     }
     

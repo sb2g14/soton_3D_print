@@ -28,6 +28,9 @@ use App\Rules\CustomerNameValidation;
 
 class PrintingDataController extends Controller
 {
+    //// PRIVATE (HELPER) FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------/
+
     /**
      * Check printers that are in use if their print has completed and if so change the status
      */
@@ -146,6 +149,12 @@ class PrintingDataController extends Controller
         return $counts;
     }
 
+    //// GENERIC PUBLIC FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    //// CONTROLLER BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
+
     /**
      * Function to display the blade with all pending jobs
      * Creates variables for blade that displays the Workshop jobs waiting for approval
@@ -209,8 +218,39 @@ class PrintingDataController extends Controller
             return view('printingData.create',compact('available_printers'));
         }
     }
+    
+    /**
+     * Function to display the blade with the job details waiting for staff approval
+     * @blade_address /printingData/show/<id>
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show($id)
+    {
+        //get the job
+        $job = Jobs::findOrFail($id);
+        //get the available printers if staff wants to change the printer number
+        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
+        //return the blade
+        return view('printingData.show',compact('job','available_printers'));
+    }
+    
+    /**
+     * Edit the workshop job after it has completed
+     * @blade_address /printingData/edit/<id>
+     * @param $id int
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit($id)
+    {
+        // Get the job
+        $job = Jobs::findOrFail($id);
+        // Return the blade
+        return view('printingData.edit',compact('job'));
+    }
 
-
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
 
     /**
      * Function to store the request of a new workshop sent via POST method
@@ -328,21 +368,7 @@ class PrintingDataController extends Controller
        return redirect()->home();
     }
 
-    /**
-     * Function to display the blade with the job details waiting for staff approval
-     * @blade_address /printingData/show/<id>
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function show($id)
-    {
-        //get the job
-        $job = Jobs::findOrFail($id);
-        //get the available printers if staff wants to change the printer number
-        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
-        //return the blade
-        return view('printingData.show',compact('job','available_printers'));
-    }
+    
 
     /**
      * Function called when the workshop print gets approved by a demonstrator
@@ -387,6 +413,7 @@ class PrintingDataController extends Controller
             'job_approved_comment' => request('comments'),
             'job_approved_by' => Auth::user()->staff->id,
             'approved_at' => Carbon::now('Europe/London'),
+            'accepted_at' => Carbon::now('Europe/London'),
             'requested_online' => 0,
             'status' => 'Approved',
         ]);
@@ -399,7 +426,7 @@ class PrintingDataController extends Controller
             'price' => $price,
             'status' => 'Approved',
             'print_started_by' => Auth::user()->staff->id,
-            'print_finished_by' => Auth::user()->staff->id,
+            'print_finished_by' => Auth::user()->staff->id, //???
         ]);
 
         // Display notification to user
@@ -411,20 +438,85 @@ class PrintingDataController extends Controller
         return redirect('printingData/index');
     }
 
+    
+
+    
+
     /**
-     * Edit the workshop job after it has completed
-     * @blade_address /printingData/edit/<id>
-     * @param $id int
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * marks a job as failed
+     * @blade_address /printingData/abort/<id>
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function edit($id)
+    public function abort($id)
     {
-        // Get the job
+        //Set the price to 0
+        $new_price = 0;
+
+        // Submit the data to the database
         $job = Jobs::findOrFail($id);
-        // Return the blade
-        return view('printingData.edit',compact('job'));
+        $print_id = $job->prints->first()->id;
+        $print = Prints::findOrFail($print_id);
+        // Update Job
+        $job->update([
+            'status'=>'Failed',
+            'total_price' => $new_price,
+            'finished_at' => Carbon::now('Europe/London'),
+            'job_finished_by' => Auth::user()->staff->id
+            ]);
+        // Update Print
+        $print->update([
+            'status' => 'Failed',
+            'price' => $new_price,
+            'finished_at' => Carbon::now('Europe/London'),
+            'print_finished_by' => Auth::user()->staff->id
+        ]);
+
+        // Mark printer to be available again
+        printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
+
+        // Notify user
+        notify()->flash('The job has been marked as Failed!', 'success', [
+            'text' => "If this was not reported by {$job->customer_name}, please contact the customer via {$job->customer_email}.",
+        ]);
+
+        // Redirect to blade showing currently printing jobs
+        return redirect('printingData/approved');
     }
 
+    /**
+     * marks job as successful
+     * @param $id int
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function success($id)
+    {
+        //get the job and related print
+        $job = Jobs::findOrFail($id);
+        $print_id = $job->prints->first()->id;
+        $print = Prints::findOrFail($print_id);
+        //need to first check if this job is currently printing or not.
+        if(!$print->status === "Approved" || !$job->status === "Approved"){
+            //notify user in case this was an old job
+            notify()->flash('It looks like someone was faster than you.', 'error', [
+                'text' => "Please refresh the page and continue as normal.",
+            ]);
+        }else {
+            //mark printer as available
+            printers::where('id', '=', $print->printers_id)->update(array('in_use' => 0));
+            //mark job as successful
+            $job->update(array('finished_at' => Carbon::now('Europe/London'),'job_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
+            //mark print as successful
+            $print->update(array('finished_at' => Carbon::now('Europe/London'),'print_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
+            //notify user
+            notify()->flash('The job has been marked as Success!', 'success', [
+                'text' => "You may continue reviewing other jobs.",
+            ]);
+        }
+        //redirect to blade showing currently printing jobs
+        return redirect('printingData/approved');
+    }
+    
     /**
      * Function that updates the job details
      * @param $id
@@ -480,79 +572,6 @@ class PrintingDataController extends Controller
         ]);
         // Redirect to blade with completed workshop jobs
         return redirect('printingData/finished');
-    }
-
-    /**
-     * marks a job as failed
-     * @blade_address /printingData/abort/<id>
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function abort($id)
-    {
-        //Set the price to 0
-        $new_price = 0;
-
-        // Submit the data to the database
-        $job = Jobs::findOrFail($id);
-        $print_id = $job->prints->first()->id;
-        $print = Prints::findOrFail($print_id);
-        // Update Job
-        $job->update([
-            'status'=>'Failed',
-            'total_price' => $new_price,
-            'job_finished_by' => Auth::user()->staff->id
-            ]);
-        // Update Print
-        $print->update([
-            'status' => 'Failed',
-            'price' => $new_price,
-            'print_finished_by' => Auth::user()->staff->id
-        ]);
-
-        // Mark printer to be available again
-        printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
-
-        // Notify user
-        notify()->flash('The job has been marked as Failed!', 'success', [
-            'text' => "If this was not reported by {$job->customer_name}, please contact the customer via {$job->customer_email}.",
-        ]);
-
-        // Redirect to blade showing currently printing jobs
-        return redirect('printingData/approved');
-    }
-
-    /**
-     * marks job as successful
-     * @param $id int
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function success($id)
-    {
-        //get the job and related print
-        $job = Jobs::findOrFail($id);
-        $print_id = $job->prints->first()->id;
-        $print = Prints::findOrFail($print_id);
-        //need to first check if this job is currently printing or not.
-        if(!$print->status === "Approved" || !$job->status === "Approved"){
-            //notify user in case this was an old job
-            notify()->flash('It looks like someone was faster than you.', 'error', [
-                'text' => "Please refresh the page and continue as normal.",
-            ]);
-        }else {
-            //mark printer as available
-            printers::where('id', '=', $print->printers_id)->update(array('in_use' => 0));
-            //mark job as successful
-            $job->update(array('job_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
-            //mark print as successful
-            $print->update(array('print_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
-            //notify user
-            notify()->flash('The job has been marked as Success!', 'success', [
-                'text' => "You may continue reviewing other jobs.",
-            ]);
-        }
-        //redirect to blade showing currently printing jobs
-        return redirect('printingData/approved');
     }
 
     /**

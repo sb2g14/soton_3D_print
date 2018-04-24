@@ -187,6 +187,7 @@
                 <p>After the check is complete you will receive an email from the manager with the estimated duration and
                     cost of your print.</p>
                 <p>If you are happy with the estimated figures please reply to the manager confirming your order.</p>
+                <p>The last 10 orders took around {{$onlineSpeed['total']/24}} days to complete each.
             </div>
 
             <div class="hint text-left" data-hint="customer_email">

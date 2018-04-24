@@ -23,8 +23,8 @@
                     <th>Time</th>
                     <th>Material Amount</th>
                     <th>Price</th>
-                    <th>Created</th>
-                    <th>Last updated</th>
+                    <th>Requested</th>
+                    <th>Finished</th>
                     <th>Completed by</th>
                     <th>Status</th>
                     {{--@hasanyrole('LeadDemonstrator|administrator|OnlineJobsManager')--}}
@@ -57,8 +57,8 @@
                             <td data-th="Time">{{ date("H:i", strtotime($job->total_duration)) }}</td>
                             <td data-th="Material Amount">{{ $job->total_material_amount }} g</td>
                             <td data-th="Price">£{{ $job->total_price }}</td>
-                            <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
-                            <td data-th="Updated last">{{ Carbon\Carbon::parse($job->updated_at)->formatLocalized('%d %b, %H:%M') }}</td>
+                            <td data-th="Requested on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
+                            <td data-th="Finished on">{{ Carbon\Carbon::parse($job->finished_at)->formatLocalized('%d %b, %H:%M') }}</td>
                             @if ($job->staff_finished === null)
                                 <td data-th="Completed by"></td>
                             @else

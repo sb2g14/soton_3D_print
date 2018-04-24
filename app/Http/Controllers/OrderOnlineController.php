@@ -24,6 +24,7 @@ use App\Mail\jobReject;
 use App\Mail\jobFailed;
 use App\printers;
 use Alert;
+use App\StatisticsHelper;
 
 /** OrderOnlineController
  * This controller manages online jobs.
@@ -151,8 +152,10 @@ class OrderOnlineController extends Controller
     /**Show blade to customer to file a new online job request**/
     public function create()
     {
-        $it = staff::where('role', '=', 'IT Manager')->get(); //->orWhere('role', '=', 'IT')
-        return view('OnlineJobs.create', compact('it'));
+        $it = staff::where('role', '=', 'IT Manager')->get();
+        $stats = new StatisticsHelper();
+        $onlineSpeed = $stats->getOnlineSpeed(8);
+        return view('OnlineJobs.create', compact('it','onlineSpeed'));
     }
 
     /**Show blade to online job manager displaying a specific online job request and allow to fill in all the required information.**/
@@ -455,7 +458,8 @@ class OrderOnlineController extends Controller
         $job = Jobs::findOrFail($id);
 
         $job->update(array(
-            'status' => 'In Progress'
+                'status' => 'In Progress',
+                'accepted_at' => Carbon::now('Europe/London')
             ));
 
         // Locate associated print previews
@@ -592,6 +596,7 @@ class OrderOnlineController extends Controller
         // Change the job flag to 'Failed'
         $job->update(array(
             'status' => 'Failed',
+            'finished_at' => Carbon::now('Europe/London'),
             'job_finished_by' => Auth::user()->staff->id
         ));
         
@@ -608,6 +613,7 @@ class OrderOnlineController extends Controller
         // Change the job flag to 'Success'
         $job->update(array(
             'status' => 'Success',
+            'finished_at' => Carbon::now('Europe/London'),
             'job_finished_by' => Auth::user()->staff->id
         ));
         
@@ -621,6 +627,7 @@ class OrderOnlineController extends Controller
     {
         $print = Prints::findOrFail($id);
         $print->update(array(
+            'finished_at' => Carbon::now('Europe/London'),
             'print_finished_by' => Auth::user()->staff->id,
             'status' => 'Success'
         ));
@@ -641,6 +648,7 @@ class OrderOnlineController extends Controller
     {
         $print = Prints::findOrFail($id);
         $print->update(array(
+            'finished_at' => Carbon::now('Europe/London'),
             'print_finished_by' => Auth::user()->staff->id,
             'status' => 'Failed'
         ));

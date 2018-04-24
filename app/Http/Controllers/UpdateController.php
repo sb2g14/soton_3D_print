@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Jobs;
 use App\Prints;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class UpdateController extends Controller
 {
@@ -28,6 +29,63 @@ class UpdateController extends Controller
             $newTitle = $job->use_case;
             $job -> update(array(
                 'job_title' => $newTitle
+            ));
+        }   
+    }
+    
+    private function fillJobDates(){
+        $jobs = Jobs::where('status','Success')->orWhere('status','Failed')->get();
+        foreach($jobs as $job){
+            $update = new Carbon($job->updated_at);
+            $start = $job->approved_at;
+            $duration = $job->total_duration;
+            $duration = explode(':',$duration);
+            $end1 = $job->finished_at;
+            if(!$end1){
+                $end1 = $job->updated_at;
+            }else{
+                $end1 = new Carbon($end1);
+            }
+            if(count($duration) == 3){
+                $end1 = new Carbon($start);
+                $end1 = $end1->addHours($duration[0])->addMinutes($duration[1]);
+            }
+            if($update->diffInHours($end1, false) > 3){
+                $finish = $end1;
+            }else{
+                $finish = $update;
+            }
+            $job -> update(array(
+                'accepted_at' => $start,
+                'finished_at' => $finish
+            ));
+        }   
+    }
+
+    private function fillPrintDates(){
+        $prints = Prints::where('status','Success')->orWhere('status','Failed')->get();
+        foreach($prints as $print){
+            $update = new Carbon($print->updated_at);
+            $start = $print->created_at;
+            $duration = $print->time;
+            $duration = explode(':',$duration);
+            $end1 = $print->finished_at;
+            if(!$end1){
+                $end1 = $print->updated_at;
+            }else{
+                $end1 = new Carbon($end1);
+            }
+            if(count($duration) == 3){
+                $end1 = new Carbon($start);
+                $end1 = $end1->addHours($duration[0])->addMinutes($duration[1]);
+            }
+            if($update->diffInHours($end1, false) > 3){
+                $finish = $end1;
+            }else{
+                $finish = $update;
+            }
+            $print -> update(array(
+                'finished_at' => $finish
             ));
         }   
     }
@@ -81,6 +139,13 @@ class UpdateController extends Controller
     
     public function doUpdate()
     {
+        //IMPORTANT! RUN THIS FIRST:
+        //ALTER TABLE `jobs` ADD COLUMN `accepted_at` DATETIME NULL, ADD COLUMN `finished_at` DATETIME NULL;
+        //ALTER TABLE `prints` ADD COLUMN `finished_at` DATETIME NULL;
+        // now we save the updated_at to finished_at!
+        $this->fillJobDates();
+        $this->fillPrintDates();
+        // then we can clean other columns without loosing information
         $this->addJobTitles();
         $this->correct3DHubsToOnline();
         $this->setJobStaffIDs();

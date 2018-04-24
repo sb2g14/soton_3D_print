@@ -212,6 +212,7 @@ class StatisticsHelper
         return $codes->sum('Price');
     }
     
+    /** Get the number of hours that demonstrators need to be paid for demonstrating in the workshop for the given year **/
     public function getDemonstratorHours($year){
         // Define start and end of year
         $t1 = new Carbon($year);
@@ -220,14 +221,44 @@ class StatisticsHelper
         // Get all the sessions from the specified month
         $sessions = Sessions::where('sessions.start_date', '>=', $t1)->where('sessions.start_date', '<=', $t2)->get();
         $sessionlength = $sessions->map(function ($session) {
-            $end = new Carbon($session->end_date);
-            $start = new Carbon($session->start_date);
-            $hours = $start->diffInHours($end)*$session->dem_required;
-            //$hours = $staff->end_date - $staff->start_date;
+            //$end = new Carbon($session->end_date);
+            //$start = new Carbon($session->start_date);
+            //$hours = $start->diffInHours($end)*$session->dem_required;
+            $hours = $session->minutes()*$session->dem_required/60;
             return $hours;
         });
         $hours = $sessionlength->sum(); 
         return $hours; 
+    }
+    
+    /** get the average time the past $n online jobs took as an array for the different time steps **/
+    public function getOnlineSpeed($n){
+        // Get all the completed jobs from the specified month
+        $jobs = Jobs::where('status', 'Success')
+            ->where('requested_online', 1)
+            ->orderBy('created_at','DESC')
+            ->take($n)
+            ->get();
+        $times = [];
+        $times['total'] = $jobs->map(function ($job) {
+            $end = new Carbon($job->updated_at);
+            $start = new Carbon($job->created_at);
+            $hours = $start->diffInHours($end);
+            return $hours;
+        })->avg();
+        $times['reply'] = $jobs->map(function ($job) {
+            $end = new Carbon($job->approved_at);
+            $start = new Carbon($job->created_at);
+            $hours = $start->diffInHours($end);
+            return $hours;
+        })->avg();
+        $times['printing'] = $jobs->map(function ($job) {
+            $end = new Carbon($job->updated_at);
+            $start = new Carbon($job->approved_at);
+            $hours = $start->diffInHours($end);
+            return $hours;
+        })->avg();
+        return $times;
     }
     
     /** Get an Array with the Carbon times for the last $n intervals, where
