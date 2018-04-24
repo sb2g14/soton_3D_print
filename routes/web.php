@@ -19,10 +19,12 @@
 Route::get('/','PostsController@index')->name('home');
 
 // This route uses controller to redirect to the 'About Workshop' page
-Route::get('/aboutWorkshop','AboutWorkshopController@index');
+Route::get('/aboutWorkshop','AboutWorkshopController@index'); //deprecated
+Route::get('/about','AboutWorkshopController@index');
 
 // This route uses controller to redirect to the 'Photolibrary' page
-Route::get('/photolibrary','PhotolibraryController@index');
+Route::get('/photolibrary','PhotolibraryController@index'); //deprecated
+Route::get('/gallery','PhotolibraryController@index');
 
 // display of charts
 Route::get('/charts/{name}/{color}/{height}', 'ChartsController@show')->name('chart');
@@ -31,7 +33,8 @@ Route::get('/charts/{name}/{color}/{height}', 'ChartsController@show')->name('ch
 Route::get('/myprints/','CustomerController@showprints');
 
 // Here we redirect users to 'News' page
-Route::get('news', 'NewsController@index');
+Route::get('news', 'NewsController@index'); //deprecated
+Route::get('/history', 'NewsController@index');
 
 // Redirection to a page with generic information and possibly some lessons
 Route::get('/learn', 'LearnController@index');
@@ -105,11 +108,10 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
 
     // Redirect to the view where one can manage issues
-
-    Route::get('/issues/index','IssuesController@index');
+    Route::get('/issues/index','IssuesController@index'); //deprecated
+    Route::get('/issues','IssuesController@index');
 
     // Redirect to a form where demonstrator rise the issue and can update the printer status
-
     Route::get('/issues/select', 'IssuesController@select');
 
     // Select printer for updating status
@@ -119,19 +121,20 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     Route::post('/issues/create','IssuesController@create');
 
     //Route to update the issue
-    Route::get('/issues/update/{id}','IssuesController@edit');
+    Route::get('/issues/update/{id}','IssuesController@edit'); //deprecated
+    Route::get('/issues/{id}/edit','IssuesController@edit');
 
     //Form updating the issue
-    Route::post('/issues/update','IssuesController@update');
+    Route::post('/issues/update','IssuesController@update'); //deprecated
+    Route::post('/issues/{id}/edit','IssuesController@update');
 
     // Route to show the issue to be resolved
-    Route::get('issues/resolve/{id}','IssuesController@showResolve');
+    Route::get('issues/resolve/{id}','IssuesController@showResolve'); //deprecated
+    Route::get('issues/{id}/resolve','IssuesController@showResolve');
 
     // Route to update database entry for a resolved issue
-    Route::post('issues/resolve','IssuesController@resolve');
-
-    // Route view resolved issue for each printer
-    Route::get('issues/show/{id}','IssuesController@show');
+    Route::post('issues/resolve','IssuesController@resolve'); //deprecated
+    Route::post('issues/{id}/resolve','IssuesController@resolve');
 
     // Route to export issues to CSV
     Route::get('issues/export',
@@ -141,10 +144,12 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
         ]);
 
     // Delete issue if it has been created by accident
-    Route::get('/issues/delete/{id}','IssuesController@destroy');
+    Route::get('/issues/delete/{id}','IssuesController@destroy'); //deprecated
+    Route::get('/issues/{id}/delete','IssuesController@destroy');
 
     // Delete issue update
-    Route::get('/issues/delete_update/{id}', 'IssuesController@deleteupdate');
+    Route::get('/issues/delete_update/{id}', 'IssuesController@deleteupdate'); //deprecated
+    Route::get('/issues/update/{id}/delete', 'IssuesController@deleteupdate');
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -153,7 +158,8 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Here we redirect to the page containing general printer info using controller
-Route::get('/printers/index','PrintersController@index');
+Route::get('/printers/index','PrintersController@index'); //deprecated
+Route::get('/printers','PrintersController@index');
 
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
     
@@ -174,12 +180,18 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
 
     // Here we redirect to the page where we store a new printer
     Route::post('/printers','PrintersController@store');
+    
+    // Route view resolved issue for each printer
+    Route::get('issues/show/{id}','IssuesController@show'); //deprecated
+    Route::get('/printers/{id}','IssuesController@show');
 
     // Here we redirect to the view where one can update a printer
-    Route::get('/printers/update/{id}','PrintersController@edit');
+    Route::get('/printers/update/{id}','PrintersController@edit'); //deprecated
+    Route::get('/printers/{id}/edit','PrintersController@edit');
 
     // Here we update printer information
-    Route::post('/printers/update/{id}','PrintersController@update');
+    Route::post('/printers/update/{id}','PrintersController@update'); //deprecated
+    Route::post('/printers/{id}/edit','PrintersController@update');
 
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,14 +201,17 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Open a form to request a job
-Route::get('/printingData/create','PrintingDataController@create');
+Route::get('/printingData/create','PrintingDataController@create'); //deprecated
+Route::get('/WorkshopJobs/create','PrintingDataController@create');
 
 // Save the job to a database and send to a demonstrator for approval
-Route::post('/printingData','PrintingDataController@store');
+Route::post('/printingData','PrintingDataController@store'); //deprecated
+Route::post('/WorkshopJobs','PrintingDataController@store');
 
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
     // Show a list of jobs waiting for approval
-    Route::get('/printingData/index','PrintingDataController@index');
+    Route::get('/printingData/index','PrintingDataController@index'); //deprecated
+    Route::get('/WorkshopJobs/requests','PrintingDataController@index');
 
     // Route to export jobs to CSV
     Route::get('printingData/export',
@@ -206,34 +221,44 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
         ]);
 
     // Show a list of approved jobs
-    Route::get('/printingData/approved','PrintingDataController@approved');
+    Route::get('/printingData/approved','PrintingDataController@approved'); //deprecated
+    Route::get('/WorkshopJobs/approved','PrintingDataController@approved');
 
     // Show a list of finished jobs
-    Route::get('/printingData/finished','PrintingDataController@finished');
-
+    Route::get('/printingData/finished','PrintingDataController@finished'); //deprecated
+    Route::get('/WorkshopJobs/finished','PrintingDataController@finished');
+    
+    // Show each job requested in a separate blade
+    Route::get('/printingData/show/{id}','PrintingDataController@show'); //deprecated
+    Route::get('/WorkshopJobs/{id}','PrintingDataController@show');
+    
+    // Update the requested record and approve/reject a job
+    Route::post('/printingData/show/{id}','PrintingDataController@update'); //deprecated
+    Route::post('/WorkshopJobs/{id}','PrintingDataController@update');
+    
     // Show a blade to edit the job
-    Route::get('/printingData/edit/{id}','PrintingDataController@edit');
+    Route::get('/printingData/edit/{id}','PrintingDataController@edit'); //deprecated
+    Route::get('/WorkshopJobs/{id}/edit','PrintingDataController@edit');
 
     // Show a blade to save edit the job
-    Route::post('/printingData/edit/{id}','PrintingDataController@review');
-
-    // Show each job requested in a separate blade
-    Route::get('/printingData/show/{id}','PrintingDataController@show');
-
-    // Update the requested record and approve/reject a job
-    Route::post('/printingData/show/{id}','PrintingDataController@update');
+    Route::post('/printingData/edit/{id}','PrintingDataController@review'); //deprecated
+    Route::post('/WorkshopJobs/{id}/edit','PrintingDataController@review');
 
     // Reporting that current job is unsuccessful
-    Route::get('/printingData/abort/{id}','PrintingDataController@abort');
+    Route::get('/printingData/abort/{id}','PrintingDataController@abort'); //deprecated
+    Route::get('/WorkshopJobs/{id}/failed','PrintingDataController@abort');
 
     // Reporting that current job is successful
-    Route::get('/printingData/success/{id}','PrintingDataController@success');
-
-    // Reject current job and delete it from the database
-    Route::get('/printingData/delete/{id}','PrintingDataController@destroy');
+    Route::get('/printingData/success/{id}','PrintingDataController@success'); //deprecated
+    Route::get('/WorkshopJobs/{id}/success','PrintingDataController@success');
 
     // Route to restart a failed job
-    Route::get('/printingData/restart/{id}','PrintingDataController@restart');
+    Route::get('/printingData/restart/{id}','PrintingDataController@restart'); //deprecated
+    Route::get('/WorkshopJobs/{id}/restart','PrintingDataController@restart');
+    
+    // Reject current job and delete it from the database
+    Route::get('/printingData/delete/{id}','PrintingDataController@destroy'); //deprecated
+    Route::get('/WorkshopJobs/{id}/delete','PrintingDataController@destroy');
 
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,71 +271,88 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
 
 // Route to store an online request
-Route::post('onlineJobs', 'OrderOnlineController@store');
+Route::post('onlineJobs', 'OrderOnlineController@store'); //deprecated
+Route::post('OnlineJobs', 'OrderOnlineController@store');
 
 Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrator']], function () {
 
     // List pending online requests
-    Route::get('/OnlineJobs/index', 'OrderOnlineController@index');
+    Route::get('/OnlineJobs/index', 'OrderOnlineController@index'); //deprecated
+    Route::get('/OnlineJobs/requests', 'OrderOnlineController@index');
 
     // Review each pending online request
-    Route::get('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@checkrequest');
+    Route::get('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@checkrequest'); //deprecated
+    Route::get('/OnlineJobs/request/{id}', 'OrderOnlineController@checkrequest');
 
     // Assign print preview to each online job request
-    Route::post('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@assignPrintPreview');
+    Route::post('/OnlineJobs/checkrequest/{id}', 'OrderOnlineController@assignPrintPreview'); //deprecated
+    Route::post('/OnlineJobs/request/{id}', 'OrderOnlineController@assignPrintPreview');
 
     // Delete print preview from the job request
-    Route::get('/OnlineJobs/DeletePrintPreview/{id}', 'OrderOnlineController@deletePrintPreview');
+    Route::get('/OnlineJobs/DeletePrintPreview/{id}', 'OrderOnlineController@deletePrintPreview'); //deprecated
+    Route::get('/OnlineJobs/PrintPreview/{id}/delete', 'OrderOnlineController@deletePrintPreview');
 
     // Job rejected by online jobs manager
-    Route::post('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager');
+    Route::post('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager'); //deprecated
+    Route::post('/OnlineJobs/{id}/delete', 'OrderOnlineController@rejectJobManager');
 
     // Route to approve Job
-    Route::get('/OnlineJobs/approveRequest/{id}', 'OrderOnlineController@approveRequest');
+    Route::get('/OnlineJobs/approveRequest/{id}', 'OrderOnlineController@approveRequest'); //deprecated
+    Route::get('/OnlineJobs/request/{id}/approve', 'OrderOnlineController@approveRequest');
 
     // Job approved by online jobs manager
     Route::get('/OnlineJobs/approved', 'OrderOnlineController@approved');
 
     // View approved job info
-    Route::get('/OnlineJobs/manageApproved/{id}', 'OrderOnlineController@manageApproved');
+    Route::get('/OnlineJobs/manageApproved/{id}', 'OrderOnlineController@manageApproved'); //deprecated
+    Route::get('/OnlineJobs/approved/{id}', 'OrderOnlineController@manageApproved');
 
     // Job has been approved by customer
-    Route::get('/OnlineJobs/customerApproved/{id}', 'OrderOnlineController@customerApproved');
+    Route::get('/OnlineJobs/customerApproved/{id}', 'OrderOnlineController@customerApproved'); //deprecated
+    Route::get('/OnlineJobs/approved/{id}/accept', 'OrderOnlineController@customerApproved');
 
     // Job has been rejected by customer
-    Route::get('/OnlineJobs/customerReject/{id}', 'OrderOnlineController@customerReject');
+    Route::get('/OnlineJobs/customerReject/{id}', 'OrderOnlineController@customerReject'); //deprecated
+    Route::get('/OnlineJobs/approved/{id}/reject', 'OrderOnlineController@customerReject');
 
     // Return pending jobs
     Route::get('/OnlineJobs/pending', 'OrderOnlineController@pending');
 
-    // Return prints in progress
-    Route::get('/OnlineJobs/prints', 'OrderOnlineController@prints');
-
-    // Return completed
-    Route::get('/OnlineJobs/completed', 'OrderOnlineController@completed');
-
     // Route to manage pending jobs
-    Route::get('/OnlineJobs/managePendingJob/{id}', 'OrderOnlineController@managePendingJob');
+    Route::get('/OnlineJobs/managePendingJob/{id}', 'OrderOnlineController@managePendingJob'); //deprecated
+    Route::get('/OnlineJobs/pending/{id}', 'OrderOnlineController@managePendingJob');
 
     // Route to assign print to currently managed job
-    Route::post('/OnlineJobs/managePendingJob/{id}', 'OrderOnlineController@assignPrint');
-
+    Route::post('/OnlineJobs/managePendingJob/{id}', 'OrderOnlineController@assignPrint'); //deprecated
+    Route::post('/OnlineJobs/pending/{id}', 'OrderOnlineController@assignPrint');
+    
+    // Return prints in progress
+    Route::get('/OnlineJobs/prints', 'OrderOnlineController@prints');
+    
     // Route to cancel assigned prints leaving no trace in the DB
-    Route::get('/OnlineJobs/DeletePrint/{id}', 'OrderOnlineController@deletePrint');
-
-    // Route for job failed
-    Route::post('/OnlineJobs/jobFailed/{id}', 'OrderOnlineController@jobFailed');
-
-    // Route for job success
-    Route::get('/OnlineJobs/jobSuccess/{id}', 'OrderOnlineController@jobSuccess');
-
+    Route::get('/OnlineJobs/DeletePrint/{id}', 'OrderOnlineController@deletePrint'); //deprecated
+    Route::get('/OnlineJobs/print/{id}/delete', 'OrderOnlineController@deletePrint');
+    
     // Route to report print as successful
-    Route::get('/OnlineJobs/printSuccessful/{id}', 'OrderOnlineController@printSuccessful');
+    Route::get('/OnlineJobs/printSuccessful/{id}', 'OrderOnlineController@printSuccessful'); //deprecated
+    Route::get('/OnlineJobs/print/{id}/success', 'OrderOnlineController@printSuccessful');
 
     // Route to report print as failed
-    Route::get('/OnlineJobs/printFailed/{id}', 'OrderOnlineController@printFailed');
+    Route::get('/OnlineJobs/printFailed/{id}', 'OrderOnlineController@printFailed'); //deprecated
+    Route::get('/OnlineJobs/print/{id}/failed', 'OrderOnlineController@printFailed');
 
+    // Route for job failed
+    Route::post('/OnlineJobs/jobFailed/{id}', 'OrderOnlineController@jobFailed'); //deprecated
+    Route::post('/OnlineJobs/{id}/failed', 'OrderOnlineController@jobFailed');
 
+    // Route for job success
+    Route::get('/OnlineJobs/jobSuccess/{id}', 'OrderOnlineController@jobSuccess'); //deprecated
+    Route::get('/OnlineJobs/{id}/success', 'OrderOnlineController@jobSuccess');
+
+    // Return completed
+    Route::get('/OnlineJobs/completed', 'OrderOnlineController@completed'); //deprecated
+    Route::get('/OnlineJobs/finished', 'OrderOnlineController@completed');
+    
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
 
