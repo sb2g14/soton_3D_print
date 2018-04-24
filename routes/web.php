@@ -11,33 +11,12 @@
 |
 */
 
-// This route uses controller to redirect to a personal page of every member
-Route::get('/myprints/','CustomerController@showprints');
 
-// Manage roles blade
-Route::get('/roles', 'RolesManageController@index');
+// Routes for GENERIC PAGES
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 // Here we redirect users to the 'Welcome' page
 Route::get('/','PostsController@index')->name('home');
-
-// Here we redirect users to the create new post
-Route::get('/posts','PostsController@create');
-
-// Here we redirect to the page where we store post data
-Route::post('/posts','PostsController@store');
-
-// Here we redirect to the page where we store announcement data
-Route::post('/announcements','AnnouncementsController@store');
-
-// Delete announcements
-
-Route::get('/announcement/delete/{id}','AnnouncementsController@destroy');
-
-// Here we redirect to the controller that would store our comments
-Route::post('/posts/{post}/comments', 'CommentsController@store');
-
-// Delete comments
-Route::get('/comments/delete/{id}', 'CommentsController@destroy');
 
 // This route uses controller to redirect to the 'About Workshop' page
 Route::get('/aboutWorkshop','AboutWorkshopController@index');
@@ -45,32 +24,70 @@ Route::get('/aboutWorkshop','AboutWorkshopController@index');
 // This route uses controller to redirect to the 'Photolibrary' page
 Route::get('/photolibrary','PhotolibraryController@index');
 
-// Shows the list of workshop members
-Route::get('/members/index','StaffController@index');
-
-// This route uses controller to redirect to a personal page of every member
-Route::get('/members/{id}','StaffController@show');
-
-// This route uses controller to redirect to a personal page to update the personal record of selected member
-Route::get('/members/edit/{id}','StaffController@edit');
-
-// This route uses controller to update a personal page of selected member
-Route::post('/members/edit/{id}','StaffController@update');
-
-// This route uses controller to delete a personal page of selected member
-Route::get('/members/delete/{id}','StaffController@destroy');
-
-// This route uses controller to access former member blade
-Route::get('/members/former/show','StaffController@former');
-
-// Here we redirect to the page containing general printer info using controller
-Route::get('/printers/index','PrintersController@index');
-
 // display of charts
 Route::get('/charts/{name}/{color}/{height}', 'ChartsController@show')->name('chart');
 
-// Group of routes available only to roles administrator, Lead Demonstrator, Demonstrator
+// This route uses controller to redirect to a personal page of every member
+Route::get('/myprints/','CustomerController@showprints');
+
+// Here we redirect users to 'News' page
+Route::get('news', 'NewsController@index');
+
+// Redirection to a page with generic information and possibly some lessons
+Route::get('/learn', 'LearnController@index');
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Routes for FAQ
+/////////////////////////////////////////////////////////////////////////////////////////////
+// Route to faq
+Route::get('/faq','FAQController@index');
+
+// Route to create a new Q & A
+Route::get('/faq/create', 'FAQController@create');
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Routes for DEMONSTRATOR INFORMATION Pages
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Route to getting paid page
+Route::get('/gettingPaid', 'StaffController@gettingPaid');
+
+// Route to documents page
+Route::get('/documents', 'StaffController@documents');
+
+// Route to statistics page
+Route::get('/statistics','StatisticsController@show');
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Routes for ANNOUNCEMENTS
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Here we redirect to the page where we store announcement data
+Route::post('/announcements','AnnouncementsController@store');
+
+// Delete announcements
+Route::get('/announcement/delete/{id}','AnnouncementsController@destroy');
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Routes for GENERIC ISSUES (posts)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Here we redirect users to the create new post
+Route::get('/posts','PostsController@create');
+
+// Here we redirect to the page where we store post data
+Route::post('/posts','PostsController@store');
+
+// Here we redirect to the controller that would store our comments
+Route::post('/posts/{post}/comments', 'CommentsController@store');
+
+// Delete comments
+Route::get('/comments/delete/{id}', 'CommentsController@destroy');
+
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
 
     // Resolve issues in posts
@@ -79,6 +96,13 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     // Remove posts
 
     Route::get('/post/delete/{id}', 'PostsController@destroy');
+});
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Routes for PRINTER ISSUES (issues)
+/////////////////////////////////////////////////////////////////////////////////////////////
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
 
     // Redirect to the view where one can manage issues
 
@@ -110,7 +134,6 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     Route::get('issues/show/{id}','IssuesController@show');
 
     // Route to export issues to CSV
-
     Route::get('issues/export',
         [
             'as' => 'issues.export',
@@ -118,18 +141,64 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
         ]);
 
     // Delete issue if it has been created by accident
-
     Route::get('/issues/delete/{id}','IssuesController@destroy');
 
     // Delete issue update
     Route::get('/issues/delete_update/{id}', 'IssuesController@deleteupdate');
+});
+/////////////////////////////////////////////////////////////////////////////////////////////
 
+
+// Routes for PRINTER MANAGEMENT
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Here we redirect to the page containing general printer info using controller
+Route::get('/printers/index','PrintersController@index');
+
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
+    
+    //consider using
+    //Route::resource('printers', 'PrintersController');
+    //to replace
+    //Route::get('/printers','PrintersController@index');
+    //Route::get('/printers/create','PrintersController@create');
+    //Route::post('/printers','PrintersController@store');
+    //Route::get('/printers/{id}','PrintersController@show);
+    //Route::get('/printers/{id}/edit','PrintersController@edit');
+    //Route::put('/printers/{id}','PrintersController@update');
+    //Route::delete('/printers/{id}','PrintersController@destroy');
+    //see https://laravel.com/docs/5.1/controllers#restful-resource-controllers for more info on how to control the behaviour
+            
+    // Here we redirect users to the add new printer post page
+    Route::get('/printers/create','PrintersController@create');
+
+    // Here we redirect to the page where we store a new printer
+    Route::post('/printers','PrintersController@store');
+
+    // Here we redirect to the view where one can update a printer
+    Route::get('/printers/update/{id}','PrintersController@edit');
+
+    // Here we update printer information
+    Route::post('/printers/update/{id}','PrintersController@update');
+
+});
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Routes for WORKSHOP PRINTS
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Open a form to request a job
+Route::get('/printingData/create','PrintingDataController@create');
+
+// Save the job to a database and send to a demonstrator for approval
+Route::post('/printingData','PrintingDataController@store');
+
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
     // Show a list of jobs waiting for approval
-
     Route::get('/printingData/index','PrintingDataController@index');
 
     // Route to export jobs to CSV
-
     Route::get('printingData/export',
         [
             'as' => 'printingData.export',
@@ -137,11 +206,9 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
         ]);
 
     // Show a list of approved jobs
-
     Route::get('/printingData/approved','PrintingDataController@approved');
 
     // Show a list of finished jobs
-
     Route::get('/printingData/finished','PrintingDataController@finished');
 
     // Show a blade to edit the job
@@ -169,74 +236,18 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
     Route::get('/printingData/restart/{id}','PrintingDataController@restart');
 
 });
-
-// Group of routes available only to roles administrator, Lead Demonstrator
 /////////////////////////////////////////////////////////////////////////////////////////////
-Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
-    
-    //consider using
-    //Route::resource('printers', 'PrintersController');
-    //to replace
-    //Route::get('/printers','PrintersController@index');
-    //Route::get('/printers/create','PrintersController@create');
-    //Route::post('/printers','PrintersController@store');
-    //Route::get('/printers/{id}','PrintersController@show);
-    //Route::get('/printers/{id}/edit','PrintersController@edit');
-    //Route::put('/printers/{id}','PrintersController@update');
-    //Route::delete('/printers/{id}','PrintersController@destroy');
-    //see https://laravel.com/docs/5.1/controllers#restful-resource-controllers for more info on how to control the behaviour
-            
-    // Here we redirect users to the add new printer post page
-    Route::get('/printers/create','PrintersController@create');
-
-    // Here we redirect to the page where we store a new printer
-    Route::post('/printers','PrintersController@store');
-
-    // Here we redirect to the view where one can update a printer
-    Route::get('/printers/update/{id}','PrintersController@edit');
-
-    // Here we update printer information
-    Route::post('/printers/update/{id}','PrintersController@update');
-
-    // Here we redirect users to the add new member post page
-    Route::get('/members','StaffController@create');
-
-    // Here we redirect to the page where we store a new member
-    Route::post('/members','StaffController@store');
-
-    // Here we redirect to the view where all cost codes are shown
-    Route::get('/costCodes/index','CostCodesController@index');
-
-    // Here old cost codes are displayed
-    Route::get('/costCodes/expired','CostCodesController@indexInactive');
-
-    // Here we redirect to the view where a cost codes can be created
-    Route::get('/costCodes/create','CostCodesController@create');
-
-    // Post update cost code information
-    Route::post('/costCodes/create', 'CostCodesController@store');
-
-    // Here we redirect to the view where all cost codes can be updated
-    Route::get('/costCodes/update/{id}','CostCodesController@edit');
-
-    // Post update cost code information
-    Route::post('/costCodes/update/{id}', 'CostCodesController@update');
-
-    // Delete cost code
-    Route::get('/costCodes/delete/{id}', 'CostCodesController@destroy');
-
-    // Find blade that shows print by id
-    Route::get('/print/{id}','PrintsController@show');
-    
-    // Find blade that shows job by id
-    Route::get('/job/{id}','JobsController@show');
-
-});
 
 
-
-// Group of routes available to online jobs manager only
+// Routes for ONLINE ORDERS
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+// Routes to display online job request form
+Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
+
+// Route to store an online request
+Route::post('onlineJobs', 'OrderOnlineController@store');
+
 Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrator']], function () {
 
     // List pending online requests
@@ -301,13 +312,22 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 
 
 });
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-// Group of routes for managing the ROTA
+
+// Group of routes for PRINTER LOANS
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Here the users are redirected to the page where they can rent a printer
+Route::get('loan', 'LoanController@index');
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Routes for managing the ROTA
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Open a form to display the rota sessions
 Route::get('/rota','RotaController@index');
-
 
 Route::group(['middleware' => ['role:,jobs_manage']], function () {
     // Open a form to indicate availability for sessions
@@ -365,13 +385,12 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
     Route::post('/rota/event/update/{id}','EventController@update');
 
 });
-
 /////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Group of routes for managing the FINANCES
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-Route::group(['middleware' => ['role:,manage_cost_codes']], function () {
+Route::group(['middleware' => ['role:administrator|Coordinator']], function () {
     // Show default finance page
     Route::get('/finance','FinanceController@index');
     
@@ -384,57 +403,93 @@ Route::group(['middleware' => ['role:,manage_cost_codes']], function () {
     // Offer Download of Excel Spreadsheet with data
     Route::get('/finance/jobs/{month}/download','FinanceController@downloadJobs');
 });
-/////////////////////////////////////////////////////////////////////////////////////////////
 
-// Group of routes for ADMINISTRATORS
-/////////////////////////////////////////////////////////////////////////////////////////////
-Route::group(['middleware' => ['role:administrator']], function () {
-    Route::get('/admin/update','UpdateController@doUpdate'); //execute database content updates
+Route::group(['middleware' => ['role:,manage_cost_codes']], function () {
+
+    // Here we redirect to the view where all cost codes are shown
+    Route::get('/costCodes/index','CostCodesController@index');
+
+    // Here old cost codes are displayed
+    Route::get('/costCodes/expired','CostCodesController@indexInactive');
+
+    // Here we redirect to the view where a cost codes can be created
+    Route::get('/costCodes/create','CostCodesController@create');
+
+    // Post update cost code information
+    Route::post('/costCodes/create', 'CostCodesController@store');
+
+    // Here we redirect to the view where all cost codes can be updated
+    Route::get('/costCodes/update/{id}','CostCodesController@edit');
+
+    // Post update cost code information
+    Route::post('/costCodes/update/{id}', 'CostCodesController@update');
+
+    // Delete cost code
+    Route::get('/costCodes/delete/{id}', 'CostCodesController@destroy');
+
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Open a form to request a job
-Route::get('/printingData/create','PrintingDataController@create');
 
-// Save the job to a database and send to a demonstrator for approval
-Route::post('/printingData','PrintingDataController@store');
+// Routes for MANAGING STAFF, ROLES AND PERMISSIONS
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-// Here we redirect users to 'News' page
-Route::get('news', 'NewsController@index');
+// Shows the list of workshop members
+Route::get('/members/index','StaffController@index');
 
-// Here the users are redirected to the page where they can rent a printer
-Route::get('loan', 'LoanController@index');
+// This route uses controller to redirect to a personal page of every member
+Route::get('/members/{id}','StaffController@show');
 
-// Redirection to a page with generic information and possibly some lessons
-Route::get('/learn', 'LearnController@index');
+// This route uses controller to redirect to a personal page to update the personal record of selected member
+Route::get('/members/edit/{id}','StaffController@edit');
 
-// Routes to display online job request form
-Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
+// This route uses controller to update a personal page of selected member
+Route::post('/members/edit/{id}','StaffController@update');
 
-// Route to store an online request
-Route::post('onlineJobs', 'OrderOnlineController@store');
+// This route uses controller to delete a personal page of selected member
+Route::get('/members/delete/{id}','StaffController@destroy');
 
-// Route to getting paid page
-Route::get('/gettingPaid', 'StaffController@gettingPaid');
+// This route uses controller to access former member blade
+Route::get('/members/former/show','StaffController@former');
 
-// Route to documents page
-Route::get('/documents', 'StaffController@documents');
+// Manage roles blade
+Route::get('/roles', 'RolesManageController@index');
 
-// Route to faq
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
+    
+    // Here we redirect users to the add new member post page
+    Route::get('/members','StaffController@create');
 
-Route::get('/faq','FAQController@index');
+    // Here we redirect to the page where we store a new member
+    Route::post('/members','StaffController@store');
 
-Route::get('/statistics','StatisticsController@show');
+});
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-// Route::get('/notify', function () {
-//    notify()->flash('Welcome back!', 'success', [
-//        'text' => 'It\'s really great to see you again',
-//    ]);
-//    return redirect() -> to('/aboutWorkshop');
-//});
+
+// Group of routes for ADMINISTRATIVE TASKS
+/////////////////////////////////////////////////////////////////////////////////////////////
+Route::group(['middleware' => ['role:administrator']], function () {
+    //execute database content updates
+    Route::get('/admin/update','UpdateController@doUpdate'); 
+});
+
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
+
+    // Find blade that shows print by id
+    Route::get('/print/{id}','PrintsController@show');
+    
+    // Find blade that shows job by id
+    Route::get('/job/{id}','JobsController@show');
+
+});
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Routes for AUTHENTICATION related things
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 // Authentication Routes...
-/////////////////////////////////////////////////////////////////////////////////////////////
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
 $this->post('login', 'Auth\LoginController@login')->name('auth.login');
 $this->post('logout', 'Auth\LoginController@logout')->name('auth.logout');
@@ -443,12 +498,10 @@ $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('au
 $this->post('register', 'Auth\RegisterController@register')->name('auth.register');
 
 // Change Password Routes...
-/////////////////////////////////////////////////////////////////////////////////////////////
 $this->get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');
 $this->patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
 
 // Password Reset Routes...
-/////////////////////////////////////////////////////////////////////////////////////////////
 $this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('auth.password.reset');
 $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('auth.password.reset');
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
@@ -466,5 +519,13 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 });
 
 Route::get('/UoSlogin','Auth\UoScontroller@requestAuthenticationFromUoS');
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-Route::get('/faq/create', 'FAQController@create');
+
+// Route::get('/notify', function () {
+//    notify()->flash('Welcome back!', 'success', [
+//        'text' => 'It\'s really great to see you again',
+//    ]);
+//    return redirect() -> to('/aboutWorkshop');
+//});
+

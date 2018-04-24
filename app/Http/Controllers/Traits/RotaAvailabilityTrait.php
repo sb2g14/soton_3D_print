@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
 /**
- * This Trait provides a function to get a list of available and tentative demosntrators for 
+ * This Trait provides a function to get a list of available and tentative demonstrators for 
  * a list of sessions in an appropriate order.
  **/
 trait RotaAvailabilityTrait
