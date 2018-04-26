@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Auth;               //required to get current user and related member of staff
 use App\Availability;   //base model controlled
 use App\Sessions;       //required to get all the sessions people an sign up for
-//use App\staff;
+use App\Http\Controllers\RotaController;    //used to convert sessions to rotas
+use Carbon\Carbon;      //used to determine which sessions are in the future
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use Auth;               //required to get current user and related member of staff
-use Carbon\Carbon;      //used to determine which sessions are in the future
-use App\Http\Controllers\RotaController;    //used to convert sessions to rotas
+
+
+
 
 
 /**
@@ -21,17 +23,9 @@ use App\Http\Controllers\RotaController;    //used to convert sessions to rotas
  **/
 class AvailabilityController extends Controller
 {
-    /**
-     * AvailabilityController constructor.
-     *
-     */
-    public function __construct()
-    {
-
-        $this->middleware('auth')->except('index');
-
-    }
     
+    //// PRIVATE (HELPER) FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
     
     
     private function getFutureSessions(){
@@ -43,6 +37,23 @@ class AvailabilityController extends Controller
             ->where('start_date','<=',$t2->toDateTimeString());
         return $sessions;
     }
+
+    //// GENERIC PUBLIC FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    /**
+     * AvailabilityController constructor.
+     *
+     */
+    public function __construct()
+    {
+
+        $this->middleware('auth')->except('index');
+
+    }
+
+    //// CONTROLLER BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
 
     /**
      * Show the form for editing the availability
@@ -61,7 +72,8 @@ class AvailabilityController extends Controller
     }
     
     
-    
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
 
     /**
      * Update the availability for the currently logged in staff

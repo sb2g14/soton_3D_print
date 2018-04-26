@@ -51,7 +51,7 @@
                     @if (Carbon\Carbon::now('Europe/London')->gte(Carbon\Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i)) || $job->status == 'Failed' || $job->status == 'Success') {{-- TODO: is this still needed? If so, move this check to Controller --}}
                         <tr class="text-left {{$printclass}}">
                             <td data-th="ID">{{ $job->id }}</td>
-                            <td data-th="Printer No"><a href="/issues/show/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
+                            <td data-th="Printer No"><a href="/printers/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
                             <td data-th="Job title">{{ $job->job_title  }}</td>
                             <td data-th="Name"><a href="mailto:{{$job->customer_email}}?Subject=Job {{ $job->id }} | FEE 3D Printing Service" target="_top">{{$job->customer_name}}</a></td>
                             <td data-th="Time">{{ date("H:i", strtotime($job->total_duration)) }}</td>

@@ -21,7 +21,7 @@
             <div class="col-sm-3"></div>
 
             <div class="col-sm-6 text-left well">
-                <form method="post" action="/rota/newevent">
+                <form method="post" action="/rota/event">
                     {{--start_date | end_date | name | type--}}
                     {{--Generate security key --}}
                     {{ csrf_field() }}

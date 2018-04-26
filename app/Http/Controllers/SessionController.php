@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Sessions;
-use App\Rota;
+use Auth;
+use Alert;
 use App\Availability;
-use App\staff;
 use App\Event;
+use App\Rota;
+use App\Sessions;
+use App\staff;
+use App\StatisticsHelper;
 use App\Http\Controllers\Traits\RotaDefaultsTrait;
 use App\Http\Controllers\Traits\RotaAvailabilityTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use Auth;
-use App\StatisticsHelper;
-use Carbon\Carbon;
-use Alert;
+
 
 /**
  * This controller handles sessions when the printing service is open.
@@ -30,40 +31,50 @@ class SessionController extends Controller
 {
     use RotaDefaultsTrait;
     use RotaAvailabilityTrait;
-    
-    public function __construct()
-    {
 
-        $this->middleware('auth');
-
-    }
+    //// PRIVATE (HELPER) FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+     
 
     /** prepare query for sessions for one day **/
-    private function querySessionsForDate($date){
+    private function _querySessionsForDate($date){
         $t1 = new Carbon($date.' 0:00:00');
         $t2 = new Carbon($date.' 23:59:59');
         $sessions = Sessions::where('start_date','>=',$t1)->where('start_date','<=',$t2);
         return $sessions;
     }
-
     
+    //// GENERIC PUBLIC FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
     
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /** get only the last session of a day **/
     public function getLastSessionForDate($date){
-        $sessions = $this->querySessionsForDate($date)->orderBy('start_date','desc')->first();
+        $sessions = $this->_querySessionsForDate($date)->orderBy('start_date','desc')->first();
         return $sessions;
     }
     
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    //// CONTROLLER BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    /** shows blade that assigns demonstrators to the rota **/
+    public function showassign($date)
     {
-        
+        $rota = new Rota($date);
+        $sessions = $rota->sessions;
+        $temp = $this->getOptions($sessions);
+        $demonstrators = $temp[0];
+        $lists = $temp[1];
+        $default = $this->choosedefault($sessions, $lists);
+        return view('rota.assign', compact('date','sessions','demonstrators','default','rota'));
     }
+
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
     
     /** process request for new session display -> gets date from input and redirects to the appropriate session add/edit blade**/
     public function startcreate()
@@ -124,17 +135,7 @@ class SessionController extends Controller
 
     
     
-    /** shows blade that assigns demonstrators to the rota **/
-    public function showassign($date)
-    {
-        $rota = new Rota($date);
-        $sessions = $rota->sessions;
-        $temp = $this->getOptions($sessions);
-        $demonstrators = $temp[0];
-        $lists = $temp[1];
-        $default = $this->choosedefault($sessions, $lists);
-        return view('rota.assign', compact('date','sessions','demonstrators','default','rota'));
-    }
+    
 
     /** assigns demonstrators to the rota **/
     public function assign($date)
@@ -168,7 +169,7 @@ class SessionController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified session in storage.
      */
     public function update()
     {

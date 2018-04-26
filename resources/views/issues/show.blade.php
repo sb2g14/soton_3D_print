@@ -38,7 +38,7 @@
                             <p>Last updated: <b>{{$printer->updated_at->toDayDateTimeString()}}</b></p>
                         @endif
                     @endif
-                    <p>Last recorded: <b>{{$printer->lastUpdateDatetime()->toDayDateTimeString()}}</b></p>
+                    <!--<p>Last recorded: <b>{{$printer->lastUpdateDatetime()->toDayDateTimeString()}}</b></p>-->
                     <!-- <p>Total number of prints: <b>{{$printer->prints->count()}}</b></p>
                     <p>Of that are successful: <b>{{$printer->prints->where('status','Success')->count()}}</b></p>
                     <p>Printer use statistics</p>
@@ -131,7 +131,7 @@
                     </p>
                     <!-- <p>Days out of Order</p> -->
                     <a href="/printers/update/{{$printer->id}}" class="btn btn-info">Update Record</a>
-                    <a href="/printers/index" class="btn btn-primary">View all printers</a>
+                    <a href="/printers" class="btn btn-primary">View all printers</a>
                 </div>
             </div>
         </div>

@@ -64,7 +64,7 @@
                         <td data-th="Printer Type">{{$printer->printer_type}}</td>
                         <td data-th="Status">{{$printerstatus}}</td>
                         @can('issues_manage')
-                            <td data-th="View History"><a href="/issues/show/{{$printer->id }}" class="btn btn-primary">Details</a></td>
+                            <td data-th="View History"><a href="/printers/{{$printer->id }}" class="btn btn-primary">Details</a></td>
                             @hasanyrole('administrator')
                                 <td data-th="Update Record"><a href="/printers/update/{{$printer->id }}" class="btn btn-info">Update</a></td>
                             @endhasanyrole

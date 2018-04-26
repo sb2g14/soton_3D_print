@@ -157,11 +157,13 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 // Routes for PRINTER MANAGEMENT
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Here we redirect to the page containing general printer info using controller
-Route::get('/printers/index','PrintersController@index'); //deprecated
-Route::get('/printers','PrintersController@index');
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician|Demonstrator|NewDemonstrator|OnlineJobsManager']], function () {
+    // Here we redirect to the page containing general printer info using controller
+    Route::get('/printers/index','PrintersController@index'); //deprecated
+    Route::get('/printers','PrintersController@index');
+});
 
-Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
+Route::group(['middleware' => ['role:,printers_manage']], function () {
     
     //consider using
     //Route::resource('printers', 'PrintersController');
@@ -182,8 +184,8 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
     Route::post('/printers','PrintersController@store');
     
     // Route view resolved issue for each printer
-    Route::get('issues/show/{id}','IssuesController@show'); //deprecated
-    Route::get('/printers/{id}','IssuesController@show');
+    Route::get('issues/show/{id}','PrintersController@show'); //deprecated
+    Route::get('/printers/{id}','PrintersController@show');
 
     // Here we redirect to the view where one can update a printer
     Route::get('/printers/update/{id}','PrintersController@edit'); //deprecated
@@ -208,7 +210,7 @@ Route::get('/WorkshopJobs/create','PrintingDataController@create');
 Route::post('/printingData','PrintingDataController@store'); //deprecated
 Route::post('/WorkshopJobs','PrintingDataController@store');
 
-Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
+Route::group(['middleware' => ['role:,jobs_manage']], function () {
     // Show a list of jobs waiting for approval
     Route::get('/printingData/index','PrintingDataController@index'); //deprecated
     Route::get('/WorkshopJobs/requests','PrintingDataController@index');
@@ -274,7 +276,19 @@ Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
 Route::post('onlineJobs', 'OrderOnlineController@store'); //deprecated
 Route::post('OnlineJobs', 'OrderOnlineController@store');
 
-Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrator']], function () {
+// View approved job info
+Route::get('/OnlineJobs/manageApproved/{id}', 'OrderOnlineController@manageApproved'); //deprecated
+Route::get('/OnlineJobs/approved/{id}', 'OrderOnlineController@manageApproved');
+
+// Job has been approved by customer
+Route::get('/OnlineJobs/customerApproved/{id}', 'OrderOnlineController@customerApproved'); //deprecated
+Route::get('/OnlineJobs/approved/{id}/accept', 'OrderOnlineController@customerApproved');
+
+// Job has been rejected by customer
+Route::get('/OnlineJobs/customerReject/{id}', 'OrderOnlineController@customerReject'); //deprecated
+Route::get('/OnlineJobs/approved/{id}/reject', 'OrderOnlineController@customerReject');
+
+Route::group(['middleware' => ['role:,manage_online_jobs']], function () {
     
     // List pending online requests
     Route::get('/OnlineJobs/index', 'OrderOnlineController@index'); //deprecated
@@ -298,18 +312,6 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
 
     // Job approved by online jobs manager
     Route::get('/OnlineJobs/approved', 'OrderOnlineController@approved');
-
-    // View approved job info
-    Route::get('/OnlineJobs/manageApproved/{id}', 'OrderOnlineController@manageApproved'); //deprecated
-    Route::get('/OnlineJobs/approved/{id}', 'OrderOnlineController@manageApproved');
-
-    // Job has been approved by customer
-    Route::get('/OnlineJobs/customerApproved/{id}', 'OrderOnlineController@customerApproved'); //deprecated
-    Route::get('/OnlineJobs/approved/{id}/accept', 'OrderOnlineController@customerApproved');
-
-    // Job has been rejected by customer
-    Route::get('/OnlineJobs/customerReject/{id}', 'OrderOnlineController@customerReject'); //deprecated
-    Route::get('/OnlineJobs/approved/{id}/reject', 'OrderOnlineController@customerReject');
 
     // Return pending jobs
     Route::get('/OnlineJobs/pending', 'OrderOnlineController@pending');
@@ -384,28 +386,30 @@ Route::group(['middleware' => ['role:,jobs_manage']], function () {
 Route::group(['middleware' => ['role:,staff_manage']], function () {
 
     // Open a form to create a new rota sessions
-    //Route::post('/rota/session/new/make','SessionController@startcreate');  //deprecated
     Route::post('/rota/session/find','SessionController@startcreate');
 
     // Open a form to create a new rota session and update existing ones
-    //Route::get('/rota/session/new/{date}','RotaController@edit');  //deprecated
-    Route::get('/rota/session/{date}','RotaController@edit');
+    Route::get('/rota/session/{date}','RotaController@edit'); //deprecated
+    Route::get('/rota/{date}/edit','RotaController@edit');
 
     // Store a new rota session
     Route::post('/rota/session/new','SessionController@store');
 
     // Delete an existing rota sessions
-    Route::get('/rota/session/delete/{id}','SessionController@destroy');
+    Route::get('/rota/session/delete/{id}','SessionController@destroy'); //deprecated
+    Route::get('/rota/session/{id}/delete','SessionController@destroy');
 
     // Update an existing rota session
     Route::post('/rota/updatesession','SessionController@update'); //deprecated
     Route::post('/rota/session/update','SessionController@update');
 
     // Open a form to assign demonstrators to sessions
-    Route::get('/rota/assign/{date}','SessionController@showassign');
+    Route::get('/rota/assign/{date}','SessionController@showassign'); //deprecated
+    Route::get('/rota/{date}/assign','SessionController@showassign');
 
     // Assign demonstrators to sessions
-    Route::post('/rota/assign/{date}','SessionController@assign');
+    Route::post('/rota/assign/{date}','SessionController@assign'); //deprecated
+    Route::post('/rota/{date}/assign','SessionController@assign');
     
     // Open form to create email for rota
     Route::get('/rota/email/{date}','RotaController@createmail');
@@ -414,17 +418,16 @@ Route::group(['middleware' => ['role:,staff_manage']], function () {
 
     // Show blade to create a new event
     Route::get('/rota/newevent','EventController@create'); //deprecated
-    Route::get('/rota/event/new','EventController@create');
+    Route::get('/rota/event/create','EventController@create');
 
     // Store a new event
-    Route::post('/rota/newevent','EventController@store'); //deprecated
-    Route::post('/rota/event/new','EventController@store');
+    Route::post('/rota/event','EventController@store');
 
     // Show blade to update an existing event
-    Route::get('/rota/event/update/{id}','EventController@edit');
+    Route::get('/rota/event/{id}/edit','EventController@edit');
 
     // Update an existing event
-    Route::post('/rota/event/update/{id}','EventController@update');
+    Route::post('/rota/event/{id}','EventController@update');
 
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -550,7 +553,7 @@ $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 $this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.password.reset');
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/home', 'HomeController@index');
+    Route::get('/home', 'AdminController@index');
     Route::resource('permissions', 'Admin\PermissionsController');
     Route::post('permissions_mass_destroy', ['uses' => 'Admin\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
     Route::resource('roles', 'Admin\RolesController');

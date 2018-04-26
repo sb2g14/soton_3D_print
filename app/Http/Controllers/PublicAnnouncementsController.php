@@ -7,25 +7,9 @@ use Illuminate\Http\Request;
 
 class PublicAnnouncementsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
 
     /**
      * Store a newly created resource in storage.
@@ -52,28 +36,6 @@ class PublicAnnouncementsController extends Controller
         // Return to the homepage:
 
         return redirect('/');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\PublicAnnouncements  $publicAnnouncements
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PublicAnnouncements $publicAnnouncements)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\PublicAnnouncements  $publicAnnouncements
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PublicAnnouncements $publicAnnouncements)
-    {
-        //
     }
 
     /**

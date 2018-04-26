@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use App\FaultData;
 use App\FaultUpdates;
+use App\posts;
+use App\Printers;
+use Carbon\Carbon;
+use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use App\Printers;
-use App\FaultData;
-use App\posts;
-use Auth;
-use Excel;
-use Carbon\Carbon;
-use Charts;
 
 /**
  * Controller for Printer Issues (Broken/ Missing)
@@ -26,7 +25,7 @@ class IssuesController extends Controller
     /** takes the data colelcetd in $lastEntry and formats it so that it can easily be used in the blade 
      * $entryCounter counts how many entries have been grouped for this entry
      **/
-    private function createPrinterHistoryEntry($lastEntry,$entryCounter){
+    /*private function createPrinterHistoryEntry($lastEntry,$entryCounter){
         //collect entry
         $history_entry = array();
         $history_entry['EntryID']       = $lastEntry->EntryID;
@@ -57,9 +56,9 @@ class IssuesController extends Controller
             $history_entry['Class']     = 'alert alert-missing';
         }
         return $history_entry;
-    }
+    }*/
 
-    private function getPrinterHistory($id){
+    /*private function getPrinterHistory($id){
         $outEntries = [];
         $printer = Printers::where('id', $id)->first();
         // Collect all prints and loans
@@ -125,7 +124,7 @@ class IssuesController extends Controller
             //$this->renderHistoryEntryToHTML($out);
         }
         return $outEntries;
-    }
+    }*/
 
     //// GENERIC PUBLIC FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------// 
@@ -160,7 +159,7 @@ class IssuesController extends Controller
      * @param  int  $id printer id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    /*public function show($id)
     {
         $issues = FaultData::orderBy('id', 'desc')->where('printers_id', $id)->get();
         $printer = Printers::where('id', $id)->first();
@@ -184,7 +183,7 @@ class IssuesController extends Controller
         $historyEntries = $this->getPrinterHistory($id);
 
         return view('issues.show', compact('issues', 'id','printer','chart','historyEntries'));
-    }
+    }*/
     
     /**
      * Show the form for editing the specified resource.

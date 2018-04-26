@@ -21,7 +21,7 @@
 
             <div class="col-sm-6 text-left well">
             
-                <form method="post" action="/rota/event/update/{{$event->id}}">
+                <form method="post" action="/rota/event/{{$event->id}}">
                     {{--start_date | end_date | name | type--}}
                     {{--Generate security key --}}
                     {{ csrf_field() }}

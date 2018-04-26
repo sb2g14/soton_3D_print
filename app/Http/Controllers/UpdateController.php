@@ -144,8 +144,8 @@ class UpdateController extends Controller
     public function doUpdate()
     {
         //IMPORTANT! RUN THIS FIRST:
-        //ALTER TABLE `jobs` ADD COLUMN `accepted_at` DATETIME NULL, ADD COLUMN `finished_at` DATETIME NULL;
-        //ALTER TABLE `prints` ADD COLUMN `finished_at` DATETIME NULL;
+        //ALTER TABLE `jobs` ADD COLUMN `accepted_at` TIMESTAMP NULL, ADD COLUMN `finished_at` TIMESTAMP NULL;
+        //ALTER TABLE `prints` ADD COLUMN `finished_at` TIMESTAMP NULL;
         // now we save the updated_at to finished_at!
         $this->fillJobDates();
         $this->fillPrintDates();

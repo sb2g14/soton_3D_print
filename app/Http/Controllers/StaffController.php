@@ -2,22 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\staff;
+use App\StatisticsHelper;
+use App\Mail\Invitation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use Auth;
-use Carbon\Carbon;
-use App\Mail\Invitation;
-use App\StatisticsHelper;
+
 
 class StaffController extends Controller
 {
+
+    //// PRIVATE (HELPER) FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    protected function updateTraining($column,$date,$memberId){
+        if($date === ""){
+            $date = null;
+        }
+        staff::where('id','=', $memberId)->update(array($column => $date));
+    }
+    
+    //// GENERIC PUBLIC FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
     public function __construct()
     {
 
         $this->middleware('auth')->except('index');
 
     }
+
+    //// CONTROLLER BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
     /**
      * Display a listing of the resource.
      *
@@ -38,6 +57,62 @@ class StaffController extends Controller
     {
         return view('members.create');
     }
+    
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\staff  $staff
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $member = staff::find($id);
+        if(!$member){
+           //member not found -> return error
+            abort(404);
+        }
+        $sh = new StatisticsHelper;
+        $stats = $sh->getArrayMemberStats($member->id);
+        return view('members.show',compact('member','stats'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\staff  $staff
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $member = staff::find($id);
+        return view('members.edit',compact('member'));
+    }
+    
+    /** show former (retired) staff **/
+    public function former()
+    {
+        $members = staff::orderBy('last_name')->where('role','=', 'Former member')->get();
+        return view('members.former', compact('members'));
+    }
+
+    /** show information on how tog et paid **/
+    public function gettingPaid()
+    {
+        $member = Auth::user()->staff()->first();
+        //Get working hours for last month
+        $t1 = new Carbon();
+        $workinghours = $member->workinghours($t1);
+        return view('gettingPaid', compact('member','workinghours'));
+    }
+
+    /** show documents relevant to demonstrators **/
+    public function documents()
+    {
+        return view('documents');
+    }
+
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
 
     /**
      * Store a newly created resource in storage.
@@ -87,43 +162,10 @@ class StaffController extends Controller
         return redirect('/members/index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $member = staff::find($id);
-        if(!$member){
-           //member not found -> return error
-            abort(404);
-        }
-        $sh = new StatisticsHelper;
-        $stats = $sh->getArrayMemberStats($member->id);
-        return view('members.show',compact('member','stats'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $member = staff::find($id);
-        return view('members.edit',compact('member'));
-    }
     
     
-    protected function updateTraining($column,$date,$memberId){
-        if($date === ""){
-            $date = null;
-        }
-        staff::where('id','=', $memberId)->update(array($column => $date));
-    }
+    
+    
 
     /**
      * Update the specified resource in storage.
@@ -158,12 +200,12 @@ class StaffController extends Controller
             $date = Input::get('smtdate');
             $this->updateTraining('SMT_date',$date,$id);
         }
-        if(Auth::user()->hasAnyRole(['administrator','LeadDemonstrator'])){
+        if(Auth::user()->hasAnyRole(['administrator','LeadDemonstrator','Technician'])){
             $date = Input::get('lwidate');
             $this->updateTraining('LWI_date',$date,$id);
         }
         // Update members role
-        if(Auth::user()->hasAnyRole(['administrator','Technician']))
+        if(Auth::user()->hasAnyRole(['administrator','LeadDemonstrator','Coordinator']))
         {
             // Update role for member (staff table) -> used for display
             $role = Input::get('role');
@@ -200,14 +242,14 @@ class StaffController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Marks the specified staff as retired 
+     * (we don't delete staff for database consistency reasons)
      *
      * @param  \App\staff  $staff
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-//        staff::destroy($id);
         // Find the record associated with id in staff table
         $member = staff::find($id);
         if(!empty($member->user)) {
@@ -223,23 +265,5 @@ class StaffController extends Controller
 
         return redirect('/members/index');
     }
-    public function former()
-    {
-        $members = staff::orderBy('last_name')->where('role','=', 'Former member')->get();
-        return view('members.former', compact('members'));
-    }
-
-    public function gettingPaid()
-    {
-        $member = Auth::user()->staff()->first();
-        //Get working hours for last month
-        $t1 = new Carbon();
-        $workinghours = $member->workinghours($t1);
-        return view('gettingPaid', compact('member','workinghours'));
-    }
-
-    public function documents()
-    {
-        return view('documents');
-    }
+    
 }

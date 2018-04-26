@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Rota;
 use App\Rotas;
 use App\staff;
 use App\Sessions;
 use App\Availability;
 use App\Event;
+use App\Http\Controllers\SessionController;
+use App\Mail\RotaMail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use Auth;
-use Carbon\Carbon;
-use App\Mail\RotaMail;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\SessionController;
+
 
 /**
  * This controller handles rotas.
@@ -24,12 +25,9 @@ use App\Http\Controllers\SessionController;
  **/
 class RotaController extends Controller
 {
-    public function __construct()
-    {
 
-        $this->middleware('auth')->except('openingHours');
-
-    }
+    //// PRIVATE (HELPER) FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
     
     /** gets the upcoming sessions from the database**/
     private function getUpcomingSessions(){
@@ -61,6 +59,34 @@ class RotaController extends Controller
         ksort($items); 
         return $items;
     }
+    
+    /** gets closure periods from database and converts them into a string that can be interpreted by the date-time-picker **/
+    private function getClosureAsString(){
+        // get all closure events
+        $closures = Event::where('type','closure')->get();
+        $closuredates = [];
+        foreach($closures as $c){
+            //go from start to end date
+            //TODO: find smarter way to pass multiple adjacent dates to date-time-picker
+            for($d = new Carbon($c->start_date); $d <= new Carbon($c->end_date); $d->addDay()){
+                $d = $d->startOfDay();
+                $closuredates[] = '"'.$d->toDateTimeString().'"';
+            }
+        }
+        //convert to string that we can insert into JavaScript
+        $closures = implode(", ",$closuredates);    
+        return $closures;
+    }
+
+    //// GENERIC PUBLIC FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+      
+    public function __construct()
+    {
+
+        $this->middleware('auth')->except('openingHours');
+
+    }
 
     /** groups sessions into rotas **/
     public function getRotas($sessions){
@@ -89,24 +115,41 @@ class RotaController extends Controller
         return $rotas;
     }
     
-    /** gets closure periods from database and converts them into a string that can be interpreted by the date-time-picker **/
-    private function getClosureAsString(){
-        // get all closure events
-        $closures = Event::where('type','closure')->get();
-        $closuredates = [];
-        foreach($closures as $c){
-            //go from start to end date
-            //TODO: find smarter way to pass multiple adjacent dates to date-time-picker
-            for($d = new Carbon($c->start_date); $d <= new Carbon($c->end_date); $d->addDay()){
-                $d = $d->startOfDay();
-                $closuredates[] = '"'.$d->toDateTimeString().'"';
+    /**
+     * Get a list of dates and times, when the workshop is open
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function openingHours()
+    {
+        // Get future sessions
+        $sessions = Rotas::getFutureSessions();
+        // Remove private sessions
+        $sessions = $sessions->reject(function ($s) {
+            return $s->public == false;
+        });
+        // Combine sessions into opening hours
+        $open = [];
+        $lastendtime = null;
+        $lastdate = null;
+        foreach($sessions as $s){
+            if($lastendtime != $s->start_date){
+                //unconnected session
+                $lastdate = $s->date();
+                $lastendtime = $s->end_date;
+                $open[$lastdate][] = [$s->start_date,$lastendtime];
+            }else{
+                //connected to last session
+                $lastendtime = $s->end_date;
+                $open[$lastdate][sizeof($open[$lastdate]) - 1] = [$open[$lastdate][sizeof($open[$lastdate]) - 1][0],$lastendtime];
             }
         }
-        //convert to string that we can insert into JavaScript
-        $closures = implode(", ",$closuredates);    
-        return $closures;
+        return $open;
     }
-
+    
+    
+    //// CONTROLLER BLADES ////
+    //---------------------------------------------------------------------------------------------------------------//
     
     /**
      * Display all events and sessions from 2 weeks ago until eternity
@@ -185,6 +228,9 @@ class RotaController extends Controller
         return view('rota.mail', compact('date','sessions'));
     }
     
+    //// CONTROLLER ACTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
     public function sendmail($date)
     {
         $message =   $reject_message = request()->validate([
@@ -219,35 +265,5 @@ class RotaController extends Controller
         // Send email with the sessions and input
     }
 
-    /**
-     * Get a list of dates and times, when the workshop is open
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function openingHours()
-    {
-        // Get future sessions
-        $sessions = Rotas::getFutureSessions();
-        // Remove private sessions
-        $sessions = $sessions->reject(function ($s) {
-            return $s->public == false;
-        });
-        // Combine sessions into opening hours
-        $open = [];
-        $lastendtime = null;
-        $lastdate = null;
-        foreach($sessions as $s){
-            if($lastendtime != $s->start_date){
-                //unconnected session
-                $lastdate = $s->date();
-                $lastendtime = $s->end_date;
-                $open[$lastdate][] = [$s->start_date,$lastendtime];
-            }else{
-                //connected to last session
-                $lastendtime = $s->end_date;
-                $open[$lastdate][sizeof($open[$lastdate]) - 1] = [$open[$lastdate][sizeof($open[$lastdate]) - 1][0],$lastendtime];
-            }
-        }
-        return $open;
-    }
+    
 }

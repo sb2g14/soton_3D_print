@@ -35,7 +35,7 @@
                     
                     <tr class="text-left">
                         <td data-th="ID">{{ $job->id }}</td>
-                        <td data-th="Printer No"><a href="/issues/show/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
+                        <td data-th="Printer No"><a href="/printers/{{ $print->printers_id }}">{{ $print->printers_id }}</a></td>
                         <td data-th="Name">
                             <a href="mailto:{{$job->customer_email}}?Subject=Soton3Dprint Job {{ $job->id }}" target="_top">
                                 {{$job->customer_name}}
