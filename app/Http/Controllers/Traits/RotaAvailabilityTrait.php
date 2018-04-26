@@ -102,7 +102,11 @@ trait RotaAvailabilityTrait
         $demonstrators = $demonstrators->diff($demT);
         return $demonstrators;
     }
-
+    
+    /** returns two arrays with lists of demonstrators that can be assigned for each session, 
+     * the first list for the html select input and 
+     * the second array for the function choosing a default selection.
+     **/
     public function getOptions($sessions){
         $demonstrators = array();
         $demonstratorsForDefs = array();

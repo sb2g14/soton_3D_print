@@ -36,6 +36,7 @@ class AvailabilityController extends Controller
     
     private function getFutureSessions(){
         $t1 = new Carbon();
+        $t1 = $t1->hour(0)->minute(0)->second(0);
         $t2 = $t1->copy()->addMonths(2); //->where('availabilities.staff_id',$staffid)
         $sessions = Sessions::orderBy('start_date')
             ->where('start_date','>=',$t1->toDateTimeString())
@@ -87,7 +88,7 @@ class AvailabilityController extends Controller
             // Submit the data to the database
             $a->save();
         }
-        session()->flash('message', 'The availability has been successfully updated in the database!');
+        notify()->flash('The availability has been successfully updated in the database!', 'success', []);
         
         return redirect('/rota/availability');
     }

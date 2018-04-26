@@ -34,7 +34,9 @@ class UpdateController extends Controller
     }
     
     private function fillJobDates(){
-        $jobs = Jobs::where('status','Success')->orWhere('status','Failed')->get();
+        $jobs = Jobs::whereNull('finished_at')
+            ->where(function($q){$q->where('status','Success')->orWhere('status','Failed')})
+            ->get();
         foreach($jobs as $job){
             $update = new Carbon($job->updated_at);
             $start = $job->approved_at;
@@ -63,7 +65,9 @@ class UpdateController extends Controller
     }
 
     private function fillPrintDates(){
-        $prints = Prints::where('status','Success')->orWhere('status','Failed')->get();
+        $prints = Prints::whereNull('finished_at')
+            ->where(function($q){$q->where('status','Success')->orWhere('status','Failed')})
+            ->get();
         foreach($prints as $print){
             $update = new Carbon($print->updated_at);
             $start = $print->created_at;
