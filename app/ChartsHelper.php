@@ -36,6 +36,7 @@ class ChartsHelper
         // Load template from config/charts.php
         $chartcfg = config('charts');
         $colourset = $chartcfg['templates'][$template];
+        $n = ($n > count($colourset)) ? count($colourset) : $n;
         // Invert the order of colors and only take the darkest n colors
         // (this assumes that the template has colours from dark to light)
         $year_color = array_reverse(array_slice($colourset,0,$n));
