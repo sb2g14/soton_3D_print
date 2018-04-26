@@ -38,6 +38,7 @@
                             <p>Last updated: <b>{{$printer->updated_at->toDayDateTimeString()}}</b></p>
                         @endif
                     @endif
+                    <p>Last recorded: <b>{{$printer->lastUpdateDatetime()->toDayDateTimeString()}}</b></p>
                     <!-- <p>Total number of prints: <b>{{$printer->prints->count()}}</b></p>
                     <p>Of that are successful: <b>{{$printer->prints->where('status','Success')->count()}}</b></p>
                     <p>Printer use statistics</p>

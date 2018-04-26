@@ -99,4 +99,82 @@ class printers extends Model
         }
         return $total_minutes;
     }
+    
+    /** gets the date and time of the last time this printer was updated**/
+    public function lastUpdateDatetime()
+    {
+        $lastPrint=$this->prints()->orderBy('finished_at', 'desc')->where('status','!=', 'Waiting')->first();
+        $lastIssue=$this->fault_data()->where('resolved',1)->orderBy('resolved_at','desc')->first();
+        $lastIssueUpdate = \App\FaultData::orderBy('fault_updates.created_at','desc')
+            ->crossJoin('fault_updates', 'fault_datas.id', '=', 'fault_updates.fault_data_id')
+            ->where('fault_datas.printers_id', $this->id)
+            ->select('fault_updates.*')
+            ->first();
+
+        
+        $allDates = [];
+        $allDates[] = \Carbon\Carbon::parse($this->updated_at);
+        if($lastPrint){
+            $allDates[] = \Carbon\Carbon::parse($lastPrint->finished_at);
+        }
+        if($lastIssue){
+            $allDates[] = \Carbon\Carbon::parse($lastIssue->resolved_at);
+        }
+        if($lastIssueUpdate){
+            $allDates[] = \Carbon\Carbon::parse($lastIssueUpdate->created_at);
+        }
+        // Compare maximums of pairs of timestamps
+        $max = \Carbon\Carbon::create(1990, 1, 1, 0);
+        foreach($allDates as $date){
+            $max=$max->max($date);
+        }
+        return $max;
+    }
+    
+    /** gets the name of the last staff updating this printer as a string, otherwise returns "N/A"**/
+    public function lastUpdateStaff()
+    {
+        $lastPrint=$printer->prints()->orderBy('updated_at', 'desc')->where('status','!=', 'Waiting')->first();
+        $lastIssue=$printer->fault_data()->where('resolved',1)->orderBy('resolved_at','desc')->first();
+        $lastIssueUpdate = \App\FaultData::orderBy('fault_updates.updated_at','desc')
+        ->crossJoin('fault_updates', 'fault_datas.id', '=', 'fault_updates.fault_data_id')
+        ->where('fault_datas.printers_id', $printer->id)
+        ->select('fault_updates.*')
+       ->first();
+
+        $nullDate = \Carbon\Carbon::create(1990, 1, 1, 0);
+        if(!$lastPrint)
+        {
+            $tstmp1 = $nullDate;
+        } else {
+            $tstmp1 = $lastPrint->updated_at;
+        }
+        if(!$lastIssue)
+        {
+            $tstmp2 = $nullDate;
+        } else {
+            $tstmp2 = \Carbon\Carbon::parse($lastIssue->resolved_at);
+        }
+        if(!$lastIssueUpdate)
+        {
+            $tstmp3 = $nullDate;
+        } else {
+            $tstmp3 = $lastIssueUpdate->updated_at;
+        }
+        // Compare maximums of pairs of timestamps
+        $max=$tstmp1->max($tstmp2)->max($tstmp3);
+        
+        if($max === $nullDate){
+            $ans = "N/A";
+        }else{
+            if($tstmp1 === $max){
+                $ans = $lastPrint->staff_started->name();
+            }elseif($tstmp2 === $max){
+                $ans = $lastIssue->issue_resolved->name();
+            }elseif($tstmp3 === $max){
+                $ans = $lastIssueUpdate->users_name;
+            }
+        }
+        return $ans;
+    }
 }

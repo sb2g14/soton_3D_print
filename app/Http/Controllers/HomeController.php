@@ -14,7 +14,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 
 
-/** The functions for this controller are currently in the PostsController **/
+/** The functions for this controller manage the homepage **/
 class HomeController extends Controller
 {
     use WorkshopTrait;
@@ -85,8 +85,11 @@ class HomeController extends Controller
         
         // check if workshop is open right now
         $workshopIsOpen = $this->isOpen();
+        
+        //check longest not used printer        
+        $lostPrinter = $stats->getLongNotSeenPrinter();
 
-        return view('welcome.index', compact('issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material','workshopIsOpen'));
+        return view('welcome.index', compact('issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material','workshopIsOpen','lostPrinter'));
         //return view('home');
     }
 }

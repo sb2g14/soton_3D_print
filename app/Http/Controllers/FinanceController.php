@@ -118,7 +118,6 @@ class FinanceController extends Controller
     {
         // TODO: Think about what needs to go on index page
         
-        $stats = new StatisticsHelper();
         // Current Month
         $month = new Carbon();
         $month = $month->day(1)->hour(0)->minute(0)->second(0);
@@ -132,7 +131,6 @@ class FinanceController extends Controller
             return ['name' => $item->name()];
         });
         $nocwp = $nocwp->implode('name', ', ');
-
         
         return view('finance.index', compact('month','finance','nocwp'));
     }

@@ -1,6 +1,7 @@
 <?php
 namespace App;
 use App\DB;
+use App\Printers;
 use Carbon\Carbon;
 
 /**
@@ -342,6 +343,25 @@ class StatisticsHelper
         $ans = false;
         if($ti->between($t1,$t2)){
             $ans = true;
+        }
+        return $ans;
+    }
+    
+    /** Checks if there is a printer that has not been used for a long time, though available, and returns it
+     **/
+    public function getLongNotSeenPrinter(){
+        //need to adjust date, since we only want to compare the time
+        $printers = Printers::where('printer_status','Available')->get();
+        $printers = $printers->mapWithKeys(function ($item) {
+            $update = $item->lastUpdateDatetime();
+            return [$update->toDateTimeString() => $item];
+        });
+        $printers = collect($printers)->all();//
+        ksort($printers); //->sortKeys()->all();
+        $ans = collect($printers)->first();
+        $now = new \Carbon\Carbon;
+        if($ans->lastUpdateDatetime() > $now->subMonths(2)){
+            return null;
         }
         return $ans;
     }

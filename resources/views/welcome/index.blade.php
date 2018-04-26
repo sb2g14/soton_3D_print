@@ -62,8 +62,21 @@
                                 @php
                                     $post_last = $issues->first();
                                 @endphp
-                                @if(!empty($post_last))
-                                    <ul id="form" class=" lsn list-group">
+                                
+                                <ul id="form" class=" lsn list-group">
+                                    @if($lostPrinter)
+                                        <li class="list-group-item">
+                                            <div class="alert">
+                                                {{--Print title of a post--}}
+                                                <h4><b> 
+                                                    Printer not seen for a long time
+                                                </b></h4>
+                                                {{--Print the text of a post--}}
+                                                Printer number {{$lostPrinter->id}} has not been seen since {{$lostPrinter->lastUpdateDatetime()->format('j/M/Y') }}. Please check if it is still in the workshop and give it to the next student for printing so that I know it's still there.
+                                            </div>
+                                        </li>
+                                    @endif
+                                    @if(!empty($post_last))
                                         <li class="list-group-item">
                                             <div class="alert">
                                                 {{--Print title of a post--}}
@@ -83,8 +96,8 @@
                                                 {{ $post_last->body }}
                                             </div>
                                         </li>
-                                    </ul>
-                                @endif
+                                    @endif
+                                </ul>
                             </div>
                         </div>
                     </div>
