@@ -12,6 +12,10 @@ use Auth;
 use Excel;
 use Carbon\Carbon;
 use Charts;
+
+/**
+ * Controller for Printer Issues (Broken/ Missing)
+ **/
 class IssuesController extends Controller
 {
 
@@ -141,6 +145,7 @@ class IssuesController extends Controller
     //// CONTROLLER BLADES ////
     //---------------------------------------------------------------------------------------------------------------//
     
+    /** show all active issues **/
     public function index()
     {
         $issues =  FaultData::orderBy('id', 'desc')->where('resolved', 0)->get();
@@ -149,7 +154,8 @@ class IssuesController extends Controller
     }
     
     /**
-     * Display the printer history TODO:this should go to the printer controller!
+     * Display the printer history 
+     * TODO:this should go to the printer controller!
      *
      * @param  int  $id printer id
      * @return \Illuminate\Http\Response
@@ -191,7 +197,8 @@ class IssuesController extends Controller
         $issue = FaultData::findOrFail($id);
         return view('issues.update', compact('issue'));
     }
-
+    
+    /** show a blade allowing to select a printer to raise an issue for **/
     public function select()
     {
         $printers =  printers::pluck('id','id')->all();
@@ -199,6 +206,14 @@ class IssuesController extends Controller
         return view('issues.select', compact('printers'));
     }
     
+    /** show a resolved issue **/
+    public function  showResolve($id)
+    {
+        $issue = FaultData::findOrFail($id);
+        return view('issues.resolve', compact('issue'));
+    }
+    
+    /** get the selected Printer and redirect to creation blade, pre-filling information as appropriate **/
     public function selectPrinter()
     {
         // Get the id of selected printer from the dropdown
@@ -228,17 +243,11 @@ class IssuesController extends Controller
         }
     }
     
-    public function  showResolve($id)
-    {
-        $issue = FaultData::findOrFail($id);
-        return view('issues.resolve', compact('issue'));
-    }
-    
     //// CONTROLLER ACTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
     
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new printer issue.
      *
      * @return \Illuminate\Http\Response
      */
@@ -268,7 +277,7 @@ class IssuesController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified printer issue in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -303,7 +312,7 @@ class IssuesController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified printer issue from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -323,6 +332,9 @@ class IssuesController extends Controller
         return redirect('/issues/index');
     }
     
+    /** delete issue update 
+     * TODO: move to IssueUpdate controller
+     **/
     public function deleteupdate($id)
     {
         $update = FaultUpdates::findOrFail($id);
@@ -342,7 +354,7 @@ class IssuesController extends Controller
         return redirect('/issues/index');
     }
 
-    
+    /** mark issue as resolved **/
     public function resolve()
     {
         $this -> validate(request(), [

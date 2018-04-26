@@ -13,7 +13,7 @@
     <div class="row vdivide">
         <div class="col-sm-6">
             <h1 class="text-center lead">ONLINE JOB REQUEST FORM</h1>
-            <form id="requestForm" class="form-horizontal" method="POST" action="/onlineJobs">
+            <form id="requestForm" class="form-horizontal" method="POST" action="/OnlineJobs">
                 {{ csrf_field() }}
 
                 {{--Customer Name field--}}

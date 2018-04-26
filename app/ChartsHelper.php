@@ -269,8 +269,8 @@ class ChartsHelper
         foreach ($prints as $print) { //iterate over all the prints
             for($i=0; $i<count($timesofday); $i++){
                 // get start time and end time of printer usage 
-                $t1 = $print->created_at;
-                $t2 = $print->updated_at; 
+                $t1 = new \Carbon\Carbon($print->created_at);
+                $t2 = new \Carbon\Carbon($print->updated_at); 
                 //check if date of print is new
                 $day = $t1->format('Y-m-d');
                 if(!in_array($day, $open_days)){

@@ -16,7 +16,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Here we redirect users to the 'Welcome' page
-Route::get('/','PostsController@index')->name('home');
+Route::get('/','HomeController@index')->name('home');
 
 // This route uses controller to redirect to the 'About Workshop' page
 Route::get('/aboutWorkshop','AboutWorkshopController@index'); //deprecated
@@ -275,7 +275,7 @@ Route::post('onlineJobs', 'OrderOnlineController@store'); //deprecated
 Route::post('OnlineJobs', 'OrderOnlineController@store');
 
 Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrator']], function () {
-
+    
     // List pending online requests
     Route::get('/OnlineJobs/index', 'OrderOnlineController@index'); //deprecated
     Route::get('/OnlineJobs/requests', 'OrderOnlineController@index');
@@ -291,10 +291,6 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Delete print preview from the job request
     Route::get('/OnlineJobs/DeletePrintPreview/{id}', 'OrderOnlineController@deletePrintPreview'); //deprecated
     Route::get('/OnlineJobs/PrintPreview/{id}/delete', 'OrderOnlineController@deletePrintPreview');
-
-    // Job rejected by online jobs manager
-    Route::post('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager'); //deprecated
-    Route::post('/OnlineJobs/{id}/delete', 'OrderOnlineController@rejectJobManager');
 
     // Route to approve Job
     Route::get('/OnlineJobs/approveRequest/{id}', 'OrderOnlineController@approveRequest'); //deprecated
@@ -340,7 +336,11 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Route to report print as failed
     Route::get('/OnlineJobs/printFailed/{id}', 'OrderOnlineController@printFailed'); //deprecated
     Route::get('/OnlineJobs/print/{id}/failed', 'OrderOnlineController@printFailed');
-
+    
+    // Return completed online jobs
+    Route::get('/OnlineJobs/completed', 'OrderOnlineController@completed'); //deprecated
+    Route::get('/OnlineJobs/finished', 'OrderOnlineController@completed');
+    
     // Route for job failed
     Route::post('/OnlineJobs/jobFailed/{id}', 'OrderOnlineController@jobFailed'); //deprecated
     Route::post('/OnlineJobs/{id}/failed', 'OrderOnlineController@jobFailed');
@@ -348,10 +348,10 @@ Route::group(['middleware' => ['role:OnlineJobsManager|administrator|Demonstrato
     // Route for job success
     Route::get('/OnlineJobs/jobSuccess/{id}', 'OrderOnlineController@jobSuccess'); //deprecated
     Route::get('/OnlineJobs/{id}/success', 'OrderOnlineController@jobSuccess');
-
-    // Return completed
-    Route::get('/OnlineJobs/completed', 'OrderOnlineController@completed'); //deprecated
-    Route::get('/OnlineJobs/finished', 'OrderOnlineController@completed');
+    
+    // Job rejected by online jobs manager
+    Route::post('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager'); //deprecated
+    Route::post('/OnlineJobs/{id}/delete', 'OrderOnlineController@rejectJobManager');
     
 });
 /////////////////////////////////////////////////////////////////////////////////////////////

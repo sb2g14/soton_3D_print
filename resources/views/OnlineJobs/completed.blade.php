@@ -10,7 +10,7 @@
     {{--NAVIGATION--}}
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
-            <li><a href="/OnlineJobs/index">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
+            <li><a href="/OnlineJobs/requests">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
             <li><a href=/OnlineJobs/approved>Approved Jobs <span class="badge">{{$counts['approved']}}</span></a></li>
             <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
             <li class="nav-right"><a href="/OnlineJobs/prints">Prints</a></li>

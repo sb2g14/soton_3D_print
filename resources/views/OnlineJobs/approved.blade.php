@@ -4,11 +4,11 @@
     {{--NAVIGATION--}}
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
-            <li><a href="/OnlineJobs/index">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
+            <li><a href="/OnlineJobs/requests">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
             <li class="active"><a href="#">Approved Jobs <span class="badge">{{$counts['approved']}}</span></a></li>
             <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
             <li class="nav-right"><a href="/OnlineJobs/prints">Prints</a></li>
-            <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
+            <li><a href="/OnlineJobs/finished">Completed Jobs</a></li>
         </ul>
     </div>
     {{--CONTENT--}}
@@ -35,9 +35,9 @@
                             data-content="Depending on customer reply you can either start assigning prints by clicking on 
                                 Customer Approved button or cancel the job by clicking on Customer Reject button. To check 
                                 the job details please click on Manage button.">
-                            <a class="btn btn-info" href="/OnlineJobs/manageApproved/{{$job->id}}">Manage</a>
-                            <a class="btn btn-success" href="/OnlineJobs/customerApproved/{{$job->id}}">Customer Accepted</a>
-                            <a class="btn btn-danger" href="/OnlineJobs/customerReject/{{$job->id}}">Customer Rejected</a>
+                            <a class="btn btn-info" href="/OnlineJobs/approved/{{$job->id}}">Manage</a>
+                            <a class="btn btn-success" href="/OnlineJobs/approved/{{$job->id}}/accept">Customer Accepted</a>
+                            <a class="btn btn-danger" href="/OnlineJobs/approved/{{$job->id}}/reject">Customer Rejected</a>
                         </td>
                     </tr>
                 @endforeach

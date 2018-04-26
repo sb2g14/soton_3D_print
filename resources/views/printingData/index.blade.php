@@ -5,8 +5,8 @@
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
             <li class="active"><a href="#">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
-            <li><a href="/printingData/approved">Approved Jobs / Printing <span class="badge">{{$counts['approved']}}</span></a></li>
-            <li><a href="/printingData/finished">Completed Jobs</a></li>
+            <li><a href="/WorkshopJobs/approved">Approved Jobs / Printing <span class="badge">{{$counts['approved']}}</span></a></li>
+            <li><a href="/WorkshopJobs/finished">Completed Jobs</a></li>
         </ul>
 
        <!--  <div class="tab-content">
@@ -23,7 +23,7 @@
              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
            </div>
        </div>
-       <a href="/printingData/approved" type="button" class="btn btn-lg btn-success" style="display: inline-block;">Show currently approved jobs</a> -->
+       <a href="/WorkshopJobs/approved" type="button" class="btn btn-lg btn-success" style="display: inline-block;">Show currently approved jobs</a> -->
 
         {{--@hasanyrole('LeadDemonstrator|administrator')
         {!! link_to_route('printingData.export',
@@ -50,7 +50,7 @@
                                     Printer number: <a href="/issues/show/{{ $print->printers_id }}"><b>{{ $print->printers_id }}</b></a><br>
                                 @endforeach
                             </p>
-                            <a href="/printingData/show/{{$job->id}}" class="btn btn-info">Manage</a>
+                            <a href="/WorkshopJobs/{{$job->id}}" class="btn btn-info">Manage</a>
                         </li>
                     @endforeach
                 </ul>

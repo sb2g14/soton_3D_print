@@ -158,7 +158,7 @@ class PrintingDataController extends Controller
     /**
      * Function to display the blade with all pending jobs
      * Creates variables for blade that displays the Workshop jobs waiting for approval
-     * @blade_address /printingData/index
+     * @blade_address /WorkshopJobs/requests
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
@@ -173,7 +173,7 @@ class PrintingDataController extends Controller
 
     /**
      * Return the blade containing all approved (currently printing) workshop jobs
-     * @blade_address /printingData/approved
+     * @blade_address /WorkshopJobs/approved
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function approved()
@@ -187,7 +187,7 @@ class PrintingDataController extends Controller
 
     /**
      * Return the blade containing all the finished (completed) workshop jobs
-     * @blade_address /printingData/finished
+     * @blade_address /WorkshopJobs/finished
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function finished()
@@ -201,7 +201,7 @@ class PrintingDataController extends Controller
 
     /**
      * Return the blade to request a new workshop job
-     * @blade_address /printingData/create
+     * @blade_address /WorkshopJobs/create
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
@@ -221,7 +221,7 @@ class PrintingDataController extends Controller
     
     /**
      * Function to display the blade with the job details waiting for staff approval
-     * @blade_address /printingData/show/<id>
+     * @blade_address /WorkshopJobs/<id>
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -237,7 +237,7 @@ class PrintingDataController extends Controller
     
     /**
      * Edit the workshop job after it has completed
-     * @blade_address /printingData/edit/<id>
+     * @blade_address /WorkshopJobs/<id>/edit
      * @param $id int
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */

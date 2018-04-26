@@ -38,7 +38,7 @@
     <div class="row vdivide">
         <div class="col-sm-6">
             <h1 class="text-center lead">REQUEST A JOB</h1>
-            <form id="requestForm" class="form-horizontal" method="POST" action="/printingData">
+            <form id="requestForm" class="form-horizontal" method="POST" action="/WorkshopJobs">
                 {{ csrf_field() }}
 
                 {{--Printer Number--}}

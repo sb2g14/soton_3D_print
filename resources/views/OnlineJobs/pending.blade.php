@@ -4,11 +4,11 @@
     {{--NAVIGATION--}}
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
-            <li><a href="/OnlineJobs/index">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
+            <li><a href="/OnlineJobs/requests">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
             <li><a href=/OnlineJobs/approved>Approved Jobs <span class="badge">{{$counts['approved']}}</span></a></li>
             <li class="nav-left active"><a href="#">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
             <li class="nav-right"><a href="/OnlineJobs/prints">Prints</a></li>
-            <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
+            <li><a href="/OnlineJobs/finished">Completed Jobs</a></li>
         </ul>
     </div>
     {{--CONTENT--}}
@@ -33,7 +33,7 @@
                         <td data-th="Requested on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
                         <td data-th="Accepted on">{{ Carbon\Carbon::parse($job->updated_at)->diffForHumans() }}</td>
                         <td data-th="Job controls">
-                            <a href="/OnlineJobs/managePendingJob/{{$job->id}}" class="btn btn-info">Review Job</a>
+                            <a href="/OnlineJobs/pending/{{$job->id}}" class="btn btn-info">Review Job</a>
                         </td>
                     </tr>
                 @endforeach

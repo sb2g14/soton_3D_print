@@ -23,6 +23,13 @@ class Prints extends Model
     public function jobs(){
         return $this->belongsToMany(Jobs::class);
     }
+    public function duration(){
+        //TODO: check it works and replace at appropriate places in controllers
+        $finished_at = \Carbon\Carbon($this->finished_at);
+        $created_at = \Carbon\Carbon($this->created_at);
+        $duration = $this->finshed_at ? $finished_at->diffInMinutes($created_at) : $this->time;
+        return $duration;
+    }
     /**returns a string how much time is left on this print**/
     public function timeRemain(){
         // Separate hours from minutes and seconds in printing time

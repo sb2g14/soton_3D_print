@@ -39,7 +39,7 @@
                             @if($print->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
                                 <span data-placement="top" data-toggle="popover" data-trigger="hover"
                                       data-content="Delete this print only if the print has not started!">
-                                    <a type="button" id="deletePrint" href="/OnlineJobs/DeletePrint/{{$print->id}}"
+                                    <a type="button" id="deletePrint" href="/OnlineJobs/print/{{$print->id}}/delete"
                                        class="close" style="color: red">&times;</a>
                                 </span>
                             @endif
@@ -55,8 +55,8 @@
                             </p>
                             @if($print->status == 'In Progress')
                                 <div class="text-right">
-                                    <a href="/OnlineJobs/printSuccessful/{{ $print->id }}" class="btn btn-success">Print Successful</a>
-                                    <a href="/OnlineJobs/printFailed/{{ $print->id }}" class="btn btn-danger">Print Failed</a>
+                                    <a href="/OnlineJobs/print/{{ $print->id }}/success" class="btn btn-success">Print Successful</a>
+                                    <a href="/OnlineJobs/print/{{ $print->id }}/failed" class="btn btn-danger">Print Failed</a>
                                 </div>
                             @endif
                         </div>
@@ -98,7 +98,7 @@
                 @endif
 
                 @if($query_in_progress == null & $query_success !== null)
-                    <a href="/OnlineJobs/jobSuccess/{{$job->id}}" class="btn btn-lg btn-success" data-placement="top"
+                    <a href="/OnlineJobs/{{$job->id}}/success" class="btn btn-lg btn-success" data-placement="top"
                        data-toggle="popover" data-trigger="hover" data-content="You may mark this job as completed now.
                        When you do so the customer will be notified of a successful job completion.">Job Completed</a>
                 @else
@@ -123,7 +123,7 @@
                 <div class="modal-body text-left">
 
                     {{--Form to specify material amount and duration of each print--}}
-                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/managePendingJob/{{$job->id}}">
+                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/pending/{{$job->id}}">
                         {{ csrf_field() }}
 
                         {{--Select a printer--}}
@@ -226,7 +226,7 @@
                 <div class="modal-body text-left">
 
                     {{--Form to add a coment to a rejected job--}}
-                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/jobFailed/{{ $job->id }}">
+                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/{{ $job->id }}/failed">
                         {{ csrf_field() }}
 
                         <div class="form-group text-left">

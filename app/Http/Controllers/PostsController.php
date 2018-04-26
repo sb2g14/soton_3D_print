@@ -2,41 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use App\Announcement;
+use App\FaultData;
 use App\posts;
 use App\printers;
 use App\Prints;
-use App\Announcement;
 use App\PublicAnnouncements;
-use App\Rules\Printer;
-use App\Http\Controllers\Traits\WorkshopTrait;
-use Illuminate\Http\Request;
-use Auth;
-use Illuminate\Support\Facades\Input;
-use App\FaultData;
 use App\StatisticsHelper;
+//use App\Http\Controllers\Traits\WorkshopTrait;
+use App\Rules\Printer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+
+
 
 /**
- * This controller manages the homepage 
- * TODO: this should be moved into the HomeController! Only keep the actions for posts in this controller!
+ * This controller manages non-printer related issues also called posts.
  **/
 class PostsController extends Controller
 {
-    use WorkshopTrait;
-    
-    //// PRIVATE (HELPER) FUNCTIONS ////
-    //--------------------------------------------------------------------------------------------------------------
-    
-    /** Getting post and fault data and combining it **/
-    private function _getIssues(){
-        // Get printer related issues
-        $faults = FaultData::select('id', 'title', 'body', 'created_at', 'staff_id_created_issue as staff_id', 'printers_id')
-        ->where('resolved', 0);
-        // Get generic (non-printer related) issues
-        $posts = Posts::addSelect('id', 'title', 'body', 'created_at', 'staff_id')->selectRaw('NULL AS printers_id')->where('resolved', 0);
-        // Combine them
-        $issues = $faults->unionAll($posts)->orderBy('created_at','desc')->get();
-        return $issues;
-    }
+    //use WorkshopTrait;
     
     
     //// GENERIC PUBLIC FUNCTIONS ////
@@ -46,60 +32,16 @@ class PostsController extends Controller
     public function __construct()
     {
 
-        $this->middleware('auth')->except(['index']);
+        $this->middleware('auth');
 
     }
-
-    
-    //// CONTROLLER BLADES ////
-    //---------------------------------------------------------------------------------------------------------------//
-
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     **/
-    public function index()
-    {
-        // Check if all current jobs are finished
-        $printers_busy = printers::where('in_use','=', 1)->get();
-        foreach ($printers_busy as $printer_busy) {
-            $printer_busy->changePrinterStatus($printers_busy);
-        }
-
-        // Get issues as a combination of printer issues and posts (workshop issues)
-        $issues = $this->_getIssues();
-
-        // Get public and internal announcements
-        $announcements =  Announcement::orderBy('created_at', 'desc')->take(20)->get();
-
-        //get Statistics
-        $stats = new StatisticsHelper();
-        
-        // Prints over last 12 months
-        $count_prints = $stats->getArrayPrintsLastMonths(12);
-        $count_months = $stats->getArrayLastMonths(12);
-        
-        // Users per year
-        $count_users = $stats->getUsersLastYear();
-
-        // Material since creation
-        $count_material = $stats->getMaterialTotal();
-        
-        // check if workshop is open right now
-        $workshopIsOpen = $this->isOpen();
-
-        return view('welcome.index', compact('issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material','workshopIsOpen'));
-    }
-
 
     //// CONTROLLER ACTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
 
     
     /**
-     * Store a newly created issue in storage.
+     * Store a newly created post (Non-Printer Issue) in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -146,7 +88,7 @@ class PostsController extends Controller
 
 
     /**
-     * Remove the specified non-printer related issue from storage.
+     * Remove the specified post (non-printer related issue) from storage.
      *
      * @param  \App\welcome  $welcome
      * @return \Illuminate\Http\Response
@@ -162,7 +104,7 @@ class PostsController extends Controller
         return redirect('/');
     }
     
-    /** mark the specified non-printer related issue as resolved **/
+    /** mark the specified post (non-printer related issue) as resolved **/
     public function resolve($id)
     {
         Posts::where('id', $id)->update(['resolved' => 1]);

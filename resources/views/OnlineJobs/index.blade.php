@@ -8,7 +8,7 @@
             <li><a href="/OnlineJobs/approved">Approved Jobs <span class="badge">{{$counts['approved']}}</span></a></li>
             <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
             <li class="nav-right"><a href="/OnlineJobs/prints">Prints</a></li>
-            <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
+            <li><a href="/OnlineJobs/finished">Completed Jobs</a></li>
         </ul>
     </div>
     {{--CONTENT--}}
@@ -32,7 +32,7 @@
                         <td data-th="Job Title">{{ $job->job_title }}</td>
                         <td data-th="Project/Cost Code">{{ $job->use_case}}</td>
                         <td data-th="Requested on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
-                        <td><a href="/OnlineJobs/checkrequest/{{$job->id}}" class="btn btn-info">Manage</a></td>
+                        <td><a href="/OnlineJobs/request/{{$job->id}}" class="btn btn-info">Manage</a></td>
                     </tr>
                 @endforeach
             </tbody>

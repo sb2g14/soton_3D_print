@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use Alert;
+use Auth;
+use App\cost_code;
+use App\Jobs;
+use App\printers;
+use App\Prints;
+use App\staff;
+use App\StatisticsHelper;
+use App\User;
+use App\Mail\jobAccept;
+use App\Mail\jobFailed;
+use App\Mail\jobReject;
 use App\Mail\jobSuccess;
+use App\Mail\onlineRequest;
+use App\Rules\CustomerNameValidation;
+use App\Rules\Printer;
 use App\Rules\SotonEmail;
 use App\Rules\SotonID;
 use App\Rules\UseCase;
-use App\Rules\Printer;
-use App\User;
-use Illuminate\Http\Request;
-use App\Rules\CustomerNameValidation;
-use App\Jobs;
-use App\Prints;
-use App\cost_code;
-use App\Mail\onlineRequest;
-use App\Mail\jobAccept;
-use App\staff;
 use Carbon\Carbon;
-use Auth;
+use Illuminate\Http\Request;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\jobReject;
-use App\Mail\jobFailed;
-use App\printers;
-use Alert;
-use App\StatisticsHelper;
 
 /** OrderOnlineController
  * This controller manages online jobs.
@@ -90,8 +90,6 @@ class OrderOnlineController extends Controller
         }
         
     }
-    //// GENERIC PUBLIC FUNCTIONS ////
-    //---------------------------------------------------------------------------------------------------------------//
     
     //// CONTROLLER BLADES ////
     //---------------------------------------------------------------------------------------------------------------//

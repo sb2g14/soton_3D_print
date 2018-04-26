@@ -9,11 +9,11 @@
 
  <div class="container text-center m-b-md">
      <ul class="nav nav-pills nav-justified">
-         <li><a href="/OnlineJobs/index">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
+         <li><a href="/OnlineJobs/requests">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
          <li><a href=/OnlineJobs/approved>Approved Jobs <span class="badge">{{$counts['approved']}}</span></a></li>
          <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
          <li class="nav-right active"><a href="#">Prints</a></li>
-         <li><a href="/OnlineJobs/completed">Completed Jobs</a></li>
+         <li><a href="/OnlineJobs/finished">Completed Jobs</a></li>
     </ul>
 </div>
 
@@ -49,8 +49,8 @@
                             <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
                             <td data-th="Time Remain">{{ $print->timeRemain() }}</td>
                             <td data-th="Manage">
-                                <a href="/OnlineJobs/printSuccessful/{{ $print->id }}" class="btn btn-success">Print Successful</a>
-                                <a href="/OnlineJobs/printFailed/{{ $print->id }}" class="btn btn-danger">Print Failed</a>
+                                <a href="/OnlineJobs/print/{{ $print->id }}/success" class="btn btn-success">Print Successful</a>
+                                <a href="/OnlineJobs/print/{{ $print->id }}/failed" class="btn btn-danger">Print Failed</a>
                             </td>
                         </tr>
                     @endforeach
@@ -91,7 +91,7 @@
                             <tr class="text-left {{$printclass}}">
                                 <td data-th="ID">{{ $print->id }}</td>
                                 <td data-th="Printer No"><a href="/issues/show/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
-                                <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }} <a href="/OnlineJobs/managePendingJob/{{$job->id}}">{{ $job->job_title }}</a> <br> @endforeach</td>
+                                <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }} <a href="/OnlineJobs/pending/{{$job->id}}">{{ $job->job_title }}</a> <br> @endforeach</td>
                                 <td data-th="Started by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                                 <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
                                 <td data-th="Finished by">{{$print->staff_finished->first_name}} {{$print->staff_finished->last_name}}</td>

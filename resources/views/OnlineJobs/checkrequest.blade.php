@@ -36,7 +36,7 @@
                         <li class="alert alert-info text-left">
                             <a type="button" class="close" style="color: red" data-placement="top" data-toggle="popover"
                                data-trigger="hover" data-content="Delete this print-preview"
-                                    href="/OnlineJobs/DeletePrintPreview/{{$print->id}}">&times;</a>
+                                    href="/OnlineJobs/PrintPreview/{{$print->id}}/delete">&times;</a>
                             <p>
                                 Preview: <b>{{ $print->id }}</b>
                                 Time: <b>{{ $print->time }}</b>
@@ -81,7 +81,7 @@
                 <a class="btn btn-lg btn-info" data-toggle="modal" data-target="#addPrintModal">Add print preview</a>
             </span>
 
-            <a href="/OnlineJobs/index" class="btn btn-lg btn-primary">Back</a>
+            <a href="/OnlineJobs/requests" class="btn btn-lg btn-primary">Back</a>
 
             <span data-placement="top" data-toggle="popover" data-trigger="hover" data-content="If you think that the requested
             job cannot be printed for some reason, please click on this button and provide an explanation for the customer.">
@@ -91,7 +91,7 @@
                 <a href="#" class="btn btn-lg btn-success" data-placement="top" data-toggle="popover" data-trigger="hover"
                    data-content="You cannot approve this job if no print-previews have been created." disabled>Approve job</a>
             @else
-            <a href="/OnlineJobs/approveRequest/{{ $job->id }}" class="btn btn-lg btn-success"
+            <a href="/OnlineJobs/request/{{ $job->id }}/approve" class="btn btn-lg btn-success"
                data-placement="top" data-toggle="popover" data-trigger="hover"
                data-content="You may approve this job now. When you do so the total job stats will be sent to a customer for
                approval.">Approve job</a>
@@ -112,7 +112,7 @@
                 <div class="modal-body text-left">
 
                     {{--Form to specify material amount and duration of each print--}}
-                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/checkrequest/{{ $job->id }}">
+                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/request/{{ $job->id }}">
                         {{ csrf_field() }}
                         <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                             {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-sm-4 control-label'] )  !!}
@@ -172,7 +172,7 @@
                 <div class="modal-body text-left">
 
                     {{--Form to add a coment to a rejected job--}}
-                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/delete/{{ $job->id }}">
+                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/{{ $job->id }}/delete">
                         {{ csrf_field() }}
 
                         <div class="form-group text-left">

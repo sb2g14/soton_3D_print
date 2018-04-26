@@ -34,7 +34,7 @@
             <div class="col-sm-6">
                 <div id="reviewJob" class="text-center card">
                     <h4>Please check student input:</h4><br>
-                    <form class="form-horizontal" role="form" method="POST" action="/printingData/show/{{ $job->id }}">
+                    <form class="form-horizontal" role="form" method="POST" action="/WorkshopJobs/{{ $job->id }}">
 
                         {{ csrf_field() }}
 
@@ -148,8 +148,8 @@
 
                         <div class="col-sm-12 text-left">
                                 <button id="submit" type="submit" class="btn btn-lg btn-success">Accept</button>
-                                <a class="btn btn-lg btn-danger" href="/printingData/delete/{{$job->id}}">Reject</a>
-                                <a class="btn btn-lg btn-primary" href="/printingData/index">Back</a>
+                                <a class="btn btn-lg btn-danger" href="/WorkshopJobs/{{$job->id}}/delete">Reject</a>
+                                <a class="btn btn-lg btn-primary" href="/WorkshopJobs/index">Back</a>
                         </div>
                     </form>
                 </div>

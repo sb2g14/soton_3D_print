@@ -32,9 +32,11 @@
                 <li class="item">
                     <span>
                         Finance
-                        <span class="caret"></span></span>
+                        <span class="caret"></span>
+                    </span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-item" href="{{ url('/finance') }}">Jobs</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/finance') }}">Overview</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/finance/jobs') }}">Review Jobs</a></li>
                         <li><a class="dropdown-item" href="{{ url('/costCodes/index') }}">Cost codes</a></li>
                     </ul>
                 </li>
@@ -45,10 +47,10 @@
                         Printing
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-item"  href="{{ url('/printingData/index') }}">Manage Workshop Jobs</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/printingData/create') }}">Request to Print in the Workshop</a></li>
+                        <li><a class="dropdown-item"  href="{{ url('/WorkshopJobs/requests') }}">Manage Workshop Jobs</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/WorkshopJobs/create') }}">Request to Print in the Workshop</a></li>
                         @can('manage_online_jobs')
-                            <li><a class="dropdown-item" href="{{ url('/OnlineJobs/index') }}">Manage Online Jobs</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/OnlineJobs/requests') }}">Manage Online Jobs</a></li>
                         @endcan
                         <li><a class="dropdown-item"  href="{{ url('/OnlineJobs/create') }}">Order a Print Online</a></li>
                         {{--<li><a class="dropdown-item" href="{{ url('/loan') }}">Request a loan</a></li>--}}
@@ -72,11 +74,11 @@
                         About
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/news') }}">Workshop History</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/about') }}">About workshop</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/history') }}">Workshop History</a></li>
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
                         <li><a class="dropdown-item" href="{{ url('/faq') }}">FAQ</a></li>
-                        <li><a class="dropdown-item"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
+                        <li><a class="dropdown-item"  href="{{ url('/gallery') }}">Photo Gallery</a></li>
                     </ul>
                 </li>
 
@@ -88,7 +90,7 @@
                 @hasrole('LeadDemonstrator')
                     @if ($workshopIsOpen)
                         {{--Manage Workshop Jobs--}}
-                        <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/printingData/index') }}">Pending Jobs</a></li>
+                        <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/WorkshopJobs/requests') }}">Pending Jobs</a></li>
                     @else
                         {{--Manage Rota--}}
                         <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/rota') }}">Rota</a></li>
@@ -97,7 +99,7 @@
                 @hasrole('Demonstrator') 
                     @if ($workshopIsOpen)
                         {{--Manage Workshop Jobs--}}
-                        <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/printingData/index') }}">Pending Jobs</a></li>
+                        <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/WorkshopJobs/requests') }}">Pending Jobs</a></li>
                     @else
                         {{--Manage Availability--}}
                         <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/rota/availability') }}">Indicate Availability</a></li>
@@ -105,7 +107,7 @@
                 @endhasrole
                 @hasrole('OnlineJobsManager')
                     {{--Manage Online Jobs--}}
-                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/OnlineJobs/index') }}>Online Jobs</a></li>
+                    <li class="item"><a class="btn btn-danger no-dropdown" role="button" href={{ url('/OnlineJobs/requests') }}>Online Jobs</a></li>
                 @endhasrole
 
                 <li class="item">
@@ -139,7 +141,7 @@
                         Get Started
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-ite" href="{{ url('/printingData/create') }}">Request to Print in the Workshop</a></li>
+                        <li><a class="dropdown-ite" href="{{ url('/WorkshopJobs/create') }}">Request to Print in the Workshop</a></li>
                         <li><a class="dropdown-ite"  href="{{ url('/OnlineJobs/create') }}">Order a Print Online</a></li>
                         {{--Request a loan--}}
                         {{--<li class="item"><a class="no-dropdown" href="{{ url('/loan') }}">Request a loan</a></li>--}}
@@ -155,18 +157,18 @@
                         About
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-item" href="{{ url('/aboutWorkshop') }}">About workshop</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/about') }}">About workshop</a></li>
                         <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our Team</a></li>
-                        {{--<li><a class="dropdown-item" href="{{ url('/news') }}">Workshop History</a></li>--}}
+                        {{--<li><a class="dropdown-item" href="{{ url('/history') }}">Workshop History</a></li>--}}
                         <li><a class="dropdown-item" href="{{ url('/faq') }}">FAQ</a></li>
-                        <li><a class="dropdown-ite"  href="{{ url('/photolibrary') }}">Photo Library</a></li>
+                        <li><a class="dropdown-ite"  href="{{ url('/gallery') }}">Photo Gallery</a></li>
                     </ul>
                 </li>
                 {{--Order print in the workshop--}}
                 {{--Show this button only when workshop is open--}}
                 @if ($workshopIsOpen)
                 {{--@if (Carbon\Carbon::now('Europe/London')->dayOfWeek === 3)--}}
-                <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/printingData/create') }}">Request workshop job!</a></li>
+                <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/WorkshopJobs/create') }}">Request workshop job!</a></li>
                 @else
                 {{--Order print online--}}
                 <li class="item"><a class="btn btn-danger no-dropdown" role="button" href="{{ url('/OnlineJobs/create') }}">Request online job!</a></li>
@@ -180,7 +182,7 @@
                     <ul class="dropdown-bl dropdown-login" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="{{ route('auth.register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
                         <li><a class="dropdown-item" href="{{ route('auth.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                        {{--<li><a class="dropdown-item" href="https://webauth.pprd.soton.ac.uk/idp/profile/SAML2/Redirect/SSO"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>--}}
+                        {{--<li><a class="dropdown-item" href="https://webauth.pprd.soton.ac.uk/idp/profile/SAML2/Redirect/SSO"><span class="glyphicon glyphicon-log-in"></span>UoS Login</a></li>--}}
                     </ul>
                 </li>
             </ul>

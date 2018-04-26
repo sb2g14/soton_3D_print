@@ -4,9 +4,9 @@
     {{--NAVIGATION--}}
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
-            <li><a href="/printingData/index">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
+            <li><a href="/WorkshopJobs/requests">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
             <li class="active"><a href="#">Approved Jobs / Printing <span class="badge">{{$counts['approved']}}</span></a></li>
-            <li><a href="/printingData/finished">Completed Jobs</a></li>
+            <li><a href="/WorkshopJobs/finished">Completed Jobs</a></li>
         </ul>
     </div>
     {{--CONTENT--}}
@@ -58,8 +58,8 @@
                         </td>
                         <td>
                             <div class="btn-group-vertical">
-                                <a href="/printingData/success/{{$job->id}}" class="btn btn-success">Job Successful</a><br/>
-                                <a href="/printingData/abort/{{$job->id}}" class="btn btn-danger">Job Failed</a>
+                                <a href="/WorkshopJobs/{{$job->id}}/success" class="btn btn-success">Job Successful</a><br/>
+                                <a href="/WorkshopJobs/{{$job->id}}/failed" class="btn btn-danger">Job Failed</a>
                             </div>
                         </td>
                     </tr>

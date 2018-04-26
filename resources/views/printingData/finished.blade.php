@@ -5,8 +5,8 @@
     {{--NAVIGATION--}}
     <div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
-            <li><a href="/printingData/index">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
-            <li><a href="/printingData/approved">Approved Jobs / Printing <span class="badge">{{$counts['approved']}}</span></a></li>
+            <li><a href="/WorkshopJobs/requests">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
+            <li><a href="/WorkshopJobs/approved">Approved Jobs / Printing <span class="badge">{{$counts['approved']}}</span></a></li>
             <li class="active"><a href="#">Completed Jobs</a></li>
         </ul>
     </div>
@@ -67,7 +67,7 @@
                             <td data-th="Status">{{ $job->status }}</td>
                             <td data-th="Edit">
                                 {{--@hasanyrole('LeadDemonstrator|administrator|OnlineJobsManager')--}}
-                                <a class="btn btn-danger" href="/printingData/edit/{{$job->id}}" 
+                                <a class="btn btn-danger" href="/WorkshopJobs/{{$job->id}}/edit" 
                                    data-toggle="popover" data-trigger="hover" data-placement="top"
                                    data-content="Be very cautious in editing finished jobs as this action will alter the
                                    historic events!">Manage Job</a>
@@ -75,7 +75,7 @@
                             </td>
                             <td data-th="Restart">
                                 @if($job->status == 'Failed')
-                                    <a class="btn btn-success" href="/printingData/restart/{{$job->id}}">Restart</a>
+                                    <a class="btn btn-success" href="/WorkshopJobs/{{$job->id}}/restart">Restart</a>
                                 @endif
                             </td>
                         </tr>

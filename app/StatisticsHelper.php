@@ -176,7 +176,7 @@ class StatisticsHelper
             ->join('prints', 'prints.id', '=', 'jobs_prints.prints_id')
             ->orderBy('prints.created_at', 'desc')
             ->where('prints.created_at', '>', $t2str)->where('prints.created_at', '<', $t1str)
-            ->select('prints.created_at','prints.updated_at')->get();
+            ->select('prints.created_at','prints.finished_at')->get();
         return $prints;
     }
     
@@ -202,7 +202,7 @@ class StatisticsHelper
         $t1 = $t1->month(1)->day(1)->hour(0)->minute(0)->second(0);
         $t2 = $t1->copy()->addYear();
         // Get all the completed jobs from the specified month
-        $codes = Jobs::where('created_at', '>=', $t1)->where('created_at', '<=', $t2)
+        $codes = Jobs::where('finished_at', '>=', $t1)->where('finished_at', '<=', $t2)
             ->where('status', 'Success')
             ->where('requested_online', 1)
             ->groupBy('cost_code')
@@ -241,7 +241,7 @@ class StatisticsHelper
             ->get();
         $times = [];
         $times['total'] = $jobs->map(function ($job) {
-            $end = new Carbon($job->updated_at);
+            $end = new Carbon($job->finished_at);
             $start = new Carbon($job->created_at);
             $hours = $start->diffInHours($end);
             return $hours;
@@ -253,7 +253,7 @@ class StatisticsHelper
             return $hours;
         })->avg();
         $times['printing'] = $jobs->map(function ($job) {
-            $end = new Carbon($job->updated_at);
+            $end = new Carbon($job->finished_at);
             $start = new Carbon($job->approved_at);
             $hours = $start->diffInHours($end);
             return $hours;

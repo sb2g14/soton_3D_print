@@ -35,7 +35,7 @@
             <div class="col-sm-6">
                 <div id="reviewJob" class="text-center card">
                     <h4>Please update the following information:</h4><br>
-                    <form class="form-horizontal" role="form" method="POST" action="/printingData/edit/{{ $job->id }}">
+                    <form class="form-horizontal" role="form" method="POST" action="/WorkshopJobs/{{ $job->id }}/edit">
 
                         {{ csrf_field() }}
                     {{--Edit the printing time --}}
@@ -89,8 +89,8 @@
 
                         <div class="col-sm-12 text-left">
                                 <button id="submit" type="submit" class="btn btn-success">Save</button>
-                                {{--<a href="/printingData/delete/{{$job->id}}" class="btn btn-lg btn-danger">Reject</a>--}}
-                                <a href="/printingData/finished" class="btn btn-danger">Back</a>
+                                {{--<a href="/WorkshopJobs/{{$job->id}}/delete" class="btn btn-lg btn-danger">Reject</a>--}}
+                                <a href="/WorkshopJobs/finished" class="btn btn-danger">Back</a>
                         </div>
                     </form>
                 </div>

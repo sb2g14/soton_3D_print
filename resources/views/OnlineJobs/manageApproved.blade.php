@@ -51,8 +51,8 @@
                 @else
                     <a href="/myprints" class="btn btn-lg btn-primary">Back</a>
                 @endif
-                <a href="/OnlineJobs/customerReject/{{$job->id}}" class="btn btn-lg btn-danger">Customer Rejected</a>
-                <a href="/OnlineJobs/customerApproved/{{ $job->id }}" class="btn btn-lg btn-success">Customer Approved</a>
+                <a href="/OnlineJobs/approved/{{$job->id}}/reject" class="btn btn-lg btn-danger">Customer Rejected</a>
+                <a href="/OnlineJobs/approved/{{ $job->id }}/accept" class="btn btn-lg btn-success">Customer Approved</a>
             </div>
         </div>
     </div>
