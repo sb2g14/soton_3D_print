@@ -68,7 +68,7 @@
                         <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#resolve">Resolve</button>
                     @endif
                     <a id="buttons" href="/issues" class="btn btn-primary">See all issues</a>
-                    <a id="buttons" href="/issues/show/{{$issue->printers_id}}" class="btn btn-primary">See printer history</a>
+                    <a id="buttons" href="/printers/{{$issue->printers_id}}" class="btn btn-primary">See printer history</a>
                 </div>
                 
                 {{--ISSUE COMMENT FORM--}}

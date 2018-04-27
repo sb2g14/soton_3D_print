@@ -108,7 +108,7 @@
                         <button id="submit" type="submit" class="btn btn-lg btn-success">
                             <i class="fa fa-save"></i> Save Changes
                         </button>
-                        <a class="btn btn-lg btn-primary" href="/issues/show/{{$printer->id}}" >View printer details</a>
+                        <a class="btn btn-lg btn-primary" href="/printers/{{$printer->id}}" >View printer details</a>
                     </div>
                 </form>
             </div>

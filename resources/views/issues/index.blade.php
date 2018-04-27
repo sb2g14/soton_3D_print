@@ -46,7 +46,7 @@
                 @foreach($issues as $issue)
                     <tr class="text-left">
                         <td data-th="ID">{{ $issue->id }}</td>
-                        <td data-th="Printer Number"><a href="/issues/show/{{ $issue->printers_id }}"> {{$issue->printers_id}} </a></td>
+                        <td data-th="Printer Number"><a href="/printers/{{ $issue->printers_id }}"> {{$issue->printers_id}} </a></td>
                         <td data-th="Serial Number">{{$issue->serial_number}}</td>
                         <td data-th="Issue Printer Status">{{ $issue->printer_status }}</td>
                         <td data-th="Created by">{{ $issue->issue_created->first_name}} {{ $issue->issue_created->last_name}}</td>
@@ -54,7 +54,7 @@
                         <td data-th="Days out of Order">{{ \Carbon\Carbon::now('Europe/London')->diffInDays($issue->created_at) }}</td>
                         <td data-th="Title">{{ isset($issue->title) ? $issue->title : "Issue with printer ".$issue->printers_id }}</td>
                         <td data-th="Message">{{ $issue->body }}</td>
-                        <td data-th="Modify"><a href="/issues/update/{{$issue->id}}" class="btn btn-info">
+                        <td data-th="Modify"><a href="/issues/{{$issue->id}}/edit" class="btn btn-info">
                                 Update/Resolve</a>
                         </td>
                         <td>

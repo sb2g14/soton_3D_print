@@ -195,7 +195,7 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
     Route::get('/printers','PrintersController@index');
 
     // Route view resolved issue for each printer
-    Route::get('issues/show/{id}','PrintersController@show'); //deprecated
+    Route::get('/issues/show/{id}','PrintersController@show'); //deprecated
     Route::get('/printers/{id}','PrintersController@show');
 });
 /////////////////////////////////////////////////////////////////////////////////////////////

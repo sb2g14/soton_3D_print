@@ -292,7 +292,7 @@ staff::where('id', $post_last->staff_id)->first()->first_name}}
                                     @if(isset($post->printers_id))
                                         <div class="card">
                                             <div class="form-group">
-                                                <a href="/issues/update/{{ $post->id }}#buttons" class="btn btn-primary">Update </a>
+                                                <a href="/issues/{{ $post->id }}/edit#buttons" class="btn btn-primary">Update </a>
                                             </div>
                                         </div>
                                     @else

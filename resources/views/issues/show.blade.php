@@ -165,9 +165,9 @@
                         @can('issues_manage')
                             <div class="col-sm-4">
                                 @if(!$entry['EndDate'])
-                                    <a href="/issues/update/{{$entry['EntryID']}}" class="btn btn-info">View/Update or Resolve</a>
+                                    <a href="/issues/{{$entry['EntryID']}}/edit" class="btn btn-info">View/Update or Resolve</a>
                                 @else
-                                    <a href="/issues/update/{{$entry['EntryID']}}">View details...</a>
+                                    <a href="/issues/{{$entry['EntryID']}}/edit">View details...</a>
                                 @endif
                             </div>
                         @endcan

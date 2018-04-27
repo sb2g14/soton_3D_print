@@ -404,7 +404,7 @@
                                             @if(isset($post->printers_id))
                                                 <div class="card">
                                                     <div class="form-group">
-                                                        <a class="btn btn-info" href="/issues/update/{{ $post->id }}#buttons">Update </a>
+                                                        <a class="btn btn-info" href="/issues/{{ $post->id }}/edit#buttons">Update </a>
                                                     </div>
                                                 </div>
                                             @else

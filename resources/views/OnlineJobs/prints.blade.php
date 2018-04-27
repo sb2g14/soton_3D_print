@@ -43,7 +43,7 @@
                         @endphp
                         <tr class="text-left">
                             <td data-th="ID">{{ $print->id }}</td>
-                            <td data-th="Printer No"><a href="/issues/show/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
+                            <td data-th="Printer No"><a href="/printers/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
                             <td data-th="Printed by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                             <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }}: {{ $job->job_title }} <br> @endforeach</td>
                             <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
@@ -90,7 +90,7 @@
                         @if($print->status == 'Success' || $print->status == 'Failed')
                             <tr class="text-left {{$printclass}}">
                                 <td data-th="ID">{{ $print->id }}</td>
-                                <td data-th="Printer No"><a href="/issues/show/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
+                                <td data-th="Printer No"><a href="/printers/{{$print->printers_id}}">{{ $print->printers_id }}</a></td>
                                 <td data-th="Job IDs: Titles">@foreach($print->jobs as $job) {{ $job->id }} <a href="/OnlineJobs/pending/{{$job->id}}">{{ $job->job_title }}</a> <br> @endforeach</td>
                                 <td data-th="Started by">{{$print->staff_started->first_name}} {{$print->staff_started->last_name}}</td>
                                 <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
