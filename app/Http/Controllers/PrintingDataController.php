@@ -166,7 +166,10 @@ class PrintingDataController extends Controller
         // Check if any non-completed prints exist and autocomplete them
         $this->autoCompleteFinishedPrints();
         // Get all the workshop jobs waiting for approval
-        $jobs = Jobs::orderBy('created_at', 'desc')->where('status','Waiting')->where('requested_online', 0)->get();
+        $jobs = Jobs::orderBy('created_at', 'desc')
+                        ->where('status','Waiting')
+                        ->where('requested_online', 0)
+                        ->get();
         $counts = $this->getCounts();
         return view('printingData.index', compact('jobs','counts'));
     }
@@ -180,7 +183,10 @@ class PrintingDataController extends Controller
     {
         $this->autoCompleteFinishedPrints();
         // Get all the approved jobs
-        $approved_jobs = Jobs::orderBy('created_at', 'desc')->where('status','Approved')->where('requested_online', 0)->get();
+        $approved_jobs = Jobs::orderBy('created_at', 'desc')
+                            ->where('status','Approved')
+                            ->where('requested_online', 0)
+                            ->get();
         $counts = $this->getCounts();
         return view('printingData.approved', compact('approved_jobs','counts'));
     }
@@ -194,7 +200,12 @@ class PrintingDataController extends Controller
     {
         $this->autoCompleteFinishedPrints();
         // Get all the completed jobs from the last 30 days
-        $finished_jobs = Jobs::where('created_at', '>=', Carbon::now()->subMonth())->orderBy('created_at', 'desc')->where('status','!=', 'Waiting')->where('requested_online', 0)->get();
+        $finished_jobs = Jobs::where('created_at', '>=', Carbon::now()->subMonth())
+                                ->orderBy('created_at', 'desc')
+                                ->where('status','!=', 'Waiting')
+                                ->where('status','!=', 'Approved')
+                                ->where('requested_online', 0)
+                                ->get();
         $counts = $this->getCounts();
         return view('printingData.finished', compact('finished_jobs','counts'));
     }

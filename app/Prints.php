@@ -23,6 +23,10 @@ class Prints extends Model
     public function jobs(){
         return $this->belongsToMany(Jobs::class);
     }
+    public function finished_at()
+    {
+        return new Carbon($this->finished_at);
+    }
     public function duration(){
         //TODO: check it works and replace at appropriate places in controllers
         $finished_at = \Carbon\Carbon($this->finished_at);

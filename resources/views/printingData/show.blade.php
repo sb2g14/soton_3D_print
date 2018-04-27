@@ -37,9 +37,10 @@
                     <form class="form-horizontal" role="form" method="POST" action="/WorkshopJobs/{{ $job->id }}">
 
                         {{ csrf_field() }}
-
+                        
+                        {{--This is a Printer Number dropdown--}}
                         <div class="form-group {{ $errors->has('printers_id') ? ' has-error' : '' }}">
-                            {{--This is a Printer Number dropdown--}}
+                            
                             <div class="form-group">
                                 {!! Form::label('printers_id', 'Printer Number', ['class' => 'col-lg-4 control-label'] )  !!}
                                 <div class="col-md-6">
@@ -52,7 +53,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        {{--Customer name--}}
                         <div class="form-group{{ $errors->has('student_name') ? ' has-error' : '' }}">
                             <label for="student_name" class="col-md-4 control-label">Requested by:</label>
                             <div class="col-md-6">
@@ -67,7 +68,8 @@
                                 <span id="student_name_error"></span>
                             </div>
                         </div>
-
+                        
+                        {{--Customer ID--}}
                         <div class="form-group{{ $errors->has('student_id') ? ' has-error' : '' }}">
                             <label for="student_id" class="col-md-4 control-label">Requester id:</label>
                             <div class="col-md-6">
@@ -82,7 +84,8 @@
                                 <span id="student_id_error"></span>
                             </div>
                         </div>
-
+                        
+                        {{--Customer Email--}}
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">Requester email:</label>
                             <div class="col-md-6">
@@ -97,14 +100,17 @@
                                 <span class="" id="email_error"></span>
                             </div>
                         </div>
-
-                       {{--Get numbers of hours and minutes from the requested time--}}
+                        
+                        {{--Print duration--}}
+                        {{--Get numbers of hours and minutes from the requested time--}}
                         @php( list($h, $i, $s) = explode(':', $job->total_duration) )
-
                         <div id="time" class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                             {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-lg-4 control-label'] )  !!}
                             <div class="col-md-2">
-                                {!! Form::select('hours', range(0,59), $h, ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
+                                {!! Form::select('hours', range(0,59), $h, ['class' => 'form-control',
+                                                                            'required', 
+                                                                            'data-help' => 'hours', 
+                                                                            'id' => 'hours']) !!}
                                 @if ($errors->has('hours'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('hours') }}</strong>
@@ -112,12 +118,18 @@
                                 @endif
                             </div>
                             <div class="col-md-2">
-                                {!! Form::select('minutes', range(0,59), $i, ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
+                                {!! Form::select('minutes', range(0,59), $i, ['class' => 'form-control',
+                                                                              'required', 
+                                                                              'data-help' => 'minutes', 
+                                                                              'id' => 'minutes']) !!}
                                 @if ($errors->has('minutes'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('minutes') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                            <div class="col-sm-8">
+                                <span id="time_error"></span>
                             </div>
                         </div>
 
@@ -132,7 +144,7 @@
                                             <strong>{{ $errors->first('material_amount') }}</strong>
                                         </span>
                                     @endif
-                                <span class="" id="material_amount_error"></span>
+                                <span id="material_amount_error"></span>
                             </div>
                         </div>
 
@@ -147,9 +159,9 @@
                         </div>
 
                         <div class="col-sm-12 text-left">
-                                <button id="submit" type="submit" class="btn btn-lg btn-success">Accept</button>
-                                <a class="btn btn-lg btn-danger" href="/WorkshopJobs/{{$job->id}}/delete">Reject</a>
-                                <a class="btn btn-lg btn-primary" href="/WorkshopJobs/requests">Back</a>
+                            <button id="submit" type="submit" class="btn btn-lg btn-success">Accept</button>
+                            <a class="btn btn-lg btn-danger" href="/WorkshopJobs/{{$job->id}}/delete">Reject</a>
+                            <a class="btn btn-lg btn-primary" href="/WorkshopJobs/requests">Back</a>
                         </div>
                     </form>
                 </div>

@@ -41,7 +41,7 @@
             <form id="requestForm" class="form-horizontal" method="POST" action="/WorkshopJobs">
                 {{ csrf_field() }}
 
-                {{--Printer Number--}}
+                {{--Printer Number dropdown--}}
                 <div class="form-group {{ $errors->has('printers_id') ? ' has-error' : '' }}">
                    {{--This is a Printer Number dropdown--}}
                     <div class="form-group">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                {{--Student Name field--}}
+                {{--Customer Name field--}}
                 <div class="form-group{{ $errors->has('customer_name') ? ' has-error' : '' }}">
                     <label for="customer_name" class="col-sm-4 control-label">Name</label>
 
@@ -77,7 +77,7 @@
                     </div>
                 </div>
 
-                {{--Email--}}
+                {{--Customer Email field--}}
                 <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
                     <label for="customer_email" class="col-sm-4 control-label">Email</label>
 

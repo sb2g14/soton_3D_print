@@ -105,7 +105,7 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 
 // Routes for PRINTER ISSUES (issues)
 /////////////////////////////////////////////////////////////////////////////////////////////
-Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
+Route::group(['middleware' => ['role:,issues_manage']], function () {
 
     // Redirect to the view where one can manage issues
     Route::get('/issues/index','IssuesController@index'); //deprecated
@@ -158,9 +158,14 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician|Demonstrator|NewDemonstrator|OnlineJobsManager']], function () {
+//Route::group(['middleware' => ['role:,printers_view']], function () {
     // Here we redirect to the page containing general printer info using controller
     Route::get('/printers/index','PrintersController@index'); //deprecated
     Route::get('/printers','PrintersController@index');
+    
+    // Route view resolved issue for each printer
+    Route::get('issues/show/{id}','PrintersController@show'); //deprecated
+    Route::get('/printers/{id}','PrintersController@show');
 });
 
 Route::group(['middleware' => ['role:,printers_manage']], function () {
@@ -183,9 +188,6 @@ Route::group(['middleware' => ['role:,printers_manage']], function () {
     // Here we redirect to the page where we store a new printer
     Route::post('/printers','PrintersController@store');
     
-    // Route view resolved issue for each printer
-    Route::get('issues/show/{id}','PrintersController@show'); //deprecated
-    Route::get('/printers/{id}','PrintersController@show');
 
     // Here we redirect to the view where one can update a printer
     Route::get('/printers/update/{id}','PrintersController@edit'); //deprecated

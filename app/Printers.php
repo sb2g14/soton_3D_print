@@ -54,7 +54,12 @@ class printers extends Model
                     //set this printer to not be used anymore
                     $this->update(array('in_use' => 0));
                     //set job status to Success & completed by system
-                    $job->update(array('status' => 'Success', 'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
+                    
+                    $job->update(array('status' => 'Success', 
+                                       'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk'),
+                                       'finished_at' => Carbon::now('Europe/London')
+                            ->first()->id)
+                          );
                     //set print status to Success & completed by system
                     $print->update(array('status' => 'Success', 'print_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
                 }

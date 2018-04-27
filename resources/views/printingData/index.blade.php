@@ -47,7 +47,7 @@
                                 Job title: <b>{{$job->job_title}}</b>
                                 Job is printed on <br>
                                 @foreach($job->prints as $print)
-                                    Printer number: <a href="/issues/show/{{ $print->printers_id }}"><b>{{ $print->printers_id }}</b></a><br>
+                                    Printer number: <a href="/printers/{{ $print->printers_id }}"><b>{{ $print->printers_id }}</b></a><br>
                                 @endforeach
                             </p>
                             <a href="/WorkshopJobs/{{$job->id}}" class="btn btn-info">Manage</a>

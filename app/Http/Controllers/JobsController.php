@@ -20,16 +20,32 @@ class JobsController extends Controller
 {
 
     /**
-     * Function to find and redirect to the blade with the print/job details
-     * @blade_address to be found
-     * @param $id int, print id
+     * Function to show all the information about a job
+     * @blade_address 
+     * @param $id int, job id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id)
     {
         
         $job = Jobs::findOrFail($id);
+        $prints = $job->prints()->get();
+        
+        return view('jobs.show', compact('job','prints'));
 
+        
+    }
+    
+    /**
+     * Function to find and redirect to the blade with the print/job details
+     * @blade_address to be found
+     * @param $id int, job id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function find($id)
+    {
+        $job = Jobs::findOrFail($id);
+        
         if($job->requested_online){
             // This is an online print
             return redirect('/OnlineJobs/prints');
@@ -37,13 +53,13 @@ class JobsController extends Controller
         // This is a workshop print  
         if($job->status === "Waiting"){
             // Print is waiting for approval
-            return redirect('/printingData/show/'.$job->id);
+            return redirect('/WorkshopJobs/'.$job->id);
         }
         if($job->status === "Approved"){
             // Print is currently printing
-            return redirect('/printingData/approved');
+            return redirect('/WorkshopJobs/approved');
         }    
         // This is a workshop print
-        return redirect('/printingData/edit/'.$job->id);
+        return redirect('/WorkshopJobs/'.$job->id.'/edit');
     }
 }
