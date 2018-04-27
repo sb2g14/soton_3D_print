@@ -328,7 +328,7 @@ class IssuesController extends Controller
             'text' => "Please proceed further for creating another one.",
         ]);
 
-        return redirect('/issues/index');
+        return redirect('/issues');
     }
     
     /** delete issue update 
@@ -350,7 +350,7 @@ class IssuesController extends Controller
             'text' => "The printer status is changed to the previous one.",
         ]);
 
-        return redirect('/issues/index');
+        return redirect('/issues');
     }
 
     /** mark issue as resolved **/

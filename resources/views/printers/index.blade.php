@@ -20,7 +20,7 @@
     <div class="container">
         <div>
             @can('issues_manage')
-                <a href="/issues/index" class="btn btn-primary pull-left" style="margin-right: 8px;" >Manage Issues</a>
+                <a href="/issues" class="btn btn-primary pull-left" style="margin-right: 8px;" >Manage Issues</a>
             @endcan
             {{--@hasanyrole('LeadDemonstrator|administrator')--}}
                 {{--{!! link_to_route('issues.export',--}}

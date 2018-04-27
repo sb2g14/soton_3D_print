@@ -13,7 +13,7 @@
 
     <div class="container">
         <div class="col-lg-2 pull-left">
-            <a href="{{ url('/costCodes/index') }}" type="button" class="btn btn-primary pull-left">
+            <a href="{{ url('/costCodes') }}" type="button" class="btn btn-primary pull-left">
                 Cost Codes
             </a>
         </div>

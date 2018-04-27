@@ -9,7 +9,7 @@
     <div class="container">
         <div class="col-sm-12">
             <div class="pull-left">
-                <a type="button" class="btn btn-primary" href="/issues/index">View all issues</a>
+                <a type="button" class="btn btn-primary" href="/issues">View all issues</a>
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
                                 <span data-placement="top" data-toggle="popover" data-trigger="hover"
                                       data-content="Delete this update from the database (this option is available only 5 minutes after creation). This will change the status of the printer to the previous one.">
                                     <a id="deleteUpdate" type="button" class="close" style="color: red" 
-                                        href="/issues/delete_update/{{$update->id}}">&times;</a>
+                                        href="/issues/update/{{$update->id}}/delete">&times;</a>
                                 </span>
                                 @endif
                                 <small>
@@ -67,7 +67,7 @@
                         <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#update">Update</button>
                         <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#resolve">Resolve</button>
                     @endif
-                    <a id="buttons" href="/issues/index" class="btn btn-primary">See all issues</a>
+                    <a id="buttons" href="/issues" class="btn btn-primary">See all issues</a>
                     <a id="buttons" href="/issues/show/{{$issue->printers_id}}" class="btn btn-primary">See printer history</a>
                 </div>
                 

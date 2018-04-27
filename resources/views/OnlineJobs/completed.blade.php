@@ -47,8 +47,8 @@
                         <td data-th="Name">{{$job->customer_name}}</td>
                         <td data-th="Price">£{{ $job->total_price }}</td>
                         <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
-                        <td data-th="Last updated on">{{ Carbon\Carbon::parse($job->updated_at)->formatLocalized('%d %b, %H:%M') }}</td>
-                        <td data-th="Approved by">{{ $job->staff_approved->first_name }} {{ $job->staff_approved->last_name }}</td>                     
+                        <td data-th="Last updated on">{{ $job->finished_at()->formatLocalized('%d %b, %H:%M') }}</td>
+                        <td data-th="Approved by">{{ $job->staff_approved->name() }}</td>
                         <td data-th="Status">{{ $job->status }}</td>
                     </tr>
                 @endforeach

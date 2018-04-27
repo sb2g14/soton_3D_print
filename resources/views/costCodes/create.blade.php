@@ -37,7 +37,7 @@
                         <td><span class="" id="description_error"></span></td><br>
                     @include('layouts.errors')
                     <button id="submit" type="submit" class="btn btn-success">Add</button>
-                    <a href="/costCodes/index" class="btn btn-danger">Go back</a>
+                    <a href="/costCodes" class="btn btn-danger">Go back</a>
                 </form>
             </div>
 

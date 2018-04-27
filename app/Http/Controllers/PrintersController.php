@@ -4,22 +4,28 @@ namespace App\Http\Controllers;
 
 
 use Auth;
-use App\Printers;
 use App\FaultData;
+use App\Printers;
 use Carbon\Carbon;
 use Charts;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 
-/** controller to manage printers **/
+/**
+ * Class PrintersController
+ * Controller to manage 3D printers
+ * @package App\Http\Controllers
+ */
 class PrintersController extends Controller
 {
     //// PRIVATE (HELPER) FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------/
 
-    /** takes the data colelcetd in $lastEntry and formats it so that it can easily be used in the blade 
-     * $entryCounter counts how many entries have been grouped for this entry
-     **/
+    /**
+     * Takes the data collected in $lastEntry and formats it so that it can easily be used in the blade
+     *
+     * @param $lastEntry
+     * @param $entryCounter counts how many entries have been grouped for this entry
+     * @return array
+     */
     private function createPrinterHistoryEntry($lastEntry,$entryCounter){
         //collect entry
         $history_entry = array();
@@ -53,6 +59,11 @@ class PrintersController extends Controller
         return $history_entry;
     }
 
+    /**
+     * Returns the history data of a printer defined by id
+     * @param $id int printer id
+     * @return array
+     */
     private function getPrinterHistory($id){
         $outEntries = [];
         $printer = Printers::where('id', $id)->first();
@@ -123,10 +134,13 @@ class PrintersController extends Controller
     
     //// GENERIC PUBLIC FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
-    
+
+    /**
+     * PrintersController constructor.
+     */
     public function __construct()
     {
-
+        // One has to be authenticated to execute any functions from this controller
         $this->middleware('auth');
 
     }
@@ -135,8 +149,8 @@ class PrintersController extends Controller
     //---------------------------------------------------------------------------------------------------------------//
     
     /**
-     * Display a listing of the resource.
-     *
+     * Returns the blade with the table containing all the printers
+     * @blade /printers
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -152,8 +166,8 @@ class PrintersController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Returns a blade with the form to register a new 3D printer
+     * @blade /printers/create
      * @return \Illuminate\Http\Response
      */
     public function create()
@@ -164,7 +178,7 @@ class PrintersController extends Controller
     
     /**
      * Display the printer history 
-     *
+     * @blade /printers/{id}
      * @param  int  $id printer id
      * @return \Illuminate\Http\Response
      */
@@ -195,8 +209,8 @@ class PrintersController extends Controller
     }
     
     /**
-     * Show the form for editing the specified resource.
-     *
+     * Returns the blade with the form to edit information about an existing 3D printer
+     * @blade /printers/edit/{id}
      * @param  \App\printers  $printers
      * @return \Illuminate\Http\Response
      */
@@ -211,7 +225,7 @@ class PrintersController extends Controller
     //---------------------------------------------------------------------------------------------------------------//
 
     /**
-     * Store a newly created resource in storage.
+     * Stores the new 3D printer in the database
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -241,15 +255,11 @@ class PrintersController extends Controller
             'printer_status'=> 'Available',
             'isWorkshop' => $printer_permission]);
 
-        return redirect('/printers/index');
+        return redirect('/printers');
     }
 
-    
-
-    
-
     /**
-     * Update the specified resource in storage.
+     * Updates the information of the existing 3D printer in the database
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\printers  $printers
@@ -287,19 +297,6 @@ class PrintersController extends Controller
             'printer_status'=> $printer_status,
             'isWorkshop' => $printer_permission]);
 
-        return redirect('/printers/index');
+        return redirect('/printers');
     }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\printers  $printers
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(printers $printers)
-    {
-        //
-    }
-
 }

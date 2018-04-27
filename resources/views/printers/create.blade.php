@@ -70,7 +70,7 @@
                     {{--Buttons--}}
                     <div class="col-sm-12 text-center">
                         <button type="submit" id="submit" class="btn btn-lg btn-success">Register new 3D printer</button>
-                        <a href="/printers/index" class="btn btn-lg btn-primary">View all printers</a>
+                        <a href="/printers" class="btn btn-lg btn-primary">View all printers</a>
                     </div>
                 </form>
             </div>

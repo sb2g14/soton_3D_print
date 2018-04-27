@@ -327,7 +327,7 @@
                                             data-content="Delete this issue from the database (this option is available only first 
                                                 5 minutes after creation).The printer status will be changed to Available.">
                                             <a id="deleteIssue" type="button" class="close" style="color: red" 
-                                               href="/issues/delete/{{$post->id}}">&times;</a>
+                                               href="/issues/{{$post->id}}/delete">&times;</a>
                                         </span>
                                     @endif
                                     {{-- Button to delete post--}}

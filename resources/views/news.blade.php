@@ -154,7 +154,7 @@
                 joined jobs the 3dhubs manager can request multiple jobs on the same printer.
             </li>
         </ol><br>
-        <h3>How to use <a href="http://3dprint.clients.soton.ac.uk/printers/index">3D printers</a> page</h3>
+        <h3>How to use <a href="http://3dprint.clients.soton.ac.uk/printers">3D printers</a> page</h3>
         <div>
             The options of each 3D printer are <a href="http://3dprint.clients.soton.ac.uk/issues/show/1">Details</a> and
             <a href="http://3dprint.clients.soton.ac.uk/printers/update/1">Update</a>. The <a href="http://3dprint.clients.soton.ac.uk/issues/show/1">Details</a>

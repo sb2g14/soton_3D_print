@@ -21,7 +21,7 @@
                         {!!  Form::hidden('body',$body) !!}
                     @endif
                     {!! Form::submit('Submit', ['class' => 'btn btn-success', 'id' => 'submit'] ) !!}
-                    <a href="/issues/index" class="btn btn-primary">Go to issues list</a>
+                    <a href="/issues" class="btn btn-primary">Go to issues list</a>
                 {!! Form::close() !!}
             </div>
             <div class="col-sm-3"></div>

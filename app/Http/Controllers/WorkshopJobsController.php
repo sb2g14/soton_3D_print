@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\JobsPrints;
-use App\printers;
-use Illuminate\Http\Request;
-use App\Jobs;
-use App\Prints;
-use App\cost_code;
-use Auth;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Validation\Rules\In;
-use Excel;
-use Carbon\Carbon;
+use Auth; //Loads the authentication methods
+use Excel; //Loads export to excel functions
 
+use App\cost_code; //Load the cost-code model
+use App\Jobs; //Load the Jobs model
+use App\printers; //Load printers model
+use App\Prints; //Load prints model
+// Load custom validation rules
 use App\Rules\Alphanumeric;
+use App\Rules\CustomerNameValidation;
 use App\Rules\SotonEmail;
 use App\Rules\SotonID;
 use App\Rules\SotonIdMinMax;
 use App\Rules\UseCase;
-use App\Rules\CustomerNameValidation;
+
+use Carbon\Carbon; //Loads Carbon for time
+use Illuminate\Support\Facades\Input; //Loads the input from drop-down
+
 
 /**
- * This controller manages workshop prints and jobs
- * in this scenario 1 job = 1 print
+ * Class WorkshopJobsController
+ * This controller manages workshop prints and jobs (1 to 1 correspondence)
+ * @package App\Http\Controllers
  */
-
-class PrintingDataController extends Controller
+class WorkshopJobsController extends Controller
 {
     //// PRIVATE (HELPER) FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
@@ -158,7 +158,7 @@ class PrintingDataController extends Controller
     /**
      * Function to display the blade with all pending jobs
      * Creates variables for blade that displays the Workshop jobs waiting for approval
-     * @blade_address /WorkshopJobs/requests
+     * @blade /WorkshopJobs/requests
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
@@ -176,7 +176,7 @@ class PrintingDataController extends Controller
 
     /**
      * Return the blade containing all approved (currently printing) workshop jobs
-     * @blade_address /WorkshopJobs/approved
+     * @blade /WorkshopJobs/approved
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function approved()
@@ -193,7 +193,7 @@ class PrintingDataController extends Controller
 
     /**
      * Return the blade containing all the finished (completed) workshop jobs
-     * @blade_address /WorkshopJobs/finished
+     * @blade /WorkshopJobs/finished
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function finished()
@@ -212,7 +212,7 @@ class PrintingDataController extends Controller
 
     /**
      * Return the blade to request a new workshop job
-     * @blade_address /WorkshopJobs/create
+     * @blade /WorkshopJobs/create
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
@@ -232,7 +232,7 @@ class PrintingDataController extends Controller
     
     /**
      * Function to display the blade with the job details waiting for staff approval
-     * @blade_address /WorkshopJobs/<id>
+     * @blade /WorkshopJobs/<id>
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -248,7 +248,7 @@ class PrintingDataController extends Controller
     
     /**
      * Edit the workshop job after it has completed
-     * @blade_address /WorkshopJobs/<id>/edit
+     * @blade /WorkshopJobs/<id>/edit
      * @param $id int
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -264,7 +264,7 @@ class PrintingDataController extends Controller
     //---------------------------------------------------------------------------------------------------------------//
 
     /**
-     * Function to store the request of a new workshop sent via POST method
+     * Function to store the request of a new workshop print sent via POST method in the database
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -379,18 +379,14 @@ class PrintingDataController extends Controller
        return redirect()->home();
     }
 
-    
-
     /**
      * Function called when the workshop print gets approved by a demonstrator
-     * @param $id
+     * @param $id int id of the current print
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update($id)
     {
         // Do PHP validation
-        //TODO: check which one of the two lines below is better
-        //$this -> validate(request(), [
         $workshop_request = request()->validate([
             'student_name' => 'required|string',
             'student_id' => 'required|numeric',
@@ -398,8 +394,7 @@ class PrintingDataController extends Controller
             'material_amount' => 'required|numeric',
         ]);
 
-
-        // Calculating printing time from the dropdown
+        // Calculating printing time from the drop-down
         $hours = Input::get('hours');
         $minutes = Input::get('minutes');
         $time = $hours . ':' . sprintf('%02d', $minutes).':00';
@@ -449,14 +444,10 @@ class PrintingDataController extends Controller
         return redirect('printingData/index');
     }
 
-    
-
-    
-
     /**
      * marks a job as failed
      * @blade_address /printingData/abort/<id>
-     * @param $id
+     * @param $id int job id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function abort($id)
@@ -497,7 +488,7 @@ class PrintingDataController extends Controller
 
     /**
      * marks job as successful
-     * @param $id int
+     * @param $id int job id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function success($id)
@@ -530,7 +521,7 @@ class PrintingDataController extends Controller
     
     /**
      * Function that updates the job details
-     * @param $id
+     * @param $id int job id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function review($id)
@@ -587,7 +578,7 @@ class PrintingDataController extends Controller
 
     /**
      * rejects a workshop job before printing started
-     * @param $id int
+     * @param $id int job id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id)
@@ -612,7 +603,7 @@ class PrintingDataController extends Controller
 
     /**
      * restarts a workshop job by pre-populating the request form
-     * @param $id int
+     * @param $id int job id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function restart($id)

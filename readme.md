@@ -106,7 +106,7 @@ So next we present a short instuction what should be done to update the project 
 Do the same but you may encounter issues with ">" and "<". Look for substitutions online. Possibly "-e"
 
 ## See it live:
-http://3dprint.clients.soton.ac.uk/printers/index
+http://3dprint.clients.soton.ac.uk/printers
 
 ## Get Help on Libraries used:
 - *Laravel 5.5* as the PHP framework (https://laravel.com/docs/5.6)

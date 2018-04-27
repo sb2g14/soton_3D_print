@@ -46,7 +46,7 @@
                         <div class="text-danger" id="message_error"></div>
                     </div>
                         {!! Form::submit('Submit', ['class' => 'btn-success', 'id' => 'submit'] ) !!}
-                         <a href="/issues/index" class="btn btn-danger">Go back</a>
+                         <a href="/issues" class="btn btn-danger">Go back</a>
             {!! Form::close() !!}
         </div>
     </div>

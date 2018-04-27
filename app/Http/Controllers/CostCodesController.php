@@ -2,28 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Rules\CustomerNameValidation;
-use App\Rules\text;
-//use Faker\Provider\ar_JO\Text;
-use Illuminate\Http\Request;
-use App\cost_code;
-use Carbon\Carbon;
+use App\cost_code; // Load the Cost-code model
+use App\Rules\CustomerNameValidation; // Load custom validations for customer name
+use App\Rules\text; // Load custom validations for text
+use Carbon\Carbon; // Load Carbon for time
 
+/**
+ * Class CostCodesController
+ * Manage the cost code to shortage mappings used for claiming money for jobs
+ * @package App\Http\Controllers
+ */
 class CostCodesController extends Controller
 {
     //// GENERIC PUBLIC FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
-    
-    // This controller is created to manage all pages connected with the cost codes
-    public function __construct()
+
+    /**
+     * CostCodesController constructor.
+     *
+     */
+     public function __construct()
     {
-        // This controller manages comments to posts (issues)
+        // One has to be authenticated to execute any functions from this controller
         $this->middleware('auth');
     }
     
     //// CONTROLLER BLADES ////
     //---------------------------------------------------------------------------------------------------------------//
-    
+    /**
+     * Returns the blade showing active cost code to shortage mappings
+     * @blade /costCodes
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         // Request only active cost codes from the database
@@ -32,7 +42,12 @@ class CostCodesController extends Controller
         $cost_codes = cost_code::where('expires','>',$nowDate)->get();
         return view('costCodes.index',compact('cost_codes'));
     }
-    
+
+    /**
+     * Returns the blade showing inactive cost code to shortage mappings
+     * @blade /costCodes/expired
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function indexInactive()
     {
         // Return only the inactive cost codes
@@ -41,12 +56,23 @@ class CostCodesController extends Controller
         $cost_codes = cost_code::where('expires','<',$nowDate)->get();
         return view('costCodes.expired',compact('cost_codes'));
     }
-    
+
+    /**
+     * Returns the blade with a form to create a new cost code to shortage mapping
+     * @blade /costCodes/create
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create()
     {
         return view('costCodes.create');
     }
-    
+
+    /**
+     * Returns a blade with the form to update information associated with the existing cost code to shortage mappings
+     * @blade /costCodes/update/{id}
+     * @param $id int cost-code id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit($id)
     {
         $cost_code = cost_code::find($id);
@@ -55,7 +81,11 @@ class CostCodesController extends Controller
     
     //// CONTROLLER ACTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
-    
+
+    /**
+     * Retrieves the date from the form, validates it and creates a new cost code to shortage mapping in the database
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store()
     {
         // Validate input cost code
@@ -105,9 +135,15 @@ class CostCodesController extends Controller
         notify()->flash('The record has been created!', 'success', [
             'text' => 'Thank you for creating a new cost code',
         ]);
-        return redirect('/costCodes/index');
+        return redirect('/costCodes');
     }
-    
+
+    /**
+     * This function updates the existing database entry with the new information from the edit cost code to shortage
+     * mappings form
+     * @param $id int cost-code id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function update($id)
     {
         $cost_code_request = request()->validate([
@@ -150,14 +186,19 @@ class CostCodesController extends Controller
         notify()->flash('The record has been updated!', 'success', [
             'text' => 'Thank you for the cost code update',
         ]);
-        return redirect('/costCodes/index');
+        return redirect('/costCodes');
     }
-    
+
+    /**
+     * Delete the cost-code to shortage mapping from the database
+     * @param $id int cost-code id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function destroy($id)
     {
         $cost_code = cost_code::findOrFail($id);
         $cost_code -> delete();
         notify()->flash('The record has been deleted!', 'success');
-        return redirect('/costCodes/index');
+        return redirect('/costCodes');
     }
 }

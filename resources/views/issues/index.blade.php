@@ -20,7 +20,7 @@
         <a href="/issues/select" type="button" class="btn pull-right btn-success">
             Raise New
         </a>
-        <a href="/printers/index" type="button" class="btn pull-left btn-primary">
+        <a href="/printers" type="button" class="btn pull-left btn-primary">
             View all printers
         </a>
     </div>
@@ -62,7 +62,7 @@
                                 <span data-placement="top" data-toggle="popover" data-trigger="hover"
                                       data-content="Delete this issue from the database (this option is available only 5 minutes after creation). The printer status will be changed to Available.">
                                     <a id="deleteIssue" type="button" class="close" style="color: red"
-                                        href="/issues/delete/{{$issue->id}}">&times;</a>
+                                        href="/issues/{{$issue->id}}/delete">&times;</a>
                                 </span>
                             @endif
                         </td>

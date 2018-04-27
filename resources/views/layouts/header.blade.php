@@ -20,9 +20,9 @@
                         3D printers
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-item" href="{{ url('/printers/index') }}">View printers</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/printers') }}">View printers</a></li>
                         @can('issues_manage')
-                            <li><a class="dropdown-item" href="{{ url('/issues/index') }}">Pending issues</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/issues') }}">Pending issues</a></li>
                             <li><a class="dropdown-item" href="{{ url('/issues/select') }}">Log an issue</a></li>
                         @endcan
                     </ul>
@@ -37,7 +37,7 @@
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/finance') }}">Overview</a></li>
                         <li><a class="dropdown-item" href="{{ url('/finance/jobs') }}">Review Jobs</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/costCodes/index') }}">Cost codes</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/costCodes') }}">Cost codes</a></li>
                     </ul>
                 </li>
                 @endcan

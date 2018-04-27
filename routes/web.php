@@ -108,7 +108,7 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator
 Route::group(['middleware' => ['role:,issues_manage']], function () {
 
     // Redirect to the view where one can manage issues
-    Route::get('/issues/index','IssuesController@index'); //deprecated
+//    Route::get('/issues/index','IssuesController@index'); //deprecated
     Route::get('/issues','IssuesController@index');
 
     // Redirect to a form where demonstrator rise the issue and can update the printer status
@@ -121,20 +121,20 @@ Route::group(['middleware' => ['role:,issues_manage']], function () {
     Route::post('/issues/create','IssuesController@create');
 
     //Route to update the issue
-    Route::get('/issues/update/{id}','IssuesController@edit'); //deprecated
+//    Route::get('/issues/update/{id}','IssuesController@edit'); //deprecated
     Route::get('/issues/{id}/edit','IssuesController@edit');
 
     //Form updating the issue
-    Route::post('/issues/update','IssuesController@update'); //deprecated
-    Route::post('/issues/{id}/edit','IssuesController@update');
+    Route::post('/issues/update','IssuesController@update');
+    Route::post('/issues/{id}/edit','IssuesController@update'); // TODO: alternative to be checked
 
     // Route to show the issue to be resolved
-    Route::get('issues/resolve/{id}','IssuesController@showResolve'); //deprecated
+//    Route::get('issues/resolve/{id}','IssuesController@showResolve'); //deprecated
     Route::get('issues/{id}/resolve','IssuesController@showResolve');
 
     // Route to update database entry for a resolved issue
-    Route::post('issues/resolve','IssuesController@resolve'); //deprecated
-    Route::post('issues/{id}/resolve','IssuesController@resolve');
+    Route::post('issues/resolve','IssuesController@resolve');
+    Route::post('issues/{id}/resolve','IssuesController@resolve'); // TODO: alternative to be checked
 
     // Route to export issues to CSV
     Route::get('issues/export',
@@ -144,11 +144,11 @@ Route::group(['middleware' => ['role:,issues_manage']], function () {
         ]);
 
     // Delete issue if it has been created by accident
-    Route::get('/issues/delete/{id}','IssuesController@destroy'); //deprecated
+//    Route::get('/issues/delete/{id}','IssuesController@destroy'); //deprecated
     Route::get('/issues/{id}/delete','IssuesController@destroy');
 
     // Delete issue update
-    Route::get('/issues/delete_update/{id}', 'IssuesController@deleteupdate'); //deprecated
+//    Route::get('/issues/delete_update/{id}', 'IssuesController@deleteupdate'); //deprecated
     Route::get('/issues/update/{id}/delete', 'IssuesController@deleteupdate');
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,17 +156,6 @@ Route::group(['middleware' => ['role:,issues_manage']], function () {
 
 // Routes for PRINTER MANAGEMENT
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician|Demonstrator|NewDemonstrator|OnlineJobsManager']], function () {
-//Route::group(['middleware' => ['role:,printers_view']], function () {
-    // Here we redirect to the page containing general printer info using controller
-    Route::get('/printers/index','PrintersController@index'); //deprecated
-    Route::get('/printers','PrintersController@index');
-    
-    // Route view resolved issue for each printer
-    Route::get('issues/show/{id}','PrintersController@show'); //deprecated
-    Route::get('/printers/{id}','PrintersController@show');
-});
 
 Route::group(['middleware' => ['role:,printers_manage']], function () {
     
@@ -198,6 +187,17 @@ Route::group(['middleware' => ['role:,printers_manage']], function () {
     Route::post('/printers/{id}/edit','PrintersController@update');
 
 });
+
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician|Demonstrator|NewDemonstrator|OnlineJobsManager']], function () {
+//Route::group(['middleware' => ['role:,printers_view']], function () {
+    // Here we redirect to the page containing general printer info using controller
+    Route::get('/printers','PrintersController@index'); //deprecated
+    Route::get('/printers','PrintersController@index');
+
+    // Route view resolved issue for each printer
+    Route::get('issues/show/{id}','PrintersController@show'); //deprecated
+    Route::get('/printers/{id}','PrintersController@show');
+});
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -205,64 +205,64 @@ Route::group(['middleware' => ['role:,printers_manage']], function () {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Open a form to request a job
-Route::get('/printingData/create','PrintingDataController@create'); //deprecated
-Route::get('/WorkshopJobs/create','PrintingDataController@create');
+Route::get('/printingData/create','WorkshopJobsController@create'); //deprecated
+Route::get('/WorkshopJobs/create','WorkshopJobsController@create');
 
 // Save the job to a database and send to a demonstrator for approval
-Route::post('/printingData','PrintingDataController@store'); //deprecated
-Route::post('/WorkshopJobs','PrintingDataController@store');
+Route::post('/printingData','WorkshopJobsController@store'); //deprecated
+Route::post('/WorkshopJobs','WorkshopJobsController@store');
 
 Route::group(['middleware' => ['role:,jobs_manage']], function () {
     // Show a list of jobs waiting for approval
-    Route::get('/printingData/index','PrintingDataController@index'); //deprecated
-    Route::get('/WorkshopJobs/requests','PrintingDataController@index');
+    Route::get('/printingData/index','WorkshopJobsController@index'); //deprecated
+    Route::get('/WorkshopJobs/requests','WorkshopJobsController@index');
 
     // Route to export jobs to CSV
     Route::get('printingData/export',
         [
             'as' => 'printingData.export',
-            'uses' => 'PrintingDataController@printingDataExport'
+            'uses' => 'WorkshopJobsController@printingDataExport'
         ]);
 
     // Show a list of approved jobs
-    Route::get('/printingData/approved','PrintingDataController@approved'); //deprecated
-    Route::get('/WorkshopJobs/approved','PrintingDataController@approved');
+    Route::get('/printingData/approved','WorkshopJobsController@approved'); //deprecated
+    Route::get('/WorkshopJobs/approved','WorkshopJobsController@approved');
 
     // Show a list of finished jobs
-    Route::get('/printingData/finished','PrintingDataController@finished'); //deprecated
-    Route::get('/WorkshopJobs/finished','PrintingDataController@finished');
+    Route::get('/printingData/finished','WorkshopJobsController@finished'); //deprecated
+    Route::get('/WorkshopJobs/finished','WorkshopJobsController@finished');
     
     // Show each job requested in a separate blade
-    Route::get('/printingData/show/{id}','PrintingDataController@show'); //deprecated
-    Route::get('/WorkshopJobs/{id}','PrintingDataController@show');
+    Route::get('/printingData/show/{id}','WorkshopJobsController@show'); //deprecated
+    Route::get('/WorkshopJobs/{id}','WorkshopJobsController@show');
     
     // Update the requested record and approve/reject a job
-    Route::post('/printingData/show/{id}','PrintingDataController@update'); //deprecated
-    Route::post('/WorkshopJobs/{id}','PrintingDataController@update');
+    Route::post('/printingData/show/{id}','WorkshopJobsController@update'); //deprecated
+    Route::post('/WorkshopJobs/{id}','WorkshopJobsController@update');
     
     // Show a blade to edit the job
-    Route::get('/printingData/edit/{id}','PrintingDataController@edit'); //deprecated
-    Route::get('/WorkshopJobs/{id}/edit','PrintingDataController@edit');
+    Route::get('/printingData/edit/{id}','WorkshopJobsController@edit'); //deprecated
+    Route::get('/WorkshopJobs/{id}/edit','WorkshopJobsController@edit');
 
     // Show a blade to save edit the job
-    Route::post('/printingData/edit/{id}','PrintingDataController@review'); //deprecated
-    Route::post('/WorkshopJobs/{id}/edit','PrintingDataController@review');
+    Route::post('/printingData/edit/{id}','WorkshopJobsController@review'); //deprecated
+    Route::post('/WorkshopJobs/{id}/edit','WorkshopJobsController@review');
 
     // Reporting that current job is unsuccessful
-    Route::get('/printingData/abort/{id}','PrintingDataController@abort'); //deprecated
-    Route::get('/WorkshopJobs/{id}/failed','PrintingDataController@abort');
+    Route::get('/printingData/abort/{id}','WorkshopJobsController@abort'); //deprecated
+    Route::get('/WorkshopJobs/{id}/failed','WorkshopJobsController@abort');
 
     // Reporting that current job is successful
-    Route::get('/printingData/success/{id}','PrintingDataController@success'); //deprecated
-    Route::get('/WorkshopJobs/{id}/success','PrintingDataController@success');
+    Route::get('/printingData/success/{id}','WorkshopJobsController@success'); //deprecated
+    Route::get('/WorkshopJobs/{id}/success','WorkshopJobsController@success');
 
     // Route to restart a failed job
-    Route::get('/printingData/restart/{id}','PrintingDataController@restart'); //deprecated
-    Route::get('/WorkshopJobs/{id}/restart','PrintingDataController@restart');
+    Route::get('/printingData/restart/{id}','WorkshopJobsController@restart'); //deprecated
+    Route::get('/WorkshopJobs/{id}/restart','WorkshopJobsController@restart');
     
     // Reject current job and delete it from the database
-    Route::get('/printingData/delete/{id}','PrintingDataController@destroy'); //deprecated
-    Route::get('/WorkshopJobs/{id}/delete','PrintingDataController@destroy');
+    Route::get('/printingData/delete/{id}','WorkshopJobsController@destroy'); //deprecated
+    Route::get('/WorkshopJobs/{id}/delete','WorkshopJobsController@destroy');
 
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -454,7 +454,7 @@ Route::group(['middleware' => ['role:administrator|Coordinator']], function () {
 Route::group(['middleware' => ['role:,manage_cost_codes']], function () {
 
     // Here we redirect to the view where all cost codes are shown
-    Route::get('/costCodes/index','CostCodesController@index');
+    Route::get('/costCodes','CostCodesController@index');
 
     // Here old cost codes are displayed
     Route::get('/costCodes/expired','CostCodesController@indexInactive');
@@ -567,12 +567,3 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 
 Route::get('/UoSlogin','Auth\UoScontroller@requestAuthenticationFromUoS');
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// Route::get('/notify', function () {
-//    notify()->flash('Welcome back!', 'success', [
-//        'text' => 'It\'s really great to see you again',
-//    ]);
-//    return redirect() -> to('/aboutWorkshop');
-//});
-
