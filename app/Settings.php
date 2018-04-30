@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use phpDocumentor\Reflection\Types\Null_;
-use App\Event;
 /**
  * A global setting that needs to be editable by users
  * a setting consists of a key and a value, allowing you to load the settings by key.
@@ -24,7 +23,7 @@ class settings extends Model
                 $ans = False;
             }
         }else if ($this->type === "number"){
-            $ans = float($ans);
+            $ans = (float)$ans;
         }
         return $ans;
 

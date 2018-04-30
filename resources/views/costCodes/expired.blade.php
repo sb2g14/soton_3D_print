@@ -1,17 +1,31 @@
 @extends('layouts.layout')
 
 @section('content')
+    
+    <div class="text-center m-b-md">
+        <div class="title">Expired Cost Codes</div> 
+    </div>
+    
     @if ($flash=session('message'))
         <div id="flash_message" class="alert alert-success" role="alert" style="position: relative; top: -10px">
             {{ $flash }}
         </div>
     @endif
 
-    <div class="container text-center m-b-md">
+    {{--<div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
             <li class="nav-left"><a href="/costCodes">Active cost codes</a></li>
             <li class="nav-right active"><a href="#">Expired cost codes</a></li>
         </ul>
+    </div>--}}
+    
+    <div class="container">
+        <div class="col-lg-2 pull-left">
+            <a href="/costCodes" type="button" class="btn btn-primary pull-left">
+                Active cost codes
+            </a>
+        </div>
+        <hr>
     </div>
 
     <div class="container">

@@ -11,6 +11,7 @@ use App\Prints;
 use App\staff;
 use App\StatisticsHelper;
 use App\User;
+use App\Http\Controllers\Traits\PriceTrait;
 use App\Mail\jobAccept;
 use App\Mail\jobFailed;
 use App\Mail\jobReject;
@@ -44,22 +45,10 @@ use Illuminate\Support\Facades\Mail;
  **/
 class OrderOnlineController extends Controller
 {
+    use PriceTrait;
+    
     //// PRIVATE (HELPER) FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
-
-    /**
-     * calculates the price of a job, based on print duration and material amount used
-     * @param $hours int
-     * @param $minutes int
-     * @param $material_amount float
-     * @return float
-     */
-    private function _getPriceOfJob($hours,$minutes,$material_amount){
-        // Calculation the job price £3 per h + £5 per 100g
-        $prices = config('prices');
-        $cost = round($prices['time'] * ($hours + $minutes / 60) + $prices['material'] * $material_amount / 100, 2);
-        return $cost;
-    }
     
     /** gets the counts of jobs in the different steps of the workflow**/
     private function _getCounts(){

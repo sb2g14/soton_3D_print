@@ -13,6 +13,11 @@
 
     <div class="container">
         <div class="col-lg-2 pull-left">
+            <a href="/finance/settings" type="button" class="btn btn-primary pull-left">
+                <i class="fa fa-cog"></i> Settings
+            </a>
+        </div>
+        <div class="col-lg-2 pull-left">
             <a href="{{ url('/costCodes') }}" type="button" class="btn btn-primary pull-left">
                 Cost Codes
             </a>

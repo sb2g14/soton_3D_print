@@ -538,6 +538,12 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
     // Update Rota Settings
     Route::post('/rota/settings','SettingsController@updateRota');
 
+    // Show Finance Settings for editing
+    Route::get('/finance/settings','SettingsController@editFinance');
+    
+    // Update Finance Settings
+    Route::post('/finance/settings','SettingsController@updateFinance');
+
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
 

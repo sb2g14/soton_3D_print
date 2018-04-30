@@ -9,6 +9,7 @@ use App\cost_code; //Load the cost-code model
 use App\Jobs; //Load the Jobs model
 use App\printers; //Load printers model
 use App\Prints; //Load prints model
+use App\Http\Controllers\Traits\PriceTrait; //Load Price calculation functions
 // Load custom validation rules
 use App\Rules\Alphanumeric;
 use App\Rules\CustomerNameValidation;
@@ -28,6 +29,8 @@ use Illuminate\Support\Facades\Input; //Loads the input from drop-down
  */
 class WorkshopJobsController extends Controller
 {
+    use PriceTrait;
+    
     //// PRIVATE (HELPER) FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
 
@@ -93,27 +96,13 @@ class WorkshopJobsController extends Controller
     }
 
     /**
-     * calculates the price of a job, based on print duration and material amount used
-     * @param $hours int
-     * @param $minutes int
-     * @param $material_amount float
-     * @return float
-     */
-    private function getPriceOfJob($hours,$minutes,$material_amount){
-        // Calculation the job price £3 per h + £5 per 100g
-        $prices = config('prices');
-        $cost = round($prices['time'] * ($hours + $minutes / 60) + $prices['material'] * $material_amount / 100, 2);
-        return $cost;
-    }
-
-    /**
      * checks the payment details and returns the corrected details
      * takes a shortage or costcode as $use_case and the $budget_holder
      * returns the use_case as shortage or known/unknown cost code,
      * looks up the shortage/ cost code in the database and returns the
      * data from the database if found. Returns the provided data otherwise
-     * @param $use_case string
-     * @param $budget_holder string
+     * @param string $use_case 
+     * @param string $budget_holder 
      * @return array $cost_code, $use_case, $budget_holder
      */
     private function getPaymentDetails($use_case,$budget_holder){
@@ -233,7 +222,7 @@ class WorkshopJobsController extends Controller
     /**
      * Function to display the blade with the job details waiting for staff approval
      * @blade /WorkshopJobs/<id>
-     * @param $id
+     * @param int $id job id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id)
@@ -241,7 +230,11 @@ class WorkshopJobsController extends Controller
         //get the job
         $job = Jobs::findOrFail($id);
         //get the available printers if staff wants to change the printer number
-        $available_printers = printers::all()->where('printer_status', '!=', 'Missing')->where('printer_status', '!=', 'On Loan')->where('printer_status', '!=', 'Signed out')->pluck('id', 'id')->all();
+        $available_printers = printers::all()
+            ->where('printer_status', '!=', 'Missing')
+            ->where('printer_status', '!=', 'On Loan')
+            ->where('printer_status', '!=', 'Signed out')
+            ->pluck('id', 'id')->all();
         //return the blade
         return view('printingData.show',compact('job','available_printers'));
     }
@@ -249,7 +242,7 @@ class WorkshopJobsController extends Controller
     /**
      * Edit the workshop job after it has completed
      * @blade /WorkshopJobs/<id>/edit
-     * @param $id int
+     * @param int $id job id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
@@ -330,7 +323,7 @@ class WorkshopJobsController extends Controller
         $material_amount = $workshop_request['material_amount'];
 
         // Calculate the price for the job
-        $price = $this->getPriceOfJob($hours,$minutes,$material_amount);
+        $price = $this->_getPriceOfJob($hours,$minutes,$material_amount);
 
 
         // Get the id of the printer requested
@@ -381,7 +374,7 @@ class WorkshopJobsController extends Controller
 
     /**
      * Function called when the workshop print gets approved by a demonstrator
-     * @param $id int id of the current print
+     * @param int $id id of the current print
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update($id)
@@ -403,7 +396,7 @@ class WorkshopJobsController extends Controller
         $material_amount = $workshop_request['material_amount'];
 
         // Calculate the price for the job
-        $price = $this->getPriceOfJob($hours,$minutes,$material_amount);
+        $price = $this->_getPriceOfJob($hours,$minutes,$material_amount);
 
         // Submit the data to the database
         $job = Jobs::findOrFail($id);
@@ -447,7 +440,7 @@ class WorkshopJobsController extends Controller
     /**
      * marks a job as failed
      * @blade_address /printingData/abort/<id>
-     * @param $id int job id
+     * @param int $id job id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function abort($id)
@@ -488,7 +481,7 @@ class WorkshopJobsController extends Controller
 
     /**
      * marks job as successful
-     * @param $id int job id
+     * @param int $id job id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function success($id)
@@ -499,23 +492,27 @@ class WorkshopJobsController extends Controller
         $print = Prints::findOrFail($print_id);
         //need to first check if this job is currently printing or not.
         if(!$print->status === "Approved" || !$job->status === "Approved"){
-            //notify user in case this was an old job
+            // Notify user in case this was an old job
             notify()->flash('It looks like someone was faster than you.', 'error', [
                 'text' => "Please refresh the page and continue as normal.",
             ]);
         }else {
-            //mark printer as available
+            // Mark printer as available
             printers::where('id', '=', $print->printers_id)->update(array('in_use' => 0));
-            //mark job as successful
-            $job->update(array('finished_at' => Carbon::now('Europe/London'),'job_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
-            //mark print as successful
-            $print->update(array('finished_at' => Carbon::now('Europe/London'),'print_finished_by' => Auth::user()->staff->id, 'status' => 'Success'));
-            //notify user
+            // Mark job as successful
+            $job->update(array('finished_at' => Carbon::now('Europe/London'),
+                               'job_finished_by' => Auth::user()->staff->id, 
+                               'status' => 'Success'));
+            // Mark print as successful
+            $print->update(array('finished_at' => Carbon::now('Europe/London'),
+                                 'print_finished_by' => Auth::user()->staff->id, 
+                                 'status' => 'Success'));
+            // Notify user
             notify()->flash('The job has been marked as Success!', 'success', [
                 'text' => "You may continue reviewing other jobs.",
             ]);
         }
-        //redirect to blade showing currently printing jobs
+        // Redirect to blade showing currently printing jobs
         return redirect('printingData/approved');
     }
     
@@ -544,7 +541,7 @@ class WorkshopJobsController extends Controller
         if (request('successful') == 'Failed') {
             $price = 0;
         } else {
-            $price = $this->getPriceOfJob($hours,$minutes,$material_amount);
+            $price = $this->_getPriceOfJob($hours,$minutes,$material_amount);
         }
 
         // Submit the data to the database

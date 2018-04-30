@@ -69,6 +69,24 @@ class SettingsController extends Controller
         return view('rota.settings', compact('settingsAssignCheck'));
     }
     
+    /**
+     * Show the form for updating settings for Finances.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function editFinance()
+    {
+        if(!Auth::check()) {
+            abort(404);
+        }
+        
+        $settingsPrices = Settings::where('key','PriceMaterial')
+                        ->orWhere('key','PriceTime')
+                        ->get();
+        
+        return view('finance.settings', compact('settingsPrices'));
+    }
+    
     //// CONTROLLER ACTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
     
@@ -93,6 +111,23 @@ class SettingsController extends Controller
         notify()->flash('The settings have been updated' , 'success', []);
 
         return redirect('/rota/settings');
+    }
+    
+    public function updateFinance()
+    {
+        $settingsPrices = Settings::where('key','PriceMaterial')
+                        ->orWhere('key','PriceTime')
+                        ->get();
+        
+        foreach($settingsPrices as $s){
+            // Perform update in database
+            $setting = Settings::findOrFail($s->id);
+            $setting->update(array('value' => request('setting_'.$s->id)));
+        }       
+
+        notify()->flash('The settings have been updated' , 'success', []);
+
+        return redirect('/finance/settings');
     }
 
     

@@ -6,14 +6,26 @@
             {{ $flash }}
         </div>
     @endif
-
-    <div class="container text-center m-b-md">
+    
+    <div class="text-center m-b-md">
+        <div class="title">Active Cost Codes</div> 
+    </div>
+    
+    {{--<div class="container text-center m-b-md">
         <ul class="nav nav-pills nav-justified">
             <li class="nav-left active"><a href="#">Active cost codes</a></li>
             <li class="nav-right"><a href="/costCodes/expired">Expired cost codes</a></li>
         </ul>
-    </div>
+    </div>--}}
     
+    <div class="container">
+        <div class="col-lg-2 pull-left">
+            <a href="/costCodes/expired" type="button" class="btn btn-primary pull-left">
+                Expired cost codes
+            </a>
+        </div>
+        <hr>
+    </div>
 
     <div class="container">
         <div class="col-lg-10 pull-left">
