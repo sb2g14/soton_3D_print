@@ -47,13 +47,25 @@ class JobsController extends Controller
         $job = Jobs::findOrFail($id);
         
         if($job->requested_online){
-            // This is an online print
-            return redirect('/OnlineJobs/prints');
+            if($job->status === "Waiting"){
+                // Job is waiting for approval
+                return redirect('/OnlineJobs/request/'.$job->id);
+            }
+            if($job->status === "Approved"){
+                // Job is waiting for customer acceptance
+                return redirect('/OnlineJobs/approved/'.$job->id);
+            }
+            if($job->status === "Pending"){
+                // Job is currently being worked on
+                return redirect('/OnlineJobs/pending/'.$job->id);
+            }
+            // This is a completed online job
+            return redirect('/OnlineJobs/finished');
         }  
-        // This is a workshop print  
+        // This is a workshop job  
         if($job->status === "Waiting"){
             // Print is waiting for approval
-            return redirect('/WorkshopJobs/'.$job->id);
+            return redirect('/WorkshopJobs/requested'.$job->id);
         }
         if($job->status === "Approved"){
             // Print is currently printing

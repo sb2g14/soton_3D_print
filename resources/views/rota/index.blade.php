@@ -11,6 +11,16 @@
     </div>
     {{--NAVIGATION--}}
     <div class="container">
+        @can('staff_manage')
+            <div class="pull-left">
+                <span class="text-justify" data-placement="top" data-toggle="popover"
+                    data-trigger="hover" data-content="Edit rota settings">
+                    <a type="button" class="btn btn-primary" href="/rota/settings">
+                        <i class="fa fa-cog"></i> Settings
+                    </a>
+                </span>
+            </div>
+        @endcan
         <div class="pull-right">
             <span class="text-justify" data-placement="top" data-toggle="popover"
                 data-trigger="hover" data-content="Indicate when you are available, so you can be assigned for a session.">

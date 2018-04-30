@@ -526,8 +526,17 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
     // Find blade that shows print by id
     Route::get('/print/{id}','PrintsController@show');
     
-    // Find blade that shows job by id
+    // Show information about a job by id
     Route::get('/job/{id}','JobsController@show');
+
+    // Find blade that shows job by id
+    Route::get('/job/{id}/find','JobsController@find');
+
+    // Show Rota Settings for editing
+    Route::get('/rota/settings','SettingsController@editRota');
+    
+    // Update Rota Settings
+    Route::post('/rota/settings','SettingsController@updateRota');
 
 });
 /////////////////////////////////////////////////////////////////////////////////////////////

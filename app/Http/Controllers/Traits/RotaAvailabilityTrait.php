@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
+use App\Settings;
 use App\staff;
 use Auth;
 use Illuminate\Http\Request;
@@ -63,6 +64,21 @@ trait RotaAvailabilityTrait
         return $dems;
     }
     
+    /** takes a database request for staff and filters out staff that have not attended required training **/
+    private function filterByRequiredTraining($demonstrators){
+        $settings = Settings::where('key','RotaCheckCWP')
+                        ->orWhere('key','RotaCheckSMT')
+                        ->orWhere('key','RotaCheckLWI')
+                        ->get();
+        foreach($settings as $s){
+            if($s->value()){
+                $colname = str_replace("RotaCheck","",$s->key)."_date";
+                $demonstrators = $demonstrators->where($colname,'!=', NULL);
+            }
+        }
+        return $demonstrators;
+    }
+    
     /** returns all the staff, that are busy, away or have not signed up for a session **/
     private function getAllDemonstrators(){
         $demonstrators = staff::where('role','!=', 'Former member')
@@ -77,9 +93,9 @@ trait RotaAvailabilityTrait
                 $query->where('status', 'tentative')->where('sessions_id', $id);
                 })
                 ->where('role','!=', 'Former member')
-                ->orderBy('last_name')
-                ->where('LWI_date','!=', NULL)
-                ->get();
+                ->orderBy('last_name');
+        $demonstrators = $this->filterByRequiredTraining($demonstrators);
+        $demonstrators = $demonstrators->get();
         return $demonstrators;
     }
     
@@ -89,9 +105,9 @@ trait RotaAvailabilityTrait
                 $query->where('status', 'available')->where('sessions_id', $id);
                 })
                 ->where('role','!=', 'Former member')
-                ->orderBy('last_name')
-                ->where('LWI_date','!=', NULL)
-                ->get();
+                ->orderBy('last_name');
+        $demonstrators = $this->filterByRequiredTraining($demonstrators);
+        $demonstrators = $demonstrators->get();
         return $demonstrators;
     }
     
