@@ -559,7 +559,7 @@ $this->get('logout', 'Auth\LoginController@logout')->name('auth.logout');
 $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('auth.register');
 $this->post('register', 'Auth\RegisterController@register')->name('auth.register');
 //SAML Authentication
-$this->get('loginSAML', 'Auth\LoginController@loginSAML')->name('UoS.login');
+$this->get('loginSAML', 'Auth\LoginController@loginSAML')->name('auth.UoS.login');
 
 // Change Password Routes...
 $this->get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');

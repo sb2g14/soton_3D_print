@@ -98,5 +98,14 @@ return [
             'expire' => 60,
         ],
     ],
+    
+    /*
+    | Custom SAML Parameters
+    */
+    
+    'SAML' => [
+        'email' => 'SERVER_PORT', //_Server variable key for UoS email
+        'name' => 'SERVER_PORT', //_Server variable key for UoS name
+    ],
 
 ];

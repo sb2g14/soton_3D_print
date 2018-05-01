@@ -63,18 +63,22 @@ trait AuthenticatesUsers
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function loginSAML()
+    public function loginSAML(Request $request)
     {
-        $request = new Request;
+        //$request = new Request;
+        //foreach($_REQUEST as $k => $r){
+        //    $request[$k] = $r;
+        //}
+        $auth = config('auth');
+        $SAMLpars = $auth['SAML'];
         // Check if username has been provided.
-        if(!isset($_SERVER['SERVER_PORT'])){ // TODO: replace with SAML EMAIL VARIABLE
+        if(!isset($_SERVER[$SAMLpars['email']])){ // TODO: replace with SAML EMAIL VARIABLE
             $request[$this->username()] = "";
             return $this->sendFailedSAMLLoginResponse($request);
         }
-        $usermail = $_SERVER['SERVER_PORT']; //TODO: replace with SAML EMAIL VARIABLE
+        $usermail = $_SERVER[$SAMLpars['email']]; //TODO: replace with SAML EMAIL VARIABLE
         $request[$this->username()] = $usermail;
         
         // Check if user is a member of our staff
@@ -88,8 +92,12 @@ trait AuthenticatesUsers
         }
         
         // Log in user and return
+        //$session = new \Illuminate\Contracts\Session\Session;
+        //$request->setLaravelSession($_COOKIE['laravel_session']);
         $request->session()->regenerate();
+        
         $this->guard()->login($user, false);
+        
         return $this->sendLoginResponse($request);
         
     }
