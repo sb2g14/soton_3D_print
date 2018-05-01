@@ -13,23 +13,23 @@
 
     <div class="container">
         <div class="col-lg-2 pull-left">
-            <a href="/finance/settings" type="button" class="btn btn-primary pull-left">
-                <i class="fa fa-cog"></i> Settings
-            </a>
-        </div>
-        <div class="col-lg-2 pull-left">
             <a href="{{ url('/costCodes') }}" type="button" class="btn btn-primary pull-left">
                 Cost Codes
             </a>
         </div>
         <div class="col-lg-2 pull-left">
             <a href="{{ url('/statistics') }}" type="button" class="btn btn-primary pull-left">
-                Statistics
+                <i class="fa fa-bar-chart"></i> Statistics
             </a>
         </div>
         <div class="col-lg-2 pull-left">
             <a href="{{ url('/finance/jobs') }}" type="button" class="btn btn-primary pull-left">
-                Past Jobs
+                <i class="fa fa-clock-o"></i> Past Jobs
+            </a>
+        </div>
+        <div class="pull-right">
+            <a href="/finance/settings" type="button" class="btn btn-info pull-left">
+                <i class="fa fa-cog"></i> Settings
             </a>
         </div>
         <hr>

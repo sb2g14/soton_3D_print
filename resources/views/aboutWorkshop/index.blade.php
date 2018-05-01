@@ -88,6 +88,7 @@
                         </tr>
                     @endforeach
                 </table>
+                {{phpinfo()}}
             </div>
         </div>
     </div>

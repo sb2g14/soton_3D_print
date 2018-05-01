@@ -6,25 +6,32 @@
             {{ $flash }}
         </div>
     @endif
-
- {{--<div class="container text-center m-b-md">
-     <ul class="nav nav-pills nav-justified">
-         <li><a href="/OnlineJobs/index">Requests <span class="badge">{{$counts['requests']}}</span></a></li>
-         <li><a href=/OnlineJobs/approved>Approved Jobs <span class="badge">{{$counts['approved']}}</span></a></li>
-         <li class="nav-left"><a href="/OnlineJobs/pending">Pending Jobs <span class="badge">{{$counts['pending']}}</span></a></li>
-         <li class="nav-right"><a href="/OnlineJobs/prints">Prints</a></li>
-         <li class="active"><a href="#">Completed Jobs</a></li>
-    </ul>
-  </div>--}}
-    <!-- <div class="text-center m-b-md">
-        <div class="title">Printing Jobs History</div>
-        <a href="/printingData/index" class="btn btn-lg btn-danger">Show pending jobs</a>
-        <a href="/printingData/approved" type="button" class="btn btn-lg btn-success" style="display: inline-block;">Show currently approved jobs</a>
-        
-    </div> -->
+    
+    <div class="text-center m-b-md title">
+        <div class="title">Jobs in {{$t1->format('M Y')}}</div> 
+    </div>
 
     <div class="container">
-        <div class="title">Jobs in {{$t1->format('M Y')}}</div>
+        <div class="col-lg-2 pull-left">
+            <a href="{{ url('/finance') }}" type="button" class="btn btn-primary pull-left">
+                Overview
+            </a>
+        </div>
+        <div class="col-lg-2 pull-left">
+            <a href="{{ url('/costCodes') }}" type="button" class="btn btn-primary pull-left">
+                Cost Codes
+            </a>
+        </div>
+        <div class="col-lg-2 pull-left">
+            <a href="{{ url('/statistics') }}" type="button" class="btn btn-primary pull-left">
+                <i class="fa fa-bar-chart"></i> Statistics
+            </a>
+        </div>
+        
+        <hr>
+    </div>
+
+    <div class="container">
         <ul class="pagination">
           @foreach($pages as $p)
             @if($p == $t1)

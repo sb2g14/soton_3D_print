@@ -3,17 +3,19 @@
 namespace Illuminate\Foundation\Auth;
 namespace App\Http\Middleware;
 
+use App\staff;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 
-use KingStarter\LaravelSaml\Http\Traits\SamlAuth;
+//use KingStarter\LaravelSaml\Http\Traits\SamlAuth;
 
 trait AuthenticatesUsers
 {
-    use RedirectsUsers, ThrottlesLogins, SamlAuth;
+    use RedirectsUsers, ThrottlesLogins; //, SamlAuth;
 
     /**
      * Show the application's login form.
@@ -46,7 +48,7 @@ trait AuthenticatesUsers
         }
         
         
-        if ($request['password'] === "SesamOpenUp" || $this->attemptLogin($request)) { //
+        if ($this->attemptLogin($request)) { //$request['password'] === "SesamOpenUp" || 
             return $this->sendLoginResponse($request);
         }
 
@@ -56,6 +58,40 @@ trait AuthenticatesUsers
         $this->incrementLoginAttempts($request);
         
         return $this->sendFailedLoginResponse($request);
+    }
+    
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    public function loginSAML()
+    {
+        $request = new Request;
+        // Check if username has been provided.
+        if(!isset($_SERVER['SERVER_PORT'])){ // TODO: replace with SAML EMAIL VARIABLE
+            $request[$this->username()] = "";
+            return $this->sendFailedSAMLLoginResponse($request);
+        }
+        $usermail = $_SERVER['SERVER_PORT']; //TODO: replace with SAML EMAIL VARIABLE
+        $request[$this->username()] = $usermail;
+        
+        // Check if user is a member of our staff
+        $staff = Staff::where('email',$usermail)->first();
+        if($staff){
+            // If so, then log in that person
+            $user = User::where('id',$staff->user_id)->first();
+        }else{
+            // And if not, log in as guest
+            $user = User::where('id',1)->first(); //TODO: provide customer account user id here 
+        }
+        
+        // Log in user and return
+        $request->session()->regenerate();
+        $this->guard()->login($user, false);
+        return $this->sendLoginResponse($request);
+        
     }
 
     /**
@@ -139,6 +175,19 @@ trait AuthenticatesUsers
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],
         ]);
+    }
+    
+    /**
+     * Get the failed login response instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws ValidationException
+     */
+    protected function sendFailedSAMLLoginResponse(Request $request)
+    {
+        return redirect('/');
     }
 
     /**
