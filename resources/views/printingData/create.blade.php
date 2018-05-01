@@ -65,7 +65,7 @@
                     <div class="col-sm-8">
                         <input id="student_name" name="customer_name" 
                             type="text" class="form-control" 
-                            value="{{ old('customer_name', isset($member)  ? $member->name() : $customer_name) }}" 
+                            value="{{ old('customer_name', isset($member)  ? $member->name() : $customer->name() ) }}" 
                             autocomplete="name" required
                             placeholder="Please input your First and Last name" data-help=""/>
                         @if ($errors->has('customer_name'))
@@ -84,7 +84,7 @@
                     <div class="col-sm-8">
                         <input id="email" name="customer_email" 
                             type="email" class="form-control" 
-                            value="{{ old('customer_email', isset($member)  ? $member->email : $customer_email) }}" 
+                            value="{{ old('customer_email', isset($member)  ? $member->email : $customer->email()) }}" 
                             autocomplete="work email" required
                             placeholder="Please input soton email" data-help="customer_email" /><br>
                         @if ($errors->has('customer_email'))

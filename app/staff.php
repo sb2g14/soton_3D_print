@@ -53,6 +53,7 @@ class staff extends BaseModel
     {
         return $this->first_name.' '.$this->last_name;
     }
+    
     /** returns the experience of this staff as a number**/
     public function experience()
     {

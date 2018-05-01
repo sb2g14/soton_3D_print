@@ -104,8 +104,11 @@ return [
     */
     
     'SAML' => [
-        'email' => 'SERVER_PORT', //_Server variable key for UoS email
-        'name' => 'SERVER_PORT', //_Server variable key for UoS name
+        'email' => 'SERVER_PORT', //_Server variable key for UoS email // TODO: replace with SAML EMAIL VARIABLE
+        'name' => 'SERVER_PORT', //_Server variable key for UoS name // TODO: replace with SAML NAME VARIABLE
+        'customer' => [
+            'id' => 1, //user id of customer account // TODO: replace with customer account id
+        ],
     ],
 
 ];

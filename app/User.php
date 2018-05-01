@@ -39,10 +39,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'role_user');
     }
+    
     // The function which shows the posts of a user
     public function post(){
         return $this->hasMany(posts::class);
     }
+    
     // The function which shows the announcements of a user
     public function announcements(){
         return $this->hasMany(posts::class);
@@ -63,6 +65,28 @@ class User extends Authenticatable
     public function printing_data(){
         return $this->hasMany(printing_data::class);
     }
+    
+    /**returns the full name of that staff or customer**/
+    public function name()
+    {
+        $auth = config('auth');
+        $SAMLpars = $auth['SAML'];
+        if($this->id != $SAMLpars['customer']['id']){
+            return $this->name;
+        }
+        return $_SERVER[$SAMLpars['name']];
+    }
+    /**returns the email of that staff or customer**/
+    public function email()
+    {
+        $auth = config('auth');
+        $SAMLpars = $auth['SAML'];
+        if($this->id != $SAMLpars['customer']['id']){
+            return $this->email;
+        }
+        return $_SERVER[$SAMLpars['email']];
+    }
+    
     // The function which allows a user to create a post
     public function publish(posts $post){
 

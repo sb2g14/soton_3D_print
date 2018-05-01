@@ -112,7 +112,7 @@
 
                 <li class="item">
                     <span>
-                         {{Auth::user()->name}}
+                         {{Auth::user()->name()}}
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl dropdown-role">
                         @isset(Auth::user()->staff)

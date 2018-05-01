@@ -213,6 +213,10 @@ class WorkshopJobsController extends Controller
         if (Auth::check()) {
             // Retain all the information about a member of staff from the DB to use in prepopulation
             $member = Auth::user()->staff;
+            if(!$member){
+                $customer = Auth::user();
+                return view('printingData.create',compact('available_printers','customer'));
+            }
             return view('printingData.create',compact('available_printers','member'));
         } else {
             return view('printingData.create',compact('available_printers'));

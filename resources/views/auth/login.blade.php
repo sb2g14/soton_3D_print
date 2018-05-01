@@ -66,10 +66,10 @@
                                 <div class="col-md-8 col-md-offset-4 text-left">
                                     <button id="login-button" type="submit" class="btn btn-success">
                                         Login
-                                    </button><br>
+                                    </button>
                                     <a id="saml-login-button" class="btn btn-primary" href="{{ route('auth.UoS.login') }}">
-                                        University Login
-                                    </a>
+                                        <i class="fa fa-university"></i> University Login
+                                    </a><br>
                                     @include('layouts.errors')
                                     {{--Forgot password button, send email--}}
                                     <a style="padding-left: 0;" class="btn btn-link" href="{{ route('auth.password.reset') }}">

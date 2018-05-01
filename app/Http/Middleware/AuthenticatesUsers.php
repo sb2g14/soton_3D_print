@@ -74,11 +74,11 @@ trait AuthenticatesUsers
         $auth = config('auth');
         $SAMLpars = $auth['SAML'];
         // Check if username has been provided.
-        if(!isset($_SERVER[$SAMLpars['email']])){ // TODO: replace with SAML EMAIL VARIABLE
+        if(!isset($_SERVER[$SAMLpars['email']])){ 
             $request[$this->username()] = "";
             return $this->sendFailedSAMLLoginResponse($request);
         }
-        $usermail = $_SERVER[$SAMLpars['email']]; //TODO: replace with SAML EMAIL VARIABLE
+        $usermail = $_SERVER[$SAMLpars['email']]; 
         $request[$this->username()] = $usermail;
         
         // Check if user is a member of our staff
@@ -88,7 +88,7 @@ trait AuthenticatesUsers
             $user = User::where('id',$staff->user_id)->first();
         }else{
             // And if not, log in as guest
-            $user = User::where('id',1)->first(); //TODO: provide customer account user id here 
+            $user = User::where('id',$SAMLpars['customer']['id'])->first(); //TODO: provide customer account user id here 
         }
         
         // Log in user and return
