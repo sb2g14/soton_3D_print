@@ -49,7 +49,7 @@ class JobsController extends Controller
         if($job->requested_online){
             if($job->status === "Waiting"){
                 // Job is waiting for approval
-                return redirect('/OnlineJobs/request/'.$job->id);
+                return redirect('/OnlineJobs/requests/'.$job->id);
             }
             if($job->status === "Approved"){
                 // Job is waiting for customer acceptance

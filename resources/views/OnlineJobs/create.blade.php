@@ -167,7 +167,6 @@
                     <div class="col-sm-offset-4 col-sm-8 text-left">
                         <button id="submit" type="submit" class="btn btn-success">Submit</button>
                         <a class="btn btn-danger" href="/" >Cancel</a>
-                        {{--<a class="btn btn-primary" href="/printingData/create" >Request a Workshop Print</a>--}}
                     </div>
                 </div>
                 

@@ -26,8 +26,8 @@
             </li>
             <li>When they are ready, go to their printer as soon as possible to approve their print:
                 <ol type="a">
-                    <li>Login to your account at <a href="https://3dprint.clients.soton.ac.uk/login">https://3dprint.clients.soton.ac.uk/</a></li>
-                    <li>Select the <q><a href="https://3dprint.clients.soton.ac.uk/printingData/index">Pending Jobs</a></q> tab</li>
+                    <li>Login to your account at <a href="{{url('/login')}}">{{env('APP_URL')}}</a></li>
+                    <li>Select the <q><a href="{{url('/WorkshopJobs/requests')}}">Pending Jobs</a></q> tab</li>
                     <li>Approve the submitted print</li>
                 </ol>
             </li>

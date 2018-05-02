@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+Ø@extends('layouts.layout')
 
 @section('content')
     {{--TITLE--}}
@@ -45,7 +45,7 @@
                                 <span data-placement="top" data-toggle="popover" data-trigger="hover"
                                       data-content="Delete this update from the database (this option is available only 5 minutes after creation). This will change the status of the printer to the previous one.">
                                     <a id="deleteUpdate" type="button" class="close" style="color: red" 
-                                        href="/issues/update/{{$update->id}}/delete">&times;</a>
+                                        href="/issues/updates/{{$update->id}}/delete">&times;</a>
                                 </span>
                                 @endif
                                 <small>
@@ -74,7 +74,7 @@
                 {{--ISSUE COMMENT FORM--}}
                 <div id="update" class="card collapse">
                     Update Issue:
-                    {!! Form::open(['url' => '/issues/update', 'method' => 'POST', 'class' => 'text-left']) !!}
+                    {!! Form::open(['url' => '/issues/updates', 'method' => 'POST', 'class' => 'text-left']) !!}
                         {{--Issue ID--}}
                         {!! Form::hidden('id',$issue -> id) !!}
                         {{--Printer Status--}}
@@ -103,7 +103,7 @@
                 {{--ISSUE RESOLVE FORM--}}
                 <div id="resolve" class="card collapse">
                     Resolve Issue:
-                    {!! Form::open(['url' => '/issues/resolve', 'method' => 'POST', 'class' => 'text-left']) !!}
+                    {!! Form::open(['url' => '/issues/'.$issue->id.'/resolve', 'method' => 'POST', 'class' => 'text-left']) !!}
                         {{--Issue ID--}}
                         {!! Form::hidden('id',$issue -> id) !!}
                         {{--Resolve Message--}}

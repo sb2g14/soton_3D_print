@@ -12,7 +12,7 @@
                 <a href="/" class="btn btn-primary  pull-left" style="margin: 20px 0px;">
                         Go Home
                 </a>
-                <a href="/printingData/create"  class="btn btn-success  pull-right" style="margin: 20px 20px;">
+                <a href="/WorkshopJobs/create"  class="btn btn-success  pull-right" style="margin: 20px 20px;">
                         Print in the Workshop
                 </a>
                 <a href="/OnlineJobs/create"  class="btn btn-success  pull-right" style="margin: 20px 0px;">
@@ -94,7 +94,7 @@
                             <td data-th="Price">£{{ $job->total_price }}</td>
                         @endif
                         @if($thetype === "online order" && $job->status === 'Approved')
-                            <td data-th="Status"><span class="fa fa-{{$thestatusIcon}}"></span> <a href="/OnlineJobs/manageApproved/{{$job->id}}">{{ $thestatus }} </a></td>
+                            <td data-th="Status"><span class="fa fa-{{$thestatusIcon}}"></span> <a href="/OnlineJobs/approved/{{$job->id}}">{{ $thestatus }} </a></td>
                         @else
                             <td data-th="Status"><span class="fa fa-{{$thestatusIcon}}"></span> {{ $thestatus }}</td>
                         @endif

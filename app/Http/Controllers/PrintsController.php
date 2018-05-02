@@ -39,13 +39,13 @@ class PrintsController extends Controller
         // This is a workshop print  
         if(!$print->status){
             // Print is waiting for approval
-            return redirect('/printingData/show/'.$job->id);
+            return redirect('/WorkshopJobs/'.$job->id);
         }
         if($print->status === "Approved"){
             // Print is currently printing
-            return redirect('/printingData/approved');
+            return redirect('/WorkshopJobs/approved');
         }    
         // This is a workshop print
-        return redirect('/printingData/edit/'.$job->id);
+        return redirect('/WorkshopJobs/'.$job->id.'/edit');
     }
 }

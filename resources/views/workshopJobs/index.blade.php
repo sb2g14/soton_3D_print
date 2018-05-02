@@ -26,7 +26,7 @@
        <a href="/WorkshopJobs/approved" type="button" class="btn btn-lg btn-success" style="display: inline-block;">Show currently approved jobs</a> -->
 
         {{--@hasanyrole('LeadDemonstrator|administrator')
-        {!! link_to_route('printingData.export',
+        {!! link_to_route('workshopJobs.export',
         'Export Jobs to Excel', null,
         ['class' => 'btn btn-lg btn-primary']) !!}
         @endhasanyrole--}}

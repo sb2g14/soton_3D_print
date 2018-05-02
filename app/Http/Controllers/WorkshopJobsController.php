@@ -160,7 +160,7 @@ class WorkshopJobsController extends Controller
                         ->where('requested_online', 0)
                         ->get();
         $counts = $this->getCounts();
-        return view('printingData.index', compact('jobs','counts'));
+        return view('workshopJobs.index', compact('jobs','counts'));
     }
 
     /**
@@ -177,7 +177,7 @@ class WorkshopJobsController extends Controller
                             ->where('requested_online', 0)
                             ->get();
         $counts = $this->getCounts();
-        return view('printingData.approved', compact('approved_jobs','counts'));
+        return view('workshopJobs.approved', compact('approved_jobs','counts'));
     }
 
     /**
@@ -196,7 +196,7 @@ class WorkshopJobsController extends Controller
                                 ->where('requested_online', 0)
                                 ->get();
         $counts = $this->getCounts();
-        return view('printingData.finished', compact('finished_jobs','counts'));
+        return view('workshopJobs.finished', compact('finished_jobs','counts'));
     }
 
     /**
@@ -215,11 +215,11 @@ class WorkshopJobsController extends Controller
             $member = Auth::user()->staff;
             if(!$member){
                 $customer = Auth::user();
-                return view('printingData.create',compact('available_printers','customer'));
+                return view('workshopJobs.create',compact('available_printers','customer'));
             }
-            return view('printingData.create',compact('available_printers','member'));
+            return view('workshopJobs.create',compact('available_printers','member'));
         } else {
-            return view('printingData.create',compact('available_printers'));
+            return view('workshopJobs.create',compact('available_printers'));
         }
     }
     
@@ -240,7 +240,7 @@ class WorkshopJobsController extends Controller
             ->where('printer_status', '!=', 'Signed out')
             ->pluck('id', 'id')->all();
         //return the blade
-        return view('printingData.show',compact('job','available_printers'));
+        return view('workshopJobs.show',compact('job','available_printers'));
     }
     
     /**
@@ -254,7 +254,7 @@ class WorkshopJobsController extends Controller
         // Get the job
         $job = Jobs::findOrFail($id);
         // Return the blade
-        return view('printingData.edit',compact('job'));
+        return view('workshopJobs.edit',compact('job'));
     }
 
     //// CONTROLLER ACTIONS ////
@@ -438,12 +438,12 @@ class WorkshopJobsController extends Controller
         ]);
 
         // Redirect to Pending Jobs blade
-        return redirect('printingData/index');
+        return redirect('WorkshopJobs/requests');
     }
 
     /**
      * marks a job as failed
-     * @blade_address /printingData/abort/<id>
+     * @blade_address /workshopJobs/abort/<id>
      * @param int $id job id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -480,7 +480,7 @@ class WorkshopJobsController extends Controller
         ]);
 
         // Redirect to blade showing currently printing jobs
-        return redirect('printingData/approved');
+        return redirect('WorkshopJobs/approved');
     }
 
     /**
@@ -517,7 +517,7 @@ class WorkshopJobsController extends Controller
             ]);
         }
         // Redirect to blade showing currently printing jobs
-        return redirect('printingData/approved');
+        return redirect('WorkshopJobs/approved');
     }
     
     /**
@@ -574,7 +574,7 @@ class WorkshopJobsController extends Controller
             'text' => "If this was unintentional then please change it back :)",
         ]);
         // Redirect to blade with completed workshop jobs
-        return redirect('printingData/finished');
+        return redirect('WorkshopJobs/finished');
     }
 
     /**
@@ -599,7 +599,7 @@ class WorkshopJobsController extends Controller
             'text' => "Please contact the student {$job->customer_name} with printer {$print->printers_id}.",
         ]);
         // redirect to list of newly requested jobs waiting for approval
-        return redirect('printingData/index');
+        return redirect('WorkshopJobs/requests');
     }
 
     /**
@@ -616,6 +616,6 @@ class WorkshopJobsController extends Controller
         $available_printers = $this->getAvailablePrinters();
 
         // Show request form and pass it the pre-population data
-        return view('printingData.create',compact('available_printers','data'));
+        return view('workshopJobs.create',compact('available_printers','data'));
     }
 }

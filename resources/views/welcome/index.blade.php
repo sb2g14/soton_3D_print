@@ -15,7 +15,7 @@
                         @if ($workshopIsOpen) 
                             <p>
                                 <br/>
-                                <a href="{{ url('/printingData/create') }}">  Start by requesting to print in the workshop now!</a>
+                                <a href="{{ url('/WorkshopJobs/create') }}">  Start by requesting to print in the workshop now!</a>
                             </p>
                         @else
                             <p>
@@ -585,9 +585,9 @@
                                 <li>Request a job
                                     <ol type="a">
                                         <li>Access the workshop website 
-                                            <a href="https://3dprint.clients.soton.ac.uk/">https://3dprint.clients.soton.ac.uk/</a>
+                                            <a href="{{ url('/') }}">{{env('APP_URL')}}</a>
                                         </li>
-                                        <li>Select <q><a href="https://3dprint.clients.soton.ac.uk/printingData/create">
+                                        <li>Select <q><a href="{{ url('/WorkshopJobs/create') }}">
                                             Request a job in the workshop!</a></q>
                                         </li>
                                         <li>Fill in all required details</li>
@@ -605,7 +605,7 @@
                                         <li>Tell a demonstrator to mark the print as failed so you don't get charged</li>
                                         <li>Set up the print again. Ask a demonstrator for advice on how to avoid this error</li>
                                         <li>Go through the same <q>
-                                            <a href="https://3dprint.clients.soton.ac.uk/printingData/create">
+                                            <a href="{{ url('/WorkshopJobs/create') }}">
                                             Request a job in the workshop!</a></q> procedure.
                                         </li>
                                     </ol>
@@ -620,7 +620,7 @@
                             </ol>
                         </p>   
                     </div>
-
+Ø
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>

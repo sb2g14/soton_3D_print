@@ -344,7 +344,7 @@ class OrderOnlineController extends Controller
             'text' => 'You can either add more print-previews or accept this job and notify customer',
         ]);
 
-        return redirect("/OnlineJobs/checkrequest/{$job->id}");
+        return redirect("/OnlineJobs/requests/{$job->id}");
     }
     
     /**Action to delete a print preview
@@ -362,7 +362,7 @@ class OrderOnlineController extends Controller
         notify()->flash('The print-preview has been deleted', 'success', [
             'text' => 'You can create new print-previews',
         ]);
-        return redirect("OnlineJobs/checkrequest/{$job->id}");
+        return redirect("OnlineJobs/requests/{$job->id}");
     }
 
     
@@ -429,7 +429,7 @@ class OrderOnlineController extends Controller
         
         $this->_emailandnotify($job->customer_email,new jobReject($job, $reject_message['comment']),'The job has been rejected','An email notification has been send to the customer to explain why the job got rejected.');
 
-        return redirect('OnlineJobs/index');
+        return redirect('OnlineJobs/requests');
     }
 
 
@@ -488,7 +488,7 @@ class OrderOnlineController extends Controller
             'text' => 'The job and all assigned print previews were deleted from the database',
         ]);
         if(Auth::user()->hasRole(['OnlineJobsManager'])){
-            return redirect("/OnlineJobs/index");
+            return redirect("/OnlineJobs/requests");
         }else{
             return redirect("/myprints/");
         }
@@ -546,7 +546,7 @@ class OrderOnlineController extends Controller
             'text' => 'You may proceed to print overview and actual printing',
         ]);
 
-        return redirect("/OnlineJobs/managePendingJob/{$id}");
+        return redirect("/OnlineJobs/pending/{$id}");
     }
 
     /**Action to delete the print from the DB if it was created by mistake**/
@@ -567,7 +567,7 @@ class OrderOnlineController extends Controller
         // Change the printer status to not in use
         printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
 
-        return redirect("OnlineJobs/managePendingJob/{$job->id}");
+        return redirect("OnlineJobs/pending/{$job->id}");
     }
 
     /**Actions to be taken when the job failed**/

@@ -91,7 +91,7 @@
                 <a href="#" class="btn btn-lg btn-success" data-placement="top" data-toggle="popover" data-trigger="hover"
                    data-content="You cannot approve this job if no print-previews have been created." disabled>Approve job</a>
             @else
-            <a href="/OnlineJobs/request/{{ $job->id }}/approve" class="btn btn-lg btn-success"
+            <a href="/OnlineJobs/requests/{{ $job->id }}/approve" class="btn btn-lg btn-success"
                data-placement="top" data-toggle="popover" data-trigger="hover"
                data-content="You may approve this job now. When you do so the total job stats will be sent to a customer for
                approval.">Approve job</a>
@@ -112,7 +112,7 @@
                 <div class="modal-body text-left">
 
                     {{--Form to specify material amount and duration of each print--}}
-                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/request/{{ $job->id }}">
+                    <form class="form-horizontal" role="form" method="POST" action="/OnlineJobs/requests/{{ $job->id }}">
                         {{ csrf_field() }}
                         <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                             {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-sm-4 control-label'] )  !!}

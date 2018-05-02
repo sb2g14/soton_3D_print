@@ -49,8 +49,8 @@
                             <td data-th="Started on">{{ $print->created_at->formatLocalized('%d %b, %H:%M') }}</td>
                             <td data-th="Time Remain">{{ $print->timeRemain() }}</td>
                             <td data-th="Manage">
-                                <a href="/OnlineJobs/print/{{ $print->id }}/success" class="btn btn-success">Print Successful</a>
-                                <a href="/OnlineJobs/print/{{ $print->id }}/failed" class="btn btn-danger">Print Failed</a>
+                                <a href="/OnlineJobs/prints/{{ $print->id }}/success" class="btn btn-success">Print Successful</a>
+                                <a href="/OnlineJobs/prints/{{ $print->id }}/failed" class="btn btn-danger">Print Failed</a>
                             </td>
                         </tr>
                     @endforeach

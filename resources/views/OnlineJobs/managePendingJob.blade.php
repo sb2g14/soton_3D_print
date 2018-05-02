@@ -39,7 +39,7 @@
                             @if($print->created_at->addMinutes(5)->gte(\Carbon\Carbon::now('Europe/London')))
                                 <span data-placement="top" data-toggle="popover" data-trigger="hover"
                                       data-content="Delete this print only if the print has not started!">
-                                    <a type="button" id="deletePrint" href="/OnlineJobs/print/{{$print->id}}/delete"
+                                    <a type="button" id="deletePrint" href="/OnlineJobs/prints/{{$print->id}}/delete"
                                        class="close" style="color: red">&times;</a>
                                 </span>
                             @endif
@@ -55,8 +55,8 @@
                             </p>
                             @if($print->status == 'In Progress')
                                 <div class="text-right">
-                                    <a href="/OnlineJobs/print/{{ $print->id }}/success" class="btn btn-success">Print Successful</a>
-                                    <a href="/OnlineJobs/print/{{ $print->id }}/failed" class="btn btn-danger">Print Failed</a>
+                                    <a href="/OnlineJobs/prints/{{ $print->id }}/success" class="btn btn-success">Print Successful</a>
+                                    <a href="/OnlineJobs/prints/{{ $print->id }}/failed" class="btn btn-danger">Print Failed</a>
                                 </div>
                             @endif
                         </div>
