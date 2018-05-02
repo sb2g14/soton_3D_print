@@ -9,18 +9,23 @@
                     <p>Welcome to the 3D printing service<br>at the University of Southampton!</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    @if ($workshopIsOpen) 
-                        {{--<div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
-                        {{--<div class="btn-lg btn-request pull-left"><a href="{{ url('/printingData/create') }}">Request a job <br> in the workshop!</a></div>--}}
-                        <p><br/><a href="{{ url('/printingData/create') }}">  Start by requesting to print in the workshop now!</a></p>
-                    @else
-                        {{--<div class="btn btn-lg btn-online pull-center"><a href="{{ url('/OnlineJobs/create') }}">Request a job <br> online!</a></div>--}}
-                        <p><br/><a href="{{ url('/OnlineJobs/create') }}">  Start by ordering a print now!</a></p>
-                    @endif
+            @if (Auth::check())
+                <div class="row">
+                    <div class="col-xs-12">
+                        @if ($workshopIsOpen) 
+                            <p>
+                                <br/>
+                                <a href="{{ url('/printingData/create') }}">  Start by requesting to print in the workshop now!</a>
+                            </p>
+                        @else
+                            <p>
+                                <br/>
+                                <a href="{{ url('/OnlineJobs/create') }}">  Start by ordering a print now!</a>
+                            </p>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 
@@ -47,7 +52,7 @@
 
         <div class="container"> 
 <!-- CARDS DISPLAYED FOR DEMONSTRATOR -->        
-            @if (Auth::check())  {{--Check whether user is logged in--}}
+            @if ($usertype === "Staff") {{-- Auth::check() && Auth::user()->id != 100 --}} {{--Check whether user is logged in & NOT a customer--}}
                 <div class="row row-flex">
                     <!-- Issues -->
                     <div class="col-xs-12 col-md-4">
@@ -72,7 +77,7 @@
                                                     Printer not seen for a long time
                                                 </b></h4>
                                                 {{--Print the text of a post--}}
-                                                Printer number {{$lostPrinter->id}} has not been seen since {{$lostPrinter->lastUpdateDatetime()->format('j/M/Y') }}. Please check if it is still in the workshop and give it to the next student for printing so that I know it's still there.
+                                                Printer number {{$lostPrinter->id}} has not been seen since {{$lostPrinter->lastUpdateDatetime()->format('j/m/Y') }}. Please check if it is still in the workshop and give it to the next student for printing so that I know it's still there.
                                             </div>
                                         </li>
                                     @endif
@@ -270,7 +275,10 @@
 
 <!-- DETAIL CARDS WITH FORMS TO EDIT CONTENT -->
 
+        
+
         <!-- Modal ISSUES-->
+        @if ($usertype === "Staff")
         <div id="issueModal" class="modal fade" role="dialog">
           <div class="modal-dialog modal-lg">
 
@@ -351,7 +359,9 @@
                                     {{--Print the text of a post--}}
                                     <p>{{ $post->body }}</p>
                                     {{-- Button to resolve post--}}
-                                    @if(!isset($post->printers_id) && (Auth::user()->staff->id == App\staff::where('id', $post->staff_id)->first()->id || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator'])))
+                                    @if(!isset($post->printers_id) 
+                                        && (Auth::user()->staff->id == App\staff::where('id', $post->staff_id)->first()->id 
+                                            || Auth::user()->hasRole(['administrator', 'LeadDemonstrator', 'Coordinator']) ))
                                         <a href="/posts/resolve/{{$post->id}}" class="btn btn-danger">Resolve{{ $post->resolved }}</a>
                                     @endif
                                     {{-- Button to show/hide comments--}}
@@ -438,8 +448,10 @@
 
           </div>
         </div>
+        @endif
 
         <!-- Modal ANNOUNCEMENTS-->
+        @if ($usertype === "Staff")
         <div id="announcementModal" class="modal fade" role="dialog">
             <div class="modal-dialog modal-lg">
 
@@ -551,6 +563,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <!-- Modal WORKSHOP RULES-->
         <div id="rulesModal" class="modal fade" role="dialog">

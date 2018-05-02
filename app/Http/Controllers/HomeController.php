@@ -63,6 +63,16 @@ class HomeController extends Controller
         foreach ($printers_busy as $printer_busy) {
             $printer_busy->changePrinterStatus($printers_busy);
         }
+        
+        // Check category of user - can be one of:
+        // Guest, Customer, Staff
+        $usertype = "Guest";
+        if(Auth::check()){
+            $usertype = "Customer";
+            if(Auth::user()->id != 100){ //TODO: replace with ID from auth config file
+                $usertype = "Staff";
+            }
+        }
 
         // Get issues as a combination of printer issues and posts (workshop issues)
         $issues = $this->_getIssues();
@@ -89,7 +99,7 @@ class HomeController extends Controller
         //check longest not used printer        
         $lostPrinter = $stats->getLongNotSeenPrinter();
 
-        return view('welcome.index', compact('issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material','workshopIsOpen','lostPrinter'));
+        return view('welcome.index', compact('usertype','issues', 'announcements', 'count_prints', 'count_months', 'count_users', 'count_material','workshopIsOpen','lostPrinter'));
         //return view('home');
     }
 }

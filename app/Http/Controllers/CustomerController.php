@@ -21,7 +21,7 @@ class CustomerController extends Controller
      */
     public function showprints()
     {
-        $email = Auth::user()->email;
+        $email = Auth::user()->email();
         $activejobs = Jobs::orderBy('created_at','desc')
             ->where('customer_email', '=', $email)
             ->where(function ($query){$query->where('status','=','Waiting')

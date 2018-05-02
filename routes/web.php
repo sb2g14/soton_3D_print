@@ -29,8 +29,10 @@ Route::get('/gallery','PhotolibraryController@index');
 // display of charts
 Route::get('/charts/{name}/{color}/{height}', 'ChartsController@show')->name('chart');
 
-// This route uses controller to redirect to a personal page of every member
-Route::get('/myprints/','CustomerController@showprints');
+Route::group(['middleware' => ['auth']], function () {
+    // This route uses controller to redirect to a personal page of every member
+    Route::get('/myprints/','CustomerController@showprints');
+});
 
 // Here we redirect users to 'News' page
 Route::get('news', 'NewsController@index'); //deprecated
@@ -46,8 +48,10 @@ Route::get('/learn', 'LearnController@index');
 // Route to faq
 Route::get('/faq','FAQController@index');
 
-// Route to create a new Q & A
-Route::get('/faq/create', 'FAQController@create');
+Route::group(['middleware' => ['auth'], 'prefix' => 'faq'], function () {
+    // Route to create a new Q & A
+    Route::get('/create', 'FAQController@create');
+});
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -79,19 +83,18 @@ Route::get('/announcement/delete/{id}','AnnouncementsController@destroy');
 // Routes for GENERIC ISSUES (posts)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Here we redirect users to the create new post
-Route::get('/posts','PostsController@create');
-
-// Here we redirect to the page where we store post data
-Route::post('/posts','PostsController@store');
-
-// Here we redirect to the controller that would store our comments
-Route::post('/posts/{post}/comments', 'CommentsController@store');
-
-// Delete comments
-Route::get('/comments/delete/{id}', 'CommentsController@destroy');
-
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|Coordinator|Technician|NewDemonstrator']], function () {
+    // Here we redirect users to the create new post
+    Route::get('/posts','PostsController@create');
+
+    // Here we redirect to the page where we store post data
+    Route::post('/posts','PostsController@store');
+
+    // Here we redirect to the controller that would store our comments
+    Route::post('/posts/{post}/comments', 'CommentsController@store');
+
+    // Delete comments
+    Route::get('/comments/delete/{id}', 'CommentsController@destroy');    
 
     // Resolve issues in posts
     Route::get('/posts/resolve/{id}', 'PostsController@resolve');
@@ -204,13 +207,15 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
 // Routes for WORKSHOP PRINTS
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Open a form to request a job
-Route::get('/printingData/create','WorkshopJobsController@create'); //deprecated
-Route::get('/WorkshopJobs/create','WorkshopJobsController@create');
+Route::group(['middleware' => ['auth']], function () {
+    // Open a form to request a job
+    Route::get('/printingData/create','WorkshopJobsController@create'); //deprecated
+    Route::get('/WorkshopJobs/create','WorkshopJobsController@create');
 
-// Save the job to a database and send to a demonstrator for approval
-Route::post('/printingData','WorkshopJobsController@store'); //deprecated
-Route::post('/WorkshopJobs','WorkshopJobsController@store');
+    // Save the job to a database and send to a demonstrator for approval
+    Route::post('/printingData','WorkshopJobsController@store'); //deprecated
+    Route::post('/WorkshopJobs','WorkshopJobsController@store');
+});
 
 Route::group(['middleware' => ['role:,jobs_manage']], function () {
     // Show a list of jobs waiting for approval
@@ -271,24 +276,28 @@ Route::group(['middleware' => ['role:,jobs_manage']], function () {
 // Routes for ONLINE ORDERS
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Routes to display online job request form
-Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
+Route::group(['middleware' => ['auth']], function () {
+    // Routes to display online job request form
+    Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
 
-// Route to store an online request
-Route::post('onlineJobs', 'OrderOnlineController@store'); //deprecated
-Route::post('OnlineJobs', 'OrderOnlineController@store');
+    // Route to store an online request
+    Route::post('onlineJobs', 'OrderOnlineController@store'); //deprecated
+    Route::post('OnlineJobs', 'OrderOnlineController@store');
+});
 
-// View approved job info
-Route::get('/OnlineJobs/manageApproved/{id}', 'OrderOnlineController@manageApproved'); //deprecated
-Route::get('/OnlineJobs/approved/{id}', 'OrderOnlineController@manageApproved');
+Route::group(['middleware' => ['auth']], function () {
+    // View approved job info
+    Route::get('/OnlineJobs/manageApproved/{id}', 'OrderOnlineController@manageApproved'); //deprecated
+    Route::get('/OnlineJobs/approved/{id}', 'OrderOnlineController@manageApproved');
 
-// Job has been approved by customer
-Route::get('/OnlineJobs/customerApproved/{id}', 'OrderOnlineController@customerApproved'); //deprecated
-Route::get('/OnlineJobs/approved/{id}/accept', 'OrderOnlineController@customerApproved');
+    // Job has been approved by customer
+    Route::get('/OnlineJobs/customerApproved/{id}', 'OrderOnlineController@customerApproved'); //deprecated
+    Route::get('/OnlineJobs/approved/{id}/accept', 'OrderOnlineController@customerApproved');
 
-// Job has been rejected by customer
-Route::get('/OnlineJobs/customerReject/{id}', 'OrderOnlineController@customerReject'); //deprecated
-Route::get('/OnlineJobs/approved/{id}/reject', 'OrderOnlineController@customerReject');
+    // Job has been rejected by customer
+    Route::get('/OnlineJobs/customerReject/{id}', 'OrderOnlineController@customerReject'); //deprecated
+    Route::get('/OnlineJobs/approved/{id}/reject', 'OrderOnlineController@customerReject');
+});
 
 Route::group(['middleware' => ['role:,manage_online_jobs']], function () {
     
@@ -372,10 +381,10 @@ Route::get('loan', 'LoanController@index');
 // Routes for managing the ROTA
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Open a form to display the rota sessions
-Route::get('/rota','RotaController@index');
-
 Route::group(['middleware' => ['role:,jobs_manage']], function () {
+    // Open a form to display the rota sessions
+    Route::get('/rota','RotaController@index');
+    
     // Open a form to indicate availability for sessions
     Route::get('/rota/availability','AvailabilityController@edit'); //logical url based on the availability being part of the rota workflow
     Route::get('/availability','AvailabilityController@edit'); //shortcut to use in email
@@ -484,25 +493,27 @@ Route::group(['middleware' => ['role:,manage_cost_codes']], function () {
 // Shows the list of workshop members
 Route::get('/members/index','StaffController@index');
 
-// This route uses controller to redirect to a personal page of every member
-Route::get('/members/{id}','StaffController@show');
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Demonstrator|OnlineManager|Coordinator|Technician']], function () {
+    // This route uses controller to redirect to a personal page of every member
+    Route::get('/members/{id}','StaffController@show');
 
-// This route uses controller to redirect to a personal page to update the personal record of selected member
-Route::get('/members/edit/{id}','StaffController@edit');
+    // This route uses controller to redirect to a personal page to update the personal record of selected member
+    Route::get('/members/edit/{id}','StaffController@edit');
 
-// This route uses controller to update a personal page of selected member
-Route::post('/members/edit/{id}','StaffController@update');
+    // This route uses controller to update a personal page of selected member
+    Route::post('/members/edit/{id}','StaffController@update');
 
-// This route uses controller to delete a personal page of selected member
-Route::get('/members/delete/{id}','StaffController@destroy');
+    // This route uses controller to delete a personal page of selected member
+    Route::get('/members/delete/{id}','StaffController@destroy');
 
-// This route uses controller to access former member blade
-Route::get('/members/former/show','StaffController@former');
-
-// Manage roles blade
-Route::get('/roles', 'RolesManageController@index');
+    // This route uses controller to access former member blade
+    Route::get('/members/former/show','StaffController@former');
+});
 
 Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|Technician']], function () {
+
+    // Manage roles blade
+    Route::get('/roles', 'RolesManageController@index');
     
     // Here we redirect users to the add new member post page
     Route::get('/members','StaffController@create');
@@ -571,7 +582,7 @@ $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.password.reset');
 
-Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'AdminController@index');
     Route::resource('permissions', 'Admin\PermissionsController');
     Route::post('permissions_mass_destroy', ['uses' => 'Admin\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);

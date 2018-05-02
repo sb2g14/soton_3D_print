@@ -360,7 +360,7 @@ class StatisticsHelper
         ksort($printers); //->sortKeys()->all();
         $ans = collect($printers)->first();
         $now = new \Carbon\Carbon;
-        if($ans->lastUpdateDatetime() > $now->subMonths(2)){
+        if($ans->lastUpdateDatetime() > $now->subMonths(1)){
             return null;
         }
         return $ans;

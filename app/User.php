@@ -66,6 +66,16 @@ class User extends Authenticatable
         return $this->hasMany(printing_data::class);
     }
     
+    // The function which shows the staff record connected user
+    public function isCustomer(){
+        $auth = config('auth');
+        $SAMLpars = $auth['SAML'];
+        if($this->id != $SAMLpars['customer']['id']){
+            return false;
+        }
+        return true;
+    }
+    
     /**returns the full name of that staff or customer**/
     public function name()
     {

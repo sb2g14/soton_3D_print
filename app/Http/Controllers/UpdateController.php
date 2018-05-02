@@ -1,16 +1,31 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Jobs;
 use App\Prints;
-use Illuminate\Http\Request;
+use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+
 
 class UpdateController extends Controller
 {
     public function index()
     {
         return view('loan');
+    }
+    
+    private function addGuestUser(){
+        $user = User::where('id',100)->first();
+        if(!$user){
+            $user = new User;
+            $user->id = 100;
+            $user->name = "customer";
+            $user->email = "customer@soton.ac.uk";
+            $user->password = 'NotARealPasswordHashSinceNotUsed';
+            $user->save();
+        }
     }
     
     private function correct3DHubsToOnline(){
@@ -44,18 +59,14 @@ class UpdateController extends Controller
             $start = $job->approved_at;
             $duration = $job->total_duration;
             $duration = explode(':',$duration);
-            $end1 = $job->finished_at;
-            if(!$end1){
-                $end1 = $job->updated_at;
-            }else{
-                $end1 = new Carbon($end1);
-            }
+            $endByPrint = $job->updated_at;
             if(count($duration) == 3){
-                $end1 = new Carbon($start);
-                $end1 = $end1->addHours($duration[0])->addMinutes($duration[1]);
+                $endByPrint = new Carbon($start);
+                $endByPrint = $endByPrint->addHours($duration[0])->addMinutes($duration[1]);
             }
-            if($update->diffInHours($end1, false) > 3){
-                $finish = $end1;
+            // Compare Finish Time by Update and print
+            if($update->diffInHours($endByPrint, false) > 1 && $job->requested_online == 0){
+                $finish = $endByPrint;
             }else{
                 $finish = $update;
             }
@@ -156,6 +167,7 @@ class UpdateController extends Controller
         $this->correct3DHubsToOnline();
         $this->setJobStaffIDs();
         $this->setPrintStaffIDs();
+        $this->addGuestUser();
         return redirect()->home();
     }
 }
