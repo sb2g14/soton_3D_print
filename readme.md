@@ -114,7 +114,7 @@ http://3dprint.clients.soton.ac.uk/printers/index
 - *jQuery* for easy JavaScript (http://jquery.com/) 
 - *Carbon* for PHP DateTime variables (http://carbon.nesbot.com/docs/) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 - *Charts* by ConsoleTV for easily creating charts in Laravel (https://github.com/ConsoleTVs/Charts/tree/5.4.0/docs/5) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-- *Font-Awesome* for icons (https://fontawesome.com/icons?d=gallery&m=free) [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+- *Font-Awesome* for icons (https://fontawesome.com/v4.7.0/icons/) [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 - *Bootstrap 3 Datepicker* for date-time picker (http://eonasdan.github.io/bootstrap-datetimepicker/) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Style Guidelines we try to follow:
