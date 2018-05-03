@@ -11,17 +11,22 @@
                 Since the 3D Printing Service started, UG students, PGRs and other members of FEE wishing to use the UP! 3D Printers have always been able to request advice from the 3D Printing Service Demonstrators during the Open Access sessions.
             </p>
             <p>
-                To supplement these face-to-face options, and provide a more complete explanation/reminder of how to set-up and use the UP! 3D Printers, the following video clips were assembled as a draft training video please go to the <a href="https://www.youtube.com/watch?v=j8jcmwBK-bE&feature=player_embedded"> Watch this video </a> on YouTube link. ( A further version with higher resolution video will be prepared.)<br>
+                To supplement these face-to-face options, and provide a more complete explanation/reminder of how to set-up and use the UP! 3D Printers, the following video clips were assembled as a draft training video. Please <a href="https://www.youtube.com/watch?v=j8jcmwBK-bE&feature=player_embedded">watch this video</a> on YouTube. (A further version with higher resolution video will be prepared.)<br>
             </p>
             <p>
                 Printer manuals are available to download from here
                 <ul class="list-group">
-                    <li class="list-group-item"><a href={{ asset('files/UP_Manual.pdf') }}>UP Manual</a></li>
-                    <li class="list-group-item"><a href={{ asset('files/UPBOX_Manual.pdf') }}>UP BOX Manual</a></li>
+                    <li class="list-group-item"><a href="{{ asset('files/UP_Manual.pdf') }}">UP Manual</a></li>
+                    <li class="list-group-item"><a href="{{ asset('files/UPBOX_Manual.pdf') }}">UP BOX Manual</a></li>
+                    <li class="list-group-item">
+                        <a href="https://mpselectmini.com/_media/wiki/downloads/mp_select_mini_users_manual-half_letter_page_size-image.pdf" target="_page">
+                            Monoprice Select Mini
+                        </a>
+                    </li>
                 </ul>
             </p>
             <p>
-                Any queries meanwhile, please contact the Workshop Coordinator
+                Any queries meanwhile, please contact the workshop coordinator
                 @foreach($coordinators as $coordinator)
                     <a href="mailto:{{$coordinator->email}}">{{$coordinator->first_name}} {{$coordinator->last_name}}</a>
                 @endforeach

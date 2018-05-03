@@ -360,7 +360,8 @@ class StatisticsHelper
         ksort($printers); //->sortKeys()->all();
         $ans = collect($printers)->first();
         $now = new \Carbon\Carbon;
-        if($ans->lastUpdateDatetime() > $now->subMonths(1)){
+        //Number of months a printer has to be not updated to be considered "long not seen"
+        if($ans->lastUpdateDatetime() > $now->subMonths(2)){ 
             return null;
         }
         return $ans;

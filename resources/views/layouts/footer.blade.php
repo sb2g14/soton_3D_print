@@ -1,3 +1,22 @@
+{{-- Cookie banner --}}
+<style>
+    #cookie_banner {
+        background-color: #002e3b;
+        color: white;
+    }
+    #cookie_banner.affix {
+        bottom: 0px;
+    }
+</style>
+<div id="cookie_banner" class="container col-lg-12" data-spy="affix" data-offset-bottom="250">
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="https://www.southampton.ac.uk/about/governance/policies/cookies.page">We use cookies because we need them to handle sessions.</a> If you continue without changing your settings, we will assume that you are happy to receive cookies on the 3D Printing Service website.  
+            <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+    </div>
+</div>
+
 <footer>
     @php $version = config('app'); $version = $version['version']; @endphp 
     <div class="container-fluid">
@@ -84,3 +103,4 @@
         </div>
     </div>
 </footer>
+

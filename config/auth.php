@@ -104,8 +104,21 @@ return [
     */
     
     'SAML' => [
-        'email' => 'SERVER_PORT', //_Server variable key for UoS email // TODO: replace with SAML EMAIL VARIABLE
-        'name' => 'SERVER_PORT', //_Server variable key for UoS name // TODO: replace with SAML NAME VARIABLE
+        'username' => ['SERVER_PORT',
+                        'MELLON_cn','MELLON_cn_0',
+                        'MELLON_uid','MELLON_uid_0',
+                        'MELLON_urn:oid:2.5.4.3','MELLON_urn:oid:2.5.4.3_0',
+                        'MELLON_urn:oid:0.9.2342.19200300.100.1.1','MELLON_urn:oid:0.9.2342.19200300.100.1.1_0',
+                        ], //_Server variable key to identify successfull login
+        'email' => ['MELLON_MAIL','MELLON_MAIL_0',
+                    'MELLON_eduPersonPrincipalName','MELLON_eduPersonPrincipalName_0',
+                    'MELLON_urn:oid:0.9.2342.19200300.100.1.3','MELLON_urn:oid:0.9.2342.19200300.100.1.3_0',
+                    'MELLON_urn:oid:1.3.6.1.4.1.5923.1.1.1.6','MELLON_urn:oid:1.3.6.1.4.1.5923.1.1.1.6_0'
+                    ], //_Server variable key for UoS email
+        'lastname' => ['MELLON_sn','MELLON_sn_0',
+                       'MELLON_urn:oid:2.5.4.4','MELLON_urn:oid:2.5.4.4_0'
+                    ], //_Server variable key for UoS surname
+        'firstname' => ['MELLON_urn:oid:2_5_4_42','MELLON_urn:oid:2_5_4_42_0'],
         'customer' => [
             'id' => 100, //user id of customer account
         ],

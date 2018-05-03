@@ -150,7 +150,7 @@ class WorkshopJobsController extends Controller
      * @blade /WorkshopJobs/requests
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function getRequests()
     {
         // Check if any non-completed prints exist and autocomplete them
         $this->autoCompleteFinishedPrints();
@@ -168,7 +168,7 @@ class WorkshopJobsController extends Controller
      * @blade /WorkshopJobs/approved
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function approved()
+    public function getApproved()
     {
         $this->autoCompleteFinishedPrints();
         // Get all the approved jobs
@@ -185,7 +185,7 @@ class WorkshopJobsController extends Controller
      * @blade /WorkshopJobs/finished
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function finished()
+    public function getFinished()
     {
         $this->autoCompleteFinishedPrints();
         // Get all the completed jobs from the last 30 days
@@ -428,8 +428,7 @@ class WorkshopJobsController extends Controller
             'material_amount' => $material_amount,
             'price' => $price,
             'status' => 'Approved',
-            'print_started_by' => Auth::user()->staff->id,
-            'print_finished_by' => Auth::user()->staff->id, //???
+            'print_started_by' => Auth::user()->staff->id
         ]);
 
         // Display notification to user
@@ -522,7 +521,7 @@ class WorkshopJobsController extends Controller
     
     /**
      * Function that updates the job details
-     * @param $id int job id
+     * @param int $id job id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function review($id)
@@ -579,7 +578,7 @@ class WorkshopJobsController extends Controller
 
     /**
      * rejects a workshop job before printing started
-     * @param $id int job id
+     * @param int $id job id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id)
@@ -604,7 +603,7 @@ class WorkshopJobsController extends Controller
 
     /**
      * restarts a workshop job by pre-populating the request form
-     * @param $id int job id
+     * @param int $id job id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function restart($id)

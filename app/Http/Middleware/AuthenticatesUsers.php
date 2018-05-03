@@ -67,18 +67,25 @@ trait AuthenticatesUsers
      */
     public function loginSAML(Request $request)
     {
-        //$request = new Request;
-        //foreach($_REQUEST as $k => $r){
-        //    $request[$k] = $r;
-        //}
         $auth = config('auth');
         $SAMLpars = $auth['SAML'];
         // Check if username has been provided.
-        if(!isset($_SERVER[$SAMLpars['email']])){ 
+        $isSAMLauthenticated = False;
+        foreach($SAMLpars['username'] as $code){
+            if(isset($_SERVER[$code])){
+                $isSAMLauthenticated = True;
+            }
+        }
+        if(!$isSAMLauthenticated){
             $request[$this->username()] = "";
             return $this->sendFailedSAMLLoginResponse($request);
         }
-        $usermail = $_SERVER[$SAMLpars['email']]; 
+        $usermail = "";
+        foreach($SAMLpars['email'] as $code){
+            if(isset($_SERVER[$code])){
+                $usermail = $_SERVER[$code];
+            }
+        }
         $request[$this->username()] = $usermail;
         
         // Check if user is a member of our staff
@@ -88,14 +95,12 @@ trait AuthenticatesUsers
             $user = User::where('id',$staff->user_id)->first();
         }else{
             // And if not, log in as guest
-            $user = User::where('id',$SAMLpars['customer']['id'])->first(); //TODO: provide customer account user id here 
+            $user = User::where('id',$SAMLpars['customer']['id'])->first();
         }
         
+        // Regenerate session since logged in -> anyway done in sendLoginResponse
+        //$request->session()->regenerate();
         // Log in user and return
-        //$session = new \Illuminate\Contracts\Session\Session;
-        //$request->setLaravelSession($_COOKIE['laravel_session']);
-        $request->session()->regenerate();
-        
         $this->guard()->login($user, false);
         
         return $this->sendLoginResponse($request);

@@ -2,15 +2,45 @@
 
 namespace App\Http\Controllers\Traits;
 
+use Auth;
 use App\Settings;
 use App\staff;
-use Auth;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
 /**
- * This Trait provides a function to get a list of available and tentative demonstrators for 
- * a list of sessions in an appropriate order.
+ * This Trait provides a function to get a list of available and tentative 
+ * demonstrators for a list of sessions in an appropriate order.
+ *
+ * We follow the following strategy:
+ * 1) Every session requires at least one experienced demonstrator;
+ * 2) we want to give inexperienced demonstrators a chance to gain 
+ *    experience and therefore want to assign them as often as possible;
+ * 3) if a demonstrator is available, they should get priority over 
+ *    those tentatively available;
+ * 4) Every demonstrator should demonstrate equally often, thus 
+ *    demonstrators who have not demonstrated for long, should get
+ *    priority over others.
+ * The actual (pre-)assignment of demonstrators to sessions, also needs to 
+ * avoid duplicate assignments for a day this additional rule is enforced 
+ * by the RotaDefaultsTrait.
+ *
+ * From these rules we derive a priority order for demonstrators as follows:
+ * For the first slot of any session:
+ * a) We take experienced available demonstrators in the order of the last 
+ *    session they demonstrated
+ * b) followed by experienced demonstrators that are only tentatively 
+ *    available in the order of the last session they demonstrated
+ * For all further slots:
+ * a) We take inexperienced available demonstrators in the order of the last
+ *    session they demonstrated
+ * b) followed by experienced available demonstrators in the order of the 
+ *    last session they demonstrated
+ * c) followed by inexperienced tentatively available demonstrators in the 
+ *    order of the last session they demonstrated
+ * d) followed by experienced tentatively available demonstrators in the 
+ *    order of the last session they demonstrated
+ * 
  **/
 trait RotaAvailabilityTrait
 {
@@ -130,19 +160,19 @@ trait RotaAvailabilityTrait
         foreach($sessions as $s){
             $id = $s->id;
             // Get available and tentatively available demonstrators
-            $demA = $this->getAvailableDemonstratorsForSession($id);
-            $demT = $this->getTentativeDemonstratorsForSession($id);
+            $demA = $this->getAvailableDemonstratorsForSession($id); //available demonstrators
+            $demT = $this->getTentativeDemonstratorsForSession($id); //tentatively available demonstrators
             $demALL = $this->getOtherDemonstratorsForSession($id,$demA,$demT);
             $demALL = $this->orderByLastSession($demALL);
             // Split the lists depending on the experience and
             // sort them so the ones who have not demonstrated for
             // a long time appear at the top of the list
             $temp = $this->splitByExperience($demA);
-            $demEA = $temp[0];
-            $demIA = $temp[1];
+            $demEA = $temp[0]; //experienced available demonstrators
+            $demIA = $temp[1]; //in-experienced available demonstrators
             $temp = $this->splitByExperience($demT);
-            $demET = $temp[0];
-            $demIT = $temp[1];
+            $demET = $temp[0]; //experienced tentatively available demonstrators
+            $demIT = $temp[1]; //in-experienced tentatively available demonstrators
             // Create two prioritised lists - one for the first demonstrator in the session, and one for the others.
             $demonstrators['session_'.$id]['dem1'] = array(
                 'experienced demonstrators'=>$demEA+$demET, 

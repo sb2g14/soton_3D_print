@@ -1,12 +1,12 @@
 @extends('layouts.layout')
 @section('content')
-    <div class="title m-b-md">
+    {{--<div class="title m-b-md">
         <h1>Demonstrators Rota</h1>
     </div>
     <div class="container well text-left">
         <iframe width="456" height="230" frameborder="0" scrolling="no" src="https://sotonac.sharepoint.com/teams/3DPrintingWorkshop/_layouts/15/WopiFrame.aspx?sourcedoc={c6b68a8a-05b8-4047-9916-c89b9587647f}&action=embedview&wdAllowInteractivity=False&Item='CurrentRota'!A1%3AC10&wdHideGridlines=True&wdInConfigurator=True" style="display: block; margin-left: auto; margin-right: auto"></iframe>
         <center>You need to sign in to view the current rota.</center>
-    </div>
+    </div>--}}
     <div class="title m-b-md">
         <h1>Demonstrator Workflow</h1>
     </div>
@@ -27,7 +27,8 @@
             <li>When they are ready, go to their printer as soon as possible to approve their print:
                 <ol type="a">
                     <li>Login to your account at <a href="{{url('/login')}}">{{env('APP_URL')}}</a></li>
-                    <li>Select the <q><a href="{{url('/WorkshopJobs/requests')}}">Pending Jobs</a></q> tab</li>
+                    <li>Select the <q>Printing > <a href="{{url('/WorkshopJobs/requests')}}">Manage Workshop Jobs</a></q> tab</li>
+                    <li>Check that the details make sense. A red budget code means that you need to think if the student didn't make this code up. Also confirm that the printer number is correct and that the printing time and material amount seems reasonable.</li>
                     <li>Approve the submitted print</li>
                 </ol>
             </li>
@@ -56,10 +57,10 @@
     </div>
     <div class="container well text-left">
         <h1>Useful downloads</h1>
-        <ul class="lsn">
-            <li><a href={{ asset('files/UP_Manual.pdf') }}>UP Manual</a></li>
-            <li><a href={{ asset('files/UPBOX_Manual.pdf') }}>UP BOX Manual</a></li>
-            <li><a href={{ asset('files/LoanForm_Soton_3D_Printing.docx') }}>Request a Loan Form</a></li>
+        <ul class="list-group">
+            <li class="list-group-item"><a href={{ asset('files/UP_Manual.pdf') }}>UP Manual</a></li>
+            <li class="list-group-item"><a href={{ asset('files/UPBOX_Manual.pdf') }}>UP BOX Manual</a></li>
+            <li class="list-group-item"><a href={{ asset('files/LoanForm_Soton_3D_Printing.docx') }}>Request a Loan Form</a></li>
             {{--<li><a href={{ asset('files/Online_3D_Printing_Service_v2.pdf') }}>Guidance how to use 3D hubs</a></li>--}}
         </ul>
     </div>

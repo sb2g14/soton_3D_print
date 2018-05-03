@@ -205,65 +205,59 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
 
 Route::group(['middleware' => ['auth']], function () {
     // Open a form to request a job
-   // Route::get('/workshopJobs/create','WorkshopJobsController@create'); //deprecated
-    Route::get('/WorkshopJobs/create','WorkshopJobsController@create');
+    //Route::get('WorkshopJobs/create','WorkshopJobsController@create');
 
     // Save the job to a database and send to a demonstrator for approval
-   //Route::post('/workshopJobs','WorkshopJobsController@store'); //deprecated
-    Route::post('/WorkshopJobs','WorkshopJobsController@store');
+    //Route::post('WorkshopJobs/','WorkshopJobsController@store');
+    
+    // Routes to create and store Workshop jobs
+    Route::resource('WorkshopJobs', 'WorkshopJobsController',['only' => ['create', 'store']]);
 });
 
-Route::group(['middleware' => ['role:,jobs_manage']], function () {
+Route::group(['middleware' => ['role:,jobs_manage'], 'prefix' => 'WorkshopJobs'], function () {
+    
+    
     // Show a list of jobs waiting for approval
-    Route::get('/workshopJobs/index','WorkshopJobsController@index'); //deprecated
-    Route::get('/WorkshopJobs/requests','WorkshopJobsController@index');
-
+    Route::get('/requests','WorkshopJobsController@getRequests');
+    
+    // Show a list of approved/ printing jobs
+    Route::get('/approved','WorkshopJobsController@getApproved');
+    
+    // Show a list of finished jobs
+    Route::get('/finished','WorkshopJobsController@getFinished');
+    
     // Route to export jobs to CSV
-    Route::get('workshopJobs/export',
+    Route::get('/export',
         [
             'as' => 'workshopJobs.export',
             'uses' => 'WorkshopJobsController@printingDataExport'
         ]);
-
-    // Show a list of approved jobs
-   // Route::get('/workshopJobs/approved','WorkshopJobsController@approved'); //deprecated
-    Route::get('/WorkshopJobs/approved','WorkshopJobsController@approved');
-
-    // Show a list of finished jobs
-   // Route::get('/workshopJobs/finished','WorkshopJobsController@finished'); //deprecated
-    Route::get('/WorkshopJobs/finished','WorkshopJobsController@finished');
     
-    // Show each job requested in a separate blade
-   // Route::get('/workshopJobs/show/{id}','WorkshopJobsController@show'); //deprecated
-    Route::get('/WorkshopJobs/{id}','WorkshopJobsController@show');
+    // Show details for a requested job
+    Route::get('/{id}','WorkshopJobsController@show');
     
-    // Update the requested record and approve/reject a job
-  //  Route::post('/workshopJobs/show/{id}','WorkshopJobsController@update'); //deprecated
-    Route::post('/WorkshopJobs/{id}','WorkshopJobsController@update');
+    // Approve a requested job and update the record
+    Route::post('/{id}','WorkshopJobsController@update');
     
-    // Show a blade to edit the job
-   // Route::get('/workshopJobs/edit/{id}','WorkshopJobsController@edit'); //deprecated
-    Route::get('/WorkshopJobs/{id}/edit','WorkshopJobsController@edit');
+    // Reject a requested job and delete it from the database
+    Route::get('/{id}/delete','WorkshopJobsController@destroy');
 
-    // Show a blade to save edit the job
-   // Route::post('/workshopJobs/edit/{id}','WorkshopJobsController@review'); //deprecated
-    Route::post('/WorkshopJobs/{id}/edit','WorkshopJobsController@review');
-
-    // Reporting that current job is unsuccessful
-   // Route::get('/workshopJobs/abort/{id}','WorkshopJobsController@abort'); //deprecated
-    Route::get('/WorkshopJobs/{id}/failed','WorkshopJobsController@abort');
-
-    // Reporting that current job is successful
-    //Route::get('/workshopJobs/success/{id}','WorkshopJobsController@success'); //deprecated
-    Route::get('/WorkshopJobs/{id}/success','WorkshopJobsController@success');
-
-    // Route to restart a failed job
-   // Route::get('/workshopJobs/restart/{id}','WorkshopJobsController@restart'); //deprecated
-    Route::get('/WorkshopJobs/{id}/restart','WorkshopJobsController@restart');
+    // Mark approved job as successful
+    Route::get('/{id}/success','WorkshopJobsController@success');
     
-    // Reject current job and delete it from the database
-   // Route::get('/workshopJobs/delete/{id}','WorkshopJobsController@destroy'); //deprecated
-    Route::get('/WorkshopJobs/{id}/delete','WorkshopJobsController@destroy');
+    // Mark approved job as failed/ unsuccessful
+    Route::get('/{id}/failed','WorkshopJobsController@abort');
+    
+    // Show a form to edit a finished job
+    Route::get('/{id}/edit','WorkshopJobsController@edit');
+
+    // Update a finished job
+    Route::post('/{id}/edit','WorkshopJobsController@review');
+    
+    // Restart a finished but failed job
+    Route::get('/{id}/restart','WorkshopJobsController@restart');
+    
+    
 
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -273,12 +267,14 @@ Route::group(['middleware' => ['role:,jobs_manage']], function () {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 Route::group(['middleware' => ['auth']], function () {
-    // Routes to display online job request form
-    Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
+    //// Routes to display online job request form
+    //Route::get('/OnlineJobs/create', 'OrderOnlineController@create');
 
-    // Route to store an online request
-   // Route::post('onlineJobs', 'OrderOnlineController@store'); //deprecated
-    Route::post('OnlineJobs', 'OrderOnlineController@store');
+    //// Route to store an online request
+    //Route::post('OnlineJobs', 'OrderOnlineController@store');
+    
+    // Routes to create and store online jobs
+    Route::resource('OnlineJobs', 'OrderOnlineController',['only' => ['create', 'store']]);
 });
 
 Route::group(['middleware' => ['auth']], function () {

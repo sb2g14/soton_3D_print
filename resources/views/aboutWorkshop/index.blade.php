@@ -88,9 +88,12 @@
                         </tr>
                     @endforeach
                 </table>
-                {{phpinfo()}}
+                
             </div>
         </div>
+    </div>
+    <div class="container well">
+        {{phpinfo()}}
     </div>
     {{--MAP--}}
     <section id="canvas1" class="s-map">

@@ -76,6 +76,42 @@ class User extends Authenticatable
         return true;
     }
     
+    /**returns the given name of that staff or customer**/
+    public function firstname()
+    {
+        $auth = config('auth');
+        $SAMLpars = $auth['SAML'];
+        if($this->id != $SAMLpars['customer']['id']){
+            return $this->name; //TODO: split and take all but last
+        }
+        $ans = "";
+        foreach($SAMLpars['firstname'] as $code){
+            if(isset($_SERVER[$code])){
+                $ans = $_SERVER[$code];
+                break;
+            }
+        }
+        return $ans;
+    }
+    
+    /**returns the surname of that staff or customer**/
+    public function lastname()
+    {
+        $auth = config('auth');
+        $SAMLpars = $auth['SAML'];
+        if($this->id != $SAMLpars['customer']['id']){
+            return $this->name; //TODO: split and take last
+        }
+        $ans = "";
+        foreach($SAMLpars['lastname'] as $code){
+            if(isset($_SERVER[$code])){
+                $ans = $_SERVER[$code];
+                break;
+            }
+        }
+        return $ans;
+    }
+    
     /**returns the full name of that staff or customer**/
     public function name()
     {
@@ -84,7 +120,7 @@ class User extends Authenticatable
         if($this->id != $SAMLpars['customer']['id']){
             return $this->name;
         }
-        return $_SERVER[$SAMLpars['name']];
+        return $this->firstname().' '.$this->lastname();
     }
     /**returns the email of that staff or customer**/
     public function email()
@@ -94,7 +130,14 @@ class User extends Authenticatable
         if($this->id != $SAMLpars['customer']['id']){
             return $this->email;
         }
-        return $_SERVER[$SAMLpars['email']];
+        $ans = $this->email;
+        foreach($SAMLpars['email'] as $code){
+            if(isset($_SERVER[$code])){
+                $ans = $_SERVER[$code];
+                break;
+            }
+        }
+        return $ans;
     }
     
     // The function which allows a user to create a post

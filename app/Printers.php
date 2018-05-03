@@ -56,12 +56,13 @@ class printers extends Model
                     //set job status to Success & completed by system
                     
                     $job->update(array('status' => 'Success', 
-                                       'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk'),
+                                       'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id,
                                        'finished_at' => Carbon::now('Europe/London')
-                            ->first()->id)
-                          );
+                            ));
                     //set print status to Success & completed by system
-                    $print->update(array('status' => 'Success', 'print_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
+                    $print->update(array('status' => 'Success', 
+                                         'print_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id
+                            ));
                 }
             }
     }
