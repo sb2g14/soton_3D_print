@@ -4,19 +4,30 @@
         background-color: #002e3b;
         color: white;
     }
+    #cookie_banner_body {
+        background-color: #002e3b;
+        color: white;
+    }
+    #cookie_banner_body a{
+        text-decoration: underline;
+        color: white;
+    }
     #cookie_banner.affix {
         bottom: 0px;
     }
 </style>
-<div id="cookie_banner" class="container col-lg-12" data-spy="affix" data-offset-bottom="250">
-    <div class="row">
-        <div class="col-xs-12">
-            <a href="https://www.southampton.ac.uk/about/governance/policies/cookies.page">We use cookies because we need them to handle sessions.</a> If you continue without changing your settings, we will assume that you are happy to receive cookies on the 3D Printing Service website.  
+@if(!( isset($_COOKIE['complianceCookie']) && $_COOKIE['complianceCookie'] === "true" ))
+<div id="cookie_banner" class="container-fluid col-lg-12" data-spy="affix" data-offset-bottom="225">
+    <div id="cookie_banner_body" class="row">
+        <div class="col-xs-11">
+            <b><a href="https://www.southampton.ac.uk/about/governance/policies/cookies.page">We use cookies because we need them to handle sessions and check if you clicked the cross on this alert before.</a> We currently have set {{count($_COOKIE)}} cookies. If you continue without changing your settings, we will assume that you are happy to receive cookies on the 3D Printing Service website.  </b>
+        </div>
+        <div class="col-xs-1">
             <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
     </div>
 </div>
-
+@endif
 <footer>
     @php $version = config('app'); $version = $version['version']; @endphp 
     <div class="container-fluid">
@@ -103,4 +114,6 @@
         </div>
     </div>
 </footer>
+
+
 
