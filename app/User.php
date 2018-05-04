@@ -86,7 +86,7 @@ class User extends Authenticatable
         }
         $ans = "";
         foreach($SAMLpars['firstname'] as $code){
-            if(isset($_SERVER[$code])){
+            if(isset($_SERVER[$code]) && $_SERVER[$code] != ""){
                 $ans = $_SERVER[$code];
                 break;
             }
@@ -104,7 +104,7 @@ class User extends Authenticatable
         }
         $ans = "";
         foreach($SAMLpars['lastname'] as $code){
-            if(isset($_SERVER[$code])){
+            if(isset($_SERVER[$code]) && $_SERVER[$code] != ""){
                 $ans = $_SERVER[$code];
                 break;
             }
@@ -122,6 +122,28 @@ class User extends Authenticatable
         }
         return $this->firstname().' '.$this->lastname();
     }
+    
+    /**returns all the emails of the user**/
+    public function emails()
+    {
+        $auth = config('auth');
+        $SAMLpars = $auth['SAML'];
+        $emails = [];
+        if($this->id != $SAMLpars['customer']['id']){
+            $emails[] = $this->email;
+        }
+        foreach($SAMLpars['email'] as $code){
+            if(isset($_SERVER[$code]) && !in_array($_SERVER[$code],$emails) ){
+                $emails[] = $_SERVER[$code];
+                break;
+            }
+        }
+        if(!$emails){
+            $emails = [''];
+        }
+        return $emails;
+    }
+    
     /**returns the email of that staff or customer**/
     public function email()
     {
@@ -130,14 +152,8 @@ class User extends Authenticatable
         if($this->id != $SAMLpars['customer']['id']){
             return $this->email;
         }
-        $ans = $this->email;
-        foreach($SAMLpars['email'] as $code){
-            if(isset($_SERVER[$code])){
-                $ans = $_SERVER[$code];
-                break;
-            }
-        }
-        return $ans;
+        $ans = $this->emails();
+        return $ans[0];
     }
     
     // The function which allows a user to create a post

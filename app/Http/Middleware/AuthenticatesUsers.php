@@ -61,7 +61,7 @@ trait AuthenticatesUsers
     }
     
     /**
-     * Handle a login request to the application.
+     * Handle a login request to the application by checking SAML.
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
@@ -80,23 +80,33 @@ trait AuthenticatesUsers
             $request[$this->username()] = "";
             return $this->sendFailedSAMLLoginResponse($request);
         }
+        
+        // Get emails
         $usermail = "";
+        $usermails = [];
         foreach($SAMLpars['email'] as $code){
             if(isset($_SERVER[$code])){
                 $usermail = $_SERVER[$code];
+                $usermails[] = $_SERVER[$code];
             }
         }
-        $request[$this->username()] = $usermail;
+        
         
         // Check if user is a member of our staff
-        $staff = Staff::where('email',$usermail)->first();
-        if($staff){
-            // If so, then log in that person
-            $user = User::where('id',$staff->user_id)->first();
-        }else{
-            // And if not, log in as guest
+        $user=null;
+        foreach($usermails as $mail){
+            $staff = Staff::where('email',$mail)->first();
+            if($staff){
+                // If so, then get that user
+                $user = User::where('id',$staff->user_id)->first();
+            }
+        }
+        if(!$user){
+            // No match found in staff_table => get customer user
             $user = User::where('id',$SAMLpars['customer']['id'])->first();
         }
+        
+        $request[$this->username()] = $user->email();
         
         // Regenerate session since logged in -> anyway done in sendLoginResponse
         //$request->session()->regenerate();
