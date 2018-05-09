@@ -67,7 +67,7 @@
                                     <button id="login-button" type="submit" class="btn btn-success">
                                         Login
                                     </button>
-                                    <a id="saml-login-button" class="btn btn-primary" href="{{ route('auth.UoS.login') }}">
+                                    <a id="saml-login-button" class="btn btn-primary" href="{{ route('auth.login') }}">
                                         <i class="fa fa-university"></i> University Login
                                     </a><br>
                                     @include('layouts.errors')
