@@ -70,6 +70,11 @@
               'icon' => "archive",
               'Time' => "March 2018",
               'Text' => "Several new Prusia printers are purchased, to replace the old Up! printers."
+            ],
+            [
+              'icon' => "cogs",
+              'Time' => "April 2018",
+              'Text' => "The Rota is included on the website, allowing automatic allocation of demonstrators to sessions and live opening hours to be shown."
             ]
         ];
 

@@ -63,7 +63,7 @@
         {{--COOKIE BANNER--}}
         <script>
             //Drop a cookie if user clicks the cross
-            $("#cookie_banner").click(function () {
+            $("#cookie_banner_button").click(function () {
                 var expiryDate = new Date();
                 expiryDate.setTime(expiryDate.getTime() + 2*60*1000); //define how long until we ask for their compliance again - currently 2min, for testing.
                 document.cookie = "complianceCookie"+'='+"true"+";expires="+expiryDate.toGMTString()+";path=/";

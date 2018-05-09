@@ -27,12 +27,34 @@ class Prints extends Model
     {
         return new Carbon($this->finished_at);
     }
-    public function duration(){
+    public function durationMin(){
         //TODO: check it works and replace at appropriate places in controllers
-        $finished_at = \Carbon\Carbon($this->finished_at);
-        $created_at = \Carbon\Carbon($this->created_at);
-        $duration = $this->finshed_at ? $finished_at->diffInMinutes($created_at) : $this->time;
+        $finished_at = new Carbon($this->finished_at);
+        $created_at = new Carbon($this->created_at);
+        $expected_duration = explode(":", $this->time);
+        $expected_duration = $expected_duration[0]*60 + $expected_duration[1];
+        $duration = $this->finished_at ? $finished_at->diffInMinutes($created_at) : $expected_duration;
         return $duration;
+    }
+    /**returns a number how many minutes are left on this print**/
+    public function remainMin(){
+        // Separate hours from minutes and seconds in printing time
+        list($h, $i, $s) = explode(':', $this->time);
+        // Get time the print started
+        if($this->jobs()->first()->requested_online == 0){
+            $time_approved = new Carbon($this->jobs()->first()->approved_at);
+        }else{
+            $time_approved = $this->created_at;
+        }
+        // Get time the print will finish
+        $time_finish = $time_approved->addHour($h)->addMinutes($i);
+        // Format as string
+        if ($time_finish->gte(Carbon::now('Europe/London'))){
+            $ans = $time_finish->diffInMinutes(Carbon::now('Europe/London'));
+        }else{
+            $ans = 0;
+        }
+        return $ans;
     }
     /**returns a string how much time is left on this print**/
     public function timeRemain(){

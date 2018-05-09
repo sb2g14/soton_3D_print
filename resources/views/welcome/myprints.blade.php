@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-xs-8 col-sm-12 well">
                 <h1>
-                    {{ $email }}
+                    {{ $name }}
                 </h1>
                 <a href="/" class="btn btn-primary  pull-left" style="margin: 20px 0px;">
                         Go Home
@@ -25,81 +25,105 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                    <th>ID</th>
-                    <th>Type</th>
-                    <th>Job Title</th>
-                    <th>Date Created</th>
-                    {{--<th>Time</th>
-                    <th>Material Amount</th>--}}
-                    <th>Price</th>
-                    <th>Status</th>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Job Title</th>
+                            <th>Date Created</th>
+                            {{--<th>Time</th>
+                            <th>Material Amount</th>--}}
+                            <th>Price</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                @foreach($activejobs as $job)
-                    @php
-                        $thestatus = "ERROR";
-                        $thestatusIcon = "question-circle";
-                        $thetype = "";
-                        $thetypeIcon = "question-circle";
-                        $jobclass = "";
-                        if($job->requested_online == 1){
-                            $thetype = "online order";
-                            $thetypeIcon = "globe";
-                            $jobclass = "p-failed";
-                            
-                            if($job->status === 'Waiting'){
-                                $thestatus = 'Being Checked...';
-                                $thestatusIcon = "clock-o";
-                            }else if($job->status === 'Approved'){
-                                $thestatus = 'Waiting for your approval...';
-                                $thestatusIcon = "exclamation-triangle";
-                            }else if($job->status === 'In Progress'){
-                                $thestatus = 'Job is being printed...';
-                                $thestatusIcon = "check";
-                            }else{
-                                $thestatus = 'Stuck in our online workflow';
-                                $thestatusIcon = "exclamation-triangle";
-                            }
-                            
-                        }else{
-                            
-                            $thetype = "workshop print";
-                            $thetypeIcon = "building";
-                            $jobclass = "p-success";
-                            if($job->status === 'Waiting'){
-                                $thestatus = 'Being checked - Please wait!';
-                                $thestatusIcon = "clock-o";
-                            }else if($job->status === 'Approved'){
-                                $thestatus = 'Please start printing!';
-                                $thestatusIcon = "check";
-                            }else{
-                                $thestatus = 'Stuck in our workshop workflow';
-                                $thestatusIcon = "exclamation-triangle";
-                            }
-                        }
-                    @endphp
-                    <tr class="text-left">
-                        <td data-th="ID">{{ $job->id }}</td>
-                        <td data-th="Type"><span class="fa fa-{{$thetypeIcon}}"></span> {{ $thetype }}</td>
-                        <td data-th="Job Title">{{ $job->job_title }}</td>
-                        <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
-                        @if($job->status === 'Waiting' && $job->requested_online == 1)
-                            {{--<td data-th="Time">tbc</td>
-                            <td data-th="Material Amount">tbc</td>--}}
-                            <td data-th="Price">tbc</td>
-                        @else
-                            {{--<td data-th="Time">{{ $job->total_duration }}</td>
-                            <td data-th="Material Amount">{{ $job->total_material_amount }} g</td>--}}
-                            <td data-th="Price">£{{ $job->total_price }}</td>
-                        @endif
-                        @if($thetype === "online order" && $job->status === 'Approved')
-                            <td data-th="Status"><span class="fa fa-{{$thestatusIcon}}"></span> <a href="/OnlineJobs/approved/{{$job->id}}">{{ $thestatus }} </a></td>
-                        @else
-                            <td data-th="Status"><span class="fa fa-{{$thestatusIcon}}"></span> {{ $thestatus }}</td>
-                        @endif
-                    </tr>
-                @endforeach
+                        @foreach($activejobs as $job)
+                            @php
+                                $thestatus = "ERROR";
+                                $thestatusIcon = "question-circle";
+                                $thestatusPercent = 0;
+                                $thetype = "";
+                                $thetypeIcon = "question-circle";
+                                $jobclass = "";
+                                if($job->requested_online == 1){
+                                    $thetype = "online order";
+                                    $thetypeIcon = "globe";
+                                    $jobclass = "p-failed";
+                                    
+                                    if($job->status === 'Waiting'){
+                                        $thestatus = 'Being Checked...';
+                                        $thestatusIcon = "clock-o";
+                                        $thestatusPercent = 5;
+                                    }else if($job->status === 'Approved'){
+                                        $thestatus = 'Waiting for your approval...';
+                                        $thestatusIcon = "exclamation-triangle";
+                                        $thestatusPercent = 33;
+                                    }else if($job->status === 'In Progress'){
+                                        $thestatus = 'Job is being printed...';
+                                        $thestatusIcon = "check";
+                                        $thestatusPercent = 67;
+                                    }else{
+                                        $thestatus = 'Stuck in our online workflow';
+                                        $thestatusIcon = "exclamation-triangle";
+                                    }
+                                    
+                                }else{
+                                    
+                                    $thetype = "workshop print";
+                                    $thetypeIcon = "building";
+                                    $jobclass = "p-success";
+                                    if($job->status === 'Waiting'){
+                                        $thestatus = 'Being checked - Please wait!';
+                                        $thestatusIcon = "clock-o";
+                                        $thestatusPercent = 5;
+                                    }else if($job->status === 'Approved'){
+                                        $thestatus = 'Please start printing!';
+                                        $thestatusIcon = "check";
+                                        // Check how far into the print we are
+                                        $print = $job->prints()->first();
+                                        $completed = 1-($print->remainMin()/$print->durationMin());
+                                        $thestatusPercent = 5+94*$completed;
+                                        if($print->durationMin() - $print->remainMin() >= 5){ //more than 5min into the print
+                                            $thestatus = 'Printing';
+                                        }
+                                    }else{
+                                        $thestatus = 'Stuck in our workshop workflow';
+                                        $thestatusIcon = "exclamation-triangle";
+                                    }
+                                }
+                            @endphp
+                            <tr class="text-left">
+                                <td data-th="ID">{{ $job->id }}</td>
+                                <td data-th="Type"><span class="fa fa-{{$thetypeIcon}}"></span> {{ $thetype }}</td>
+                                <td data-th="Job Title">{{ $job->job_title }}</td>
+                                <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
+                                @if($job->status === 'Waiting' && $job->requested_online == 1)
+                                    {{--<td data-th="Time">tbc</td>
+                                    <td data-th="Material Amount">tbc</td>--}}
+                                    <td data-th="Price">tbc</td>
+                                @else
+                                    {{--<td data-th="Time">{{ $job->total_duration }}</td>
+                                    <td data-th="Material Amount">{{ $job->total_material_amount }} g</td>--}}
+                                    <td data-th="Price">£{{ $job->total_price }}</td>
+                                @endif
+                                <td data-th="Status">
+                                    @if($thetype === "online order" && $job->status === 'Approved')
+                                        <a href="/OnlineJobs/approved/{{$job->id}}">{{ $thestatus }} </a> 
+                                    @else
+                                        {{ $thestatus }} 
+                                    @endif
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped  
+                                            @if($thetype === 'online order' && $job->status === 'Approved') progress-bar-warning @endif 
+                                            @if($thetype === 'workshop print' && $job->status === 'Waiting') progress-bar-warning @endif 
+                                            @if($thetype === 'workshop print' && $job->status === 'Approved') active @endif"
+                                            role="progressbar" aria-valuenow="{{$thestatusPercent}}"
+                                            aria-valuemin="0" aria-valuemax="100" style="width:{{$thestatusPercent}}%">
+                                            <span class="fa fa-{{$thestatusIcon}}"></span>
+                                        </div>
+                                    </div> 
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -130,7 +154,7 @@
                     <tr class="text-left {{$jobclass}}">
                         <td data-th="ID">{{ $job->id }}</td>
                         <td data-th="Job Title">{{ $job->job_title }}</td>
-                        <td data-th="Created on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
+                        <td data-th="Created on">{{ $job->created_at->formatLocalized('%d/%m/%y') }}</td>
                         {{--<td data-th="Time">{{ $job->total_duration }}</td>
                         <td data-th="Material Amount">{{ $job->total_material_amount }} g</td>--}}
                         <td data-th="Price">£{{ $job->total_price }}</td>

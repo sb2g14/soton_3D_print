@@ -233,9 +233,11 @@ $(document).ready(function() {
         var idMaterial = "#material_amount";
         if ($(idPrice).length) {
             if( !errors[idMaterial] && !errors[idHours] && !errors[idMinutes]){
-                var time = $(idHours).find(":selected").text() + $(idMinutes).find(":selected").text()/60; //time in hours
+                var time = parseInt($(idHours).find(":selected").text()) + parseInt($(idMinutes).find(":selected").text())/60.0; //time in hours
                 var material = $(idMaterial).val(); //material in g
                 var $price = 3*time + 5*material/100;
+                // format
+                $price = ((int)($price*100+0.5))/100;
                 $(idPrice).html($price);
             }
         }

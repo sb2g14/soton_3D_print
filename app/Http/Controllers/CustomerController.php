@@ -21,19 +21,25 @@ class CustomerController extends Controller
      */
     public function showprints()
     {
-        $email = Auth::user()->email();
+        $name = Auth::user()->name();
+        $emails = Auth::user()->emails();
         $activejobs = Jobs::orderBy('created_at','desc')
-            ->where('customer_email', '=', $email)
-            ->where(function ($query){$query->where('status','=','Waiting')
-                                            ->orWhere('status','=','Approved')
-                                            ->orWhere('status','=','In Progress');})
+            ->where(function ($query) use ($emails,$name) {
+                    $query->whereIn('customer_email', $emails)
+                          ->orWhere('customer_name', $name);})
+            ->where(function ($query){
+                    $query->where('status','=','Waiting')
+                          ->orWhere('status','=','Approved')
+                          ->orWhere('status','=','In Progress');})
             ->get();
         $completedjobs = Jobs::orderBy('created_at','desc')
-            ->where('customer_email', '=', $email)
+            ->where(function ($query) use ($emails,$name) {
+                    $query->whereIn('customer_email', $emails)
+                          ->orWhere('customer_name', $name);})
             ->where('status','!=','Waiting')
             ->where('status','!=','Approved')
             ->where('status','!=','In Progress')
             ->get();
-        return view('welcome.myprints', compact('email','activejobs','completedjobs'));
+        return view('welcome.myprints', compact('name','activejobs','completedjobs'));
     }
 }

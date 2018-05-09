@@ -108,15 +108,20 @@ return [
                         'MELLON_cn','MELLON_cn_0',
                         'MELLON_uid','MELLON_uid_0',
                         'MELLON_urn:oid:2.5.4.3','MELLON_urn:oid:2.5.4.3_0',
+                        'MELLON_urn:oid:2_5_4_3','MELLON_urn:oid:2_5_4_3_0',
                         'MELLON_urn:oid:0.9.2342.19200300.100.1.1','MELLON_urn:oid:0.9.2342.19200300.100.1.1_0',
+                        'MELLON_urn:oid:0_9_2342_19200300_100_1_1','MELLON_urn:oid:0_9_2342_19200300_100_1_1_0',
                         ], //_Server variable key to identify successfull login
         'email' => ['MELLON_MAIL','MELLON_MAIL_0',
                     'MELLON_eduPersonPrincipalName','MELLON_eduPersonPrincipalName_0',
                     'MELLON_urn:oid:0.9.2342.19200300.100.1.3','MELLON_urn:oid:0.9.2342.19200300.100.1.3_0',
-                    'MELLON_urn:oid:1.3.6.1.4.1.5923.1.1.1.6','MELLON_urn:oid:1.3.6.1.4.1.5923.1.1.1.6_0'
+                    'MELLON_urn:oid:1.3.6.1.4.1.5923.1.1.1.6','MELLON_urn:oid:1.3.6.1.4.1.5923.1.1.1.6_0',
+                    'MELLON_urn:oid:0_9_2342_19200300_100_1_3','MELLON_urn:oid:0_9_2342_19200300_100_1_3_0',
+                    'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_6','MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_6_0'
                     ], //_Server variable key for UoS email
         'lastname' => ['MELLON_sn','MELLON_sn_0',
-                       'MELLON_urn:oid:2.5.4.4','MELLON_urn:oid:2.5.4.4_0'
+                       'MELLON_urn:oid:2.5.4.4','MELLON_urn:oid:2.5.4.4_0',
+                       'MELLON_urn:oid:2_5_4_4','MELLON_urn:oid:2_5_4_4_0',
                     ], //_Server variable key for UoS surname
         'firstname' => ['MELLON_urn:oid:2_5_4_42','MELLON_urn:oid:2_5_4_42_0'],
         'customer' => [
