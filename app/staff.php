@@ -36,6 +36,10 @@ class staff extends BaseModel
     {
         return $this->hasMany(FaultUpdates::class, 'staff_id');
     }
+    public function messages()
+    {
+        return $this->hasMany(Messages::class, 'staff_id');
+    }
     public function sessions()
     {
         return $this->belongsToMany(Sessions::class);

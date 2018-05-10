@@ -11,6 +11,7 @@ use App\Prints;
 use App\staff;
 use App\StatisticsHelper;
 use App\User;
+use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\Traits\PriceTrait;
 use App\Mail\jobAccept;
 use App\Mail\jobFailed;
@@ -149,6 +150,9 @@ class OrderOnlineController extends Controller
     public function checkrequest($id)
     {
         $job = Jobs::findOrFail($id); // Find the job in DB by {$id}
+        if($job->status !== "Waiting"){
+            return redirect('OnlineJobs/requested');
+        }
         return view('OnlineJobs.checkrequest', compact('job'));
     }
     
@@ -156,6 +160,9 @@ class OrderOnlineController extends Controller
     public function manageApproved($id)
     {
         $job = Jobs::findOrFail($id);
+        if($job->status !== "Approved"){
+            return redirect('OnlineJobs/requested');
+        }
         return view('OnlineJobs.manageApproved', compact('job'));
     }
     
@@ -164,6 +171,10 @@ class OrderOnlineController extends Controller
     {
         // Pass the job to the blade
         $job = Jobs::findOrFail($id);
+        if($job->status !== "In Progress"){
+            return redirect('OnlineJobs/requested');
+        }
+        
         // Pass all the available printers to the blade
         $available_printers = printers::all()->where('printer_status', 'Available')->where('in_use', 0)->pluck('id', 'id')->all();
         // Pass the jobs In Progress to the view
@@ -173,6 +184,78 @@ class OrderOnlineController extends Controller
        $query_in_progress = $job->prints->where('status','=','In Progress')->first();
        $query_success = $job->prints->where('status','=','Success')->first();
         return view('OnlineJobs.managePendingJob', compact('job','available_printers','jobs_in_progress','query_in_progress','query_success'));
+    }
+    
+    /**Show blade to display conversation for that job**/
+    public function show($id)
+    {
+        // Pass the job to the blade
+        $job = Jobs::findOrFail($id);
+        
+        // Check if user has permission to view these
+        if($job->customer_name !== Auth::user()->name() && !Auth::user()->hasAnyPermission(['manage_online_jobs'])){
+            return redirect('/');
+        }
+        
+        // Assemble list of events
+        // First get all the messages send regarding this job
+        $messages = $job->messages()->select('updated_at    AS Date', 
+                                             'staff_id      AS Name',
+                                             'body          AS Message')
+                                    ->get();
+        $messages = $messages->map(function ($item, $key) {
+            $ans = $item;
+            if($item->Name != 0){ //TODO: add customer staff id
+                $ans->Name = Staff::findOrFail($item->Name)->name();
+            }else{
+                $ans->Name = $job->customer_name;
+            }
+            return $ans;
+        });
+        $events = $messages;
+        // Second get the request as an event
+        $request  = collect(['Date' => $job->created_at, 
+                     'Name' => $job->customer_name,
+                     'Message' => "Requested Job"]);
+        $events[] = $request;
+        // If done, get the approval as an event
+        if($job->approved_at){
+            $approval = collect(['Date' => $job->approved_at, 
+                                 'Name' => $job->staff_approved->name(),
+                                 'Message' => "Approved Job ".$job->job_approved_comment]);
+            $events[] = $approval;
+        }
+        if($job->accepted_at){
+            $accept   = collect(['Date' => $job->accepted_at, 
+                                 'Name' => $job->customer_name,
+                                 'Message' => "Accepted Job"]);
+            $events[] = $accept;
+        }
+        // If done, get the finishing as an event
+        if($job->finished_at){
+            $finished = collect(['Date' => $job->finished_at, 
+                                 'Name' => $job->staff_finished->name(),
+                                 'Message' => "Completed Job"]);
+            $events[] = $finished;
+        }
+        // Order all events by date
+        $events = $events->sortBy('Date')->values();
+        
+        // Pass all the available printers to the blade
+        $available_printers = printers::all()->where('printer_status', 'Available')->where('in_use', 0)
+                                    ->pluck('id', 'id')->all();
+        
+        // Pass the jobs In Progress to the view
+        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')
+                                    ->addSelect('id')->selectRaw("CONCAT(id,' ', job_title) AS id_title")
+                                    ->pluck('id_title','id');     
+        
+        //Find active prints that may deny job completion
+        $query_in_progress = $job->prints->where('status','=','In Progress')->first();
+        $query_success = $job->prints->where('status','=','Success')->first();
+        
+        
+        return view('OnlineJobs.show', compact('job','events','available_printers','jobs_in_progress','query_in_progress','query_success'));
     }
 
     //// CONTROLLER ACTIONS ////
@@ -294,7 +377,10 @@ class OrderOnlineController extends Controller
             'budget_holder' => $online_request['budget_holder']
             ));
         
-        $email = '3dprint.soton@gmail.com';
+        //$mc = new MessagesController();
+        //$mc->_save($job->id,"Requested Job");
+        
+        $email = '3dprint.soton@gmail.com'; //TODO: this should come from env or config
         $this->_emailandnotify($email,new onlineRequest($job),'Your order request is now being considered!','Please wait for our manager to contact you via provided email address');
         
         // Redirect to home directory
@@ -403,6 +489,9 @@ class OrderOnlineController extends Controller
             )
         );
         
+        //$mc = new MessagesController();
+        //$mc->_save($job->id,"Approved Job");
+        
         $this->_emailandnotify($job->customer_email,new jobAccept($job),'The job has been approved','An email notification has been send to the customer with the job quote');
         
         return redirect('OnlineJobs/approved');
@@ -443,6 +532,11 @@ class OrderOnlineController extends Controller
     public function customerApproved($id)
     {
         $job = Jobs::findOrFail($id);
+    
+        // Check if user has permission to perform this action
+        if($job->customer_name !== Auth::user()->name() && !Auth::user()->hasAnyPermission(['manage_online_jobs'])){
+            return redirect('/');
+        }
 
         $job->update(array(
                 'status' => 'In Progress',
@@ -457,14 +551,17 @@ class OrderOnlineController extends Controller
             $print->delete(); // Delete print previews
         }
 
-        // Notify that the job was rejected
-        notify()->flash('The job has been approved by customer', 'success', [
-            'text' => 'Now you can start adding prints',
-        ]);
+        
         if(Auth::user()->hasRole(['OnlineJobsManager'])){
+            notify()->flash('The job has been approved by customer', 'success', [
+                'text' => 'Now you can start adding prints',
+            ]);
             return redirect("/OnlineJobs/pending");
         }else{
-            return redirect("/myprints/");
+            notify()->flash('The job has been approved', 'success', [
+                'text' => 'We will start printing your job soon.',
+            ]);
+            return redirect("/OnlineJobs/".$id);
         }
     }
 
@@ -474,6 +571,12 @@ class OrderOnlineController extends Controller
     public function customerReject($id)
     {
         $job = Jobs::findOrFail($id);
+        
+        // Check if user has permission to perform this action
+        if($job->customer_name !== Auth::user()->name() && !Auth::user()->hasAnyPermission(['manage_online_jobs'])){
+            return redirect('/');
+        }
+        
         // Locate associated print previews
         $prints = $job->prints;
         foreach($prints as $print)

@@ -16,6 +16,10 @@ class Jobs extends Model
     {
         return $this->belongsTo(staff::class, 'job_finished_by');
     }
+    public function messages()
+    {
+        return $this->hasMany(Messages::class, 'job_id');
+    }
     public function approved_at()
     {
         return new Carbon($this->approved_at);

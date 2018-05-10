@@ -224,7 +224,7 @@ Route::group(['middleware' => ['role:,jobs_manage'], 'prefix' => 'WorkshopJobs']
     Route::get('/approved','WorkshopJobsController@getApproved');
     
     // Show a list of finished jobs
-    Route::get('/finished','WorkshopJobsController@getFinished');
+    Route::get('/finished','WorkshopJobsController@getFinished'); 
     
     // Route to export jobs to CSV
     Route::get('/export',
@@ -289,6 +289,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Job has been rejected by customer
    // Route::get('/OnlineJobs/customerReject/{id}', 'OrderOnlineController@customerReject'); //deprecated
     Route::get('/OnlineJobs/approved/{id}/reject', 'OrderOnlineController@customerReject');
+    
 });
 
 Route::group(['middleware' => ['role:,manage_online_jobs']], function () {
@@ -358,6 +359,14 @@ Route::group(['middleware' => ['role:,manage_online_jobs']], function () {
    // Route::post('/OnlineJobs/delete/{id}', 'OrderOnlineController@rejectJobManager'); //deprecated
     Route::post('/OnlineJobs/{id}/delete', 'OrderOnlineController@rejectJobManager');
     
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    // Show messages for the job to customer and Online Manager
+    Route::get('/OnlineJobs/{id}','OrderOnlineController@show');
+    
+    // Store new message for the job
+    Route::post('/OnlineJobs/{id}/message','MessagesController@store');
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -237,7 +237,7 @@ $(document).ready(function() {
                 var material = $(idMaterial).val(); //material in g
                 var $price = 3*time + 5*material/100;
                 // format
-                $price = ((int)($price*100+0.5))/100;
+                $price = Math.round($price*100)/100;
                 $(idPrice).html($price);
             }
         }
