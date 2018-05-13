@@ -377,8 +377,8 @@ class OrderOnlineController extends Controller
             'budget_holder' => $online_request['budget_holder']
             ));
         
-        //$mc = new MessagesController();
-        //$mc->_save($job->id,"Requested Job");
+        $mc = new MessagesController();
+        $mc->_save($job->id,"Requested Job");
         
         $email = '3dprint.soton@gmail.com'; //TODO: this should come from env or config
         $this->_emailandnotify($email,new onlineRequest($job),'Your order request is now being considered!','Please wait for our manager to contact you via provided email address');
@@ -489,8 +489,8 @@ class OrderOnlineController extends Controller
             )
         );
         
-        //$mc = new MessagesController();
-        //$mc->_save($job->id,"Approved Job");
+        $mc = new MessagesController();
+        $mc->_save($job->id,"Approved Job");
         
         $this->_emailandnotify($job->customer_email,new jobAccept($job),'The job has been approved','An email notification has been send to the customer with the job quote');
         
@@ -550,6 +550,9 @@ class OrderOnlineController extends Controller
             $job->prints()->detach($print->id); //Break connection with job
             $print->delete(); // Delete print previews
         }
+        
+        $mc = new MessagesController();
+        $mc->_save($job->id,"Accepted Job");
 
         
         if(Auth::user()->hasRole(['OnlineJobsManager'])){

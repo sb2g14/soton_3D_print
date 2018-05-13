@@ -1,8 +1,9 @@
 @extends('layouts.layout')
 
 @section('content')
-    <div class="title m-b-md">
-        Job {{$job->id}}: {{$job->job_title}}
+    {{--TITLE--}}
+    <div class="text-center m-b-md">
+        <div class="title">Job #{{$job->id}}: {{$job->job_title}}</div>    
     </div>
 
     @php
@@ -11,6 +12,40 @@
            $isCustomer = true; 
         }
     @endphp
+
+    {{--NAVIGATION--}}
+    <div class="container">
+        @if($isCustomer)
+            <div class="pull-left">
+                <span class="text-justify" data-placement="top" data-toggle="popover"
+                    data-trigger="hover" data-content="View all your jobs">
+                    <a type="button" class="btn btn-primary" href="/myprints">
+                        Back
+                    </a>
+                </span>
+            </div>
+        @else
+            <div class="pull-left">
+                <span class="text-justify" data-placement="top" data-toggle="popover"
+                    data-trigger="hover" data-content="View all jobs">
+                    <a type="button" class="btn btn-primary" 
+                        @if($job->status === 'Waiting')
+                            href="/OnlineJobs/requests"
+                        @elseif($job->status === 'Approved')
+                            href="/OnlineJobs/approved"
+                        @elseif($job->status === 'In Progress')
+                            href="/OnlineJobs/pending"
+                        @else
+                            href="/OnlineJobs/finished"
+                        @endif
+                    >
+                        Back
+                    </a>
+                </span>
+            </div>
+        @endif
+        <hr>
+    </div>
 
     <div class="container well">
         <div class="row vdivide">
@@ -338,7 +373,11 @@
                             <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                                 {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-sm-4 control-label'] )  !!}
                                 <div class="col-sm-2">
-                                    {!! Form::select('hours', array('' => 'Hours') + range(0,59),old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
+                                    {!! Form::select('hours', array('' => 'Hours') + range(0,59),old('hours'), 
+                                        ['class' => 'form-control',
+                                         'required', 
+                                         'data-help' => 'hours', 
+                                         'id' => 'hours']) !!}
                                     @if ($errors->has('hours'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('hours') }}</strong>
@@ -346,7 +385,11 @@
                                     @endif
                                 </div>
                                 <div class="col-sm-2">
-                                    {!! Form::select('minutes', array('' => 'Minutes') + range(0,59),old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
+                                    {!! Form::select('minutes', array('' => 'Minutes') + range(0,59),old('minutes'), 
+                                        ['class' => 'form-control',
+                                         'required', 
+                                         'data-help' => 'minutes', 
+                                         'id' => 'minutes']) !!}
                                     @if ($errors->has('minutes'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('minutes') }}</strong>
@@ -419,7 +462,8 @@
                             <div class="form-group{{ $errors->has('hours') ? ' has-error' : '' }}">
                                 {!! Form::label('hours', 'Printing Time (h:m)', ['class' => 'col-sm-4 control-label'] )  !!}
                                 <div class="col-sm-2">
-                                    {!! Form::select('hours', array('' => 'Hours') + range(0,59),old('hours'), ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
+                                    {!! Form::select('hours', array('' => 'Hours') + range(0,59),old('hours'), 
+                                        ['class' => 'form-control','required', 'data-help' => 'hours', 'id' => 'hours']) !!}
                                     @if ($errors->has('hours'))
                                         <span class="help-block">
                                                         <strong>{{ $errors->first('hours') }}</strong>
@@ -427,7 +471,8 @@
                                     @endif
                                 </div>
                                 <div class="col-sm-2">
-                                    {!! Form::select('minutes', array('' => 'Minutes') + range(0,59),old('minutes'), ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
+                                    {!! Form::select('minutes', array('' => 'Minutes') + range(0,59),old('minutes'), 
+                                        ['class' => 'form-control','required', 'data-help' => 'minutes', 'id' => 'minutes']) !!}
                                     @if ($errors->has('minutes'))
                                         <span class="help-block">
                                                         <strong>{{ $errors->first('minutes') }}</strong>
@@ -454,7 +499,8 @@
                             <div class="form-group">
                                 {!! Form::label('multipleselect[]', 'Select one or many pending jobs', ['class' => 'col-sm-4 control-label'] )  !!}
                                 <div class="col-sm-4">
-                                    {!!  Form::select('multipleselect[]', $jobs_in_progress, $selected = $job->id, ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'jobs_id']) !!}
+                                    {!!  Form::select('multipleselect[]', $jobs_in_progress, $selected = $job->id, 
+                                        ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'jobs_id']) !!}
                                     @if ($errors->has('multipleselect'))
                                         <span class="help-block">
                                                         <strong>{{ $errors->first('multipleselect') }}</strong>
@@ -467,7 +513,9 @@
                             <div class="form-group text-left">
                                 <div class="col-sm-12">
                                     <label for="comments">Add comments to the print:</label><br>
-                                    <textarea rows="4" id="comment" name="comments" placeholder="Please add any comments to this job if relevant" class="form-control"></textarea>
+                                    <textarea id="comment" name="comments" 
+                                        rows="4" class="form-control" 
+                                        placeholder="Please add any comments to this job if relevant"></textarea>
                                     @if ($errors->has('comments'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('comments') }}</strong>
@@ -508,7 +556,9 @@
                         <div class="form-group text-left">
                             <div class="col-md-12">
                                 <label for="comments">Add comments for the customer:</label><br>
-                                <textarea rows="4" id="message_long" name="comment" placeholder="Please explain why the job was rejected" class="form-control"></textarea>
+                                <textarea id="message_long" name="comment" 
+                                    rows="4" class="form-control" 
+                                    placeholder="Please explain why the job was rejected"></textarea>
                                 @if ($errors->has('comments'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('comments') }}</strong>
@@ -541,7 +591,7 @@
         });
     </script>
     <!-- TODO: need to load custom validation scripts here -->
-    <!--<script src="/js/validate_form.js"></script>-->
+    <script src="/js/validate_form.js"></script>
     <script src="/js/validate_form_online_print.js"></script>
     <script src="/js/validate_form_online_job_reject.js"></script>
 @endsection

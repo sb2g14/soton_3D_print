@@ -36,6 +36,26 @@ class Prints extends Model
         $duration = $this->finished_at ? $finished_at->diffInMinutes($created_at) : $expected_duration;
         return $duration;
     }
+    /**returns a number how many minutes are done for this print**/
+    public function completedMin(){
+        // Separate hours from minutes and seconds in printing time
+        list($h, $i, $s) = explode(':', $this->time);
+        // Get time the print started
+        if($this->jobs()->first()->requested_online == 0){
+            $time_approved = new Carbon($this->jobs()->first()->approved_at);
+        }else{
+            $time_approved = $this->created_at;
+        }
+        // Get time the print will finish
+        $time_finish = $time_approved->addHour($h)->addMinutes($i);
+        // Compare to Now
+        if ($time_finish->gte(Carbon::now('Europe/London'))){
+            $ans = Carbon::now('Europe/London')->diffInMinutes($time_approved);
+        }else{
+            $ans = $this->durationMin();
+        }
+        return $ans;
+    }
     /**returns a number how many minutes are left on this print**/
     public function remainMin(){
         // Separate hours from minutes and seconds in printing time

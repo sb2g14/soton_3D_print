@@ -56,11 +56,13 @@
                                     }else if($job->status === 'Approved'){
                                         $thestatus = 'Waiting for your approval...';
                                         $thestatusIcon = "exclamation-triangle";
-                                        $thestatusPercent = 33;
+                                        $thestatusPercent = 20;
                                     }else if($job->status === 'In Progress'){
                                         $thestatus = 'Job is being printed...';
                                         $thestatusIcon = "check";
-                                        $thestatusPercent = 67;
+                                        $thestatusPercent = 33;
+                                        $completed = 1-($job->remainingMin()/$job->totalMin());
+                                        $thestatusPercent = 33+62*$completed;
                                     }else{
                                         $thestatus = 'Stuck in our online workflow';
                                         $thestatusIcon = "exclamation-triangle";
@@ -106,8 +108,8 @@
                                     <td data-th="Price">£{{ $job->total_price }}</td>
                                 @endif
                                 <td data-th="Status">
-                                    @if($thetype === "online order" && $job->status === 'Approved')
-                                        <a href="/OnlineJobs/approved/{{$job->id}}">{{ $thestatus }} </a> 
+                                    @if($thetype === "online order")
+                                        <a href="/OnlineJobs/{{$job->id}}">{{ $thestatus }} </a> 
                                     @else
                                         {{ $thestatus }} 
                                     @endif
@@ -115,10 +117,10 @@
                                         <div class="progress-bar progress-bar-striped  
                                             @if($thetype === 'online order' && $job->status === 'Approved') progress-bar-warning @endif 
                                             @if($thetype === 'workshop print' && $job->status === 'Waiting') progress-bar-warning @endif 
-                                            @if($thetype === 'workshop print' && $job->status === 'Approved') active @endif"
+                                            @if($job->hasActivePrint()) active @endif"
                                             role="progressbar" aria-valuenow="{{$thestatusPercent}}"
                                             aria-valuemin="0" aria-valuemax="100" style="width:{{$thestatusPercent}}%">
-                                            <span class="fa fa-{{$thestatusIcon}}"></span>
+                                            <span class="fa fa-{{$thestatusIcon}}"></span> {{--$thetype === 'workshop print' && $job->status === 'Approved' ||--}}
                                         </div>
                                     </div> 
                                 </td>

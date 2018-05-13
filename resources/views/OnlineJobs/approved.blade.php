@@ -35,9 +35,9 @@
                             data-content="Depending on customer reply you can either start assigning prints by clicking on 
                                 Customer Approved button or cancel the job by clicking on Customer Reject button. To check 
                                 the job details please click on Manage button.">
-                            <a class="btn btn-info" href="/OnlineJobs/approved/{{$job->id}}">Manage</a>
-                            <a class="btn btn-success" href="/OnlineJobs/approved/{{$job->id}}/accept">Customer Accepted</a>
-                            <a class="btn btn-danger" href="/OnlineJobs/approved/{{$job->id}}/reject">Customer Rejected</a>
+                            <a class="btn btn-info" href="/OnlineJobs/{{$job->id}}">Manage</a>
+                            {{--<a class="btn btn-success" href="/OnlineJobs/approved/{{$job->id}}/accept">Customer Accepted</a>
+                            <a class="btn btn-danger" href="/OnlineJobs/approved/{{$job->id}}/reject">Customer Rejected</a>--}}
                         </td>
                     </tr>
                 @endforeach

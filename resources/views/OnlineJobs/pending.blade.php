@@ -33,7 +33,7 @@
                         <td data-th="Requested on">{{ $job->created_at->formatLocalized('%d %b, %H:%M') }}</td>
                         <td data-th="Accepted on">{{ Carbon\Carbon::parse($job->updated_at)->diffForHumans() }}</td>
                         <td data-th="Job controls">
-                            <a href="/OnlineJobs/pending/{{$job->id}}" class="btn btn-info">Review Job</a>
+                            <a href="/OnlineJobs/{{$job->id}}" class="btn btn-info">Review Job</a>
                         </td>
                     </tr>
                 @endforeach

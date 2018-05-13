@@ -30,6 +30,7 @@
                     <th>Finished</th>
                     <th>Approved by</th>
                     <th>Status</th>
+                    <th>Job controls</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +51,9 @@
                         <td data-th="Last updated on">{{ $job->finished_at()->formatLocalized('%d %b, %H:%M') }}</td>
                         <td data-th="Approved by">{{ $job->staff_approved->name() }}</td>
                         <td data-th="Status">{{ $job->status }}</td>
+                        <td data-th="Job controls">
+                            <a href="/OnlineJobs/{{$job->id}}" class="btn btn-info">Review Job</a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
