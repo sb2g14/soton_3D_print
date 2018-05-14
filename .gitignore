@@ -26,6 +26,9 @@ storage/*.key
 Homestead.yaml
 Homestead.json
 
+# Laravel compiled directories
+public/js/validat*.js
+
 #other ignores
 /.idea
 /.vagrant

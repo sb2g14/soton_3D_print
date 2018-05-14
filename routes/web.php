@@ -564,14 +564,15 @@ Route::group(['middleware' => ['role:administrator|LeadDemonstrator|Coordinator|
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Authentication Routes...
-$this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
+$this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.UoS.login');
 $this->post('login', 'Auth\LoginController@login')->name('auth.login');
 $this->post('logout', 'Auth\LoginController@logout')->name('auth.logout');
 $this->get('logout', 'Auth\LoginController@logout')->name('auth.logout');
 $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('auth.register');
 $this->post('register', 'Auth\RegisterController@register')->name('auth.register');
 //SAML Authentication
-$this->get('loginSAML', 'Auth\LoginController@loginSAML')->name('auth.UoS.login');
+$this->get('loginSAML', 'Auth\LoginController@loginSAML'); //SP login
+$this->get('secure', 'Auth\LoginController@loginSAML')->name('auth.login'); //AP login
 
 // Change Password Routes...
 $this->get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');
