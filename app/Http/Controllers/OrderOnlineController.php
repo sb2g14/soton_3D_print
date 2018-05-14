@@ -453,14 +453,13 @@ class OrderOnlineController extends Controller
 
         // Store the calculated total parameters in the job
         $job->update(array(
-            'status' => 'Approved',
-            'approved_at' => Carbon::now('Europe/London'),
-            'job_approved_by' => Auth::user()->staff->id,
             'total_duration' => $total_time,
             'total_material_amount' => $job->prints->sum('material_amount'),
             'total_price' => $job->prints->sum('price'),
             )
         );
+        // Approve job
+        $job->approve();
         
         $this->_emailandnotify($job->customer_email,
                     new jobAccept($job),
@@ -477,8 +476,14 @@ class OrderOnlineController extends Controller
         // Extract online manager comment and validate it
         $reject_message = request()->validate([
             'comment' => 'required|min:10|max:255']);
-
-        $this->deleteJob($id); //Delete Job
+        
+        // Check if user has permission to perform this action
+        $job = Jobs::findOrFail($id);
+        if($job->customer_name !== Auth::user()->name() && !Auth::user()->hasAnyPermission(['manage_online_jobs'])){
+            return redirect('/'); //TODO: display error and somehow fail gracefully
+        }        
+        
+        $job->deleteAll(); //Delete Job
         
         
         
@@ -506,11 +511,9 @@ class OrderOnlineController extends Controller
         if($job->customer_name !== Auth::user()->name() && !Auth::user()->hasAnyPermission(['manage_online_jobs'])){
             return redirect('/');
         }
-
-        $job->update(array(
-                'status' => 'In Progress',
-                'accepted_at' => Carbon::now('Europe/London')
-            ));
+        
+        // Accept job
+        $job->accept();
 
         // Locate associated print previews
         $prints = $job->prints;
@@ -546,7 +549,7 @@ class OrderOnlineController extends Controller
             return redirect('/');
         }
         
-        $this->deleteJob($id); //Delete Job
+        $job->deleteAll(); //Delete Job
 
         // Notify that the job was deleted
         notify()->flash('The job request was rejected', 'success', [
@@ -588,12 +591,11 @@ class OrderOnlineController extends Controller
             'printers_id' => $assigned_print["printers_id"],
             'time' => $time,
             'price' => $price,
-            'status' => 'In Progress',
             'purpose' => 'Use',
-            'material_amount' => $assigned_print["material_amount"],
-            'print_comment' => $assigned_print["comments"],
-            'print_started_by' => Auth::user()->staff->id
+            'material_amount' => $assigned_print["material_amount"]
         ]);
+        $print->approve($assigned_print["comments"]);
+        $print->start();
 
         // Attach multiple jobs to a single print
         foreach($assigned_print["multipleselect"] as $job_id)
@@ -603,8 +605,6 @@ class OrderOnlineController extends Controller
             // Associate the print with the job
             $job->prints()->attach($print);
         }
-
-        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 1));
 
         // Notify that the print was created
         notify()->flash('The print has been assigned to the selected jobs!', 'success', [
@@ -646,11 +646,7 @@ class OrderOnlineController extends Controller
         $job = Jobs::findOrFail($id);
 
         // Change the job flag to 'Failed'
-        $job->update(array(
-            'status' => 'Failed',
-            'finished_at' => Carbon::now('Europe/London'),
-            'job_finished_by' => Auth::user()->staff->id
-        ));
+        $job->finish('Failed');
         
         $mc = new MessagesController();
         $mc->_save($job->id,$failed_message['comment']);
@@ -669,11 +665,7 @@ class OrderOnlineController extends Controller
         $job = Jobs::findOrFail($id);
 
         // Change the job flag to 'Success'
-        $job->update(array(
-            'status' => 'Success',
-            'finished_at' => Carbon::now('Europe/London'),
-            'job_finished_by' => Auth::user()->staff->id
-        ));
+        $job->finish("Success");
         
         $this->_emailandnotify($job->customer_email,
             new jobSuccess($job),
@@ -687,14 +679,8 @@ class OrderOnlineController extends Controller
     public function printSuccessful($id)
     {
         $print = Prints::findOrFail($id);
-        $print->update(array(
-            'finished_at' => Carbon::now('Europe/London'),
-            'print_finished_by' => Auth::user()->staff->id,
-            'status' => 'Success'
-        ));
-
-        // Change the printer status to not in use
-        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
+        // Mark print as successful
+        $print->finish("Success");
 
         // Notify that the print preview was created
         notify()->flash('The print has been marked as successful!', 'success', [
@@ -708,14 +694,7 @@ class OrderOnlineController extends Controller
     public function printFailed($id)
     {
         $print = Prints::findOrFail($id);
-        $print->update(array(
-            'finished_at' => Carbon::now('Europe/London'),
-            'print_finished_by' => Auth::user()->staff->id,
-            'status' => 'Failed'
-        ));
-
-        // Change the printer status to not in use
-        printers::where('id','=', $print->printer->id)->update(array('in_use'=> 0));
+        $print->finish("Failed");
 
         // Notify that the print preview was created
         notify()->flash('The print has been marked as failed', 'success', [

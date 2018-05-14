@@ -73,27 +73,19 @@ trait JobsTrait
     private function deleteJob($id){
         $job = Jobs::findOrFail($id);
         
-        // Check if user has permission to perform this action
-        if($job->customer_name !== Auth::user()->name() && !Auth::user()->hasAnyPermission(['manage_online_jobs'])){
-            return redirect('/'); //TODO: display error and somehow fail gracefully
-        }
+        $job->deleteAll(); // Delete job
+    }
+
+    /** Deletes a job from the database, leaving no trace of it. This should never be called for started jobs! **/
+    private function approveJob($id,$comment = ""){
+        $job = Jobs::findOrFail($id);
         
-        // Delete associated print previews
-        $prints = $job->prints;
-        foreach($prints as $print)
-        {
-            $job->prints()->detach($print->id); //Break connection with job
-            $print->delete(); // Delete print previews
-        }
-        
-        // Delete associated messages //TODO: simplify this!
-        $messages = $job->messages;
-        foreach($messages as $message)
-        {
-            $job->messages()->detach($message->id); //Break connection with job
-            $message->delete(); // Delete message
-        }
-        
-        $job->delete(); // Delete job
+        // Update the Job
+        $job->update([
+            'status' => 'Approved',
+            'approved_at' => Carbon::now('Europe/London'),
+            'job_approved_by' => Auth::user()->staff->id,
+            'job_approved_comment' => $comment,
+        ]);
     }
 }

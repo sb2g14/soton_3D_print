@@ -69,4 +69,56 @@ class Jobs extends Model
         $total = $this->totalMin();
         return $total - $completed;
     }
+    /** Staff to approve a job **/
+    private function approve(string $comment = ""){
+        // Update the Job
+        $this->update([
+            'status' => 'Approved',
+            'approved_at' => Carbon::now('Europe/London'),
+            'job_approved_by' => Auth::user()->staff->id,
+            'job_approved_comment' => $comment
+        ]);
+    }
+    /** Customer to accept a job **/
+    private function accept(){
+        // Update the Job
+        $this->update([
+            'status' => 'In Progress',
+            'accepted_at' => Carbon::now('Europe/London')
+        ]);
+    }
+    /** Staff to finish a job **/
+    private function finish(string $status){
+        // Validate input
+        if($status !== "Success" && $status !== "Failed"){
+            throw new Exception('Invalid job completion flag. Expected "Failed" or "Success"');
+        }
+        // Update the Job
+        $this->update([
+            'status' => $status,
+            'finished_at' => Carbon::now('Europe/London'),
+            'job_finished_by' => Auth::user()->staff->id
+        ]);
+    }
+    /** Deletes a job from the database, leaving no trace of it. This should never be called for started jobs! **/
+    private function deleteAll(){
+        
+        // Delete associated print previews
+        $prints = $this->prints;
+        foreach($prints as $print)
+        {
+            $this->prints()->detach($print->id); //Break connection with job
+            $print->delete(); // Delete print previews
+        }
+        
+        // Delete associated messages //TODO: simplify this!
+        $messages = $this->messages;
+        foreach($messages as $message)
+        {
+            $this->messages()->detach($message->id); //Break connection with job
+            $message->delete(); // Delete message
+        }
+        
+        $this->delete(); // Delete job
+    }
 }

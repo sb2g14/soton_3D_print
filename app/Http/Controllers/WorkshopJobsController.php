@@ -288,20 +288,20 @@ class WorkshopJobsController extends Controller
         // Submit the data to the database
         // Create the Job
         $job = Jobs::create(array(
-            'paid'=> 'No',
-            'payment_category' => $payment_category,
-            'use_case' => $workshop_request['use_case'],
-            'cost_code' => $workshop_request['cost_code'],
-            'requested_online' => 0,
-            'status' => 'Waiting',
-            'job_title' => $workshop_request['job_title'],
-            'budget_holder' => $workshop_request['budget_holder'],
+            'paid'                  => 'No',
+            'payment_category'      => $payment_category,
+            'use_case'              => $workshop_request['use_case'],
+            'cost_code'             => $workshop_request['cost_code'],
+            'requested_online'      => 0,
+            'status'                => 'Waiting',
+            'job_title'             => $workshop_request['job_title'],
+            'budget_holder'         => $workshop_request['budget_holder'],
             'total_material_amount' => $material_amount,
-            'total_price' => $price,
-            'total_duration' => $time,
-            'customer_id' => $workshop_request['customer_id'],
-            'customer_name' => $workshop_request['customer_name'],
-            'customer_email' => $workshop_request['customer_email']
+            'total_price'           => $price,
+            'total_duration'        => $time,
+            'customer_id'           => $workshop_request['customer_id'],
+            'customer_name'         => $workshop_request['customer_name'],
+            'customer_email'        => $workshop_request['customer_email']
         ));
         //Create the Print
         $print = new Prints;
@@ -364,23 +364,22 @@ class WorkshopJobsController extends Controller
             'total_duration' => $time,
             'total_material_amount' => $material_amount,
             'total_price' => $price,
-            'job_approved_comment' => request('comments'),
-            'job_approved_by' => Auth::user()->staff->id,
-            'approved_at' => Carbon::now('Europe/London'),
             'accepted_at' => Carbon::now('Europe/London'),
-            'requested_online' => 0,
-            'status' => 'Approved',
+            'requested_online' => 0
         ]);
+        // Approve job
+        $job->approve(request('comments'));
+        
         // Update the Print
         $print = Prints::findOrFail($print_id);
         $print->update([
             'printers_id' => Input::get('printers_id'),
             'time' => $time,
             'material_amount' => $material_amount,
-            'price' => $price,
-            'status' => 'Approved',
-            'print_started_by' => Auth::user()->staff->id
+            'price' => $price
         ]);
+        // Approve print
+        $print->approve();
 
         // Display notification to user
         notify()->flash('The job has been successfully approved!', 'success', [
@@ -399,6 +398,14 @@ class WorkshopJobsController extends Controller
      */
     public function abort($id)
     {
+        if(!$print->status === "Approved" || !$job->status === "Approved"){
+            // Notify user in case this was an old job
+            notify()->flash('It looks like someone was faster than you.', 'error', [
+                'text' => "Please refresh the page and continue as normal.",
+            ]);
+            return redirect('WorkshopJobs/requests');
+        }        
+        
         //Set the price to 0
         $new_price = 0;
 
@@ -408,21 +415,14 @@ class WorkshopJobsController extends Controller
         $print = Prints::findOrFail($print_id);
         // Update Job
         $job->update([
-            'status'=>'Failed',
-            'total_price' => $new_price,
-            'finished_at' => Carbon::now('Europe/London'),
-            'job_finished_by' => Auth::user()->staff->id
+            'total_price' => $new_price
             ]);
+        $job->finish("Failed");
         // Update Print
         $print->update([
-            'status' => 'Failed',
-            'price' => $new_price,
-            'finished_at' => Carbon::now('Europe/London'),
-            'print_finished_by' => Auth::user()->staff->id
+            'price' => $new_price
         ]);
-
-        // Mark printer to be available again
-        printers::where('id','=', $print->printers_id)->update(array('in_use'=> 0));
+        $print->finish("Failed");
 
         // Notify user
         notify()->flash('The job has been marked as Failed!', 'success', [
@@ -450,22 +450,21 @@ class WorkshopJobsController extends Controller
             notify()->flash('It looks like someone was faster than you.', 'error', [
                 'text' => "Please refresh the page and continue as normal.",
             ]);
-        }else {
-            // Mark printer as available
-            printers::where('id', '=', $print->printers_id)->update(array('in_use' => 0));
-            // Mark job as successful
-            $job->update(array('finished_at' => Carbon::now('Europe/London'),
-                               'job_finished_by' => Auth::user()->staff->id, 
-                               'status' => 'Success'));
-            // Mark print as successful
-            $print->update(array('finished_at' => Carbon::now('Europe/London'),
-                                 'print_finished_by' => Auth::user()->staff->id, 
-                                 'status' => 'Success'));
-            // Notify user
-            notify()->flash('The job has been marked as Success!', 'success', [
-                'text' => "You may continue reviewing other jobs.",
-            ]);
+            return redirect('WorkshopJobs/requests');
         }
+        
+        // Mark printer as available
+        printers::where('id', '=', $print->printers_id)->update(array('in_use' => 0));
+        // Mark job as successful
+        $job->finish("Success");
+        // Mark print as successful
+        $print->finish("Success");
+        
+        // Notify user
+        notify()->flash('The job has been marked as Success!', 'success', [
+            'text' => "You may continue reviewing other jobs.",
+        ]);
+        
         // Redirect to blade showing currently printing jobs
         return redirect('WorkshopJobs/approved');
     }

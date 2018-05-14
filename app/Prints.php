@@ -27,7 +27,7 @@ class Prints extends Model
     {
         return new Carbon($this->finished_at);
     }
-    public function durationMin(){
+    public function durationMin(){ //TODO: refactor as "totalMin"
         //TODO: check it works and replace at appropriate places in controllers
         $finished_at = new Carbon($this->finished_at);
         $created_at = new Carbon($this->created_at);
@@ -58,26 +58,12 @@ class Prints extends Model
     }
     /**returns a number how many minutes are left on this print**/
     public function remainMin(){
-        // Separate hours from minutes and seconds in printing time
-        list($h, $i, $s) = explode(':', $this->time);
-        // Get time the print started
-        if($this->jobs()->first()->requested_online == 0){
-            $time_approved = new Carbon($this->jobs()->first()->approved_at);
-        }else{
-            $time_approved = $this->created_at;
-        }
-        // Get time the print will finish
-        $time_finish = $time_approved->addHour($h)->addMinutes($i);
-        // Format as string
-        if ($time_finish->gte(Carbon::now('Europe/London'))){
-            $ans = $time_finish->diffInMinutes(Carbon::now('Europe/London'));
-        }else{
-            $ans = 0;
-        }
-        return $ans;
+        $completed = $this->completedMin();
+        $total = $this->durationMin();
+        return $total - $completed;
     }
     /**returns a string how much time is left on this print**/
-    public function timeRemain(){
+    public function timeRemain(){//TODO: refactor as "remainStr"
         // Separate hours from minutes and seconds in printing time
         list($h, $i, $s) = explode(':', $this->time);
         // Get time the print started
@@ -93,5 +79,36 @@ class Prints extends Model
             $ans = "completed";
         }
         return $ans;
+    }
+    /** Staff to approve a print **/
+    private function approve(string $comment = ""){
+        // Update the Print
+        $this->update([
+            'status' => 'Approved',
+            'print_started_by' => Auth::user()->staff->id,
+            'print_comment' => $comment
+        ]);
+    }
+    /** mark the print as in progress **/
+    private function start(){
+        // Update the Print
+        $this->update([
+            'status' => 'In Progress'
+        ]);
+        printers::where('id','=', $this->printer->id)->update(array('in_use'=> 1));
+    }
+    /** Staff to finish a print **/
+    private function finish(string $status){
+        // Validate input
+        if($status !== "Success" && $status !== "Failed"){
+            throw new Exception('Invalid print completion flag. Expected "Failed" or "Success"');
+        }
+        // Update the Print
+        $this->update(array('status' => $status,
+                            'finished_at' => Carbon::now('Europe/London'),
+                            'print_finished_by' => Auth::user()->staff->id 
+                            ));
+        // Mark printer to be available again
+        printers::where('id','=', $this->printers_id)->update(array('in_use'=> 0));
     }
 }
