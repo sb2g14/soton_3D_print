@@ -22,8 +22,8 @@
 
                     <div class="col-sm-8">
                         <input id="customer_name" name="customer_name" 
-                            type="text" class="form-control" 
-                            value="{{ old('customer_name') }}" required autocomplete="name"
+                            type="text" class="form-control" disabled 
+                            value="{{ old('customer_name', Auth::user()->name() ) }}" required autocomplete="name"
                             placeholder="Please input your First and Last name" data-help="" />
                         @if ($errors->has('customer_name'))
                             <span class="help-block">
@@ -40,8 +40,8 @@
 
                     <div class="col-sm-8">
                         <input id="customer_email" name="customer_email" 
-                            type="text" class="form-control" 
-                            value="{{ old('customer_email') }}" required autocomplete="work email"
+                            type="text" class="form-control" disabled 
+                            value="{{ old('customer_email', Auth::user()->email()) }}" required autocomplete="work email"
                             placeholder="Please input soton email" data-help="customer_email" />
                         @if ($errors->has('customer_email'))
                             <span class="help-block">

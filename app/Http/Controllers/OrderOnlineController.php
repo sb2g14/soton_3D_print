@@ -12,7 +12,8 @@ use App\staff;
 use App\StatisticsHelper;
 use App\User;
 use App\Http\Controllers\MessagesController;
-use App\Http\Controllers\Traits\PriceTrait;
+use App\Http\Controllers\Traits\PriceTrait; //Load Price calculation functions
+use App\Http\Controllers\Traits\JobsTrait; //Loads functions used to check and modify jobs
 use App\Mail\jobAccept;
 use App\Mail\jobFailed;
 use App\Mail\jobReject;
@@ -47,6 +48,7 @@ use Illuminate\Support\Facades\Mail;
 class OrderOnlineController extends Controller
 {
     use PriceTrait;
+    use JobsTrait;
     
     //// PRIVATE (HELPER) FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
@@ -178,8 +180,9 @@ class OrderOnlineController extends Controller
         // Pass all the available printers to the blade
         $available_printers = printers::all()->where('printer_status', 'Available')->where('in_use', 0)->pluck('id', 'id')->all();
         // Pass the jobs In Progress to the view
-        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')->addSelect('id')->selectRaw("CONCAT(id,' ', job_title) AS id_title")->pluck('id_title','id');
-//        addSelect('id')->selectRaw('job_title AS desc')->
+        $jobs_in_progress = Jobs::where('requested_online','=',1)->where('status','=','In Progress')
+                                ->addSelect('id')->selectRaw("CONCAT(id,' ', job_title) AS id_title")
+                                ->pluck('id_title','id');
         // Pass all the prints associated with the job
        $query_in_progress = $job->prints->where('status','=','In Progress')->first();
        $query_success = $job->prints->where('status','=','Success')->first();
@@ -215,8 +218,8 @@ class OrderOnlineController extends Controller
         $events = $messages;
         // Second get the request as an event
         $request  = collect(['Date' => $job->created_at, 
-                     'Name' => $job->customer_name,
-                     'Message' => "Requested Job"]);
+                             'Name' => $job->customer_name,
+                             'Message' => "Requested Job"]);
         $events[] = $request;
         // If done, get the approval as an event
         if($job->approved_at){
@@ -225,6 +228,7 @@ class OrderOnlineController extends Controller
                                  'Message' => "Approved Job ".$job->job_approved_comment]);
             $events[] = $approval;
         }
+        // If done, get the acceptance as an event
         if($job->accepted_at){
             $accept   = collect(['Date' => $job->accepted_at, 
                                  'Name' => $job->customer_name,
@@ -268,21 +272,20 @@ class OrderOnlineController extends Controller
     {
         // Store an online request
         $online_request = request();
+        
+        // Define payment category
+        $payment_category = $this->getPaymentCategory($online_request['customer_id']);
 
-        // Overwrite the budget holder if known
-        // check the module shortage exists
-        $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
-        if ($query !== null){
-            // If shortage exists, then populate budget holder with the DB data
-            $online_request['budget_holder'] = $query->holder;
-        }
-        // check that cost code exists
-        $query = cost_code::all()->where('cost_code','=',strtoupper($online_request['use_case']))->first();
-        if ($query !== null){
-            // If cost code exists, then populate budget holder with the DB data
-            $online_request['budget_holder'] = $query->holder;
-        }
-
+        // Get payment details checked
+        $temp = $this->getPaymentDetails($online_request['use_case'],$online_request['budget_holder']);
+        $cost_code = $temp[0];
+        $online_request['use_case'] = $temp[1];
+        $online_request['budget_holder'] = $temp[2];
+         
+        //get customer name and email
+        $online_request['customer_name'] = Auth::user()->name();
+        $online_request['customer_email'] = Auth::user()->email();
+        
         $online_request = $online_request->validate([
             'customer_name' => [
                 'required',
@@ -335,41 +338,11 @@ class OrderOnlineController extends Controller
         // Store the online request in the database
         $job = Jobs::create($online_request);
 
-        // Define payment category
-        $customer_id = $online_request['customer_id'];
-
-        if (substr($customer_id, 0, 1) == '1') {
-            $payment_category = 'staff';
-        } elseif (substr($customer_id, 0, 1) == '2') {
-            $payment_category = 'postgraduate';
-        } elseif (substr($customer_id, 0, 1) == '3') {
-            $payment_category = 'masters';
-        } else {
-            $payment_category = 'undergraduate';
-        }
-
-        // Define the use case
-        // check the module shortage exists
-        $query = cost_code::all()->where('shortage','=',strtoupper($online_request['use_case']))->first();
-        if ($query !== null){
-            // If shortage exists, then populate cost code and shortage with the DB data
-            $cost_code = $query->value('cost_code');
-            $use_case = strtoupper($online_request['use_case']);
-        } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
-            $query = cost_code::all()->where('cost_code','=',$online_request['use_case'])->first();
-            $cost_code = $online_request['use_case'];
-            if ($query !== null){ // The cost code was found. Set a corresponding flag
-                $use_case = 'Cost Code - approved';
-            } else { // The cost code was not found. Set a corresponding flag
-                $use_case = 'Cost Code - unknown';
-            }
-        }
-
         // Updating database
         $job -> update(array(
             'paid'=> 'No',
             'payment_category' => $payment_category,
-            'use_case' => $use_case,
+            'use_case' => $online_request['use_case'],
             'cost_code' => $cost_code,
             'requested_online' => 1,
             'status' => 'Waiting',
@@ -377,14 +350,14 @@ class OrderOnlineController extends Controller
             'budget_holder' => $online_request['budget_holder']
             ));
         
-        $mc = new MessagesController();
-        $mc->_save($job->id,"Requested Job");
-        
         $email = '3dprint.soton@gmail.com'; //TODO: this should come from env or config
-        $this->_emailandnotify($email,new onlineRequest($job),'Your order request is now being considered!','Please wait for our manager to contact you via provided email address');
+        $this->_emailandnotify($email,
+            new onlineRequest($job),
+            'Your order request is now being considered!',
+            'Please wait for our manager to contact you via provided email address');
         
         // Redirect to home directory
-        return redirect()->home();
+        return redirect('OnlineJobs/'.$job->id);
     }
 
     //// Logic for managing jobs requested by customer ////
@@ -489,10 +462,10 @@ class OrderOnlineController extends Controller
             )
         );
         
-        $mc = new MessagesController();
-        $mc->_save($job->id,"Approved Job");
-        
-        $this->_emailandnotify($job->customer_email,new jobAccept($job),'The job has been approved','An email notification has been send to the customer with the job quote');
+        $this->_emailandnotify($job->customer_email,
+                    new jobAccept($job),
+                    'The job has been approved',
+                    'An email notification has been send to the customer with the job quote');
         
         return redirect('OnlineJobs/approved');
     }
@@ -505,18 +478,14 @@ class OrderOnlineController extends Controller
         $reject_message = request()->validate([
             'comment' => 'required|min:10|max:255']);
 
-        // Find a job by id
-        $job = Jobs::findOrFail($id);
-        // Locate associated print previews
-        $prints = $job->prints;
-        foreach($prints as $print) {
-            $job->prints()->detach($print->id); //Break connection with job
-            $print->delete(); // Delete print previews
-        }
-
-        $job->delete(); // Delete job
+        $this->deleteJob($id); //Delete Job
         
-        $this->_emailandnotify($job->customer_email,new jobReject($job, $reject_message['comment']),'The job has been rejected','An email notification has been send to the customer to explain why the job got rejected.');
+        
+        
+        $this->_emailandnotify($job->customer_email,
+                    new jobReject($job, $reject_message['comment']),
+                    'The job has been rejected',
+                    'An email notification has been send to the customer to explain why the job got rejected.');
 
         return redirect('OnlineJobs/requests');
     }
@@ -550,9 +519,6 @@ class OrderOnlineController extends Controller
             $job->prints()->detach($print->id); //Break connection with job
             $print->delete(); // Delete print previews
         }
-        
-        $mc = new MessagesController();
-        $mc->_save($job->id,"Accepted Job");
 
         
         if(Auth::user()->hasRole(['OnlineJobsManager'])){
@@ -580,14 +546,7 @@ class OrderOnlineController extends Controller
             return redirect('/');
         }
         
-        // Locate associated print previews
-        $prints = $job->prints;
-        foreach($prints as $print)
-        {
-            $job->prints()->detach($print->id); //Break connection with job
-            $print->delete(); // Delete print previews
-        }
-        $job->delete(); // Delete job
+        $this->deleteJob($id); //Delete Job
 
         // Notify that the job was deleted
         notify()->flash('The job request was rejected', 'success', [
@@ -693,7 +652,13 @@ class OrderOnlineController extends Controller
             'job_finished_by' => Auth::user()->staff->id
         ));
         
-        $this->_emailandnotify($job->customer_email,new jobFailed($job, $failed_message['comment']),'The job status has been changed to Failed','An email with the notification has been sent to the customer.');
+        $mc = new MessagesController();
+        $mc->_save($job->id,$failed_message['comment']);
+        
+        $this->_emailandnotify($job->customer_email,
+            new jobFailed($job, $failed_message['comment']),
+            'The job status has been changed to Failed',
+            'An email with the notification has been sent to the customer.');
 
         return redirect("/OnlineJobs/pending");
     }
@@ -710,7 +675,10 @@ class OrderOnlineController extends Controller
             'job_finished_by' => Auth::user()->staff->id
         ));
         
-        $this->_emailandnotify($job->customer_email,new jobSuccess($job),'The job status has been completed successfully','An email with the notification has been sent to the customer.'); 
+        $this->_emailandnotify($job->customer_email,
+            new jobSuccess($job),
+            'The job status has been completed successfully',
+            'An email with the notification has been sent to the customer.'); 
 
         return redirect("/OnlineJobs/pending");
     }

@@ -10,6 +10,7 @@ use App\Jobs; //Load the Jobs model
 use App\printers; //Load printers model
 use App\Prints; //Load prints model
 use App\Http\Controllers\Traits\PriceTrait; //Load Price calculation functions
+use App\Http\Controllers\Traits\JobsTrait; //Loads functions used to check and modify jobs
 // Load custom validation rules
 use App\Rules\Alphanumeric;
 use App\Rules\CustomerNameValidation;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Input; //Loads the input from drop-down
 class WorkshopJobsController extends Controller
 {
     use PriceTrait;
+    use JobsTrait;
     
     //// PRIVATE (HELPER) FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
@@ -71,62 +73,6 @@ class WorkshopJobsController extends Controller
         return $available_printers;
     }
 
-    /**
-     * Defines the payment category based on the 9 digit uni id
-     * @param $customer_id string
-     * @return string
-     */
-    private function getPaymentCategory($customer_id){
-        $firstdigit = substr($customer_id, 0, 1);
-        switch ($firstdigit) {
-            case '1':
-                $payment_category = 'staff';
-                break;
-            case '2':
-                $payment_category = 'postgraduate';
-                break;
-            case '3':
-                $payment_category = 'masters';
-                break;
-            default:
-                $payment_category = 'undergraduate';
-                break;
-        }
-        return $payment_category;
-    }
-
-    /**
-     * checks the payment details and returns the corrected details
-     * takes a shortage or costcode as $use_case and the $budget_holder
-     * returns the use_case as shortage or known/unknown cost code,
-     * looks up the shortage/ cost code in the database and returns the
-     * data from the database if found. Returns the provided data otherwise
-     * @param string $use_case 
-     * @param string $budget_holder 
-     * @return array $cost_code, $use_case, $budget_holder
-     */
-    private function getPaymentDetails($use_case,$budget_holder){
-        // Define a cost code
-        // check the module shortage exists
-        $query = cost_code::all()->where('shortage','=',strtoupper($use_case))->first();
-        if ($query !== null){
-            // If shortage exists, then populate cost code and shortage with the DB data
-            $cost_code = $query->value('cost_code');
-            $use_case = strtoupper($use_case);
-            $budget_holder = $query->holder;
-        } else { // If shortage is not found in the DB, check whether the cost code can be found in the DB
-            $query = cost_code::all()->where('cost_code','=',$use_case)->first();
-            $cost_code = $use_case;
-            if ($query !== null){ // The cost code was found. Set a corresponding flag
-                $use_case = 'Cost Code - approved';
-                $budget_holder = $query->holder;
-            } else { // The cost code was not found. Set a corresponding flag
-                $use_case = 'Cost Code - unknown';
-                //$budget_holder = $budget_holder;
-            }
-        }
-        return [$cost_code, $use_case, $budget_holder];
-    }
     
     /** gets the counts of jobs in the different steps of the workflow**/
     private function getCounts(){
@@ -267,8 +213,14 @@ class WorkshopJobsController extends Controller
      */
     public function store()
     {
+        $workshop_request = request()
+         
+        //get customer name and email
+        $workshop_request['customer_name'] = Auth::user()->name();
+        $workshop_request['customer_email'] = Auth::user()->email();
+        
         // Validate the online request
-        $workshop_request = request()->validate([
+        $workshop_request = $workshop_request->validate([
             'customer_name' => [
                 'required',
                 'string',
@@ -309,14 +261,13 @@ class WorkshopJobsController extends Controller
         ]);
 
         // Define payment category
-        $customer_id = $workshop_request['customer_id'];
-        $payment_category = $this->getPaymentCategory($customer_id);
+        $payment_category = $this->getPaymentCategory($workshop_request['customer_id']);
 
         // Get payment details checked
         $temp = $this->getPaymentDetails($workshop_request['use_case'],$workshop_request['budget_holder']);
-        $cost_code = $temp[0];
-        $use_case = $temp[1];
-        $budget_holder = $temp[2];
+        $workshop_request['cost_code'] = $temp[0];
+        $workshop_request['use_case'] = $temp[1];
+        $workshop_request['budget_holder'] = $temp[2];
 
         // Calculating printing time from the dropdown
         $hours = Input::get('hours');
@@ -339,16 +290,16 @@ class WorkshopJobsController extends Controller
         $job = Jobs::create(array(
             'paid'=> 'No',
             'payment_category' => $payment_category,
-            'use_case' => $use_case,
-            'cost_code' => $cost_code,
+            'use_case' => $workshop_request['use_case'],
+            'cost_code' => $workshop_request['cost_code'],
             'requested_online' => 0,
             'status' => 'Waiting',
             'job_title' => $workshop_request['job_title'],
-            'budget_holder' => $budget_holder,
+            'budget_holder' => $workshop_request['budget_holder'],
             'total_material_amount' => $material_amount,
             'total_price' => $price,
             'total_duration' => $time,
-            'customer_id' => $customer_id,
+            'customer_id' => $workshop_request['customer_id'],
             'customer_name' => $workshop_request['customer_name'],
             'customer_email' => $workshop_request['customer_email']
         ));
@@ -373,7 +324,7 @@ class WorkshopJobsController extends Controller
         ]);
 
        // Redirect to home directory
-       return redirect()->home();
+       return redirect('/myprints');
     }
 
     /**
