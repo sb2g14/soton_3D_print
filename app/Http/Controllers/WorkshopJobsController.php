@@ -87,6 +87,20 @@ class WorkshopJobsController extends Controller
     //// GENERIC PUBLIC FUNCTIONS ////
     //---------------------------------------------------------------------------------------------------------------//
     
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user= Auth::user();
+
+            return $next($request);
+        });
+    }
+    
     //// CONTROLLER BLADES ////
     //---------------------------------------------------------------------------------------------------------------//
 
@@ -213,7 +227,7 @@ class WorkshopJobsController extends Controller
      */
     public function store()
     {
-        $workshop_request = request()
+        $workshop_request = request();
          
         //get customer name and email
         $workshop_request['customer_name'] = Auth::user()->name();
@@ -356,8 +370,8 @@ class WorkshopJobsController extends Controller
         // Submit the data to the database
         $job = Jobs::findOrFail($id);
         $print_id = $job->prints->first()->id;
-        // Update the Job
-        $job->update([
+        // Approve the Job
+        $job->approve([
             'customer_name' => request('student_name'),
             'customer_id' => request('student_id'),
             'customer_email' => request('email'),
@@ -365,21 +379,18 @@ class WorkshopJobsController extends Controller
             'total_material_amount' => $material_amount,
             'total_price' => $price,
             'accepted_at' => Carbon::now('Europe/London'),
-            'requested_online' => 0
+            'requested_online' => 0,
+            'job_approved_comment' => request('comments')
         ]);
-        // Approve job
-        $job->approve(request('comments'));
         
-        // Update the Print
+        // Approve the Print
         $print = Prints::findOrFail($print_id);
-        $print->update([
+        $print->approve([
             'printers_id' => Input::get('printers_id'),
             'time' => $time,
             'material_amount' => $material_amount,
             'price' => $price
         ]);
-        // Approve print
-        $print->approve();
 
         // Display notification to user
         notify()->flash('The job has been successfully approved!', 'success', [
@@ -398,6 +409,12 @@ class WorkshopJobsController extends Controller
      */
     public function abort($id)
     {
+        // Get the job and the print
+        $job = Jobs::findOrFail($id);
+        $print_id = $job->prints->first()->id;
+        $print = Prints::findOrFail($print_id);
+        
+        // Validate that they have the correct status
         if(!$print->status === "Approved" || !$job->status === "Approved"){
             // Notify user in case this was an old job
             notify()->flash('It looks like someone was faster than you.', 'error', [
@@ -408,21 +425,11 @@ class WorkshopJobsController extends Controller
         
         //Set the price to 0
         $new_price = 0;
-
-        // Submit the data to the database
-        $job = Jobs::findOrFail($id);
-        $print_id = $job->prints->first()->id;
-        $print = Prints::findOrFail($print_id);
-        // Update Job
-        $job->update([
-            'total_price' => $new_price
-            ]);
-        $job->finish("Failed");
-        // Update Print
-        $print->update([
-            'price' => $new_price
-        ]);
-        $print->finish("Failed");
+        
+        // Fail Print
+        $print->finish("Failed",['price' => $new_price]);
+        // Fail Job
+        $job->finish("Failed",['total_price' => $new_price]);
 
         // Notify user
         notify()->flash('The job has been marked as Failed!', 'success', [
@@ -444,6 +451,7 @@ class WorkshopJobsController extends Controller
         $job = Jobs::findOrFail($id);
         $print_id = $job->prints->first()->id;
         $print = Prints::findOrFail($print_id);
+        
         //need to first check if this job is currently printing or not.
         if(!$print->status === "Approved" || !$job->status === "Approved"){
             // Notify user in case this was an old job
@@ -453,12 +461,10 @@ class WorkshopJobsController extends Controller
             return redirect('WorkshopJobs/requests');
         }
         
-        // Mark printer as available
-        printers::where('id', '=', $print->printers_id)->update(array('in_use' => 0));
-        // Mark job as successful
-        $job->finish("Success");
         // Mark print as successful
         $print->finish("Success");
+        // Mark job as successful
+        $job->finish("Success");
         
         // Notify user
         notify()->flash('The job has been marked as Success!', 'success', [

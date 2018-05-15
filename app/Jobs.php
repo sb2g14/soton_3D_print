@@ -2,12 +2,44 @@
 
 namespace App;
 
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Jobs
+ *
+ * @package App
+ * @property float $total_material_amount   //TODO: should be material_amount
+ * @property float $total_price             //TODO: should be price
+ * @property string $total_duration         //TODO: should be print_time
+ * @property string $paid
+ * @property string $payment_category
+ * @property string $cost_code
+ * @property string $use_case               //TODO: what do we store here again?
+ * @property string $job_approved_comment   //TODO: should be approved_comment
+ * @property int $customer_id
+ * @property string $customer_name
+ * @property string $customer_email
+ * @property int $requested_online          //TODO: should be online
+ * @property string $status
+ * @property datetime $created_at
+ * @property datetime $updated_at
+ * @property datetime $approved_at
+ * @property string $claim_id               //TODO: should be dropoff_id
+ * @property string $claim_passcode         //TODO: should be dropoff_passcode
+ * @property string $job_title
+ * @property string $budget_holder
+ * @property datetime $accepted_at
+ * @property datetime $finished_at
+ **/
 class Jobs extends Model
 {
+    // Define model attributes that should not be mass assignable
     protected $guarded = [];
+    
+    //// CONNECTIONS TO OTHER MODELS/ SQL TABLE LINKS ////
+    //---------------------------------------------------------------------------------------------------------------//
     public function staff_approved()
     {
         return $this->belongsTo(staff::class, 'job_approved_by');
@@ -20,6 +52,12 @@ class Jobs extends Model
     {
         return $this->hasMany(Messages::class, 'job_id');
     }
+    public function prints(){
+        return $this->belongsToMany(Prints::class);
+    }
+    
+    //// FUNCTIONS TO CALCULATE AND PRE-FORMAT CERTAIN VALUES ////
+    //---------------------------------------------------------------------------------------------------------------//
     public function approved_at()
     {
         return new Carbon($this->approved_at);
@@ -31,9 +69,6 @@ class Jobs extends Model
     public function finished_at()
     {
         return new Carbon($this->finished_at);
-    }
-    public function prints(){
-        return $this->belongsToMany(Prints::class);
     }
     /**returns a boolean weather there are any unfinished prints or not**/
     public function hasActivePrint(){
@@ -69,18 +104,22 @@ class Jobs extends Model
         $total = $this->totalMin();
         return $total - $completed;
     }
+    
+    //// FUNCTIONS TO CHANGE THE STATE OF THE MODEL ////
+    //---------------------------------------------------------------------------------------------------------------//
     /** Staff to approve a job **/
-    private function approve(string $comment = ""){
-        // Update the Job
+    public function approve(array $changes = []){
+        // Change the status
         $this->update([
             'status' => 'Approved',
             'approved_at' => Carbon::now('Europe/London'),
-            'job_approved_by' => Auth::user()->staff->id,
-            'job_approved_comment' => $comment
+            'job_approved_by' => Auth::user()->staff->id
         ]);
+        // Update the Job
+        $this->update($changes);
     }
     /** Customer to accept a job **/
-    private function accept(){
+    public function accept(){
         // Update the Job
         $this->update([
             'status' => 'In Progress',
@@ -88,22 +127,24 @@ class Jobs extends Model
         ]);
     }
     /** Staff to finish a job **/
-    private function finish(string $status){
+    public function finish(string $status, array $changes = []){
         // Validate input
         if($status !== "Success" && $status !== "Failed"){
             throw new Exception('Invalid job completion flag. Expected "Failed" or "Success"');
         }
-        // Update the Job
+        // Change the status
         $this->update([
             'status' => $status,
             'finished_at' => Carbon::now('Europe/London'),
             'job_finished_by' => Auth::user()->staff->id
         ]);
+        // Update the Job
+        $this->update($changes);
     }
     /** Deletes a job from the database, leaving no trace of it. This should never be called for started jobs! **/
-    private function deleteAll(){
+    public function deleteAll(){
         
-        // Delete associated print previews
+        // Delete associated print previews or prints
         $prints = $this->prints;
         foreach($prints as $print)
         {

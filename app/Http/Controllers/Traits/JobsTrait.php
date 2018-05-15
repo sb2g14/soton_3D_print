@@ -68,24 +68,4 @@ trait JobsTrait
         }
         return [$cost_code, $use_case, $budget_holder];
     }
-    
-    /** Deletes a job from the database, leaving no trace of it. This should never be called for started jobs! **/
-    private function deleteJob($id){
-        $job = Jobs::findOrFail($id);
-        
-        $job->deleteAll(); // Delete job
-    }
-
-    /** Deletes a job from the database, leaving no trace of it. This should never be called for started jobs! **/
-    private function approveJob($id,$comment = ""){
-        $job = Jobs::findOrFail($id);
-        
-        // Update the Job
-        $job->update([
-            'status' => 'Approved',
-            'approved_at' => Carbon::now('Europe/London'),
-            'job_approved_by' => Auth::user()->staff->id,
-            'job_approved_comment' => $comment,
-        ]);
-    }
 }
