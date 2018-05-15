@@ -8,64 +8,30 @@ use phpDocumentor\Reflection\Types\Null_;
 
 class printers extends Model
 {
-//    protected $fillable = [
-//        'serial_no',
-//        'printer_type',
-//        'printer_status'
-//    ];
+    // Define model attributes that should not be mass assignable
     protected $guarded = [];
+
+    //// CONNECTIONS TO OTHER MODELS/ SQL TABLE LINKS ////
+    //---------------------------------------------------------------------------------------------------------------//
     public function printing_data()
     {
-
         return $this->hasMany(printing_data::class);
-
     }
     public function prints()
     {
-
         return $this->hasMany(Prints::class);
-
     }
     public function posts()
     {
-
         return $this->hasMany(posts::class);
-
     }
     public function fault_data()
     {
-
         return $this->hasMany(FaultData::class);
-
     }
-    public function changePrinterStatus()
-    {
-            /** @var  $this is the printer */
-            //find last print for this printer
-            $print = $this->prints->last();
-            //get the (last) job related to this print
-            $job = $print->jobs->last();
-            //get print runtime
-            list($h, $i, $s) = explode(':', $print->time);
-            //check if time since print started is greater than print time
-            if (Carbon::now('Europe/London')->gte(Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i))) {
-                //don't apply this to online prints
-                if($job->requested_online == 0){
-                    //set this printer to not be used anymore
-                    $this->update(array('in_use' => 0));
-                    //set job status to Success & completed by system
-                    
-                    $job->update(array('status' => 'Success', 
-                                       'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id,
-                                       'finished_at' => Carbon::now('Europe/London')
-                            ));
-                    //set print status to Success & completed by system
-                    $print->update(array('status' => 'Success', 
-                                         'print_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id
-                            ));
-                }
-            }
-    }
+    
+    //// FUNCTIONS TO CALCULATE AND PRE-FORMAT CERTAIN VALUES ////
+    //---------------------------------------------------------------------------------------------------------------//
     public function calculateTotalTime($parameter)
     {
         $total_minutes = 0;
@@ -143,10 +109,10 @@ class printers extends Model
         $lastPrint=$printer->prints()->orderBy('updated_at', 'desc')->where('status','!=', 'Waiting')->first();
         $lastIssue=$printer->fault_data()->where('resolved',1)->orderBy('resolved_at','desc')->first();
         $lastIssueUpdate = \App\FaultData::orderBy('fault_updates.updated_at','desc')
-        ->crossJoin('fault_updates', 'fault_datas.id', '=', 'fault_updates.fault_data_id')
-        ->where('fault_datas.printers_id', $printer->id)
-        ->select('fault_updates.*')
-       ->first();
+                    ->crossJoin('fault_updates', 'fault_datas.id', '=', 'fault_updates.fault_data_id')
+                    ->where('fault_datas.printers_id', $printer->id)
+                    ->select('fault_updates.*')
+                    ->first();
 
         $nullDate = \Carbon\Carbon::create(1990, 1, 1, 0);
         if(!$lastPrint)
@@ -182,5 +148,32 @@ class printers extends Model
             }
         }
         return $ans;
+    }
+    
+    //// OTHER FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    /** This function checks if there is any unfinished print for this printer and if the print finished already, then completes that print **/
+    public function changePrinterStatus()
+    {
+        /** @var  $this is the printer */
+        //find last print for this printer
+        $print = $this->prints->last();
+        //get the (last) job related to this print
+        $job = $print->jobs->last();
+        //get print runtime
+        list($h, $i, $s) = explode(':', $print->time);
+        //check if time since print started is greater than print time
+        if (Carbon::now('Europe/London')->gte(Carbon::parse($job->approved_at)->addHour($h)->addMinutes($i))) {
+            //don't apply this to online prints
+            if($job->requested_online == 0){
+                //set this printer to not be used anymore
+                //$this->update(array('in_use' => 0)); //not needed anymore, since $print->finish() will do it for us :-)
+                //set print status to Success & completed by system
+                $print->finish("Success",array( 'print_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id ));
+                //set job status to Success & completed by system
+                $job->finish('Success',array( 'job_finished_by' => staff::where('email','=','3DPrintFEE@soton.ac.uk')->first()->id));
+            }
+        }
     }
 }

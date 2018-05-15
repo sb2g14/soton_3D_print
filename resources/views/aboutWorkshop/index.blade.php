@@ -60,7 +60,7 @@
                 <table class="contacts">
                     <tr>
                         <td>Location:</td>
-                        <td class="col-left"><span class="glyphicon glyphicon-map-marker"></span> University of Southampton, B13/R1055</td>
+                        <td class="col-left"><span class="fa fa-fw fa-map-marker"></span> University of Southampton, B13/R1055</td>
                     </tr>
                     <tr>
                         <td>Service enquiries:</td>
@@ -72,7 +72,7 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{$lead_demonstrator->email}}">{{  $lead_demonstrator->email }}</a></td>
+                        <td class="col-left row-last"><span class="fa fa-fw fa-envelope"></span> <a href="mailto:{{$lead_demonstrator->email}}">{{  $lead_demonstrator->email }}</a></td>
                     </tr>
                         @endforeach
                     <tr>
@@ -84,7 +84,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td class="col-left row-last"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{$coordinator->email}}">{{  $coordinator->email }}</a></td>
+                            <td class="col-left row-last"><span class="fa fa-fw fa-envelope"></span> <a href="mailto:{{$coordinator->email}}">{{  $coordinator->email }}</a></td>
                         </tr>
                     @endforeach
                 </table>
@@ -92,9 +92,9 @@
             </div>
         </div>
     </div>
-    <div class="container well">
+    {{--<div class="container well">
         {{phpinfo()}}
-    </div>
+    </div>--}}
     {{--MAP--}}
     <section id="canvas1" class="s-map">
         <!--<iframe id="map_canvas1" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4480.157517437024!2d-1.3984993030069568!3d50.93475279559591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x28ef7c4fb80298da!2sThe+Tizard!5e0!3m2!1sen!2sde!4v1497548468301" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>-->

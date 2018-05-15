@@ -355,7 +355,7 @@ class OrderOnlineController extends Controller
         $job = Jobs::create($online_request);
 
         // Updating database
-        $job -> update(array(
+        $job->update(array(
             'paid'=> 'No',
             'payment_category' => $payment_category,
             'use_case' => $online_request['use_case'],
@@ -364,7 +364,7 @@ class OrderOnlineController extends Controller
             'status' => 'Waiting',
             'job_title' => $online_request['job_title'],
             'budget_holder' => $online_request['budget_holder']
-            ));
+            )); //TODO: not all of these should be needed anymore
         
         $email = '3dprint.soton@gmail.com'; //TODO: this should come from env or config
         $this->_emailandnotify($email,
@@ -397,19 +397,16 @@ class OrderOnlineController extends Controller
         $price = $this->_getPriceOfJob($assigned_print_preview["hours"],$assigned_print_preview["minutes"],$assigned_print_preview["material_amount"]);
 
         // Store print preview in the Database
-        $print = new Prints;
-        $print -> time = $time;
-        $print -> price = $price;
-        $print -> save();
+        $print = Prints::create(array(
+            'time'                  => $time,
+            'price'                 => $price,
+            'purpose'               => 'Use', 
+            'material_amount'       => $assigned_print_preview["material_amount"],
+            'status'                => 'Waiting'
+        ));//TODO: purpose = "Preview"
 
-        // Update a print preview with the details entered by a customer
-        $print -> update(array(
-            'purpose' => 'Use',
-            'material_amount' => $assigned_print_preview["material_amount"],
-            'status' => 'waiting'
-        ));
-
-        $job = Jobs::findOrFail($id); // Find the job in DB by {$id}
+        // Find the job in DB by {$id}
+        $job = Jobs::findOrFail($id); 
 
         // Associate the print preview with the job
         $job->prints()->attach($print);
