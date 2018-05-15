@@ -730,6 +730,7 @@ $(document).ready(function () {
         "#event_name": validations.check_event_title,
         "#comment": validations.check_comment,
         "#message": validations.check_message_default,
+        "#body": validations.check_message_default,
         "#message_last": validations.check_message_default,
         "#message_long": validations.check_message_long,
         "#explanation": validations.check_message_explanation,

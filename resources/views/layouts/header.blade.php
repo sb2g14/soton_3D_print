@@ -78,7 +78,7 @@
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/about') }}">About the Service</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/history') }}">Workshop History</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/history') }}">Service History</a></li>
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
                         <li><a class="dropdown-item" href="{{ url('/faq') }}">FAQ</a></li>
                         <li><a class="dropdown-item"  href="{{ url('/gallery') }}">Photo Gallery</a></li>
@@ -202,7 +202,7 @@
                     <ul class="dropdown-bl">
                         <li><a class="dropdown-item" href="{{ url('/about') }}">About the Service</a></li>
                         <li><a class="dropdown-item" href="{{ url('/members/index') }}">Our Team</a></li>
-                        {{--<li><a class="dropdown-item" href="{{ url('/history') }}">Workshop History</a></li>--}}
+                        {{--<li><a class="dropdown-item" href="{{ url('/history') }}">Service History</a></li>--}}
                         <li><a class="dropdown-item" href="{{ url('/faq') }}">FAQ</a></li>
                         <li><a class="dropdown-ite"  href="{{ url('/gallery') }}">Photo Gallery</a></li>
                     </ul>

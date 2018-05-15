@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Announcement;
 use App\FaultData;
+use App\Jobs;
 use App\Messages;
 use App\printers;
 use App\Prints;
@@ -55,11 +56,13 @@ class MessagesController extends Controller
     /**
      * Store a newly created message in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id  Job ID
      * @return \Illuminate\Http\Response
      **/
-    public function store($id)
+    public function store(int $id)
     {
+        // Find the job in DB by {$id}
+        $job = Jobs::findOrFail($id); 
         // Check if user has permission to view these
         if($job->customer_name !== Auth::user()->name() && !Auth::user()->hasAnyPermission(['manage_online_jobs'])){
             return redirect('/');
@@ -74,6 +77,6 @@ class MessagesController extends Controller
         $this->_save($id,request('body'));
 
         
-        return redirect('/OnlineJobs/'.$id.'/messages');
+        return redirect('/OnlineJobs/'.$id);
     }
 }

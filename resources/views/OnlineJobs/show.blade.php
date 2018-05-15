@@ -39,7 +39,7 @@
                             href="/OnlineJobs/finished"
                         @endif
                     >
-                        Back
+                        View All
                     </a>
                 </span>
             </div>
@@ -329,8 +329,8 @@
                     {{--Message--}}
                     <div class="form-group">
                         {!! Form::label('body', Auth::user()->name(), ['class' => 'control-label text-primary']) !!}
-                        {!! Form::textarea('body', $value = null, ['class' => 'form-control', 'placeholder' => 'Write message...', 'id' => 'message']) !!}
-                        <span id="message_error"></span> <br/>
+                        {!! Form::textarea('body', $value = null, ['class' => 'form-control', 'placeholder' => 'Write message...', 'id' => 'job_message']) !!}
+                        <span id="job_message_error"></span> <br/>
                     </div>
                     {{--Buttons--}}
                     <div class="col-sm-12 text-center">
@@ -412,7 +412,7 @@
                                 </div>
                             </div>
 
-                            <button id="submit" type="submit" class="btn btn-lg btn-primary">Submit</button>
+                            <button id="assignPrint" type="submit" class="btn btn-lg btn-primary">Submit</button>
                         </form>
                     </div>
 
@@ -525,7 +525,7 @@
                                 </div>
                             </div>
 
-                            <button id="submit" type="submit" class="btn btn-lg btn-success">Submit</button>
+                            <button id="assignPrint" type="submit" class="btn btn-lg btn-success">Submit</button>
                         </form>
                     </div>
 
@@ -591,7 +591,7 @@
         });
     </script>
     <!-- TODO: need to load custom validation scripts here -->
-    <script src="/js/validate_form.js"></script>
+    <script src="/js/validate_form_online_job_message.js"></script>
     <script src="/js/validate_form_online_print.js"></script>
     <script src="/js/validate_form_online_job_reject.js"></script>
 @endsection

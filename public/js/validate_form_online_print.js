@@ -646,7 +646,7 @@ module.exports = __webpack_require__(57);
  * This file can be loaded into an html containing a form
  * it will then add javascript validations from validations.js
  * to the input fields as defined in 'funs' below.
- * it will also disable the submit button with the name 'submit'
+ * it will also disable the submit button with the name 'assignPrint'
  * until all the validations are fulfilled and update the price
  * in the field with the name 'price'.
  ***/
@@ -731,13 +731,13 @@ $(document).ready(function () {
 
         //if there has been no error, then submit button is good to go, otherwise disable
         if (!hasError) {
-            $("#submit").prop('disabled', false);
+            $("#assignPrint").prop('disabled', false);
         } else {
-            $("#submit").prop('disabled', true);
+            $("#assignPrint").prop('disabled', true);
         }
     }
 
-    $("#submit").click(function () {
+    $("#assignPrint").click(function () {
         for (var i = 0; i < html_triggers.length; i++) {
             $(html_triggers[i]).hide();
             $(html_triggers[i]).removeClass("parsley-success");
