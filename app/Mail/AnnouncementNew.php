@@ -18,9 +18,11 @@ class AnnouncementNew extends Mailable
      * @return void
      */
     protected $announcement;
-    public function __construct($user, Announcement $announcement)
+    protected $member;
+    public function __construct($member, Announcement $announcement)
     {
         $this->announcement = $announcement;
+        $this->member = $member->name();
     }
 
     /**
@@ -32,7 +34,8 @@ class AnnouncementNew extends Mailable
     {
         return $this->subject('New announcement from 3D printing service')->markdown('emails.announcementNew')->with([
             'message' => $this->announcement->message,
-            'from' => $this->announcement->user->name
+            'from' => $this->announcement->user->name,
+            'member' => $this->member
         ]);
     }
 }

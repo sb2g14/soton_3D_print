@@ -1,5 +1,5 @@
 @component('mail::message')
-# Dear Demonstrator,<br/>
+# Dear {{ $member }},<br/>
 
 {{ $message }}
 
@@ -8,6 +8,6 @@
 @endcomponent
 
 Thanks,<br>
-{{  $from }},
+{{ $from }},
 {{ config('app.name') }}
 @endcomponent
