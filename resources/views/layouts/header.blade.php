@@ -77,7 +77,7 @@
                         About
                         <span class="caret"></span></span>
                     <ul class="dropdown-bl">
-                        <li><a class="dropdown-item" href="{{ url('/about') }}">About workshop</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/about') }}">About the Service</a></li>
                         <li><a class="dropdown-item" href="{{ url('/history') }}">Workshop History</a></li>
                         <li><a class="dropdown-item" href="{{ url('/learn') }}">Learn to 3D print</a></li>
                         <li><a class="dropdown-item" href="{{ url('/faq') }}">FAQ</a></li>
@@ -171,7 +171,7 @@
                 </li>
             </ul>
         @else
-           {{--Menu view for unregistered user--}}
+           {{--Menu view for customer--}}
             <ul class="lsn bl-menu" id="my-menu">
                 
                 {{--Welcome page--}}
@@ -231,16 +231,15 @@
                 @endif 
 
                 @if(!Auth::check())
-                    <li class="item">
+                    {{--<li class="item">
                         <span>
                         <span class="fa fa-lock"></span>
                         <span class="caret"></span></span>
                         <ul class="dropdown-bl dropdown-login" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="{{ route('auth.register') }}"><span class="fa fa-fw fa-user-plus"></span> Register</a></li>
                             <li><a class="dropdown-item" href="{{ route('auth.login') }}"><span class="fa fa-fw fa-sign-in"></span> Login</a></li>
-                            {{--<li><a class="dropdown-item" href="https://webauth.pprd.soton.ac.uk/idp/profile/SAML2/Redirect/SSO"><span class="fa fa-fw fa-academic"></span>UoS Login</a></li>--}}
                         </ul>
-                    </li>
+                    </li>--}}
                 @else
                     <li class="item">
                         <span>
