@@ -11,7 +11,6 @@ use App\printers;
 use App\Prints;
 use App\PublicAnnouncements;
 use App\StatisticsHelper;
-//use App\Http\Controllers\Traits\WorkshopTrait;
 use App\Rules\Printer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;

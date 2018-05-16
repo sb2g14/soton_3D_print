@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Jobs
+ * A job is a request by a customer (student or staff) to occupy one or more 
+ * 3D printers and print one or more parts using a certain amount of material.
+ * A job therefore contain one or more prints. A job can be a request for an
+ * online manager to print parts for the customer or a request of the customer
+ * to print parts themselves in the workshop.
  *
  * @package App
  * @property float $total_material_amount   //TODO: should be material_amount
@@ -28,7 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property datetime $approved_at
  * @property string $claim_id               //TODO: should be dropoff_id
  * @property string $claim_passcode         //TODO: should be dropoff_passcode
- * @property string $job_title
+ * @property string $job_title              //TODO: should be title
  * @property string $budget_holder
  * @property datetime $accepted_at
  * @property datetime $finished_at

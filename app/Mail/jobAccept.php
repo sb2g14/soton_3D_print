@@ -30,7 +30,7 @@ class jobAccept extends Mailable
      */
     public function build()
     {
-        return $this->subject('The job by '.$this->job->customer_name. ' with ID'.$this->job->id.' has been accepted.')
+        return $this->subject('Your job "'.$this->job->job_title.'" with ID '.$this->job->id.' has been accepted. | 3D Printing Service')
             ->markdown('emails.jobAccept')->with([
                 'customer_name' => $this->job->customer_name,
                 'customer_email' => $this->job->customer_email,

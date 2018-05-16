@@ -32,7 +32,7 @@ class AnnouncementNew extends Mailable
      */
     public function build()
     {
-        return $this->subject('New announcement from 3D printing service')->markdown('emails.announcementNew')->with([
+        return $this->subject('New announcement | 3D Printing Service')->markdown('emails.announcementNew')->with([
             'message' => $this->announcement->message,
             'from' => $this->announcement->user->name,
             'member' => $this->member

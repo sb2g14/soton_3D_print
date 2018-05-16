@@ -26,6 +26,20 @@ use Illuminate\Support\Facades\Input; //Loads the input from drop-down
 /**
  * Class WorkshopJobsController
  * This controller manages workshop prints and jobs (1 to 1 correspondence)
+ *
+ * The different steps of this workflow are:
+ * 1) Job is requested by customer
+ * 2) requested jobs details are reviewed by a demonstrator
+ *   a) the requested job can be approved or rejected 
+ *      -> if approved, the job becomes approved and the print is assumed to be started by the customer
+ * 3) approved jobs can be reviewed by a demonstrator
+ *   a) jobs can be marked as completed or failed 
+ *      -> if completed, the job and print become completed
+ *      -> if failed, the job and print are marked as failed
+ *   b) if a print has finished but has not been marked as finished by any demonstrator, 
+ *      then they are atomatically completed by the system.
+ * 4) recent completed jobs can be reviewed
+ *
  * @package App\Http\Controllers
  */
 class WorkshopJobsController extends Controller

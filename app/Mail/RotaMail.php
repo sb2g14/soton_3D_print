@@ -33,7 +33,7 @@ class RotaMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('3D Printing Service rota for '.Carbon::parse($this->message['date'])->format('D, dS \\of M Y'))
+        return $this->subject('Rota for '.Carbon::parse($this->message['date'])->format('D, dS \\of M Y').' | 3D Printing Service')
             ->markdown('emails.rotaMail')->with([
                 'date' => $this->message['date'],
                 'message' => $this->message['comment'],

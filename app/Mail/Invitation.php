@@ -29,7 +29,7 @@ class Invitation extends Mailable
      */
     public function build()
     {
-        return $this->subject('Please register the 3D printing workshop website')->markdown('emails.invitation')->with([
+        return $this->subject('Please register on our website | 3D Printing Service')->markdown('emails.invitation')->with([
             'name' => $this->name,
         ]);
     }

@@ -7,20 +7,23 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Jobs
+ * Class Prints
+ * A print descripes a single print process on a single 3D printer. 
+ * Several parts may be printed together in one print. This means that
+ * a print can be for several jobs.
  *
  * @package App
- * @property string $purpose        //TODO: what do we use this for?
- * @property string $time           //TODO: should be duration
+ * @property string $purpose 'Use' or 'Loan'    //TODO: should be 'Use' or 'Preview' and loans to be put in separate table
+ * @property string $time                       //TODO: should be duration
  * @property float $material_amount
  * @property string $material_type
  * @property string $material_colour
- * @property float $price           //TODO: should be cost
- * @property string $print_comment  //TODO: should be approved_comment
+ * @property float $price                       //TODO: should be cost
+ * @property string $print_comment              //TODO: should be approved_comment
  * @property string $status
- * @property datetime $created_at
- * @property datetime $updated_at
- * @property datetime $finished_at
+ * @property datetime $created_at date and time the print was first stored in the database
+ * @property datetime $updated_at date and time the print was last updated in the database
+ * @property datetime $finished_at date and time the print was completed/ finished
  **/
 class Prints extends Model
 {

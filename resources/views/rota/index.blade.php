@@ -126,7 +126,7 @@
                                                     @endforeach
                                                 </div>
                                                 <!-- DEMONSTRATORS -->
-                                                <div class="col-sm-6 text-left">
+                                                <div class="@if($s->start_date <= new Carbon\Carbon()) col-sm-4 @else col-sm-6 @endif text-left">
                                                     @if($s->staff()->count()>0)
                                                         @php
                                                             $dems = [];
@@ -143,6 +143,12 @@
                                                         ({{$s->dem_required}} demonstrators)
                                                     @endif
                                                 </div>
+                                                @if($s->start_date <= new Carbon\Carbon())
+                                                    <!-- NUMBER OF JOBS -->
+                                                    <div class="col-sm-2 text-right">
+                                                        {{$s->jobs()->count()}} jobs
+                                                    </div>
+                                                @endif
                                             </div>
                                         </li>
                                     @endforeach

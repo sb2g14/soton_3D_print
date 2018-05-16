@@ -29,8 +29,10 @@ use Illuminate\Http\Request;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Mail;
 
-/** OrderOnlineController
- * This controller manages online jobs.
+/** 
+ * Class OrderOnlineController
+ * This controller manages online jobs and prints (many to many correspondence).
+ *
  * The different steps of this workflow are:
  * 1) Job is requested by customer
  * 2) requested jobs are reviewed by online manager
@@ -416,7 +418,7 @@ class OrderOnlineController extends Controller
             'text' => 'You can either add more print-previews or accept this job and notify customer',
         ]);
 
-        return redirect("/OnlineJobs/requests/{$job->id}");
+        return redirect("/OnlineJobs/{$job->id}");
     }
     
     /**Action to delete a print preview
@@ -434,7 +436,7 @@ class OrderOnlineController extends Controller
         notify()->flash('The print-preview has been deleted', 'success', [
             'text' => 'You can create new print-previews',
         ]);
-        return redirect("OnlineJobs/requests/{$job->id}");
+        return redirect("OnlineJobs/{$job->id}");
     }
 
     
@@ -652,6 +654,57 @@ class OrderOnlineController extends Controller
         return redirect("OnlineJobs/prints/");
     }
 
+    /**Action to report print as successful**/
+    public function printSuccessful(int $id)
+    {
+        // Get print
+        $print = Prints::findOrFail($id);
+        // Mark print as successful
+        $print->finish("Success");
+
+        // Notify user
+        notify()->flash('The print has been marked as successful!', 
+                        'success', [
+                        'text' => 'Please click Job Completed when all prints are finished.',
+                        ]);
+
+        return redirect("/OnlineJobs/prints");
+    }
+
+    /**Action to report print as failed**/
+    public function printFailed(int $id)
+    {
+        // Get print
+        $print = Prints::findOrFail($id);
+        // Mark print as failed
+        $print->finish("Failed");
+
+        // Notify user
+        notify()->flash('The print has been marked as failed', 
+                        'success', [
+                        'text' => 'Please restart the print and click Job Completed when all prints are finished.',
+                        ]);
+
+        return redirect("/OnlineJobs/prints");
+    }
+    
+    /**Action to be taken when the job is successful**/
+    public function jobSuccess(int $id)
+    {
+        // Get job
+        $job = Jobs::findOrFail($id);
+        // Mark job as successful
+        $job->finish("Success");
+        
+        // Notify user and email customer
+        $this->_emailandnotify($job->customer_email,
+            new jobSuccess($job),
+            'The job status has been completed successfully',
+            'An email with the notification has been sent to the customer.'); 
+
+        return redirect("/OnlineJobs/pending");
+    }
+    
     /**Actions to be taken when the job failed**/
     public function jobFailed(int $id)
     {
@@ -676,56 +729,5 @@ class OrderOnlineController extends Controller
             'An email with the notification has been sent to the customer.');
 
         return redirect("/OnlineJobs/pending");
-    }
-
-    /**Action to be taken when the job is successful**/
-    public function jobSuccess($id)
-    {
-        // Get job
-        $job = Jobs::findOrFail($id);
-        // Mark job as successful
-        $job->finish("Success");
-        
-        // Notify user and email customer
-        $this->_emailandnotify($job->customer_email,
-            new jobSuccess($job),
-            'The job status has been completed successfully',
-            'An email with the notification has been sent to the customer.'); 
-
-        return redirect("/OnlineJobs/pending");
-    }
-
-    /**Action to report print as successful**/
-    public function printSuccessful($id)
-    {
-        // Get print
-        $print = Prints::findOrFail($id);
-        // Mark print as successful
-        $print->finish("Success");
-
-        // Notify user
-        notify()->flash('The print has been marked as successful!', 
-                        'success', [
-                        'text' => 'Please click Job Completed when all prints are finished.',
-                        ]);
-
-        return redirect("/OnlineJobs/prints");
-    }
-
-    /**Action to report print as failed**/
-    public function printFailed($id)
-    {
-        // Get print
-        $print = Prints::findOrFail($id);
-        // Mark print as failed
-        $print->finish("Failed");
-
-        // Notify user
-        notify()->flash('The print has been marked as failed', 
-                        'success', [
-                        'text' => 'Please restart the print and click Job Completed when all prints are finished.',
-                        ]);
-
-        return redirect("/OnlineJobs/prints");
     }
 }

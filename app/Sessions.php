@@ -2,10 +2,12 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
-use phpDocumentor\Reflection\Types\Null_;
 use App\Event;
+use App\Jobs;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Null_;
+
 /**
  * one session in the workshop (i.e. Wed,28/03/2018 9am till 12pm)
  * A session is the smallest instance of the service work time. It has a start and an end time.
@@ -76,6 +78,23 @@ class sessions extends Model
         $t1 = new Carbon($this->start_date);
         $t2 = new Carbon($this->end_date);
         return $t1->diffInMinutes($t2);
+    }
+    
+    /** returns the jobs that occured during this session **/
+    public function jobs()
+    {
+        $t1 = new Carbon($this->start_date);
+        $t2 = new Carbon($this->end_date);
+        $jobs = Jobs::where('requested_online',0)
+                    ->where('finished_at','>=',$t1)
+                    ->where('finished_at','<=',$t2)
+                    ->orWhere(function ($query) use ($t1, $t2) {
+                        $query->where('requested_online',0)
+                              ->where('created_at','>=',$t1)
+                              ->where('created_at','<=',$t2);
+                        })
+                    ->get();
+        return $jobs;
     }
     
 }
