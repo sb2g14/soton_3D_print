@@ -5,7 +5,10 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-
+/**
+ * Class posts
+ * This class handles generic (non printer-related) issues
+ **/
 class posts extends Model
 {
     // The function states which fields of the form are fillable

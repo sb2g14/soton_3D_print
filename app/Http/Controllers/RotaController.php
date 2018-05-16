@@ -193,6 +193,7 @@ class RotaController extends Controller
         //approximate start and end time of the next session
         //logic is: if no session so far for this day, then first session is 9am till 12pm
         //          otherwise, assume the next session starts after the previous one and is as long as the previous session.
+        //TODO: if no session, then should check start and end of first session last date
         $latest = $rota->getLastSession();
         if($latest){
             $newstarttime = new Carbon($latest->end_date);
@@ -242,16 +243,17 @@ class RotaController extends Controller
 
         // Send email
         try{
-            // Send an email to the 3dprint account an cc all the recipients
-            $recipient = '3dprint.soton@gmail.com';
             if(env('APP_URL') === 'http://localhost'){
                 // Only Svitlana, Andrew, and Lasse now for testing purposes
-                $users = staff::where('id',1)->orWhere('id',2)->orWhere('id',7)->pluck('email');
+                $usersTo = '3dprint.soton@gmail.com';
+                $usersCC = staff::orderBy('last_name')->where('id',1)->orWhere('id',2)->orWhere('id',7)->pluck('email');
             }else{
                 // Send to all except for the Former members
-                $users = staff::where('role','!=','Former member')->pluck('email');
+                $usersTo = staff::orderBy('last_name')->where('role','Demonstrator')->pluck('email');
+                $usersCC = staff::orderBy('last_name')->where('role','!=','Former member')->where('role','!=','Demonstrator')->pluck('email'); 
+                //TODO: pluck name and email, so that the message is send with the names covering the many emails
             }
-            Mail::to($recipient)->cc($users)->queue(new RotaMail($sessions, $message));
+            Mail::to($usersTo)->cc($usersCC)->queue(new RotaMail($sessions, $message));
 
             // Notify that the user of success
             notify()->flash('The email has been sent' , 'success', [

@@ -7,6 +7,7 @@ use App\StatisticsHelper;
 
 
 /**
+ * Class ChartsHelper
  * this class contains all the functions that produce charts.
  * the main way of including charts is through an iframe using
  * the ChartsController:
@@ -24,6 +25,8 @@ use App\StatisticsHelper;
  *     {!! $chart->html() !!}
  *     {!! Charts::scripts() !!}
  *     {!! $chart->script() !!}  
+ *
+ * TODO: move to traits or other appropriate place!
  **/
 
 class ChartsHelper

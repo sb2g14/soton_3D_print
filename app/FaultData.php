@@ -4,25 +4,28 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class FaultData
+ * This class handles printer-related issues
+ **/
 class FaultData extends Model
 {
     protected $guarded = [];
     public function FaultUpdates()
-
     {
-
         return $this->hasMany(FaultUpdates::class);
-
     }
 
     public function Printers()
     {
         return $this->belongsTo(Printers::class);
     }
+    
     public function issue_created()
     {
         return $this->belongsTo(staff::class, 'staff_id_created_issue');
     }
+    
     public function issue_resolved()
     {
         return $this->belongsTo(staff::class, 'staff_id_resolved_issue');

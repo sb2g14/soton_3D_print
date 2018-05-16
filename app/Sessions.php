@@ -9,12 +9,20 @@ use Illuminate\Database\Eloquent\Model;
 use phpDocumentor\Reflection\Types\Null_;
 
 /**
- * one session in the workshop (i.e. Wed,28/03/2018 9am till 12pm)
+ * Class sessions //TODO: refactor as "Session"
+ * One session in the workshop (i.e. Wed,28/03/2018 9am till 12pm)
+ *
  * A session is the smallest instance of the service work time. It has a start and an end time.
  * A session can be either public, meaning that anyone can attend it,
  * or private, meaning that only invited people should attend it.
  * Each session requires a certain number of demonstrators to run it.
  * All sessions in one day form a rota (See RotaController).
+ *
+ * @package App
+ * @property Carbon $start_date
+ * @property Carbon $end_date
+ * @property int $dem_required
+ * @property boolean $public
  */
 class sessions extends Model
 {

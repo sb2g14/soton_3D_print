@@ -2,7 +2,10 @@
 
 namespace App;
 
-
+/**
+ * Class comments
+ * This class handles updates/ comments on generic (non-printer-related) issues (posts)
+ **/
 class comments extends Model
 {
     public function posts() {

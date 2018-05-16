@@ -2,11 +2,13 @@
 
 namespace App;
 
-use App\Sessions;
 use App\Rota;
+use App\Sessions;
 use Carbon\Carbon;
 use phpDocumentor\Reflection\Types\Null_;
+
 /**
+ * Class Rotas
  * one rota (i.e. Wed,28/03/2018 with 3 sessions from 9am till 6pm)
  */
 class Rotas
