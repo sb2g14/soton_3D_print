@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @property string $shortage short code to be used by users instead of the official university cost code
  * @property int $cost_code official university cost code
- * @property string $aproving_member_of_staff the university staff who approves this print
- * @property date $expires the date when the code will expire/ expired
+ * @property string $aproving_member_of_staff the university staff who approves this print //TODO: refactor to approved_by
+ * @property date $expires the date when the code will expire/ expired //TODO: refactor to expires_at
  * @property string $holder budget holder for the university cost code
  * @property string $description official name of the university cost code
  * @property string $explanation explanation of the project this shortage applies to

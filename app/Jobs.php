@@ -28,8 +28,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $customer_email
  * @property int $requested_online          //TODO: should be online
  * @property string $status
- * @property datetime $created_at
- * @property datetime $updated_at
  * @property datetime $approved_at
  * @property string $claim_id               //TODO: should be dropoff_id
  * @property string $claim_passcode         //TODO: should be dropoff_passcode
@@ -47,11 +45,11 @@ class Jobs extends Model
     //---------------------------------------------------------------------------------------------------------------//
     public function staff_approved()
     {
-        return $this->belongsTo(staff::class, 'job_approved_by');
+        return $this->belongsTo(staff::class, 'job_approved_by'); //TODO: should be approved_by
     }
     public function staff_finished()
     {
-        return $this->belongsTo(staff::class, 'job_finished_by');
+        return $this->belongsTo(staff::class, 'job_finished_by'); //TODO: should be finished_by
     }
     public function messages()
     {
@@ -112,6 +110,7 @@ class Jobs extends Model
     
     //// FUNCTIONS TO CHANGE THE STATE OF THE MODEL ////
     //---------------------------------------------------------------------------------------------------------------//
+    
     /** Staff to approve a job **/
     public function approve(array $changes = []){
         // Change the status
@@ -123,6 +122,7 @@ class Jobs extends Model
         // Update the Job
         $this->update($changes);
     }
+    
     /** Customer to accept a job **/
     public function accept(){
         // Update the Job
@@ -131,11 +131,16 @@ class Jobs extends Model
             'accepted_at' => Carbon::now('Europe/London')
         ]);
     }
+    
     /** Staff to finish a job **/
     public function finish(string $status, array $changes = []){
         // Validate input
         if($status !== "Success" && $status !== "Failed"){
             throw new Exception('Invalid job completion flag. Expected "Failed" or "Success"');
+        }
+        // Validate job status
+        if($this->hasActivePrint()){
+            throw new Exception('There is still a print active for this job. Please complete all prints for this job before completing the job!');
         }
         // Change the status
         $this->update([
@@ -146,7 +151,11 @@ class Jobs extends Model
         // Update the Job
         $this->update($changes);
     }
-    /** Deletes a job from the database, leaving no trace of it. This should never be called for started jobs! **/
+    
+    /** 
+     * Deletes a job from the database, leaving no trace of it. 
+     * This should never be called for started jobs! 
+     **/
     public function deleteAll(){
         
         // Delete associated print previews or prints

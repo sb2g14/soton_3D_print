@@ -34,11 +34,11 @@ class Prints extends Model
     //---------------------------------------------------------------------------------------------------------------//
     public function staff_started()
     {
-        return $this->belongsTo(staff::class, 'print_started_by');
+        return $this->belongsTo(staff::class, 'print_started_by'); //TODO: should be started_by
     }
     public function staff_finished()
     {
-        return $this->belongsTo(staff::class, 'print_finished_by');
+        return $this->belongsTo(staff::class, 'print_finished_by'); //TODO: should be finished_by
     }
     public function printer()
     {

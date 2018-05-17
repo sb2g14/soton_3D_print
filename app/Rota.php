@@ -37,9 +37,20 @@ class Rota
         return $sessions;
     }
     
+    /** return the last session during this rota **/
     public function getLastSession(){
         $sessions = $this->sessions; //->orderBy('start_date','desc')->first();
         $sessions = collect($sessions)->sortByDesc('start_date');
+        if(count($sessions->values())>0){
+            return $sessions->values()->first();
+        }
+        return null;
+    }
+    
+    /** return the first session during this rota **/
+    public function getFirstSession(){
+        $sessions = $this->sessions; //->orderBy('start_date','desc')->first();
+        $sessions = collect($sessions)->sortBy('start_date');
         if(count($sessions->values())>0){
             return $sessions->values()->first();
         }

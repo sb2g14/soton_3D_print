@@ -191,22 +191,35 @@ class RotaController extends Controller
         $rota = new Rota($date);
         $sessions = $rota->sessions;
         //approximate start and end time of the next session
-        //logic is: if no session so far for this day, then first session is 9am till 12pm
+        //logic is: if no session so far for this day, then first session is same as last rotas first session
         //          otherwise, assume the next session starts after the previous one and is as long as the previous session.
-        //TODO: if no session, then should check start and end of first session last date
         $latest = $rota->getLastSession();
         if($latest){
+            // Already have a session for this date
+            // We therefore assume that the next session will be right after the previous one and have equal duration.
             $newstarttime = new Carbon($latest->end_date);
             $newendtime = new Carbon($latest->start_date); 
             $newendtime = $newstarttime->copy()->addMinutes($newendtime->copy()->diffInMinutes($newstarttime->copy()));
             $newstarttime = new Carbon($latest->end_date);
         }else{
-            $newstarttime = new Carbon($date.' 09:00:00');
-            //$newstarttime->hour(9)->minute(0)->second(0);
-            $newendtime = new Carbon($date.' 12:00:00'); 
-            //$newendtime->hour(12)->minute(0)->second(0);
+            // This is the first session for today
+            // Get the latest Rota
+            $lastSession = Sessions::orderBy('start_date','DESC')->first();
+            $lastDate = new Carbon($lastSession->start_date);
+            $lastRota = new Rota($lastDate->format('Y-m-d'));
+            // Get the first session of that day
+            $firstSession = $lastRota->getFirstSession();
+            // Copy the start time from that session
+            $oldstarttime = new Carbon($firstSession->start_date);
+            $newstarttime = new Carbon($date.' 00:00:00');
+            $newstarttime->hour($oldstarttime->hour)->minute($oldstarttime->minute)->second($oldstarttime->second);
+            // Copy the end time from that session
+            $oldendtime = new Carbon($firstSession->end_date);
+            $newendtime = new Carbon($date.' 23:59:59');
+            $newendtime->hour($oldendtime->hour)->minute($oldendtime->minute)->second($oldendtime->second);
+            
         }
-        // need to convert to the right time format, so that the date-time-picker is happy
+        // Convert to the right time format, so that the date-time-picker is happy
         $newstarttime = $newstarttime->format('H:i');
         $newendtime = $newendtime->format('H:i');
         // Get the events for this date

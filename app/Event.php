@@ -18,7 +18,7 @@ use phpDocumentor\Reflection\Types\Null_;
  * @property Carbon $end_date date and time when the event ends
  * @property string $name a human readable name to display for the event
  * @property string $type the type of event (any of "academic", "holidays", "closure", "internal")
- */
+ **/
 class event extends Model
 {
     protected $guarded = [];
