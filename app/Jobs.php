@@ -75,7 +75,9 @@ class Jobs extends Model
     }
     /**returns a boolean weather there are any unfinished prints or not**/
     public function hasActivePrint(){
-        $prints = $this->prints()->where('status','!=','Failed')->where('status','!=','Success')->count();
+        $prints = $this->prints()->where('status','!=','Failed')
+                                 ->where('status','!=','Success')
+                                 ->count();
         if($prints > 0){
             return true;
         }

@@ -29,47 +29,46 @@ class User extends Authenticatable
     protected $fillable = ['name', 'email', 'password', 'remember_token'];
     
     
-    /**
-     * Hash password
-     * @param $input
-     */
-    public function setPasswordAttribute($input)
-    {
-        if ($input)
-            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
-    }
     
     
+    
+    //// CONNECTIONS TO OTHER MODELS/ SQL TABLE LINKS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    /** the roles associated with this user **/
     public function role()
     {
         return $this->belongsToMany(Role::class, 'role_user');
     }
     
-    // The function which shows the posts of a user
+    /**The function which shows the posts of a user**/
     public function post(){
         return $this->hasMany(posts::class);
     }
     
-    // The function which shows the announcements of a user
+    /**The function which shows the announcements of a user**/
     public function announcements(){
         return $this->hasMany(posts::class);
     }
-    // The function which shows the announcements of a user
+    /**The function which shows the announcements of a user**/ //TODO: still valid?
     public function publicAnnouncements(){
         return $this->hasMany(posts::class);
     }
-    // The function which shows the comments of a user
+    /**The function which shows the comments of a user on generic issues**/
     public function comments(){
         return $this->hasMany(comments::class);
     }
-    // The function which shows the staff record connected user
+    /**The function which shows the staff record connected user**/
     public function staff(){
         return $this->hasOne(staff::class);
     }
-    // The function shows jobs approved by user
+    /**The function shows jobs approved by user**/ //TODO: still valid?
     public function printing_data(){
         return $this->hasMany(printing_data::class);
     }
+    
+    //// FUNCTIONS TO CALCULATE AND PRE-FORMAT CERTAIN VALUES ////
+    //---------------------------------------------------------------------------------------------------------------//
     
     /** checks if a user is a customer or a member of staff and returns true or false **/
     public function isCustomer(){
@@ -180,6 +179,19 @@ class User extends Authenticatable
         // If the user is a customer, we need to load the data from the SERVER variable
         $ans = $this->emails();
         return $ans[0];
+    }
+    
+    //// OTHER FUNCTIONS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    /**
+     * Hash password
+     * @param $input
+     */
+    public function setPasswordAttribute($input)
+    {
+        if ($input)
+            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
     }
     
     /**The function which allows a user to create a post**/

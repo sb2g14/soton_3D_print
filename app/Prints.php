@@ -32,27 +32,58 @@ class Prints extends Model
     
     //// CONNECTIONS TO OTHER MODELS/ SQL TABLE LINKS ////
     //---------------------------------------------------------------------------------------------------------------//
+    
+    /** member of staff who approved this print **/
     public function staff_started()
     {
-        return $this->belongsTo(staff::class, 'print_started_by'); //TODO: should be started_by
+        return $this->belongsTo(staff::class, 'print_started_by'); //TODO: should be approved_by
     }
+    
+    /** member of staff who finished this print **/
     public function staff_finished()
     {
         return $this->belongsTo(staff::class, 'print_finished_by'); //TODO: should be finished_by
     }
+    
+    /** 3D printer this print is printed on **/
     public function printer()
     {
         return $this->belongsTo(Printers::class, 'printers_id');
     }
+    
+    /** jobs this print is for **/
     public function jobs(){
         return $this->belongsToMany(Jobs::class);
     }
+    
     //// FUNCTIONS TO CALCULATE AND PRE-FORMAT CERTAIN VALUES ////
     //---------------------------------------------------------------------------------------------------------------//
+    
+    /** Carbon when the print was approved **/
+    public function approved_at()
+    {
+        if($this->online()){
+            return $this->created_at;
+        }
+        return $this->jobs()->first()->approved_at();
+    }
+    
+    /** Carbon when the print finished **/
     public function finished_at()
     {
         return new Carbon($this->finished_at);
     }
+    
+    /** boolean if the print is for an online job **/
+    public function online()
+    {
+        if($this->jobs()->first()->requested_online == 1){
+            return true;
+        }
+        return false;
+    }
+    
+    /** total (expected) time of the print in minutes **/
     public function durationMin(){ //TODO: refactor as "totalMin"
         //TODO: check it works and replace at appropriate places in controllers
         $finished_at = new Carbon($this->finished_at);
@@ -62,16 +93,13 @@ class Prints extends Model
         $duration = $this->finished_at ? $finished_at->diffInMinutes($created_at) : $expected_duration;
         return $duration;
     }
+    
     /**returns a number how many minutes are done for this print**/
     public function completedMin(){
         // Separate hours from minutes and seconds in printing time
         list($h, $i, $s) = explode(':', $this->time);
         // Get time the print started
-        if($this->jobs()->first()->requested_online == 0){
-            $time_approved = new Carbon($this->jobs()->first()->approved_at);
-        }else{
-            $time_approved = $this->created_at;
-        }
+        $time_approved = $this->approved_at();
         // Get time the print will finish
         $time_finish = $time_approved->addHour($h)->addMinutes($i);
         // Compare to Now
@@ -82,12 +110,14 @@ class Prints extends Model
         }
         return $ans;
     }
+    
     /**returns a number how many minutes are left on this print**/
     public function remainMin(){
         $completed = $this->completedMin();
         $total = $this->durationMin();
         return $total - $completed;
     }
+    
     /**returns a string how much time is left on this print**/
     public function timeRemain(){//TODO: refactor as "remainStr"
         // Separate hours from minutes and seconds in printing time
@@ -109,6 +139,7 @@ class Prints extends Model
     
     //// FUNCTIONS TO CHANGE THE STATE OF THE MODEL ////
     //---------------------------------------------------------------------------------------------------------------//
+    
     /** Staff to approve a print **/
     public function approve(array $changes = []){
         // Change the status
@@ -119,6 +150,7 @@ class Prints extends Model
         // Update the Print
         $this->update($changes);
     }
+    
     /** mark the print as in progress **/
     public function start(){
         // Update the Print
@@ -128,6 +160,7 @@ class Prints extends Model
         // Mark Printer as "in use"
         printers::where('id','=', $this->printer->id)->update(array('in_use'=> 1));
     }
+    
     /** Staff to finish a print **/
     public function finish(string $status, array $changes = []){
         // Validate input

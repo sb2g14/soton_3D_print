@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+//TODO: do we still use this???
 class PublicAnnouncements extends Model
 {
     protected $guarded = [];

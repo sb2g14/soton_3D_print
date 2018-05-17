@@ -6,7 +6,10 @@ use App\Sessions;
 use Carbon\Carbon;
 use phpDocumentor\Reflection\Types\Null_;
 /**
- * one rota (i.e. Wed,28/03/2018 with 3 sessions from 9am till 6pm)
+ * Class Rota
+ * A single rota (i.e. Wed,28/03/2018 with 3 sessions from 9am till 6pm)
+ * a rota is a group of sessions (all sessions for a given date)
+ * Rotas have no table in the database
  */
 class Rota
 {

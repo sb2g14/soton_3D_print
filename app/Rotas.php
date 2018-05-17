@@ -9,7 +9,7 @@ use phpDocumentor\Reflection\Types\Null_;
 
 /**
  * Class Rotas
- * one rota (i.e. Wed,28/03/2018 with 3 sessions from 9am till 6pm)
+ * several Rota
  */
 class Rotas
 {
@@ -18,7 +18,10 @@ class Rotas
     public static function getUpcomingSessions(){
         $t1 = new Carbon();
         $t1 = $t1->subWeeks(2)->hour(0)->minute(0)->second(0);
-        $sessions = Sessions::with('staff')->orderBy('start_date')->where('start_date','>=',$t1)->get(); 
+        $sessions = Sessions::with('staff')
+            ->orderBy('start_date')
+            ->where('start_date','>=',$t1)
+            ->get(); 
         return $sessions;   
     }
     
@@ -26,7 +29,10 @@ class Rotas
     public static function getFutureSessions(){
         $t1 = new Carbon();
         $t1 = $t1->hour(0)->minute(0)->second(0);
-        $sessions = Sessions::with('staff')->orderBy('start_date')->where('start_date','>=',$t1)->get(); 
+        $sessions = Sessions::with('staff')
+            ->orderBy('start_date')
+            ->where('start_date','>=',$t1)
+            ->get(); 
         return $sessions;   
     }
     
@@ -57,6 +63,7 @@ class Rotas
         return $rotas;
     }
     
+    /** get list of upcoming rotas **/
     public static function getUpcoming(){
         //TODO: can make this smarter by only getting the dates?
         $sessions = self::getUpcomingSessions();

@@ -2,11 +2,27 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model as BaseModel;
+
 use DB;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Illuminate\Database\Eloquent\Model as BaseModel;
 
+/**
+ * Class staff
+ * A member of the 3D printing service team
+ * special members are: System
+ *
+ * @package App
+ * @property string $first_name first name of the member of staff
+ * @property string $last_name last name of the member of staff
+ * @property string $email email address
+ * @property string $phone phone number
+ * @property string $role main role of the member of staff (should be one of the roles assigned to their "user" entry)
+ * @property date $CWP_date date the casual working permit has been shown to the coordinator
+ * @property date $SMT_date date the latest specific module training has been attended
+ * @property date $LWI_date date the latest laboratory and workshop induction has been attended
+ **/
 class staff extends BaseModel
 {
     protected $fillable = [
@@ -16,43 +32,70 @@ class staff extends BaseModel
         'phone',
         'role'
     ];
-   public function user()
-   {
+    
+    private function _formatWorkinghours($lastdate,$minutes){
+        $nicedate = new Carbon($lastdate);
+        $nicedate = $nicedate->format('j M');
+        $hours = (int)($minutes/60);
+        $minutes = ($minutes - 60*(int)($minutes/60));
+        $time = sprintf("%dh %02dm",$hours,$minutes);
+        //$time = CarbonInterval::minutes($minutes)->format('h:i');
+        $ans = $nicedate.': '.$time;
+        return $ans;
+    }
+    
+    //// CONNECTIONS TO OTHER MODELS/ SQL TABLE LINKS ////
+    //---------------------------------------------------------------------------------------------------------------//
+    /** user account of this staff **/    
+    public function user()
+    {
        return $this->belongsTo(User::class);
-   }
-    // The function shows jobs approved by user
-    public function printing_data(){
+    }
+    //TODO: is this still correct?
+    public function printing_data(){ 
         return $this->hasMany(printing_data::class, 'approved_by');
     }
+    /** issues created **/
     public function issue_created()
     {
         return $this->hasMany(FaultData::class, 'staff_id_created_issue');
     }
+    /** issues solved **/
     public function issue_resolved()
     {
         return $this->hasMany(FaultData::class,'staff_id_resolved_issue');
     }
+    /** updates on printer isues **/
     public function updates()
     {
         return $this->hasMany(FaultUpdates::class, 'staff_id');
     }
+    /** messages related to jobs **/
     public function messages()
     {
         return $this->hasMany(Messages::class, 'staff_id');
     }
+    /** sessions demonstrated **/
     public function sessions()
     {
         return $this->belongsToMany(Sessions::class);
     }
-    public function hasRole($rolename)
-    {
-        return $this->user->hasRole($rolename);
-    }
+    /** indicated availability for sessions **/
     public function availability()
     {
         return $this->hasMany(Availability::class);
     }
-    /**returns the full name of that staff**/
+    
+    //// FUNCTIONS TO CALCULATE AND PRE-FORMAT CERTAIN VALUES ////
+    //---------------------------------------------------------------------------------------------------------------//
+    
+    /** checks if the staff has a specific role **/
+    public function hasRole($rolename)
+    {
+        return $this->user->hasRole($rolename);
+    }
+    
+    /**returns the full name of this staff as a string**/
     public function name()
     {
         return $this->first_name.' '.$this->last_name;
@@ -63,8 +106,10 @@ class staff extends BaseModel
     {
         return $this->sessions->count();
     }
-    /** returns a boolean if this staff is experienced or not
-     *  currently any staff with more than average experience is considered to be experienced
+    
+    /** 
+     * returns a boolean if this staff is experienced or not
+     * currently any staff with more than average experience is considered to be experienced
      **/
     public function isExperienced()
     {
@@ -86,6 +131,7 @@ class staff extends BaseModel
         return false;
     }
     
+    /** gets the last session this staff demonstrated **/
     public function lastSession()
     {   
         $t = $this->sessions()->orderBy('start_date','desc')->first();
@@ -94,18 +140,8 @@ class staff extends BaseModel
         }
         return $t->start_date; //->toDateString();
     }
-
-    private function _formatWorkinghours($lastdate,$minutes){
-        $nicedate = new Carbon($lastdate);
-        $nicedate = $nicedate->format('j M');
-        $hours = (int)($minutes/60);
-        $minutes = ($minutes - 60*(int)($minutes/60));
-        $time = sprintf("%dh %02dm",$hours,$minutes);
-        //$time = CarbonInterval::minutes($minutes)->format('h:i');
-        $ans = $nicedate.': '.$time;
-        return $ans;
-    }
     
+    /** gets the working hours based on demonstrated sessions **/
     public function workinghours($endmonth)
     {   
         // Get start and end of last month
