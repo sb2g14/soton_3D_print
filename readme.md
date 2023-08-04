@@ -1,7 +1,7 @@
 # 3dprint.clients.soton.ac.uk web site 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![GitHub contributers](https://img.shields.io/github/contributors/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_roles/graphs/contributors)
-[![GitHub issues](https://img.shields.io/github/issues/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_roles/issues)
+[![GitHub issues](https://img.shields.io/github/issues/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_3D_print/issues)
 
 ## Installation instruction
 
