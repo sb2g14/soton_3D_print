@@ -1,6 +1,6 @@
 # 3dprint.clients.soton.ac.uk web site 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![GitHub contributers](https://img.shields.io/github/contributors/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_roles/graphs/contributors)
+[![GitHub contributers](https://img.shields.io/github/contributors/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_3D_print/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/sb2g14/soton_roles.svg)](https://github.com/sb2g14/soton_3D_print/issues)
 
 ## Installation instruction
@@ -13,7 +13,7 @@
 ### GitHub
 
   3. Join GitHub repository (please ask a member of the team to send you an invitation).
-  4. Run ```git clone https://github.com/sb2g14/soton_roles```
+  4. Run ```git clone https://github.com/sb2g14/soton_3D_print```
   
 ### Stack installation
 
@@ -36,7 +36,7 @@
   
 ### Running Laravel
 
-  10. Go to the ```soton_roles``` directory and open ```.env.example``` file, write the relevant mysql and mail server information and rename it to ```.env```. Now run following in your terminal:
+  10. Go to the ```soton_3D_print``` directory and open ```.env.example``` file, write the relevant mysql and mail server information and rename it to ```.env```. Now run following in your terminal:
   11. ```composer update```
   12. ```php artisan key:generate```
   13. ```php artisan serve```
@@ -51,7 +51,7 @@ Linux error: unable to locate ext-bcmath.
 You need to visit https://www.jetbrains.com/ apply for a student license and then install PhPStorm and DataGrip IDEs to work with PHP and SQL languages.
 
 ## Running the project
-1. Go to the soton_roles
+1. Go to the soton_3D_print
   ```php artisan serve```
   copy the link which appeared in the browser.
   
@@ -82,7 +82,7 @@ https://medium.com/laravel-news/the-simple-guide-to-deploy-laravel-5-application
 So next we present a short instuction what should be done to update the project on server from the github repository
 1. Merge branches ```master``` and ```develop```
 2. ```ssh server@3dprint.clients.soton.ac.uk```
-3. ```cd /var/soton_roles/```
+3. ```cd /var/soton_3D_print/```
 4. ```sudo git pull```
 5. ```sudo composer update```
 6. ```sudo composer dumpautoload -o```
